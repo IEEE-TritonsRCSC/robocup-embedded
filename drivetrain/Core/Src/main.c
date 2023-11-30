@@ -26,7 +26,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <string.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,15 +44,13 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-CAN_TxHeaderTypeDef TxHeader;
-CAN_RxHeaderTypeDef RxHeader;
-
-uint32_t TxMailbox;
-
-uint8_t TxData[8];
-uint8_t RxData[8];
 /* USER CODE BEGIN PV */
-
+CAN_TxHeaderTypeDef canTxHeader;
+CAN_RxHeaderTypeDef canRxHeader;
+uint32_t canTxMailbox;
+uint32_t canRxMailbox;
+uint8_t CAN_TxData[8];
+uint8_t CAN_RxData[8];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -99,28 +97,30 @@ int main(void)
   MX_USART1_UART_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
+  //UART setup
+  uint32_t uart_buffer_size = 10;  //set to the size we want to limit messages to
+  uint8_t uart_rx_buffer[uart_buffer_size]; //buffer that stores in an array of characters user inputs, aka a string
+  uint8_t uart_tx_buffer[uart_buffer_size];
+  int ms_to_listen = 3000;  //set the number of ms we keep the uart line in receive mode for
 
-  //can and motors setup
-
-  if (HAL_CAN_Start(&hcan1) != HAL_OK)
-  {
-	  Error_Handler();
-  }
-
-  TxHeader.DLC = 8;
-  TxHeader.IDE = CAN_ID_STD;
-  TxHeader.RTR = CAN_RTR_DATA;
-  TxHeader.StdId = 0x200;
-  TxHeader.TransmitGlobalTime = DISABLE;
-
+  //Motor setup
   HAL_GPIO_TogglePin(Motor_Port, Motor1_Pin);
   HAL_GPIO_TogglePin(Motor_Port, Motor2_Pin);
   HAL_GPIO_TogglePin(Motor_Port, Motor3_Pin);
   HAL_GPIO_TogglePin(Motor_Port, Motor4_Pin);
 
-  //forward(1000, 3000);
-  backward(1000, 3000);
+  //CAN setup
+  if (HAL_CAN_Start(&hcan1) != HAL_OK)
+  {
+	  Error_Handler();
+  }
+  canTxHeader.DLC = 8;
+  canTxHeader.IDE = CAN_ID_STD;
+  canTxHeader.RTR = CAN_RTR_DATA;
+  canTxHeader.StdId = 0x200;
+  canTxHeader.TransmitGlobalTime = DISABLE;
 
+  forward(700, 3000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -128,10 +128,15 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	//HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+	//HAL_UART_Receive(&huart1, uart_rx_buffer, uart_buffer_size, ms_to_listen);
 
-	 HAL_Delay(500);
-    /* USER CODE BEGIN 3 */
+	//for (int i = 0; i < uart_buffer_size; i++) {
+	//	uart_rx_buffer[i] = 0;
+	//}
+	//HAL_Delay(1000);
   }
+  /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
 }
 
@@ -182,85 +187,55 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
-/*
-if (HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING | CAN_IT_TX_MAILBOX_EMPTY)!= HAL_OK){
-	  Error_Handler();
-}
-
-TxData[0] = 0b0001111101000000 >> 8;
-  TxData[1] = 0b0001111101000000;
-  TxData[2] = 0b0001111101000000 >> 8;
-  TxData[3] = 0b0001111101000000;
-  TxData[4] = 0b0001111101000000 >> 8;
-  TxData[5] = 0b0001111101000000;
-  TxData[6] = 0b0001111101000000 >> 8;
-  TxData[7] = 0b0001111101000000;
-
-  if(HAL_CAN_GetTxMailboxesFreeLevel(&hcan1) > 0){
-	  		if (HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox) != HAL_OK)
-	  	  	{
-	  			Error_Handler ();
-	  	  		HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
-	  	  	}
-	  	  	else{
-	  	  		HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
-	  	  	}
-	  	  }
-	  	  else{
-	  	  	HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
-	  	}
-
-*/
-
-void forward(int motorSpeed, int runDuration){
-	TxData[0] = motorSpeed >> 8;
-	TxData[1] = motorSpeed;
-	TxData[2] = (-1 * motorSpeed) >> 8;
-	TxData[3] = (-1 * motorSpeed);
-	TxData[4] = motorSpeed >> 8;
-	TxData[5] = motorSpeed;
-	TxData[6] = (-1 * motorSpeed) >> 8;
-	TxData[7] = (-1 * motorSpeed);
+void forward(int motorSpeed, int runDuration){          //speed can be 16 bits, split into high and low bytes
+	CAN_TxData[0] = (-1 * motorSpeed) >> 8;  //high byte for speed, shifted 8 because only buffer is only 8 bits
+	CAN_TxData[1] = (-1 * motorSpeed);       //low bytes for speed
+	CAN_TxData[2] = (motorSpeed-100) >> 8;
+	CAN_TxData[3] = (motorSpeed-100);
+	CAN_TxData[4] = (-1 * motorSpeed) >> 8;
+	CAN_TxData[5] = (-1 * motorSpeed);
+	CAN_TxData[6] = motorSpeed >> 8;
+	CAN_TxData[7] = motorSpeed;
 
 	int i = 0;
 	while(i < runDuration){
-		HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox);
+		HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
 	    HAL_Delay(0.5);
 	    i++;
 	}
 }
 
 void backward(int motorSpeed, int runDuration){
-	TxData[0] = (-1 * motorSpeed) >> 8;
-	TxData[1] = (-1 * motorSpeed);
-	TxData[2] = motorSpeed >> 8;
-	TxData[3] = motorSpeed;
-	TxData[4] = (-1 * motorSpeed) >> 8;
-	TxData[5] = (-1 * motorSpeed);
-	TxData[6] = motorSpeed >> 8;
-	TxData[7] = motorSpeed;
+	CAN_TxData[0] = (-1 * motorSpeed) >> 8;
+	CAN_TxData[1] = (-1 * motorSpeed);
+	CAN_TxData[2] = motorSpeed >> 8;
+	CAN_TxData[3] = motorSpeed;
+	CAN_TxData[4] = (-1 * motorSpeed) >> 8;
+	CAN_TxData[5] = (-1 * motorSpeed);
+	CAN_TxData[6] = motorSpeed >> 8;
+	CAN_TxData[7] = motorSpeed;
 
 	int i = 0;
 	while(i < runDuration){
-		HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox);
+		HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
 	    HAL_Delay(0.5);
 	    i++;
 	}
 }
 
-void turn(int motor1Speed, int motor2Speed, int motor3Speed, int motor4Speed, int runDuration){
-	TxData[0] = motor1Speed >> 8;
-	TxData[1] = motor1Speed;
-	TxData[2] = motor2Speed >> 8;
-	TxData[3] = motor2Speed;
-	TxData[4] = motor3Speed >> 8;
-	TxData[5] = motor3Speed;
-	TxData[6] = motor4Speed >> 8;
-	TxData[7] = motor4Speed;
+void turn(int motorSpeed, int direction, int angle, int runDuration){
+	CAN_TxData[0] = motorSpeed >> 8;
+	CAN_TxData[1] = motorSpeed;
+	CAN_TxData[2] = motorSpeed >> 8;
+	CAN_TxData[3] = motorSpeed;
+	CAN_TxData[4] = motorSpeed >> 8;
+	CAN_TxData[5] = motorSpeed;
+	CAN_TxData[6] = motorSpeed >> 8;
+	CAN_TxData[7] = motorSpeed;
 
 	int i = 0;
 	while(i < runDuration){
-		HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox);
+		HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
 		HAL_Delay(0.5);
 		i++;
 	}

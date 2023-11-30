@@ -52,7 +52,7 @@ extern "C" {
 /* Exported functions prototypes ---------------------------------------------*/
 void forward(int motorSpeed, int runDuration);
 void backward(int motorSpeed, int runDuration);
-void turn(int motor1Speed, int motor2Speed, int motor3Speed, int motor4Speed, int runDuration);
+void turn(int motorSpeed, int direction, int angle, int runDuration);
 void kick(int kickDuration);
 void charge(int chargeDuration);
 void Error_Handler(void);
@@ -75,9 +75,6 @@ void Error_Handler(void);
 #define Motor4_Pin GPIO_PIN_5
 #define Motor_Port GPIOH
 
-#define CAN1_Pin1 GPIO_PIN_0
-#define CAN1_Pin2 GPIO_PIN_1
-#define CAN_Port GPIOD
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

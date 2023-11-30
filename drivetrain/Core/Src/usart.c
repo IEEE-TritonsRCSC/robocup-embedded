@@ -69,6 +69,7 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     /* USART1 clock enable */
     __HAL_RCC_USART1_CLK_ENABLE();
 
+
     __HAL_RCC_GPIOB_CLK_ENABLE();
     /**USART1 GPIO Configuration
     PB7     ------> USART1_RX
