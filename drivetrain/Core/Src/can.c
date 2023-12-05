@@ -54,7 +54,6 @@ void MX_CAN1_Init(void)
   {
     Error_Handler();
   }
-
   /* USER CODE BEGIN CAN1_Init 2 */
   canfilter1.FilterActivation = CAN_FILTER_ENABLE;
   canfilter1.FilterBank = 0;

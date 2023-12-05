@@ -94,14 +94,16 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_CAN1_Init();
-  MX_USART1_UART_Init();
+  MX_USART2_UART_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
   //UART setup
   uint32_t uart_buffer_size = 10;  //set to the size we want to limit messages to
   uint8_t uart_rx_buffer[uart_buffer_size]; //buffer that stores in an array of characters user inputs, aka a string
   uint8_t uart_tx_buffer[uart_buffer_size];
-  int ms_to_listen = 3000;  //set the number of ms we keep the uart line in receive mode for
+  int ms_to_listen = 4000;  //set the number of ms we keep the uart line in receive mode for
+  uint8_t ack[] = "yes";
+  uint8_t pp[] = "pp";
 
   //Motor setup
   HAL_GPIO_TogglePin(Motor_Port, Motor1_Pin);
@@ -110,6 +112,7 @@ int main(void)
   HAL_GPIO_TogglePin(Motor_Port, Motor4_Pin);
 
   //CAN setup
+
   if (HAL_CAN_Start(&hcan1) != HAL_OK)
   {
 	  Error_Handler();
@@ -119,22 +122,34 @@ int main(void)
   canTxHeader.RTR = CAN_RTR_DATA;
   canTxHeader.StdId = 0x200;
   canTxHeader.TransmitGlobalTime = DISABLE;
-
-  forward(700, 3000);
+  //forward(700, 3000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  //HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_RESET);
   while (1)
   {
     /* USER CODE END WHILE */
-	//HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
-	//HAL_UART_Receive(&huart1, uart_rx_buffer, uart_buffer_size, ms_to_listen);
+	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+	HAL_UART_Receive(&huart2, uart_rx_buffer, uart_buffer_size, ms_to_listen);
 
-	//for (int i = 0; i < uart_buffer_size; i++) {
-	//	uart_rx_buffer[i] = 0;
-	//}
-	//HAL_Delay(1000);
+	if (uart_rx_buffer[0] == pp[0] && uart_rx_buffer[1] == pp[1]) {
+		/*
+		HAL_UART_Transmit(&huart2, uart_rx_buffer, sizeof(uart_rx_buffer), 10);
+		HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+		HAL_Delay(1000);
+		HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_RESET);*/
+		forward(700, 3000);
+	}
+	else {
+		//HAL_UART_Transmit(&huart2, ack, sizeof(ack), 10);
+	}
+
+	for (int i = 0; i < uart_buffer_size; i++) {
+		uart_rx_buffer[i] = 0;
+	}
+	HAL_Delay(100);
   }
   /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
@@ -186,14 +201,13 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
 void forward(int motorSpeed, int runDuration){          //speed can be 16 bits, split into high and low bytes
-	CAN_TxData[0] = (-1 * motorSpeed) >> 8;  //high byte for speed, shifted 8 because only buffer is only 8 bits
-	CAN_TxData[1] = (-1 * motorSpeed);       //low bytes for speed
-	CAN_TxData[2] = (motorSpeed-100) >> 8;
-	CAN_TxData[3] = (motorSpeed-100);
-	CAN_TxData[4] = (-1 * motorSpeed) >> 8;
-	CAN_TxData[5] = (-1 * motorSpeed);
+	//CAN_TxData[0] = motorSpeed >> 8;  //high byte for speed, shifted 8 because only buffer is only 8 bits
+	//CAN_TxData[1] = motorSpeed;       //low bytes for speed
+	//CAN_TxData[2] = -(motorSpeed) >> 8;
+	//CAN_TxData[3] = -(motorSpeed);
+	//CAN_TxData[4] = -(motorSpeed) >> 8;
+	//CAN_TxData[5] = -(motorSpeed);
 	CAN_TxData[6] = motorSpeed >> 8;
 	CAN_TxData[7] = motorSpeed;
 
@@ -248,6 +262,7 @@ void kick(int kickDuration){
 void charge(int chargeDuration){
 
 }
+
 
 
 /* USER CODE END 4 */

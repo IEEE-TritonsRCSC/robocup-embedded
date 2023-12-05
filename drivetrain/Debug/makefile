@@ -34,34 +34,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := documentation
+BUILD_ARTIFACT_NAME := drivetrain
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-documentation.elf \
+drivetrain.elf \
 
 MAP_FILES += \
-documentation.map \
+drivetrain.map \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-documentation.list \
+drivetrain.list \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: documentation.elf secondary-outputs
+main-build: drivetrain.elf secondary-outputs
 
 # Tool invocations
-documentation.elf documentation.map: $(OBJS) $(USER_OBJS) C:\Users\pokem\STM32CubeIDE\workspace_1.10.1\documentation\STM32F427IIHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "documentation.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\pokem\STM32CubeIDE\workspace_1.10.1\documentation\STM32F427IIHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="documentation.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+drivetrain.elf drivetrain.map: $(OBJS) $(USER_OBJS) C:\Documents\GitHub\robocup-mechatronics\drivetrain\STM32F427IIHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "drivetrain.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Documents\GitHub\robocup-mechatronics\drivetrain\STM32F427IIHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="drivetrain.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -70,14 +70,14 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-documentation.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "documentation.list"
+drivetrain.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "drivetrain.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) default.size.stdout documentation.elf documentation.list documentation.map
+	-$(RM) default.size.stdout drivetrain.elf drivetrain.list drivetrain.map
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)

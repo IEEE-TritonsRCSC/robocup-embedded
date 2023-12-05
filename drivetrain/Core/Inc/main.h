@@ -74,7 +74,6 @@ void Error_Handler(void);
 #define Motor3_Pin GPIO_PIN_4
 #define Motor4_Pin GPIO_PIN_5
 #define Motor_Port GPIOH
-
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
