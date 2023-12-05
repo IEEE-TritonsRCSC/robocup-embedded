@@ -51,8 +51,7 @@ extern "C" {
 
 /* Exported functions prototypes ---------------------------------------------*/
 void forward(int motorSpeed, int runDuration);
-void backward(int motorSpeed, int runDuration);
-void turn(int motorSpeed, int direction, int angle, int runDuration);
+void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned char motorTwoHigh, unsigned char motorTwoLow, unsigned char motorThreeHigh, unsigned char motorThreeLow, unsigned char motorFourHigh, unsigned char motorFourLow);
 void kick(int kickDuration);
 void charge(int chargeDuration);
 void Error_Handler(void);

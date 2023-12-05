@@ -99,14 +99,12 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //UART setup
   unsigned char runMotorHeader = 0x01;
-  uint32_t uart_buffer_size = 10;  //set to the size we want to limit messages to
+  unsigned char dribblerHeader = 0x02;
+  uint32_t uart_buffer_size = 9;  //set to the size we want to limit messages to
   uint8_t uart_rx_buffer[uart_buffer_size]; //buffer that stores in an array of characters user inputs, aka a string
   uint8_t uart_tx_buffer[uart_buffer_size];
+  uint8_t headers[] = {runMotorHeader, dribblerHeader};
   int ms_to_listen = 4000;  //set the number of ms we keep the uart line in receive mode for
-  uint8_t ack[] = "yes";
-  uint8_t headers[] = {runMotorHeader};
-  uint8_t pp[] = "pp";
-
 
   //Motor setup
   HAL_GPIO_TogglePin(Motor_Port, Motor1_Pin);
@@ -115,7 +113,6 @@ int main(void)
   HAL_GPIO_TogglePin(Motor_Port, Motor4_Pin);
 
   //CAN setup
-
   if (HAL_CAN_Start(&hcan1) != HAL_OK)
   {
 	  Error_Handler();
@@ -125,7 +122,6 @@ int main(void)
   canTxHeader.RTR = CAN_RTR_DATA;
   canTxHeader.StdId = 0x200;
   canTxHeader.TransmitGlobalTime = DISABLE;
-  //forward(700, 3000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -136,15 +132,7 @@ int main(void)
     /* USER CODE END WHILE */
 	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
 	HAL_UART_Receive(&huart2, uart_rx_buffer, uart_buffer_size, ms_to_listen);
-
-	if (uart_rx_buffer[0] == pp[0] && uart_rx_buffer[1] == pp[1]) {
-		//HAL_UART_Transmit(&huart2, uart_rx_buffer, sizeof(uart_rx_buffer), 10);
-		//HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
-		//HAL_Delay(1000);
-		//HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_RESET);
-		forward(700, 3000);
-	}
-	else if (uart_rx_buffer[0] == headers[0]){
+	if (uart_rx_buffer[0] == headers[0]){
 		runMotors(uart_rx_buffer[1], uart_rx_buffer[2], uart_rx_buffer[3], uart_rx_buffer[4], uart_rx_buffer[5], uart_rx_buffer[6], uart_rx_buffer[7], uart_rx_buffer[8]);
 	}
 	else {
@@ -224,7 +212,7 @@ void forward(int motorSpeed, int runDuration){          //speed can be 16 bits, 
 	}
 }
 
-void runMotors(uint8_t motorOneHigh, uint8_t motorOneLow, uint8_t motorTwoHigh, uint8_t motorTwoLow, uint8_t motorThreeHigh, uint8_t motorThreeLow, uint8_t motorFourHigh, uint8_t motorFourLow){          //speed can be 16 bits, split into high and low bytes
+void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned char motorTwoHigh, unsigned char motorTwoLow, unsigned char motorThreeHigh, unsigned char motorThreeLow, unsigned char motorFourHigh, unsigned char motorFourLow){          //speed can be 16 bits, split into high and low bytes
 	CAN_TxData[0] = motorOneHigh;  //high byte for speed, shifted 8 because only buffer is only 8 bits
 	CAN_TxData[1] = motorOneLow;       //low bytes for speed
 	CAN_TxData[2] = motorTwoHigh;
