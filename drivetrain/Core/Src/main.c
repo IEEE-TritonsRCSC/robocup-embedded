@@ -100,9 +100,10 @@ int main(void)
   //UART setup
   unsigned char runMotorHeader = 0x01;
   unsigned char dribblerHeader = 0x02;
-  uint32_t uart_buffer_size = 9;  //set to the size we want to limit messages to
-  uint8_t uart_rx_buffer[uart_buffer_size]; //buffer that stores in an array of characters user inputs, aka a string
-  uint8_t uart_tx_buffer[uart_buffer_size];
+  uint32_t uart_rx_buffer_size = 9;  //set to the size we want to limit receive messages to
+  uint32_t uart_tx_buffer_size = 33;  //set to the size we want to limit send messages to
+  uint8_t uart_rx_buffer[uart_rx_buffer_size]; //buffer that stores in an array of characters user inputs, aka a string
+  uint8_t uart_tx_buffer[uart_tx_buffer_size];
   uint8_t headers[] = {runMotorHeader, dribblerHeader};
   int ms_to_listen = 4000;  //set the number of ms we keep the uart line in receive mode for
 
@@ -126,20 +127,20 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  //HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, GPIO_PIN_RESET);
   while (1)
   {
     /* USER CODE END WHILE */
 	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
-	HAL_UART_Receive(&huart2, uart_rx_buffer, uart_buffer_size, ms_to_listen);
+	HAL_UART_Receive(&huart2, uart_rx_buffer, uart_rx_buffer_size, ms_to_listen);
 	if (uart_rx_buffer[0] == headers[0]){
 		runMotors(uart_rx_buffer[1], uart_rx_buffer[2], uart_rx_buffer[3], uart_rx_buffer[4], uart_rx_buffer[5], uart_rx_buffer[6], uart_rx_buffer[7], uart_rx_buffer[8]);
+		uint8_t feedback[] = {0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01};
+		HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
 	}
 	else {
-		//HAL_UART_Transmit(&huart2, ack, sizeof(ack), 10);
 	}
 
-	for (int i = 0; i < uart_buffer_size; i++) {
+	for (int i = 0; i < uart_rx_buffer_size; i++) {
 		uart_rx_buffer[i] = 0;
 	}
 	HAL_Delay(100);
@@ -228,6 +229,14 @@ void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned c
 	    HAL_Delay(0.5);
 	    i++;
 	}
+}
+
+void dribble() {
+
+}
+
+void noDribble(){
+
 }
 
 void kick(int kickDuration){
