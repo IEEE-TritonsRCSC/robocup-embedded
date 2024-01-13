@@ -1015,7 +1015,7 @@ int main(void)
  8000926:	781a      	ldrb	r2, [r3, #0]
  8000928:	f897 3030 	ldrb.w	r3, [r7, #48]	; 0x30
  800092c:	429a      	cmp	r2, r3
- 800092e:	d12b      	bne.n	8000988 <main+0x1b0>
+ 800092e:	d12c      	bne.n	800098a <main+0x1b2>
 		runMotors(uart_rx_buffer[1], uart_rx_buffer[2], uart_rx_buffer[3], uart_rx_buffer[4], uart_rx_buffer[5], uart_rx_buffer[6], uart_rx_buffer[7], uart_rx_buffer[8]);
  8000930:	6c3b      	ldr	r3, [r7, #64]	; 0x40
  8000932:	785c      	ldrb	r4, [r3, #1]
@@ -1052,41 +1052,40 @@ int main(void)
  8000974:	c40f      	stmia	r4!, {r0, r1, r2, r3}
  8000976:	682b      	ldr	r3, [r5, #0]
  8000978:	7023      	strb	r3, [r4, #0]
-		HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), ms_to_listen);
- 800097a:	6b7b      	ldr	r3, [r7, #52]	; 0x34
- 800097c:	f107 010c 	add.w	r1, r7, #12
- 8000980:	2221      	movs	r2, #33	; 0x21
- 8000982:	480f      	ldr	r0, [pc, #60]	; (80009c0 <main+0x1e8>)
- 8000984:	f003 f83b 	bl	80039fe <HAL_UART_Transmit>
+		HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
+ 800097a:	f107 010c 	add.w	r1, r7, #12
+ 800097e:	f44f 737a 	mov.w	r3, #1000	; 0x3e8
+ 8000982:	2221      	movs	r2, #33	; 0x21
+ 8000984:	480e      	ldr	r0, [pc, #56]	; (80009c0 <main+0x1e8>)
+ 8000986:	f003 f83a 	bl	80039fe <HAL_UART_Transmit>
 	}
 	else {
 	}
 
 	for (int i = 0; i < uart_rx_buffer_size; i++) {
- 8000988:	2300      	movs	r3, #0
- 800098a:	657b      	str	r3, [r7, #84]	; 0x54
- 800098c:	e007      	b.n	800099e <main+0x1c6>
+ 800098a:	2300      	movs	r3, #0
+ 800098c:	657b      	str	r3, [r7, #84]	; 0x54
+ 800098e:	e007      	b.n	80009a0 <main+0x1c8>
 		uart_rx_buffer[i] = 0;
- 800098e:	6c3a      	ldr	r2, [r7, #64]	; 0x40
- 8000990:	6d7b      	ldr	r3, [r7, #84]	; 0x54
- 8000992:	4413      	add	r3, r2
- 8000994:	2200      	movs	r2, #0
- 8000996:	701a      	strb	r2, [r3, #0]
+ 8000990:	6c3a      	ldr	r2, [r7, #64]	; 0x40
+ 8000992:	6d7b      	ldr	r3, [r7, #84]	; 0x54
+ 8000994:	4413      	add	r3, r2
+ 8000996:	2200      	movs	r2, #0
+ 8000998:	701a      	strb	r2, [r3, #0]
 	for (int i = 0; i < uart_rx_buffer_size; i++) {
- 8000998:	6d7b      	ldr	r3, [r7, #84]	; 0x54
- 800099a:	3301      	adds	r3, #1
- 800099c:	657b      	str	r3, [r7, #84]	; 0x54
- 800099e:	6d7b      	ldr	r3, [r7, #84]	; 0x54
- 80009a0:	6cfa      	ldr	r2, [r7, #76]	; 0x4c
- 80009a2:	429a      	cmp	r2, r3
- 80009a4:	d8f3      	bhi.n	800098e <main+0x1b6>
+ 800099a:	6d7b      	ldr	r3, [r7, #84]	; 0x54
+ 800099c:	3301      	adds	r3, #1
+ 800099e:	657b      	str	r3, [r7, #84]	; 0x54
+ 80009a0:	6d7b      	ldr	r3, [r7, #84]	; 0x54
+ 80009a2:	6cfa      	ldr	r2, [r7, #76]	; 0x4c
+ 80009a4:	429a      	cmp	r2, r3
+ 80009a6:	d8f3      	bhi.n	8000990 <main+0x1b8>
 	}
 	HAL_Delay(100);
- 80009a6:	2064      	movs	r0, #100	; 0x64
- 80009a8:	f000 fbee 	bl	8001188 <HAL_Delay>
+ 80009a8:	2064      	movs	r0, #100	; 0x64
+ 80009aa:	f000 fbed 	bl	8001188 <HAL_Delay>
 	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
- 80009ac:	e7ae      	b.n	800090c <main+0x134>
- 80009ae:	bf00      	nop
+ 80009ae:	e7ad      	b.n	800090c <main+0x134>
  80009b0:	40021c00 	.word	0x40021c00
  80009b4:	20000028 	.word	0x20000028
  80009b8:	20000078 	.word	0x20000078
