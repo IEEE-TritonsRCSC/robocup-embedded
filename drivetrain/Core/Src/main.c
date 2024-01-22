@@ -123,13 +123,17 @@ int main(void)
   canTxHeader.RTR = CAN_RTR_DATA;
   canTxHeader.StdId = 0x200;
   canTxHeader.TransmitGlobalTime = DISABLE;
+
   /* USER CODE END 2 */
+
+  forward(1000,3000);
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  /*
   while (1)
   {
-    /* USER CODE END WHILE */
+    // USER CODE END WHILE
 	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
 	HAL_UART_Receive(&huart2, uart_rx_buffer, uart_rx_buffer_size, ms_to_listen);
 	if (uart_rx_buffer[0] == headers[0]){
@@ -145,6 +149,7 @@ int main(void)
 	}
 	HAL_Delay(100);
   }
+	*/
   /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
 }
@@ -196,14 +201,14 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 void forward(int motorSpeed, int runDuration){          //speed can be 16 bits, split into high and low bytes
-	//CAN_TxData[0] = motorSpeed >> 8;  //high byte for speed, shifted 8 because only buffer is only 8 bits
-	//CAN_TxData[1] = motorSpeed;       //low bytes for speed
-	//CAN_TxData[2] = -(motorSpeed) >> 8;
-	//CAN_TxData[3] = -(motorSpeed);
-	//CAN_TxData[4] = -(motorSpeed) >> 8;
-	//CAN_TxData[5] = -(motorSpeed);
-	CAN_TxData[6] = motorSpeed >> 8;
-	CAN_TxData[7] = motorSpeed;
+	CAN_TxData[0] = (-motorSpeed) >> 8;  //high byte for speed, shifted 8 because only buffer is only 8 bits
+	CAN_TxData[1] = (-motorSpeed);       //low bytes for speed
+	CAN_TxData[2] = (motorSpeed) >> 8;
+	CAN_TxData[3] = (motorSpeed);
+	CAN_TxData[4] = (-motorSpeed) >> 8;
+	CAN_TxData[5] = (-motorSpeed);
+	CAN_TxData[6] = (motorSpeed) >> 8;
+	CAN_TxData[7] = (motorSpeed);
 
 	int i = 0;
 	while(i < runDuration){
