@@ -45,12 +45,24 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
+//CAN variables
 CAN_TxHeaderTypeDef canTxHeader;
 CAN_RxHeaderTypeDef canRxHeader;
 uint32_t canTxMailbox;
-uint32_t canRxMailbox;
 uint8_t CAN_TxData[8];
 uint8_t CAN_RxData[8];
+static volatile uint8_t motor_idx;
+static volatile uint16_t angle_data[4];
+static volatile int16_t speed_data[4];
+static volatile float torque_current_data[4];
+
+//UART variables
+unsigned char runMotorHeader = 0x01;
+unsigned char dribblerHeader = 0x02;
+static const uint32_t uart_rx_buffer_size = 9;  //set to the size we want to limit receive messages to
+static const uint32_t uart_tx_buffer_size = 33;  //set to the size we want to limit send messages to
+int ms_to_listen = 4000;  //set the number of ms we keep the uart line in receive mode for
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -71,7 +83,8 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	uint8_t uart_rx_buffer[uart_rx_buffer_size]; //buffer that stores in an array of characters user inputs, aka a string
+	uint8_t uart_tx_buffer[uart_tx_buffer_size];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -97,15 +110,6 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-  //UART setup
-  unsigned char runMotorHeader = 0x01;
-  unsigned char dribblerHeader = 0x02;
-  uint32_t uart_rx_buffer_size = 9;  //set to the size we want to limit receive messages to
-  uint32_t uart_tx_buffer_size = 33;  //set to the size we want to limit send messages to
-  uint8_t uart_rx_buffer[uart_rx_buffer_size]; //buffer that stores in an array of characters user inputs, aka a string
-  uint8_t uart_tx_buffer[uart_tx_buffer_size];
-  uint8_t headers[] = {runMotorHeader, dribblerHeader};
-  int ms_to_listen = 4000;  //set the number of ms we keep the uart line in receive mode for
 
   //Motor setup
   HAL_GPIO_TogglePin(Motor_Port, Motor1_Pin);
@@ -114,10 +118,8 @@ int main(void)
   HAL_GPIO_TogglePin(Motor_Port, Motor4_Pin);
 
   //CAN setup
-  if (HAL_CAN_Start(&hcan1) != HAL_OK)
-  {
-	  Error_Handler();
-  }
+  HAL_CAN_Start(&hcan1); //start CAN
+  HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING); // Activate CAN receive interrupt for encoder data
   canTxHeader.DLC = 8;
   canTxHeader.IDE = CAN_ID_STD;
   canTxHeader.RTR = CAN_RTR_DATA;
@@ -213,8 +215,8 @@ void forward(int motorSpeed, int runDuration){          //speed can be 16 bits, 
 	int i = 0;
 	while(i < runDuration){
 		HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
-	    HAL_Delay(0.5);
-	    i++;
+		HAL_Delay(0.5);
+		i++;
 	}
 }
 
@@ -250,6 +252,21 @@ void kick(int kickDuration){
 
 void charge(int chargeDuration){
 
+}
+
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
+    if(hcan == &hcan1) {
+        HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &canRxHeader, CAN_RxData);
+
+        if(canRxHeader.StdId == 0x201) motor_idx = 0;
+        if(canRxHeader.StdId == 0x202) motor_idx = 1;
+        if(canRxHeader.StdId == 0x203) motor_idx = 2;
+        if(canRxHeader.StdId == 0x203) motor_idx = 3;
+
+        angle_data[motor_idx] = (uint16_t)(CAN_RxData[0]<<8 | CAN_RxData[1]);
+        speed_data[motor_idx] = (int16_t)(CAN_RxData[2]<<8 | CAN_RxData[3]); // originally rpm
+        torque_current_data[motor_idx] = (CAN_RxData[4]<<8 | CAN_RxData[5])*5.f/16384.f;
+    }
 }
 
 
