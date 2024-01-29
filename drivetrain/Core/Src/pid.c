@@ -12,7 +12,7 @@ uint8_t update_pid(pid_state* pid_state, uint16_t speed_expected, uint16_t speed
 	uint16_t err_delta = ctrl_err - previous_error;
 	pid_state->previous_error = ctrl_err;
 	pid_state->sum_error += ctrl_err;
-	return P_GAIN * ctrl_err + D_GAIN * err_delta + I_GAIN * pid_state->sum_error;
+	return PID_P_GAIN * ctrl_err + PID_D_GAIN * err_delta + PID_I_GAIN * pid_state->sum_error;
 }
 
 void update_pid_arr(pid_state* pid_states, ) {
