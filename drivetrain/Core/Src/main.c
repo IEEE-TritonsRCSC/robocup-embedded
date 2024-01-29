@@ -44,6 +44,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+
 /* USER CODE BEGIN PV */
 //CAN variables
 CAN_TxHeaderTypeDef canTxHeader;
@@ -107,8 +108,8 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_CAN1_Init();
-  MX_USART2_UART_Init();
   MX_TIM1_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
   //Motor setup
@@ -128,31 +129,13 @@ int main(void)
 
   /* USER CODE END 2 */
 
-  forward(1000,3000);
-
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  /*
   while (1)
   {
-    // USER CODE END WHILE
-	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
-	HAL_UART_Receive(&huart2, uart_rx_buffer, uart_rx_buffer_size, ms_to_listen);
-	if (uart_rx_buffer[0] == headers[0]){
-		runMotors(uart_rx_buffer[1], uart_rx_buffer[2], uart_rx_buffer[3], uart_rx_buffer[4], uart_rx_buffer[5], uart_rx_buffer[6], uart_rx_buffer[7], uart_rx_buffer[8]);
-		uint8_t feedback[] = {0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01};
-		HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
-	}
-	else {
-	}
+    /* USER CODE END WHILE */
 
-	for (int i = 0; i < uart_rx_buffer_size; i++) {
-		uart_rx_buffer[i] = 0;
-	}
-	HAL_Delay(100);
-  }
-	*/
-  /* USER CODE BEGIN 3 */
+    /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
 }
 
