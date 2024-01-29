@@ -23,6 +23,7 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+#include "pid.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -82,6 +83,13 @@ void SystemClock_Config(void);
   */
 int main(void)
 {
+
+  pid_state_struct *PID0;
+  pid_state_struct *PID1;
+  pid_state_struct *PID2;
+  pid_state_struct *PID3;
+  uint8_t actual1, actual2, actual3, actual4, actual5, actual6, actual7, actual8;
+  uint16_t actual11, actual22, actual33, actual44;
   /* USER CODE BEGIN 1 */
 	uint8_t uart_rx_buffer[uart_rx_buffer_size]; //buffer that stores in an array of characters user inputs, aka a string
 	uint8_t uart_tx_buffer[uart_tx_buffer_size];
@@ -109,6 +117,10 @@ int main(void)
   MX_CAN1_Init();
   MX_USART2_UART_Init();
   MX_TIM1_Init();
+  pid_init(PID0);
+  pid_init(PID1);
+  pid_init(PID2);
+  pid_init(PID3);
   /* USER CODE BEGIN 2 */
 
   //Motor setup
@@ -132,14 +144,13 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  /*
   while (1)
   {
     // USER CODE END WHILE
 	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
 	HAL_UART_Receive(&huart2, uart_rx_buffer, uart_rx_buffer_size, ms_to_listen);
 	if (uart_rx_buffer[0] == headers[0]){
-		runMotors(uart_rx_buffer[1], uart_rx_buffer[2], uart_rx_buffer[3], uart_rx_buffer[4], uart_rx_buffer[5], uart_rx_buffer[6], uart_rx_buffer[7], uart_rx_buffer[8]);
+		runMotors(actual1,  actual2, actual3, actual4, actual5, actual6, actual7, actual8);
 		uint8_t feedback[] = {0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01};
 		HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
 	}
@@ -151,7 +162,6 @@ int main(void)
 	}
 	HAL_Delay(100);
   }
-	*/
   /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
 }
@@ -267,6 +277,20 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
         speed_data[motor_idx] = (int16_t)(CAN_RxData[2]<<8 | CAN_RxData[3]); // originally rpm
         torque_current_data[motor_idx] = (CAN_RxData[4]<<8 | CAN_RxData[5])*5.f/16384.f;
     }
+
+    uart_rx_buffer[1], uart_rx_buffer[2], uart_rx_buffer[3], uart_rx_buffer[4], uart_rx_buffer[5], uart_rx_buffer[6], uart_rx_buffer[7], uart_rx_buffer[8]
+    actual11 = update_pid(PID0, ((uart_rx_buffer[1]<<8)|uart_rx_buffer[2]), speed_data[0]);
+    actual1 = actual11>>8;
+    actual2 = actual11;
+    actual22 = update_pid(PID1, ((uart_rx_buffer[3]<<8)|uart_rx_buffer[4]), speed_data[1]);
+    actual3 = actual22>>8;
+    actual4 = actual22;
+    actual33 = update_pid(PID2, ((uart_rx_buffer[5]<<8)|uart_rx_buffer[6]), speed_data[2]);
+    actual5 = actual33>>8;
+    actual6 = actual33;
+	actual44 = update_pid(PID3, ((uart_rx_buffer[7]<<8)|uart_rx_buffer[8]), speed_data[3]);
+	actual7 = actual44>>8;
+	actual8 = actual44;
 }
 
 

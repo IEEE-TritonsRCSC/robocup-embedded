@@ -18,3 +18,5 @@ uint8_t update_pid(pid_state* pid_state, uint16_t speed_expected, uint16_t speed
 void update_pid_arr(pid_state* pid_states, ) {
 
 }
+
+void pid_init(pid_state_struct * pid)
