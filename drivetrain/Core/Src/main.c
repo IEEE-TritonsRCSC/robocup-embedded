@@ -18,7 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "can.h"
+#include "adc.h"
 #include "dma.h"
 #include "tim.h"
 #include "usart.h"
@@ -31,7 +31,7 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-
+#define Calibrate 1
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -44,9 +44,8 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+
 /* USER CODE BEGIN PV */
-CAN_TxHeaderTypeDef canTxHeader;
-CAN_RxHeaderTypeDef canRxHeader;
 uint32_t canTxMailbox;
 uint32_t canRxMailbox;
 uint8_t CAN_TxData[8];
@@ -61,6 +60,21 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
+uint16_t ADC_Data=0;
+int ADC_Converted = 0;
+long map(long x, long in_min, long in_max, long out_min, long out_max)
+{
+ return (x - in_min) * (out_max - out_min + 1) / (in_max - in_min + 1) + out_min;
+}
+// Called when buffer is completely filled
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+	ADC_Converted = map(ADC_Data, 0, 4095, 50, 100);
+
+	TIM1->CCR1 = ADC_Converted;
+}
+
 
 /* USER CODE END 0 */
 
@@ -93,9 +107,9 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_DMA_Init();
-  MX_CAN1_Init();
-  MX_USART2_UART_Init();
   MX_TIM1_Init();
+  MX_USART2_UART_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
   //UART setup
   unsigned char runMotorHeader = 0x01;
@@ -108,49 +122,34 @@ int main(void)
   int ms_to_listen = 4000;  //set the number of ms we keep the uart line in receive mode for
 
   //Motor setup
-  HAL_GPIO_TogglePin(Motor_Port, Motor1_Pin);
-  HAL_GPIO_TogglePin(Motor_Port, Motor2_Pin);
-  HAL_GPIO_TogglePin(Motor_Port, Motor3_Pin);
-  HAL_GPIO_TogglePin(Motor_Port, Motor4_Pin);
+  //HAL_GPIO_TogglePin(Motor_Port, Motor1_Pin);
+  //HAL_GPIO_TogglePin(Motor_Port, Motor2_Pin);
+  //HAL_GPIO_TogglePin(Motor_Port, Motor3_Pin);
+  //HAL_GPIO_TogglePin(Motor_Port, Motor4_Pin);
 
-  //CAN setup
-  if (HAL_CAN_Start(&hcan1) != HAL_OK)
-  {
-	  Error_Handler();
-  }
-  canTxHeader.DLC = 8;
-  canTxHeader.IDE = CAN_ID_STD;
-  canTxHeader.RTR = CAN_RTR_DATA;
-  canTxHeader.StdId = 0x200;
-  canTxHeader.TransmitGlobalTime = DISABLE;
+  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+
+#if Calibrate
+  TIM1->CCR1 = 100;  // Set the maximum pulse (2ms)
+  HAL_Delay (2000);  // wait for 1 beep
+  TIM1->CCR1 = 50;   // Set the minimum Pulse (1ms)
+  HAL_Delay (1000);  // wait for 2 beeps
+  TIM1->CCR1 = 0;    // reset to 0, so it can be controlled via ADC
+#endif
+
+  HAL_ADC_Start_DMA(&hadc1, (uint32_t *)&ADC_Data, 1);
 
   /* USER CODE END 2 */
 
-  forward(1000,3000);
-
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  /*
   while (1)
   {
-    // USER CODE END WHILE
-	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
-	HAL_UART_Receive(&huart2, uart_rx_buffer, uart_rx_buffer_size, ms_to_listen);
-	if (uart_rx_buffer[0] == headers[0]){
-		runMotors(uart_rx_buffer[1], uart_rx_buffer[2], uart_rx_buffer[3], uart_rx_buffer[4], uart_rx_buffer[5], uart_rx_buffer[6], uart_rx_buffer[7], uart_rx_buffer[8]);
-		uint8_t feedback[] = {0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01};
-		HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
-	}
-	else {
-	}
 
-	for (int i = 0; i < uart_rx_buffer_size; i++) {
-		uart_rx_buffer[i] = 0;
-	}
-	HAL_Delay(100);
   }
-	*/
-  /* USER CODE BEGIN 3 */
+    /* USER CODE END WHILE */
+
+    /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
 }
 
@@ -166,7 +165,7 @@ void SystemClock_Config(void)
   /** Configure the main internal regulator output voltage
   */
   __HAL_RCC_PWR_CLK_ENABLE();
-  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
+  __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE3);
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
@@ -175,8 +174,8 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  RCC_OscInitStruct.PLL.PLLM = 6;
-  RCC_OscInitStruct.PLL.PLLN = 168;
+  RCC_OscInitStruct.PLL.PLLM = 4;
+  RCC_OscInitStruct.PLL.PLLN = 72;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 4;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
@@ -190,10 +189,10 @@ void SystemClock_Config(void)
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV16;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
   {
     Error_Handler();
   }
@@ -212,7 +211,7 @@ void forward(int motorSpeed, int runDuration){          //speed can be 16 bits, 
 
 	int i = 0;
 	while(i < runDuration){
-		HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
+		//HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
 	    HAL_Delay(0.5);
 	    i++;
 	}
@@ -230,7 +229,7 @@ void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned c
 
 	int i = 0;
 	while(i < 1000){
-		HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
+		//HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
 	    HAL_Delay(0.5);
 	    i++;
 	}
@@ -255,27 +254,6 @@ void charge(int chargeDuration){
 
 
 /* USER CODE END 4 */
-
-/**
-  * @brief  Period elapsed callback in non blocking mode
-  * @note   This function is called  when TIM6 interrupt took place, inside
-  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
-  * a global variable "uwTick" used as application time base.
-  * @param  htim : TIM handle
-  * @retval None
-  */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  /* USER CODE BEGIN Callback 0 */
-
-  /* USER CODE END Callback 0 */
-  if (htim->Instance == TIM6) {
-    HAL_IncTick();
-  }
-  /* USER CODE BEGIN Callback 1 */
-
-  /* USER CODE END Callback 1 */
-}
 
 /**
   * @brief  This function is executed in case of error occurrence.
