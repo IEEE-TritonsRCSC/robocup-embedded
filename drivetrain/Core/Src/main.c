@@ -23,6 +23,7 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+#include "BNO080.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -133,6 +134,9 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	forward(1000, 100000);
+	HAL_Delay(0.5);
+  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -185,7 +189,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void forward(int motorSpeed, int runDuration){          //speed can be 16 bits, split into high and low bytes
+void forward(int motorSpeed){          //speed can be 16 bits, split into high and low bytes
 	CAN_TxData[0] = (-motorSpeed) >> 8;  //high byte for speed, shifted 8 because only buffer is only 8 bits
 	CAN_TxData[1] = (-motorSpeed);       //low bytes for speed
 	CAN_TxData[2] = (motorSpeed) >> 8;
@@ -195,12 +199,7 @@ void forward(int motorSpeed, int runDuration){          //speed can be 16 bits, 
 	CAN_TxData[6] = (motorSpeed) >> 8;
 	CAN_TxData[7] = (motorSpeed);
 
-	int i = 0;
-	while(i < runDuration){
-		HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
-		HAL_Delay(0.5);
-		i++;
-	}
+	HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
 }
 
 void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned char motorTwoHigh, unsigned char motorTwoLow, unsigned char motorThreeHigh, unsigned char motorThreeLow, unsigned char motorFourHigh, unsigned char motorFourLow){          //speed can be 16 bits, split into high and low bytes
@@ -251,8 +250,6 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
         torque_current_data[motor_idx] = (CAN_RxData[4]<<8 | CAN_RxData[5])*5.f/16384.f;
     }
 }
-
-
 
 /* USER CODE END 4 */
 

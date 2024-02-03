@@ -50,19 +50,25 @@ extern "C" {
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
+void forward(int motorSpeed, int runDuration);
+void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned char motorTwoHigh, unsigned char motorTwoLow, unsigned char motorThreeHigh, unsigned char motorThreeLow, unsigned char motorFourHigh, unsigned char motorFourLow);
+void kick(int kickDuration);
+void charge(int chargeDuration);
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
-/* USER CODE END EFP */
-
-/* Private defines -----------------------------------------------------------*/
 #define KEY_Pin GPIO_PIN_10
 #define KEY_GPIO_Port GPIOD
 #define LED1_Pin GPIO_PIN_14
 #define LED1_GPIO_Port GPIOF
-#define LED2_Pin GPIO_PIN_7
+#define LED2_Pin GPIO_PIN_11
 #define LED2_GPIO_Port GPIOE
+
+#define Motor1_Pin GPIO_PIN_2
+#define Motor2_Pin GPIO_PIN_3
+#define Motor3_Pin GPIO_PIN_4
+#define Motor4_Pin GPIO_PIN_5
+#define Motor_Port GPIOH
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
