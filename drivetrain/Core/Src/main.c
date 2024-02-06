@@ -27,6 +27,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <string.h>
+#include "PID.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -61,7 +62,10 @@ unsigned char runMotorHeader = 0x01;
 unsigned char dribblerHeader = 0x02;
 static const uint32_t uart_rx_buffer_size = 9;  //set to the size we want to limit receive messages to
 static const uint32_t uart_tx_buffer_size = 33;  //set to the size we want to limit send messages to
+uint8_t uart_rx_buffer[uart_rx_buffer_size]; //buffer that stores in an array of characters user inputs, aka a string
+uint8_t uart_tx_buffer[uart_tx_buffer_size];
 int ms_to_listen = 4000;  //set the number of ms we keep the uart line in receive mode for
+
 
 /* USER CODE END PV */
 
@@ -74,6 +78,11 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  HAL_UART_Receive_IT(&huart2, uart_rx_buffer, 8);
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -83,8 +92,7 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	uint8_t uart_rx_buffer[uart_rx_buffer_size]; //buffer that stores in an array of characters user inputs, aka a string
-	uint8_t uart_tx_buffer[uart_tx_buffer_size];
+	
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -126,12 +134,64 @@ int main(void)
   canTxHeader.StdId = 0x200;
   canTxHeader.TransmitGlobalTime = DISABLE;
 
+  // Structure to store PID data and pointer to PID structure.
+  // Prepare one for each motor.
+  struct pid_controller pid_controller[NUM_MOTORS];
+  pid_t pid[NUM_MOTORS];
+
+  // Inputs, outputs, and setpoints for each motor
+  float motor_input[NUM_MOTORS] = {0}; // from encoder
+  float motor_output[NUM_MOTORS] = {0}; // to motor
+  float desired_speed[NUM_MOTORS] = {0};
+
+  // Control loop gains for each motor
+  float kp[NUM_MOTORS] = {0};
+  float ki[NUM_MOTORS] = {0};
+  float kd[NUM_MOTORS] = {0};
+
+  for (int i = 0; i < NUM_MOTORS; ++i) {
+
+      pid[i] = pid_create(&pid_controllers[i], &motor_input[i], &motor_output[i], &desired_speed[i], kp[i], ki[i], kd[i]);
+
+      // Set controller output limits for each motor
+      pid_limits(&pid_controllers[i], 0, 200);
+
+      // Enable auto-computation for each motor
+      pid_auto(&pid_controllers[i]);
+  }
+
   /* USER CODE END 2 */
 
   forward(1000,3000);
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+
+  HAL_UART_Receive_IT(&huart2, uart_rx_buffer, 8);
+
+  while (1) 
+  {
+    for (int i = 0; i < NUM_MOTORS; ++i) {
+
+      // set setpoints from UART RX buffer
+      desired_speed[i] = (uart_rx_buffer_size[i*2 + 1] << 8) | uart_rx_buffer_size[i*2 + 2];
+
+      // get input from encoders
+      uint8_t motorHighByte = CAN_RxData[i];
+      uint8_t motorLowByte = CAN_RxData[i + 1];
+      // Convert the bytes to a float value
+      int16_t combinedBytes = (motorHighByte << 8) | motorLowByte;
+      float encoderValueFloat = (float) combinedBytes;
+      motor_input[i] = encoderValueFloat;
+
+      // magic
+      pid_compute(pid[i]);
+
+    }
+    // run motors with new PID'd speeds
+    runMotorsFloats(motor_output[0], motor_output[1], motor_output[2], motor_output[3]);
+  }
+
   /*
   while (1)
   {
@@ -202,6 +262,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
 void forward(int motorSpeed, int runDuration){          //speed can be 16 bits, split into high and low bytes
 	CAN_TxData[0] = (-motorSpeed) >> 8;  //high byte for speed, shifted 8 because only buffer is only 8 bits
 	CAN_TxData[1] = (-motorSpeed);       //low bytes for speed
@@ -236,6 +297,21 @@ void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned c
 	    HAL_Delay(0.5);
 	    i++;
 	}
+}
+
+void runMotorsFloats(float motorOne, float motorTwo, float motorThree, float motorFour) {
+  // Convert float values to two bytes (high byte and low byte) for each motor
+  uint8_t motorOneHigh = (uint8_t)((uint16_t)motorOne >> 8);
+  uint8_t motorOneLow = (uint8_t)motorOne;
+  uint8_t motorTwoHigh = (uint8_t)((uint16_t)motorTwo >> 8);
+  uint8_t motorTwoLow = (uint8_t)motorTwo;
+  uint8_t motorThreeHigh = (uint8_t)((uint16_t)motorThree >> 8);
+  uint8_t motorThreeLow = (uint8_t)motorThree;
+  uint8_t motorFourHigh = (uint8_t)((uint16_t)motorFour >> 8);
+  uint8_t motorFourLow = (uint8_t)motorFour;
+
+  // Call the original runMotors function with the converted values
+  runMotors(motorOneHigh, motorOneLow, motorTwoHigh, motorTwoLow, motorThreeHigh, motorThreeLow, motorFourHigh, motorFourLow);
 }
 
 void dribble() {
