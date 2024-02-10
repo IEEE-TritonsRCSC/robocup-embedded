@@ -1,0 +1,13 @@
+../Core/Src/main.c:94:6:HAL_UART_RxCpltCallback	16	static
+../Core/Src/main.c:105:5:main	344	static
+../Core/Src/main.c:193:6:SystemClock_Config	88	static
+../Core/Src/main.c:236:6:forward	24	static
+../Core/Src/main.c:254:6:runMotors	32	static
+../Core/Src/main.c:272:6:runMotorsFloats	64	static
+../Core/Src/main.c:287:6:dribble	4	static
+../Core/Src/main.c:291:6:noDribble	4	static
+../Core/Src/main.c:295:6:kick	16	static
+../Core/Src/main.c:299:6:charge	16	static
+../Core/Src/main.c:303:6:HAL_CAN_RxFifo0MsgPendingCallback	16	static
+../Core/Src/main.c:330:6:HAL_TIM_PeriodElapsedCallback	16	static
+../Core/Src/main.c:347:6:Error_Handler	4	static,ignoring_inline_asm

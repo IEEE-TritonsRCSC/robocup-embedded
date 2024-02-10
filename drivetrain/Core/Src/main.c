@@ -37,6 +37,21 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+
+#define KEY_Pin GPIO_PIN_10
+#define KEY_GPIO_Port GPIOD
+#define LED1_Pin GPIO_PIN_14
+#define LED1_GPIO_Port GPIOF
+#define LED2_Pin GPIO_PIN_11
+#define LED2_GPIO_Port GPIOE
+
+#define Motor1_Pin GPIO_PIN_2
+#define Motor2_Pin GPIO_PIN_3
+#define Motor3_Pin GPIO_PIN_4
+#define Motor4_Pin GPIO_PIN_5
+#define Motor_Port GPIOH
+#define NUM_MOTORS 4
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -45,6 +60,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+
 /* USER CODE BEGIN PV */
 //CAN variables
 CAN_TxHeaderTypeDef canTxHeader;
@@ -60,12 +76,9 @@ static volatile float torque_current_data[4];
 //UART variables
 unsigned char runMotorHeader = 0x01;
 unsigned char dribblerHeader = 0x02;
-static const uint32_t uart_rx_buffer_size = 9;  //set to the size we want to limit receive messages to
-static const uint32_t uart_tx_buffer_size = 33;  //set to the size we want to limit send messages to
-uint8_t uart_rx_buffer[uart_rx_buffer_size]; //buffer that stores in an array of characters user inputs, aka a string
-uint8_t uart_tx_buffer[uart_tx_buffer_size];
+uint8_t uart_rx_buffer[9]; //buffer that stores in an array of characters user inputs, aka a string
+uint8_t uart_tx_buffer[33];
 int ms_to_listen = 4000;  //set the number of ms we keep the uart line in receive mode for
-
 
 /* USER CODE END PV */
 
@@ -115,8 +128,8 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_CAN1_Init();
-  MX_USART2_UART_Init();
   MX_TIM1_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
   //Motor setup
@@ -136,7 +149,7 @@ int main(void)
 
   // Structure to store PID data and pointer to PID structure.
   // Prepare one for each motor.
-  struct pid_controller pid_controller[NUM_MOTORS];
+  struct pid_controller pid_controllers[NUM_MOTORS];
   pid_t pid[NUM_MOTORS];
 
   // Inputs, outputs, and setpoints for each motor
@@ -162,58 +175,15 @@ int main(void)
 
   /* USER CODE END 2 */
 
-  forward(1000,3000);
-
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-
-  HAL_UART_Receive_IT(&huart2, uart_rx_buffer, 8);
-
-  while (1) 
-  {
-    for (int i = 0; i < NUM_MOTORS; ++i) {
-
-      // set setpoints from UART RX buffer
-      desired_speed[i] = (uart_rx_buffer_size[i*2 + 1] << 8) | uart_rx_buffer_size[i*2 + 2];
-
-      // get input from encoders
-      uint8_t motorHighByte = CAN_RxData[i];
-      uint8_t motorLowByte = CAN_RxData[i + 1];
-      // Convert the bytes to a float value
-      int16_t combinedBytes = (motorHighByte << 8) | motorLowByte;
-      float encoderValueFloat = (float) combinedBytes;
-      motor_input[i] = encoderValueFloat;
-
-      // magic
-      pid_compute(pid[i]);
-
-    }
-    // run motors with new PID'd speeds
-    runMotorsFloats(motor_output[0], motor_output[1], motor_output[2], motor_output[3]);
-  }
-
-  /*
   while (1)
   {
-    // USER CODE END WHILE
-	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
-	HAL_UART_Receive(&huart2, uart_rx_buffer, uart_rx_buffer_size, ms_to_listen);
-	if (uart_rx_buffer[0] == headers[0]){
-		runMotors(uart_rx_buffer[1], uart_rx_buffer[2], uart_rx_buffer[3], uart_rx_buffer[4], uart_rx_buffer[5], uart_rx_buffer[6], uart_rx_buffer[7], uart_rx_buffer[8]);
-		uint8_t feedback[] = {0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01, 0x01};
-		HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
-	}
-	else {
-	}
+    /* USER CODE END WHILE */
 
-	for (int i = 0; i < uart_rx_buffer_size; i++) {
-		uart_rx_buffer[i] = 0;
-	}
-	HAL_Delay(100);
-  }
-	*/
-  /* USER CODE BEGIN 3 */
+    /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
+  }
 }
 
 /**

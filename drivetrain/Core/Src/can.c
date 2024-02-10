@@ -25,7 +25,6 @@
 /* USER CODE END 0 */
 
 CAN_HandleTypeDef hcan1;
-CAN_FilterTypeDef canfilter1;
 
 /* CAN1 init function */
 void MX_CAN1_Init(void)
@@ -55,18 +54,19 @@ void MX_CAN1_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN CAN1_Init 2 */
-  canfilter1.FilterBank = 0;
-  canfilter1.FilterMode = CAN_FILTERMODE_IDMASK;
-  canfilter1.FilterScale = CAN_FILTERSCALE_32BIT;
-  canfilter1.FilterIdHigh = 0x0000;
-  canfilter1.FilterIdLow = 0x0000;
-  canfilter1.FilterMaskIdHigh = 0x0000;
-  canfilter1.FilterMaskIdLow = 0x0000;
-  canfilter1.FilterFIFOAssignment = CAN_FilterFIFO0;
-  canfilter1.FilterActivation = CAN_FILTER_ENABLE;
-  canfilter1.SlaveStartFilterBank = 14;
-  HAL_CAN_ConfigFilter(&hcan1, &canfilter1);
+  // canfilter1.FilterBank = 0;
+  // canfilter1.FilterMode = CAN_FILTERMODE_IDMASK;
+  // canfilter1.FilterScale = CAN_FILTERSCALE_32BIT;
+  // canfilter1.FilterIdHigh = 0x0000;
+  // canfilter1.FilterIdLow = 0x0000;
+  // canfilter1.FilterMaskIdHigh = 0x0000;
+  // canfilter1.FilterMaskIdLow = 0x0000;
+  // canfilter1.FilterFIFOAssignment = CAN_FilterFIFO0;
+  // canfilter1.FilterActivation = CAN_FILTER_ENABLE;
+  // canfilter1.SlaveStartFilterBank = 14;
+  // HAL_CAN_ConfigFilter(&hcan1, &canfilter1);
   /* USER CODE END CAN1_Init 2 */
+
 }
 
 void HAL_CAN_MspInit(CAN_HandleTypeDef* canHandle)
