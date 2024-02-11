@@ -1,0 +1,13 @@
+../Core/Startup/main.c:92:5:main	6
+../Core/Startup/main.c:196:6:HAL_CAN_RxFifo0MsgPendingCallback	6
+../Core/Startup/main.c:212:6:HAL_UART_RxCpltCallback	3
+../Core/Startup/main.c:227:6:SystemClock_Config	3
+../Core/Startup/main.c:269:6:forward	1
+../Core/Startup/main.c:282:6:setMotorSpeeds	1
+../Core/Startup/main.c:294:6:runMotors	1
+../Core/Startup/main.c:314:6:dribble	1
+../Core/Startup/main.c:318:6:noDribble	1
+../Core/Startup/main.c:322:6:kick	1
+../Core/Startup/main.c:326:6:charge	1
+../Core/Startup/main.c:340:6:HAL_TIM_PeriodElapsedCallback	2
+../Core/Startup/main.c:357:6:Error_Handler	1

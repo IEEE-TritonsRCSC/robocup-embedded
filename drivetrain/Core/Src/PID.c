@@ -1,0 +1,71 @@
+#include "pid.h"
+#include "stm32f4xx.h"
+
+#define ABS(x)	((x>0)? x: -x)
+
+void pid_init(
+	PID_TypeDef * pid,
+	uint16_t maxout,
+	uint16_t integral_limit,
+	float deadband,
+	int16_t  target,
+
+	float 	kp,
+	float 	ki,
+	float 	kd)
+{
+
+	pid->MaxOutput = maxout;
+	pid->IntegralLimit = integral_limit;
+	pid->DeadBand = deadband;
+	pid->target = target;
+
+	pid->kp = kp;
+	pid->ki = ki;
+	pid->kd = kd;
+
+	pid->output = 0;
+}
+
+void pid_set_constants(PID_TypeDef * pid, float kp, float ki, float kd)
+{
+	pid->kp = kp;
+	pid->ki = ki;
+	pid->kd = kd;
+}
+
+float pid_calculate(PID_TypeDef* pid, float measure)
+{
+	pid->lasttime = pid->thistime;
+	pid->thistime = HAL_GetTick();
+	pid->dtime = pid->thistime-pid->lasttime;
+	pid->measure = measure;
+
+	pid->last_error  = pid->error;
+	pid->last_output = pid->output;
+
+	pid->error = pid->target - pid->measure;
+	if((ABS(pid->error) > pid->DeadBand))
+	{
+		pid->pout = pid->kp * pid->error;
+
+		pid->iout += (pid->ki * pid->error);
+		if(pid->iout > pid->IntegralLimit)
+			pid->iout = pid->IntegralLimit;
+		if(pid->iout < - pid->IntegralLimit)
+			pid->iout = - pid->IntegralLimit;
+
+		pid->dout =  pid->kd * (pid->error - pid->last_error);
+
+		pid->output = pid->pout + pid->iout + pid->dout;
+		if(pid->output>pid->MaxOutput)
+		{
+			pid->output = pid->MaxOutput;
+		}
+		if(pid->output < -(pid->MaxOutput))
+		{
+			pid->output = -(pid->MaxOutput);
+		}
+	}
+	return pid->output;
+}

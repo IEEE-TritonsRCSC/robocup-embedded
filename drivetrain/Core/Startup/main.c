@@ -23,7 +23,7 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
-#include "BNO080.h"
+#include "pid.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -41,7 +41,10 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-
+#define UART_RX_BUFFER_SIZE 99  //set to the size we want to limit receive messages to
+#define UART_TX_BUFFER_SIZE 33  //set to the size we want to limit send messages to
+#define RUN_MOTOR_HEADER 0x01
+#define DRIBBLER_HEADER 0x02
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -53,16 +56,20 @@ CAN_RxHeaderTypeDef canRxHeader;
 uint32_t canTxMailbox;
 uint8_t CAN_TxData[8];
 uint8_t CAN_RxData[8];
-static volatile uint8_t motor_idx;
-static volatile uint16_t angle_data[4];
-static volatile int16_t speed_data[4];
-static volatile float torque_current_data[4];
+volatile uint8_t motor_idx;
+volatile uint16_t angle_data[4];
+volatile int16_t speed_data[4];
+volatile float torque_current_data[4];
+volatile uint8_t motorCurrents[8];
+volatile int16_t targetSpeeds[4];
+PID_TypeDef motor_pid[4];
 
-//UART variables
-unsigned char runMotorHeader = 0x01;
-unsigned char dribblerHeader = 0x02;
-static const uint32_t uart_rx_buffer_size = 9;  //set to the size we want to limit receive messages to
-static const uint32_t uart_tx_buffer_size = 33;  //set to the size we want to limit send messages to
+//UART setup
+uint8_t runMotorHeader = 0x01;
+uint8_t dribblerHeader = 0x02;
+uint8_t uart_rx_buffer[UART_RX_BUFFER_SIZE]; //buffer that stores in an array of characters user inputs, aka a string
+uint8_t uart_tx_buffer[UART_TX_BUFFER_SIZE];
+uint8_t headers[] = {RUN_MOTOR_HEADER, DRIBBLER_HEADER};
 int ms_to_listen = 4000;  //set the number of ms we keep the uart line in receive mode for
 
 /* USER CODE END PV */
@@ -85,8 +92,8 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	uint8_t uart_rx_buffer[uart_rx_buffer_size]; //buffer that stores in an array of characters user inputs, aka a string
-	uint8_t uart_tx_buffer[uart_tx_buffer_size];
+	//uint8_t uart_rx_buffer[uart_rx_buffer_size]; //buffer that stores in an array of characters user inputs, aka a string
+	//uint8_t uart_tx_buffer[uart_tx_buffer_size];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -128,19 +135,89 @@ int main(void)
   canTxHeader.StdId = 0x200;
   canTxHeader.TransmitGlobalTime = DISABLE;
 
+  //PID Setup
+  for(int i=0; i<4; i++)
+  {
+	  pid_init(&motor_pid[i],9999,1000,20,0,1.5,0.3,0);
+  }
+
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  //runMotors(0x03, 0xE8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
+  //uint8_t feedback[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
+  //HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
+  for (int i = 0; i < 4; i++) {
+	  if (i%2 == 0){
+		  targetSpeeds[i] = -100;
+	  }
+	  else{
+		  targetSpeeds[i] = 100;
+	  }
+  }
+  for (int i = 0; i < 4; i++) {
+      speed_data[i] = 0;
+  }
   while (1)
   {
-	forward(1000, 100000);
-	HAL_Delay(0.5);
+	  for(int i=0; i<4; i++){
+		  motor_pid[i].target = targetSpeeds[i];
+	      pid_calculate(&motor_pid[i],speed_data[i]);
+	  }
+
+	  //setMotorSpeeds(motor_pid[0].output,motor_pid[1].output,motor_pid[2].output,motor_pid[3].output);
+	  setMotorSpeeds(motor_pid[0].output,0,0,0);
+	  //setMotorSpeeds(1000,1000,1000,1000);
+	  uint8_t feedback[] = {(speed_data[0] >> 8), (speed_data[0] & 0xff), (speed_data[1] >> 8), (speed_data[1] & 0xff), (speed_data[2] >> 8), (speed_data[2] & 0xff),(speed_data[3] >> 8), (speed_data[3] & 0xff)};
+	  HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
+	  //HAL_UART_Transmit(&huart2, feedback, 33, 1000);
+	  //HAL_Delay(1);
+	  //HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+	  //HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
+
+	  /*
+	  HAL_UART_Receive(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE, 1000);
+	  if (uart_rx_buffer[0] == headers[0]){
+		  runMotors(uart_rx_buffer[1], uart_rx_buffer[2], uart_rx_buffer[3], uart_rx_buffer[4], uart_rx_buffer[5], uart_rx_buffer[6], uart_rx_buffer[7], uart_rx_buffer[8]);
+	  		//HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
+	  }
+	  	//set_spd = remote_control.ch4*8000/660;
+	  HAL_Delay(1);*/
+	  //runMotors(motorCurrents[0], motorCurrents[1], motorCurrents[2], motorCurrents[3], motorCurrents[4], motorCurrents[5], motorCurrents[6], motorCurrents[7]);
   }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
+}
+
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
+	HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
+    if(hcan == &hcan1) {
+        HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &canRxHeader, CAN_RxData);
+
+        if(canRxHeader.StdId == 0x201) motor_idx = 0;
+        if(canRxHeader.StdId == 0x202) motor_idx = 1;
+        if(canRxHeader.StdId == 0x203) motor_idx = 2;
+        if(canRxHeader.StdId == 0x203) motor_idx = 3;
+
+        angle_data[motor_idx] = (uint16_t)(CAN_RxData[0]<<8 | CAN_RxData[1]);
+        speed_data[motor_idx] = (int16_t)(CAN_RxData[2]<<8 | CAN_RxData[3]); // originally rpm
+        torque_current_data[motor_idx] = (CAN_RxData[4]<<8 | CAN_RxData[5])*5.f/16384.f;
+    }
+}
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+	if (uart_rx_buffer[0] == headers[0]){
+		for (int i = 0; i<8; i++){
+			motorCurrents[i] = uart_rx_buffer[i+1];
+		}
+	}
+	HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
 }
 
 /**
@@ -202,6 +279,18 @@ void forward(int motorSpeed){          //speed can be 16 bits, split into high a
 	HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
 }
 
+void setMotorSpeeds(int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4){
+	uint8_t h1 = ms1 >> 8;
+	uint8_t l1 = ms1;
+	uint8_t h2 = ms2 >> 8;
+	uint8_t l2 = ms2;
+	uint8_t h3 = ms3 >> 8;
+	uint8_t l3 = ms3;
+	uint8_t h4 = ms4 >> 8;
+	uint8_t l4 = ms4;
+	runMotors(h1,l1,h2,l2,h3,l3,h4,l4);
+}
+
 void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned char motorTwoHigh, unsigned char motorTwoLow, unsigned char motorThreeHigh, unsigned char motorThreeLow, unsigned char motorFourHigh, unsigned char motorFourLow){          //speed can be 16 bits, split into high and low bytes
 	CAN_TxData[0] = motorOneHigh;  //high byte for speed, shifted 8 because only buffer is only 8 bits
 	CAN_TxData[1] = motorOneLow;       //low bytes for speed
@@ -211,13 +300,15 @@ void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned c
 	CAN_TxData[5] = motorThreeLow;
 	CAN_TxData[6] = motorFourHigh;
 	CAN_TxData[7] = motorFourLow;
+	HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
 
+	/*
 	int i = 0;
-	while(i < 1000){
+	while(i < 100000){
 		HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
 	    HAL_Delay(0.5);
 	    i++;
-	}
+	}*/
 }
 
 void dribble() {
@@ -234,21 +325,6 @@ void kick(int kickDuration){
 
 void charge(int chargeDuration){
 
-}
-
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
-    if(hcan == &hcan1) {
-        HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &canRxHeader, CAN_RxData);
-
-        if(canRxHeader.StdId == 0x201) motor_idx = 0;
-        if(canRxHeader.StdId == 0x202) motor_idx = 1;
-        if(canRxHeader.StdId == 0x203) motor_idx = 2;
-        if(canRxHeader.StdId == 0x203) motor_idx = 3;
-
-        angle_data[motor_idx] = (uint16_t)(CAN_RxData[0]<<8 | CAN_RxData[1]);
-        speed_data[motor_idx] = (int16_t)(CAN_RxData[2]<<8 | CAN_RxData[3]); // originally rpm
-        torque_current_data[motor_idx] = (CAN_RxData[4]<<8 | CAN_RxData[5])*5.f/16384.f;
-    }
 }
 
 /* USER CODE END 4 */
