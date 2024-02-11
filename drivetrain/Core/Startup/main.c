@@ -136,9 +136,12 @@ int main(void)
   canTxHeader.TransmitGlobalTime = DISABLE;
 
   //PID Setup
+  for (int i = 0; i < 4; i++) {
+        speed_data[i] = 0;
+  }
   for(int i=0; i<4; i++)
   {
-	  pid_init(&motor_pid[i],9999,1000,20,0,1.5,0.3,0);
+	  pid_init(&motor_pid[i],9999,1000,20,0,1.5,0.3,0); //sets max output to 9999, integral windup to 1000, PID deadzone to 20 (setpoints below this won't work), Kp=1.5, Ki=0.3, Kd=0
   }
 
 
@@ -148,7 +151,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   //runMotors(0x03, 0xE8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00);
   //uint8_t feedback[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
-  //HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
+  //HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);   //Uncomment to start the UART interrupt tests
   for (int i = 0; i < 4; i++) {
 	  if (i%2 == 0){
 		  targetSpeeds[i] = -100;
@@ -157,36 +160,31 @@ int main(void)
 		  targetSpeeds[i] = 100;
 	  }
   }
-  for (int i = 0; i < 4; i++) {
-      speed_data[i] = 0;
-  }
   while (1)
   {
 	  for(int i=0; i<4; i++){
 		  motor_pid[i].target = targetSpeeds[i];
 	      pid_calculate(&motor_pid[i],speed_data[i]);
 	  }
-
-	  //setMotorSpeeds(motor_pid[0].output,motor_pid[1].output,motor_pid[2].output,motor_pid[3].output);
-	  setMotorSpeeds(motor_pid[0].output,0,0,0);
+	  setMotorSpeeds(motor_pid[0].output,motor_pid[1].output,motor_pid[2].output,motor_pid[3].output);
+	  //setMotorSpeeds(motor_pid[0].output,0,0,0);  //some tests for just running motors with values
 	  //setMotorSpeeds(1000,1000,1000,1000);
 	  uint8_t feedback[] = {(speed_data[0] >> 8), (speed_data[0] & 0xff), (speed_data[1] >> 8), (speed_data[1] & 0xff), (speed_data[2] >> 8), (speed_data[2] & 0xff),(speed_data[3] >> 8), (speed_data[3] & 0xff)};
 	  HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
-	  //HAL_UART_Transmit(&huart2, feedback, 33, 1000);
+
 	  //HAL_Delay(1);
-	  //HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
-	  //HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
+	  //HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);  //LED and delay looping
 
 	  /*
+	   * UART Receive code, uncomment this block and comment out other parts to test UART
 	  HAL_UART_Receive(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE, 1000);
 	  if (uart_rx_buffer[0] == headers[0]){
 		  runMotors(uart_rx_buffer[1], uart_rx_buffer[2], uart_rx_buffer[3], uart_rx_buffer[4], uart_rx_buffer[5], uart_rx_buffer[6], uart_rx_buffer[7], uart_rx_buffer[8]);
 	  		//HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
 	  }
-	  	//set_spd = remote_control.ch4*8000/660;
 	  HAL_Delay(1);*/
-	  //runMotors(motorCurrents[0], motorCurrents[1], motorCurrents[2], motorCurrents[3], motorCurrents[4], motorCurrents[5], motorCurrents[6], motorCurrents[7]);
-  }
+
+	  //runMotors(motorCurrents[0], motorCurrents[1], motorCurrents[2], motorCurrents[3], motorCurrents[4], motorCurrents[5], motorCurrents[6], motorCurrents[7]);  //for testing UART interrupts
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

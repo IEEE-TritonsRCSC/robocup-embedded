@@ -49,6 +49,7 @@ float pid_calculate(PID_TypeDef* pid, float measure)
 	{
 		pid->pout = pid->kp * pid->error;
 
+		//Integral with windup
 		pid->iout += (pid->ki * pid->error);
 		if(pid->iout > pid->IntegralLimit)
 			pid->iout = pid->IntegralLimit;
@@ -58,6 +59,8 @@ float pid_calculate(PID_TypeDef* pid, float measure)
 		pid->dout =  pid->kd * (pid->error - pid->last_error);
 
 		pid->output = pid->pout + pid->iout + pid->dout;
+
+		//Clamping output -> using direct instead of incremental PID
 		if(pid->output>pid->MaxOutput)
 		{
 			pid->output = pid->MaxOutput;
