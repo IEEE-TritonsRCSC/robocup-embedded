@@ -33,6 +33,9 @@ typedef struct _PID_TypeDef
 	float iout;
 	float dout;
 
+	float d_buf[3];
+	float error_buf[3];
+
 	float output;
 	float last_output;
 

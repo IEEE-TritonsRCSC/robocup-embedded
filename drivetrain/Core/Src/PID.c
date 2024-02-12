@@ -40,23 +40,22 @@ float pid_calculate(PID_TypeDef* pid, float measure)
 	pid->thistime = HAL_GetTick();
 	pid->dtime = pid->thistime-pid->lasttime;
 	pid->measure = measure;
-
-	pid->last_error  = pid->error;
 	pid->last_output = pid->output;
 
+	pid->last_error  = pid->error;
 	pid->error = pid->target - pid->measure;
 	if((ABS(pid->error) > pid->DeadBand))
 	{
 		pid->pout = pid->kp * pid->error;
 
 		//Integral with windup
-		pid->iout += (pid->ki * pid->error);
+		pid->iout += (pid->ki * pid->error * pid->dtime);
 		if(pid->iout > pid->IntegralLimit)
 			pid->iout = pid->IntegralLimit;
 		if(pid->iout < - pid->IntegralLimit)
 			pid->iout = - pid->IntegralLimit;
 
-		pid->dout =  pid->kd * (pid->error - pid->last_error);
+		pid->dout =  pid->kd * (pid->error - pid->last_error)/pid->dtime;
 
 		pid->output = pid->pout + pid->iout + pid->dout;
 
@@ -70,5 +69,28 @@ float pid_calculate(PID_TypeDef* pid, float measure)
 			pid->output = -(pid->MaxOutput);
 		}
 	}
+
+	/*
+	pid->error_buf[2] = pid->error_buf[1];
+	pid->error_buf[1] = pid->error_buf[0];
+	pid->error_buf[0] = pid->target - pid->measure;
+	pid->pout = pid->kp * (pid->error - pid->lasterror);
+	pid->iout = pid->ki * pid->error;
+	pid->d_buf[2] = pid->d_buf[1];
+	pid->d_buf[1] = pid->d_buf[0];
+	pid->d_buf[0] = (pid->error_buf[0] - 2.0f * pid->error_buf[1] + pid->error_buf[2]);
+	pid->dout = pid->kd * pid->d_buf[0];
+	pid->output += pid->pout + pid->iout + pid->dout;
+	if(pid->output>pid->MaxOutput)
+	{
+		pid->output = pid->MaxOutput;
+	}
+	if(pid->output < -(pid->MaxOutput))
+	{
+		pid->output = -(pid->MaxOutput);
+	}
+	*/
+
+
 	return pid->output;
 }
