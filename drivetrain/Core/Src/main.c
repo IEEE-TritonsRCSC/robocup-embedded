@@ -41,7 +41,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-#define UART_RX_BUFFER_SIZE 99  //set to the size we want to limit receive messages to
+#define UART_RX_BUFFER_SIZE 9  //set to the size we want to limit receive messages to
 #define UART_TX_BUFFER_SIZE 33  //set to the size we want to limit send messages to
 #define RUN_MOTOR_HEADER 0x01
 #define DRIBBLER_HEADER 0x02
@@ -65,8 +65,6 @@ volatile int16_t targetSpeeds[4];
 PID_TypeDef motor_pid[4];
 
 //UART setup
-uint8_t runMotorHeader = 0x01;
-uint8_t dribblerHeader = 0x02;
 uint8_t uart_rx_buffer[UART_RX_BUFFER_SIZE]; //buffer that stores in an array of characters user inputs, aka a string
 uint8_t uart_tx_buffer[UART_TX_BUFFER_SIZE];
 uint8_t headers[] = {RUN_MOTOR_HEADER, DRIBBLER_HEADER};
@@ -89,6 +87,21 @@ void SystemClock_Config(void);
   * @brief  The application entry point.
   * @retval int
   */
+
+/*
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+	if (uart_rx_buffer[0] == headers[0]){
+		for (int i = 0; i<8; i++){
+			motorCurrents[i] = uart_rx_buffer[i+1];
+		}
+		uint8_t feedback[] = {0x01, 0x01, 0x01, 0x01, (speed_data[0] >> 8), (speed_data[0] & 0xff), (speed_data[1] >> 8), (speed_data[1] & 0xff), (speed_data[2] >> 8), (speed_data[2] & 0xff),(speed_data[3] >> 8), (speed_data[3] & 0xff)};
+		HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
+	}
+	HAL_UART_Receive_IT(&huart2, uart_rx_buffer, sizeof(uart_rx_buffer));
+}*/
+
+
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -135,7 +148,7 @@ int main(void)
 
   //PID Setup
   for (int i = 0; i < 4; i++) {
-        speed_data[i] = 0;
+        speed_data[i] = 100;
   }
   pid_init(&motor_pid[0],10000,5000,20,0,0.05,0,0);
   //pid_init(&motor_pid[1],10000,5000,20,0,0,0,0);
@@ -165,17 +178,19 @@ int main(void)
 	  motor_pid[i].output = 1000;
 	  //}
   }
-  __HAL_UART_ENABLE_IT(&huart2, UART_IT_RXNE);
+
+  //HAL_UART_Receive_IT(&huart2, uart_rx_buffer, sizeof(uart_rx_buffer));
   while (1)
   {
+	  /*
 	  for(int i=0; i<4; i++){
 		  motor_pid[i].target = targetSpeeds[i];
 	      pid_calculate(&motor_pid[i],speed_data[i]);
-	  }
+	  }*/
 	  //setMotorSpeeds(-(motor_pid[0].output),(motor_pid[1].output),-(motor_pid[2].output),(motor_pid[3].output));
 	  //setMotorSpeeds((motor_pid[0].output),0,0,0);
-	  setMotorSpeeds((motor_pid[0].output),0,0,0);
-	  HAL_Delay(10);
+	  //setMotorSpeeds((motor_pid[0].output),0,0,0);
+	  //HAL_Delay(10);
 	  /*
 	  for (int i = 0; i<4; i++){
 		  motorCurrents[i] = (int)motor_pid[i].output;
@@ -189,20 +204,22 @@ int main(void)
 	  setMotorSpeeds(motorCurrents[0],motorCurrents[1],motorCurrents[2],motorCurrents[3]);  //some tests for just running motors with values*/
 	  //HAL_Delay(1000);
 	  //setMotorSpeeds(1000,1000,1000,1000);
-	  uint8_t feedback[] = {0x01, 0x01, 0x01, 0x01, (speed_data[0] >> 8), (speed_data[0] & 0xff), (speed_data[1] >> 8), (speed_data[1] & 0xff), (speed_data[2] >> 8), (speed_data[2] & 0xff),(speed_data[3] >> 8), (speed_data[3] & 0xff)};
-	  HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
 	  //HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_RESET);
 	  //HAL_Delay(1);
 	  //HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);  //LED and delay looping
 
+
+	  uint8_t feedback[] = {0x01, 0x01, 0x01, 0x01, (speed_data[0] >> 8), (speed_data[0] & 0xff), (speed_data[1] >> 8), (speed_data[1] & 0xff), (speed_data[2] >> 8), (speed_data[2] & 0xff),(speed_data[3] >> 8), (speed_data[3] & 0xff)};
+	  HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
 	  /*
-	   * UART Receive code, uncomment this block and comment out other parts to test UART
+	   //UART Receive code, uncomment this block and comment out other parts to test UART
 	  HAL_UART_Receive(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE, 1000);
 	  if (uart_rx_buffer[0] == headers[0]){
-		  runMotors(uart_rx_buffer[1], uart_rx_buffer[2], uart_rx_buffer[3], uart_rx_buffer[4], uart_rx_buffer[5], uart_rx_buffer[6], uart_rx_buffer[7], uart_rx_buffer[8]);
-	  		//HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
-	  }
-	  HAL_Delay(1);*/
+		  uint8_t feedback[] = {0x01, 0x01, 0x01, 0x01, (speed_data[0] >> 8), (speed_data[0] & 0xff), (speed_data[1] >> 8), (speed_data[1] & 0xff), (speed_data[2] >> 8), (speed_data[2] & 0xff),(speed_data[3] >> 8), (speed_data[3] & 0xff)};
+		  //runMotors(uart_rx_buffer[1], uart_rx_buffer[2], uart_rx_buffer[3], uart_rx_buffer[4], uart_rx_buffer[5], uart_rx_buffer[6], uart_rx_buffer[7], uart_rx_buffer[8]);
+		  HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
+	  }*/
+	  HAL_Delay(1);
 
 	  //runMotors(motorCurrents[0], motorCurrents[1], motorCurrents[2], motorCurrents[3], motorCurrents[4], motorCurrents[5], motorCurrents[6], motorCurrents[7]);  //for testing UART interrupts
     /* USER CODE END WHILE */
@@ -226,17 +243,6 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
         speed_data[motor_idx] = (int16_t)(CAN_RxData[2]<<8 | CAN_RxData[3]); // originally rpm
         torque_current_data[motor_idx] = (CAN_RxData[4]<<8 | CAN_RxData[5]);
     }
-}
-
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
-	HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
-	if (uart_rx_buffer[0] == headers[0]){
-		for (int i = 0; i<8; i++){
-			motorCurrents[i] = uart_rx_buffer[i+1];
-		}
-	}
-	HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
 }
 
 /**
