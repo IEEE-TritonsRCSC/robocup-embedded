@@ -137,10 +137,10 @@ int main(void)
   for (int i = 0; i < 4; i++) {
         speed_data[i] = 0;
   }
-  pid_init(&motor_pid[0],10000,1000,20,0,5,0,0);
-  pid_init(&motor_pid[1],10000,1000,20,0,5,0,0);
-  pid_init(&motor_pid[2],10000,1000,20,0,5,0,0);
-  pid_init(&motor_pid[3],10000,1000,20,0,5,0,0);
+  pid_init(&motor_pid[0],10000,5000,20,0,3,0,0);
+  //pid_init(&motor_pid[1],10000,5000,20,0,0,0,0);
+  //pid_init(&motor_pid[2],10000,5000,20,0,0,0,0);
+  //pid_init(&motor_pid[3],10000,5000,20,0,0,0,0);
   /*
   for(int i=0; i<4; i++)
   {
@@ -174,7 +174,8 @@ int main(void)
 	      pid_calculate(&motor_pid[i],speed_data[i]);
 	  }
 	  //setMotorSpeeds(-(motor_pid[0].output),(motor_pid[1].output),-(motor_pid[2].output),(motor_pid[3].output));
-	  setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
+	  setMotorSpeeds((motor_pid[0].output),0,0,0);
+	  //setMotorSpeeds((motor_pid[0].output),0,0,0);
 	  HAL_Delay(1);
 	  /*
 	  for (int i = 0; i<4; i++){
@@ -223,7 +224,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
         if(canRxHeader.StdId == 0x204) motor_idx = 3;
 
         angle_data[motor_idx] = (uint16_t)(CAN_RxData[0]<<8 | CAN_RxData[1]);
-        speed_data[motor_idx] = (uint16_t)(CAN_RxData[2]<<8 | CAN_RxData[3]); // originally rpm
+        speed_data[motor_idx] = (int16_t)(CAN_RxData[2]<<8 | CAN_RxData[3]); // originally rpm
         torque_current_data[motor_idx] = (CAN_RxData[4]<<8 | CAN_RxData[5]);
     }
 }
