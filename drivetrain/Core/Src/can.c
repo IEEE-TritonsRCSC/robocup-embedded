@@ -62,10 +62,11 @@ void MX_CAN1_Init(void)
   canfilter1.FilterIdLow = 0x0000;
   canfilter1.FilterMaskIdHigh = 0x0000;
   canfilter1.FilterMaskIdLow = 0x0000;
-  canfilter1.FilterFIFOAssignment = CAN_FilterFIFO0;
-  canfilter1.FilterBank = 14;
+  canfilter1.FilterFIFOAssignment = CAN_RX_FIFO0;
   canfilter1.FilterActivation = CAN_FILTER_ENABLE;
   HAL_CAN_ConfigFilter(&hcan1, &canfilter1);
+  HAL_CAN_Start(&hcan1); //start CAN
+  HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING); // Activate CAN receive interrupt for encoder data
   /* USER CODE END CAN1_Init 2 */
 }
 

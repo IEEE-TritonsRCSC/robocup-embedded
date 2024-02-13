@@ -57,7 +57,7 @@ float pid_calculate(PID_TypeDef* pid, float measure)
 
 		pid->dout =  pid->kd * (pid->error - pid->last_error)/pid->dtime;
 
-		pid->output = pid->pout + pid->iout + pid->dout;
+		pid->output += pid->pout + pid->iout + pid->dout;
 
 		//Clamping output -> using direct instead of incremental PID
 		if(pid->output>pid->MaxOutput)

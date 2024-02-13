@@ -60,7 +60,7 @@ volatile uint8_t motor_idx;
 volatile uint16_t angle_data[4];
 volatile int16_t speed_data[4];
 volatile float torque_current_data[4];
-volatile uint8_t motorCurrents[8];
+int16_t motorCurrents[4];
 volatile int16_t targetSpeeds[4];
 PID_TypeDef motor_pid[4];
 
@@ -127,8 +127,6 @@ int main(void)
   HAL_GPIO_TogglePin(Motor_Port, Motor4_Pin);
 
   //CAN setup
-  HAL_CAN_Start(&hcan1); //start CAN
-  HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING); // Activate CAN receive interrupt for encoder data
   canTxHeader.DLC = 8;
   canTxHeader.IDE = CAN_ID_STD;
   canTxHeader.RTR = CAN_RTR_DATA;
@@ -139,10 +137,15 @@ int main(void)
   for (int i = 0; i < 4; i++) {
         speed_data[i] = 0;
   }
+  pid_init(&motor_pid[0],10000,1000,20,0,5,0,0);
+  pid_init(&motor_pid[1],10000,1000,20,0,5,0,0);
+  pid_init(&motor_pid[2],10000,1000,20,0,5,0,0);
+  pid_init(&motor_pid[3],10000,1000,20,0,5,0,0);
+  /*
   for(int i=0; i<4; i++)
   {
-	  pid_init(&motor_pid[i],9999,1000,20,0,1.5,0.3,0); //sets max output to 9999, integral windup to 1000, PID deadzone to 20 (setpoints below this won't work), Kp=1.5, Ki=0.3, Kd=0
-  }
+	  pid_init(&motor_pid[i],10000,1000,50,0,1.1,0.3,0); //sets max output to 9999, integral windup to 1000, PID deadzone to 20 (setpoints below this won't work), Kp=1.5, Ki=0.3, Kd=0
+  }*/
 
 
   /* USER CODE END 2 */
@@ -153,25 +156,42 @@ int main(void)
   //uint8_t feedback[] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
   //HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);   //Uncomment to start the UART interrupt tests
   for (int i = 0; i < 4; i++) {
+	  /*
 	  if (i%2 == 0){
 		  targetSpeeds[i] = -100;
 	  }
-	  else{
-		  targetSpeeds[i] = 100;
-	  }
+	  else{*/
+	  targetSpeeds[i] = 100;
+	  //}
   }
   while (1)
   {
+	  for (int i = 0; i<4; i++){
+		  motorCurrents[i] += motor_pid[0].output;
+	  }
 	  for(int i=0; i<4; i++){
 		  motor_pid[i].target = targetSpeeds[i];
 	      pid_calculate(&motor_pid[i],speed_data[i]);
 	  }
-	  setMotorSpeeds(motor_pid[0].output,motor_pid[1].output,motor_pid[2].output,motor_pid[3].output);
-	  //setMotorSpeeds(motor_pid[0].output,0,0,0);  //some tests for just running motors with values
+	  //setMotorSpeeds(-(motor_pid[0].output),(motor_pid[1].output),-(motor_pid[2].output),(motor_pid[3].output));
+	  setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
+	  HAL_Delay(1);
+	  /*
+	  for (int i = 0; i<4; i++){
+		  motorCurrents[i] = (int)motor_pid[i].output;
+		  if (motorCurrents[i] > 10000){
+			  motorCurrents[i] = 10000;
+		  }
+		  else if (motorCurrents[i] < -10000){
+			  motorCurrents[i] = -10000;
+		  }
+	  }
+	  setMotorSpeeds(motorCurrents[0],motorCurrents[1],motorCurrents[2],motorCurrents[3]);  //some tests for just running motors with values*/
+	  //HAL_Delay(1000);
 	  //setMotorSpeeds(1000,1000,1000,1000);
-	  uint8_t feedback[] = {(speed_data[0] >> 8), (speed_data[0] & 0xff), (speed_data[1] >> 8), (speed_data[1] & 0xff), (speed_data[2] >> 8), (speed_data[2] & 0xff),(speed_data[3] >> 8), (speed_data[3] & 0xff)};
-	  HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
-
+	  //uint8_t feedback[] = {(speed_data[0] >> 8), (speed_data[0] & 0xff), (speed_data[1] >> 8), (speed_data[1] & 0xff), (speed_data[2] >> 8), (speed_data[2] & 0xff),(speed_data[3] >> 8), (speed_data[3] & 0xff)};
+	  //HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
+	  //HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_RESET);
 	  //HAL_Delay(1);
 	  //HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);  //LED and delay looping
 
@@ -189,27 +209,28 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
+  }
 }
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
-	HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
+	//HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
     if(hcan == &hcan1) {
         HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &canRxHeader, CAN_RxData);
 
         if(canRxHeader.StdId == 0x201) motor_idx = 0;
         if(canRxHeader.StdId == 0x202) motor_idx = 1;
         if(canRxHeader.StdId == 0x203) motor_idx = 2;
-        if(canRxHeader.StdId == 0x203) motor_idx = 3;
+        if(canRxHeader.StdId == 0x204) motor_idx = 3;
 
         angle_data[motor_idx] = (uint16_t)(CAN_RxData[0]<<8 | CAN_RxData[1]);
-        speed_data[motor_idx] = (int16_t)(CAN_RxData[2]<<8 | CAN_RxData[3]); // originally rpm
-        torque_current_data[motor_idx] = (CAN_RxData[4]<<8 | CAN_RxData[5])*5.f/16384.f;
+        speed_data[motor_idx] = (uint16_t)(CAN_RxData[2]<<8 | CAN_RxData[3]); // originally rpm
+        torque_current_data[motor_idx] = (CAN_RxData[4]<<8 | CAN_RxData[5]);
     }
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+	//HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
 	if (uart_rx_buffer[0] == headers[0]){
 		for (int i = 0; i<8; i++){
 			motorCurrents[i] = uart_rx_buffer[i+1];
