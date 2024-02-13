@@ -137,7 +137,7 @@ int main(void)
   for (int i = 0; i < 4; i++) {
         speed_data[i] = 0;
   }
-  pid_init(&motor_pid[0],10000,5000,20,0,3,0,0);
+  pid_init(&motor_pid[0],10000,5000,20,0,0.05,0,0);
   //pid_init(&motor_pid[1],10000,5000,20,0,0,0,0);
   //pid_init(&motor_pid[2],10000,5000,20,0,0,0,0);
   //pid_init(&motor_pid[3],10000,5000,20,0,0,0,0);
@@ -162,21 +162,20 @@ int main(void)
 	  }
 	  else{*/
 	  targetSpeeds[i] = 100;
+	  motor_pid[i].output = 1000;
 	  //}
   }
+  __HAL_UART_ENABLE_IT(&huart2, UART_IT_RXNE);
   while (1)
   {
-	  for (int i = 0; i<4; i++){
-		  motorCurrents[i] += motor_pid[0].output;
-	  }
 	  for(int i=0; i<4; i++){
 		  motor_pid[i].target = targetSpeeds[i];
 	      pid_calculate(&motor_pid[i],speed_data[i]);
 	  }
 	  //setMotorSpeeds(-(motor_pid[0].output),(motor_pid[1].output),-(motor_pid[2].output),(motor_pid[3].output));
-	  setMotorSpeeds((motor_pid[0].output),0,0,0);
 	  //setMotorSpeeds((motor_pid[0].output),0,0,0);
-	  HAL_Delay(1);
+	  setMotorSpeeds((motor_pid[0].output),0,0,0);
+	  HAL_Delay(10);
 	  /*
 	  for (int i = 0; i<4; i++){
 		  motorCurrents[i] = (int)motor_pid[i].output;
@@ -190,8 +189,8 @@ int main(void)
 	  setMotorSpeeds(motorCurrents[0],motorCurrents[1],motorCurrents[2],motorCurrents[3]);  //some tests for just running motors with values*/
 	  //HAL_Delay(1000);
 	  //setMotorSpeeds(1000,1000,1000,1000);
-	  //uint8_t feedback[] = {(speed_data[0] >> 8), (speed_data[0] & 0xff), (speed_data[1] >> 8), (speed_data[1] & 0xff), (speed_data[2] >> 8), (speed_data[2] & 0xff),(speed_data[3] >> 8), (speed_data[3] & 0xff)};
-	  //HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
+	  uint8_t feedback[] = {0x01, 0x01, 0x01, 0x01, (speed_data[0] >> 8), (speed_data[0] & 0xff), (speed_data[1] >> 8), (speed_data[1] & 0xff), (speed_data[2] >> 8), (speed_data[2] & 0xff),(speed_data[3] >> 8), (speed_data[3] & 0xff)};
+	  HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
 	  //HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, GPIO_PIN_RESET);
 	  //HAL_Delay(1);
 	  //HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);  //LED and delay looping
@@ -231,7 +230,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	//HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+	HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
 	if (uart_rx_buffer[0] == headers[0]){
 		for (int i = 0; i<8; i++){
 			motorCurrents[i] = uart_rx_buffer[i+1];
