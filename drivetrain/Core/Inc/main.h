@@ -70,8 +70,8 @@ void Error_Handler(void);
 #define Motor4_Pin GPIO_PIN_5
 #define Motor_Port GPIOH
 
-#define Kicker_Pin GPIO_PIN_10
-#define Kicker_Port GPIOF
+#define Kicker_Pin GPIO_PIN_1
+#define Kicker_Port GPIOC
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
