@@ -54,7 +54,6 @@ void forward(int motorSpeed);
 void setMotorSpeeds(int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4);
 void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned char motorTwoHigh, unsigned char motorTwoLow, unsigned char motorThreeHigh, unsigned char motorThreeLow, unsigned char motorFourHigh, unsigned char motorFourLow);
 void kick(int kickDuration);
-void charge(int chargeDuration);
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
@@ -70,6 +69,9 @@ void Error_Handler(void);
 #define Motor3_Pin GPIO_PIN_4
 #define Motor4_Pin GPIO_PIN_5
 #define Motor_Port GPIOH
+
+#define Kicker_Pin GPIO_PIN_10
+#define Kicker_Port GPIOF
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
