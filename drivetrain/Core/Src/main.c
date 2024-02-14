@@ -137,6 +137,8 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
 
+  //HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+
   //Motor setup
   HAL_GPIO_TogglePin(Motor_Port, Motor1_Pin);
   HAL_GPIO_TogglePin(Motor_Port, Motor2_Pin);
@@ -357,10 +359,12 @@ void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned c
 }
 
 void dribble() {
-
+  HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+  TIM1->CCR1 = 75;
 }
 
 void noDribble(){
+  HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
 
 }
 
