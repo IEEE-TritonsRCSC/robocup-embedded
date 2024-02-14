@@ -74,6 +74,9 @@ void Error_Handler(void);
 #define Kicker_Port GPIOF
 /* USER CODE BEGIN Private defines */
 
+void dribble() ;
+void noDribble() ;
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
