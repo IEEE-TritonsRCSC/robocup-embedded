@@ -18,7 +18,6 @@ void pid_init(
 
 	pid->MaxOutput = maxout;
 	pid->IntegralLimit = integral_limit;
-	pid->DeadBand = deadband;
 	pid->target = target;
 
 	pid->kp = kp;
@@ -37,39 +36,35 @@ void pid_set_constants(PID_TypeDef * pid, float kp, float ki, float kd)
 
 float pid_calculate(PID_TypeDef* pid, float measure)
 {
-	pid->lasttime = pid->thistime;
-	pid->thistime = HAL_GetTick();
-	pid->dtime = pid->thistime-pid->lasttime;
 	pid->measure = measure;
-	pid->last_output = pid->output;
-
-	pid->last_error  = pid->error;
+	pid->last_error = pid->error;
 	pid->error = pid->target - pid->measure;
-	if((ABS(pid->error) > pid->DeadBand))
-	{
-		pid->pout = pid->kp * pid->error;
+	pid->pout = pid->kp * pid->error;
 
-		//Integral with windup
-		pid->iout += (pid->ki * pid->error * pid->dtime);
-		if(pid->iout > pid->IntegralLimit)
-			pid->iout = pid->IntegralLimit;
-		if(pid->iout < - pid->IntegralLimit)
-			pid->iout = - pid->IntegralLimit;
-
-		pid->dout =  pid->kd * (pid->error - pid->last_error)/pid->dtime;
-
-		pid->output += pid->pout + pid->iout + pid->dout;
-
-		//Clamping output -> using direct instead of incremental PID
-		if(pid->output>pid->MaxOutput)
-		{
-			pid->output = pid->MaxOutput;
-		}
-		if(pid->output < -(pid->MaxOutput))
-		{
-			pid->output = -(pid->MaxOutput);
-		}
+	//Integral with windup
+	pid->integral += pid->error;
+	if(pid->integral > pid->IntegralLimit){
+		pid->integral = pid->IntegralLimit;
 	}
+	if(pid->integral < -(pid->IntegralLimit)){
+		pid->integral = -pid->IntegralLimit;
+	}
+	pid->iout = pid->ki * pid->integral;
+
+	pid->dout =  pid->kd * (pid->error - pid->last_error);
+
+	pid->output = pid->pout + pid->iout + pid->dout;
+
+	//Clamping output -> using direct instead of incremental PID
+	if(pid->output>pid->MaxOutput)
+	{
+		pid->output = pid->MaxOutput;
+	}
+	if(pid->output < -(pid->MaxOutput))
+	{
+		pid->output = -(pid->MaxOutput);
+	}
+	//}
 
 	/*
 	pid->error_buf[2] = pid->error_buf[1];

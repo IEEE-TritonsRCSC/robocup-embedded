@@ -28,6 +28,7 @@ typedef struct _PID_TypeDef
 	float measure;
 	float error;
 	float last_error;
+	float integral;
 
 	float pout;
 	float iout;

@@ -42,9 +42,9 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-#define UART_RX_BUFFER_SIZE 10  //set to the size we want to limit receive messages to
-#define UART_TX_BUFFER_SIZE 33  //set to the size we want to limit send messages to
-#define RUN_HEADER 0x11
+#define UART_RX_BUFFER_SIZE 11  //set to the size we want to limit receive messages to
+#define UART_TX_BUFFER_SIZE 12  //set to the size we want to limit send messages to
+#define RUN_HEADER 0x1111
 #define DRIBBLE_ON 0x12
 #define DRIBBLE_OFF 0x13
 #define KICK 0x14
@@ -143,47 +143,93 @@ int main(void)
   for (int i = 0; i < 4; i++) {
         speed_data[i] = 0;
   }
+
+
+  pid_init(&motor_pid[0],9999,1000,20,0,0.6,0.5,0.05);
+  pid_init(&motor_pid[1],9999,1000,20,0,0.6,0.5,0.05);
+  pid_init(&motor_pid[2],9999,1000,20,0,0.3,0.4,0.1);
+  pid_init(&motor_pid[3],9999,1000,20,0,0.7,0.4,0.05);
+
   /*
-  //pid_init(&motor_pid[0],10000,5000,20,0,0.09,0.5,0);
-  //pid_init(&motor_pid[1],10000,5000,20,0,0,0,0);
-  //pid_init(&motor_pid[2],10000,5000,20,0,0,0,0);
-  //pid_init(&motor_pid[3],10000,5000,20,0,0,0,0);
   for(int i=0; i<4; i++)
   {
-	  pid_init(&motor_pid[i],10000,1000,50,0,1.1,0.3,0); //sets max output to 9999, integral windup to 1000, PID deadzone to 20 (setpoints below this won't work), Kp=1.5, Ki=0.3, Kd=0
-  }
+	  pid_init(&motor_pid[i],9999,1000,50,0,0.5,0,0); //sets max output to 16384, integral windup to 1000, PID deadzone to 50 (setpoints below this won't work), Kp=1.5, Ki=0.3, Kd=0
+  }*/
   for (int i = 0; i < 4; i++) {
-	  targetSpeeds[i] = 100;
-	  motor_pid[i].output = 1000;
+	  targetSpeeds[i] = 7000;
+	  if (i==0 || i==1){
+		  targetSpeeds[i] *= -1;
+	  }
   }
 
-  //HAL_UART_Receive_IT(&huart2, uart_rx_buffer, sizeof(uart_rx_buffer));
-  */
+  HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
 
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  int i = 1;
   while (1)
   {
 	  /*
-	   * For PID
+	  if (i == 1){
+		  kick(20);
+		  i = 0;
+	  }*/
+
 	  for(int i=0; i<4; i++){
 		  motor_pid[i].target = targetSpeeds[i];
 	      pid_calculate(&motor_pid[i],speed_data[i]);
 	  }
-	  setMotorSpeeds((motor_pid[0].output),0,0,0);
-	  */
+	  setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
+	  uint8_t feedback[] = {0x01, 0x01, 0x01, 0x01, (speed_data[0] >> 8), (speed_data[0] & 0xff), (speed_data[1] >> 8), (speed_data[1] & 0xff), (speed_data[2] >> 8), (speed_data[2] & 0xff),(speed_data[3] >> 8), (speed_data[3] & 0xff)};
+	  HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
 
 	  //UART Receive code, uncomment this block and comment out other parts to test UART
+	  /*
 	  HAL_UART_Receive(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE, 1000);
-	  if (uart_rx_buffer[0] == RUN_HEADER){
-		  int motorSpeed1 = (uart_rx_buffer[1] << 8) | uart_rx_buffer[2];
-		  int motorSpeed2 = (uart_rx_buffer[3] << 8) | uart_rx_buffer[4];
-		  int motorSpeed3 = (uart_rx_buffer[5] << 8) | uart_rx_buffer[6];
-		  int motorSpeed4 = (uart_rx_buffer[7] << 8) | uart_rx_buffer[8];
-		  setMotorSpeeds(motorSpeed1, motorSpeed2, motorSpeed3, motorSpeed4);
+	  if (((uart_rx_buffer[0] << 8) | (uart_rx_buffer[1])) == RUN_HEADER){
+		 targetSpeeds[0] = (int16_t)((uart_rx_buffer[2] << 8) | uart_rx_buffer[3]);
+		 targetSpeeds[1] = (int16_t)((uart_rx_buffer[4] << 8) | uart_rx_buffer[5]);
+		 targetSpeeds[2] = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);
+		 targetSpeeds[3] = (int16_t)((uart_rx_buffer[8] << 8) | uart_rx_buffer[9]);
+
+		  if (targetSpeeds[0] > 10000){
+			  targetSpeeds[0] = 10000;
+		  }
+		  else if (targetSpeeds[0] < -10000){
+			  targetSpeeds[0] = -10000;
+		  }
+
+		  if (targetSpeeds[1] > 10000){
+			  targetSpeeds[1] = 10000;
+		  }
+		  else if (targetSpeeds[1] < -10000){
+			  targetSpeeds[1] = -10000;
+		  }
+
+		  if (targetSpeeds[2] > 10000){
+			  targetSpeeds[2] = 10000;
+		  }
+		  else if (targetSpeeds[2] < -10000){
+			  targetSpeeds[2] = -10000;
+		  }
+
+		  if (targetSpeeds[3] > 10000){
+			  targetSpeeds[3] = 10000;
+		  }
+		  else if (targetSpeeds[3] < -10000){
+			  targetSpeeds[3] = -10000;
+		  }
+
+		  setMotorSpeeds((targetSpeeds[0]), (targetSpeeds[1]), targetSpeeds[2], targetSpeeds[3]);
+		  /*
+		  for(int i=0; i<4; i++){
+			  motor_pid[i].target = targetSpeeds[i];
+			  pid_calculate(&motor_pid[i],speed_data[i]);
+		  }
+		  setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
 		  if (uart_rx_buffer[9] == DRIBBLE_ON){
 			  dribble();
 		  }
@@ -192,12 +238,12 @@ int main(void)
 		  }
 		  else if (uart_rx_buffer[9] == KICK){
 		  	  noDribble();
-			  kick(300);
+			  kick(20);
 	  	  }
 		  uint8_t feedback[] = {0x01, 0x01, 0x01, 0x01, (speed_data[0] >> 8), (speed_data[0] & 0xff), (speed_data[1] >> 8), (speed_data[1] & 0xff), (speed_data[2] >> 8), (speed_data[2] & 0xff),(speed_data[3] >> 8), (speed_data[3] & 0xff)};
 		  HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
-	  }
-	  HAL_Delay(1);
+	  }*/
+	  HAL_Delay(10);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -223,14 +269,16 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
+	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
 	if (uart_rx_buffer[0] == RUN_HEADER){
+		/*
 		for (int i = 0; i<8; i++){
 			motorCurrents[i] = uart_rx_buffer[i+1];
 		}
 		uint8_t feedback[] = {0x01, 0x01, 0x01, 0x01, (speed_data[0] >> 8), (speed_data[0] & 0xff), (speed_data[1] >> 8), (speed_data[1] & 0xff), (speed_data[2] >> 8), (speed_data[2] & 0xff),(speed_data[3] >> 8), (speed_data[3] & 0xff)};
-		HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);
+		HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);*/
 	}
-	HAL_UART_Receive_IT(&huart2, uart_rx_buffer, sizeof(uart_rx_buffer));
+	HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
 }
 
 /**
