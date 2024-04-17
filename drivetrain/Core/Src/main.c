@@ -45,8 +45,6 @@
 #define UART_RX_BUFFER_SIZE 11  //set to the size we want to limit receive messages to
 #define UART_TX_BUFFER_SIZE 12  //set to the size we want to limit send messages to
 #define RUN_HEADER 0x1111
-#define DRIBBLE_ON 0x12
-#define DRIBBLE_OFF 0x13
 #define KICK 0x14
 /* USER CODE END PM */
 
@@ -109,8 +107,6 @@ void SystemClock_Config(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	//uint8_t uart_rx_buffer[uart_rx_buffer_size]; //buffer that stores in an array of characters user inputs, aka a string
-	//uint8_t uart_tx_buffer[uart_tx_buffer_size];
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -156,25 +152,16 @@ int main(void)
   for (int i = 0; i < 4; i++) {
         speed_data[i] = 0;
   }
-
-
   pid_init(&motor_pid[0],9999,1000,20,0,Kp1,Ki1,Kd1);
   pid_init(&motor_pid[1],9999,1000,20,0,Kp2,Ki2,Kd2);
   pid_init(&motor_pid[2],9999,1000,20,0,Kp3,Ki3,Kd3);
   pid_init(&motor_pid[3],9999,1000,20,0,Kp4,Ki4,Kd4);
 
-  /*
-  for(int i=0; i<4; i++)
-  {
-	  pid_init(&motor_pid[i],9999,1000,50,0,0.5,0,0); //sets max output to 16384, integral windup to 1000, PID deadzone to 50 (setpoints below this won't work), Kp=1.5, Ki=0.3, Kd=0
-  }*/
   for (int i = 0; i < 4; i++) {
 	  targetSpeeds[i] = 0;
   }
 
   HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
-
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -186,7 +173,7 @@ int main(void)
 		  kickFlag = 0;
 	  }
 
-	  if (timeout >= 500){                 //Safety timeout when UART disconnects
+	  if (timeout >= 500){                 //Safety timeout when UART disconnectss
 		  for (int i = 0; i < 4; i++) {
 			  targetSpeeds[i] = 0;
 		  }
@@ -197,9 +184,7 @@ int main(void)
 	      pid_calculate(&motor_pid[i],speed_data[i]);
 	  }
 	  setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
-	  /*
-	  uint8_t feedback[] = {0x01, 0x01, 0x01, 0x01, (speed_data[0] >> 8), (speed_data[0] & 0xff), (speed_data[1] >> 8), (speed_data[1] & 0xff), (speed_data[2] >> 8), (speed_data[2] & 0xff),(speed_data[3] >> 8), (speed_data[3] & 0xff)};
-	  HAL_UART_Transmit(&huart2, feedback, sizeof(feedback), 1000);*/
+
 	  timeout++;
 	  HAL_Delay(10);
     /* USER CODE END WHILE */
@@ -228,44 +213,48 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if (((uart_rx_buffer[0] << 8) | (uart_rx_buffer[1])) == RUN_HEADER){
-			timeout = 0;
+		timeout = 0;
 
-			 targetSpeeds[0] = (int16_t)((uart_rx_buffer[2] << 8) | uart_rx_buffer[3]);
-			 targetSpeeds[1] = (int16_t)((uart_rx_buffer[4] << 8) | uart_rx_buffer[5]);
-			 targetSpeeds[2] = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);
-			 targetSpeeds[3] = (int16_t)((uart_rx_buffer[8] << 8) | uart_rx_buffer[9]);
+		 targetSpeeds[0] = (int16_t)((uart_rx_buffer[2] << 8) | uart_rx_buffer[3]);
+		 targetSpeeds[1] = (int16_t)((uart_rx_buffer[4] << 8) | uart_rx_buffer[5]);
+		 targetSpeeds[2] = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);
+		 targetSpeeds[3] = (int16_t)((uart_rx_buffer[8] << 8) | uart_rx_buffer[9]);
 
-			  if (targetSpeeds[0] > 18000){
-				  targetSpeeds[0] = 18000;
-			  }
-			  else if (targetSpeeds[0] < -18000){
-				  targetSpeeds[0] = -18000;
-			  }
+		  if (targetSpeeds[0] > 18000){
+			  targetSpeeds[0] = 18000;
+		  }
+		  else if (targetSpeeds[0] < -18000){
+			  targetSpeeds[0] = -18000;
+		  }
 
-			  if (targetSpeeds[1] > 18000){
-				  targetSpeeds[1] = 18000;
-			  }
-			  else if (targetSpeeds[1] < -18000){
-				  targetSpeeds[1] = -18000;
-			  }
+		  if (targetSpeeds[1] > 18000){
+			  targetSpeeds[1] = 18000;
+		  }
+		  else if (targetSpeeds[1] < -18000){
+			  targetSpeeds[1] = -18000;
+		  }
 
-			  if (targetSpeeds[2] > 18000){
-				  targetSpeeds[2] = 18000;
-			  }
-			  else if (targetSpeeds[2] < -18000){
-				  targetSpeeds[2] = -18000;
-			  }
+		  if (targetSpeeds[2] > 18000){
+			  targetSpeeds[2] = 18000;
+		  }
+		  else if (targetSpeeds[2] < -18000){
+			  targetSpeeds[2] = -18000;
+		  }
 
-			  if (targetSpeeds[3] > 18000){
-				  targetSpeeds[3] = 18000;
-			  }
-			  else if (targetSpeeds[3] < -18000){
-				  targetSpeeds[3] = -18000;
-			  }
+		  if (targetSpeeds[3] > 18000){
+			  targetSpeeds[3] = 18000;
+		  }
+		  else if (targetSpeeds[3] < -18000){
+			  targetSpeeds[3] = -18000;
+		  }
 
-			  if (uart_rx_buffer[10] == KICK){
-				  kickFlag = 1;
-			  }
+		  if (uart_rx_buffer[10] == KICK){
+			  kickFlag = 1;
+		  }
+
+		  for (int i = 0; i < 11; i++){
+			  uart_rx_buffer[i] = 0;
+		  }
 	}
 
 	HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
