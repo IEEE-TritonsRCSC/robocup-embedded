@@ -68,16 +68,16 @@ PID_TypeDef motor_pid[4];
 
 volatile float Kp1 = 1;
 volatile float Ki1 = 0.4;
-volatile float Kd1;
+volatile float Kd1 = 0;
 volatile float Kp2 = 1;
 volatile float Ki2 = 0.4;
-volatile float Kd2;
+volatile float Kd2 = 0;
 volatile float Kp3 = 1;
 volatile float Ki3 = 0.4;
-volatile float Kd3;
+volatile float Kd3 = 0;
 volatile float Kp4 = 1;
 volatile float Ki4 = 0.4;
-volatile float Kd4;
+volatile float Kd4 = 0;
 
 //UART setup
 uint8_t uart_rx_buffer[UART_RX_BUFFER_SIZE]; //buffer that stores in an array of characters user inputs, aka a string
