@@ -41,12 +41,14 @@ float pid_calculate(PID_TypeDef* pid, float measure)
 	pid->error = pid->target - pid->measure;
 	pid->pout = pid->kp * pid->error;
 
-	//Integral with windup
+	// Prevent integral windup
 	pid->integral += pid->error;
-	if(pid->integral > pid->IntegralLimit){
+	if(pid->integral > pid->IntegralLimit)
+	{
 		pid->integral = pid->IntegralLimit;
 	}
-	if(pid->integral < -(pid->IntegralLimit)){
+	if(pid->integral < -(pid->IntegralLimit))
+	{
 		pid->integral = -pid->IntegralLimit;
 	}
 	pid->iout = pid->ki * pid->integral;
