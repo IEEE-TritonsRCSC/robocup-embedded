@@ -149,7 +149,8 @@ int main(void)
   canTxHeader.TransmitGlobalTime = DISABLE;
 
   //PID Setup
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 4; i++) 
+  {
         speed_data[i] = 0;
   }
   pid_init(&motor_pid[0],9999,1000,20,0,Kp1,Ki1,Kd1);
@@ -157,7 +158,8 @@ int main(void)
   pid_init(&motor_pid[2],9999,1000,20,0,Kp3,Ki3,Kd3);
   pid_init(&motor_pid[3],9999,1000,20,0,Kp4,Ki4,Kd4);
 
-  for (int i = 0; i < 4; i++) {
+  for (int i = 0; i < 4; i++) 
+  {
 	  targetSpeeds[i] = 0;
   }
 
@@ -168,21 +170,28 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
 	  if (kickFlag == 1){               //Triggers a kick
 		  kick(20);
 		  kickFlag = 0;
 	  }
 
-	  if (timeout >= 500){                 //Safety timeout when UART disconnectss
-		  for (int i = 0; i < 4; i++) {
+    //Safety timeout when UART disconnects
+	  if (timeout >= 500)
+    {                 
+		  for (int i = 0; i < 4; i++) 
+      {
 			  targetSpeeds[i] = 0;
 		  }
 	  }
 
-	  for(int i=0; i<4; i++){                          //PID control loop
+    //PID control loop
+	  for(int i=0; i<4; i++)
+    {                          
 		  motor_pid[i].target = targetSpeeds[i];
 	      pid_calculate(&motor_pid[i],speed_data[i]);
 	  }
+
 	  setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
 
 	  timeout++;
@@ -194,9 +203,11 @@ int main(void)
   }
 }
 
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) 
+{
 	//HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
-    if(hcan == &hcan1) {
+    if(hcan == &hcan1) 
+    {
         HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &canRxHeader, CAN_RxData);
 
         if(canRxHeader.StdId == 0x201) motor_idx = 0;
@@ -212,7 +223,8 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	if (((uart_rx_buffer[0] << 8) | (uart_rx_buffer[1])) == RUN_HEADER){
+	if (((uart_rx_buffer[0] << 8) | (uart_rx_buffer[1])) == RUN_HEADER)
+  {
 		timeout = 0;
 
 		 targetSpeeds[0] = (int16_t)((uart_rx_buffer[2] << 8) | uart_rx_buffer[3]);
@@ -220,39 +232,49 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		 targetSpeeds[2] = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);
 		 targetSpeeds[3] = (int16_t)((uart_rx_buffer[8] << 8) | uart_rx_buffer[9]);
 
-		  if (targetSpeeds[0] > 18000){
+		  if (targetSpeeds[0] > 18000)
+      {
 			  targetSpeeds[0] = 18000;
 		  }
-		  else if (targetSpeeds[0] < -18000){
+		  else if (targetSpeeds[0] < -18000)
+      {
 			  targetSpeeds[0] = -18000;
 		  }
 
-		  if (targetSpeeds[1] > 18000){
+		  if (targetSpeeds[1] > 18000)
+      {
 			  targetSpeeds[1] = 18000;
 		  }
-		  else if (targetSpeeds[1] < -18000){
+		  else if (targetSpeeds[1] < -18000)
+      {
 			  targetSpeeds[1] = -18000;
 		  }
 
-		  if (targetSpeeds[2] > 18000){
+		  if (targetSpeeds[2] > 18000)
+      {
 			  targetSpeeds[2] = 18000;
 		  }
-		  else if (targetSpeeds[2] < -18000){
+		  else if (targetSpeeds[2] < -18000)
+      {
 			  targetSpeeds[2] = -18000;
 		  }
 
-		  if (targetSpeeds[3] > 18000){
+		  if (targetSpeeds[3] > 18000)
+      {
 			  targetSpeeds[3] = 18000;
 		  }
-		  else if (targetSpeeds[3] < -18000){
+		  else if (targetSpeeds[3] < -18000)
+      {
 			  targetSpeeds[3] = -18000;
 		  }
 
-		  if (uart_rx_buffer[10] == KICK){
+		  if (uart_rx_buffer[10] == KICK)
+      {
 			  kickFlag = 1;
 		  }
 
-		  for (int i = 0; i < 11; i++){
+		  for (int i = 0; i < 11; i++)
+      {
 			  uart_rx_buffer[i] = 0;
 		  }
 	}
@@ -306,7 +328,8 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-void setMotorSpeeds(int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4){
+void setMotorSpeeds(int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4)
+{
 	uint8_t h1 = ms1 >> 8;
 	uint8_t l1 = ms1;
 	uint8_t h2 = ms2 >> 8;
@@ -318,7 +341,11 @@ void setMotorSpeeds(int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4){
 	runMotors(h1,l1,h2,l2,h3,l3,h4,l4);
 }
 
-void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned char motorTwoHigh, unsigned char motorTwoLow, unsigned char motorThreeHigh, unsigned char motorThreeLow, unsigned char motorFourHigh, unsigned char motorFourLow){          //speed can be 16 bits, split into high and low bytes
+void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned char motorTwoHigh, 
+unsigned char motorTwoLow, unsigned char motorThreeHigh, unsigned char motorThreeLow, unsigned char motorFourHigh, 
+unsigned char motorFourLow)
+{          
+  //speed can be 16 bits, split into high and low bytes
 	CAN_TxData[0] = motorOneHigh;  //high byte for speed, shifted 8 because only buffer is only 8 bits
 	CAN_TxData[1] = motorOneLow;       //low bytes for speed
 	CAN_TxData[2] = motorTwoHigh;
@@ -330,13 +357,16 @@ void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned c
 	HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
 }
 
-void kick(int kickDuration){
+void kick(int kickDuration)
+{
 	HAL_GPIO_WritePin(Kicker_Port, Kicker_Pin, GPIO_PIN_SET);
 	HAL_Delay(kickDuration);
 	HAL_GPIO_WritePin(Kicker_Port, Kicker_Pin, GPIO_PIN_RESET);
 }
 
-void forward(int motorSpeed){          //speed can be 16 bits, split into high and low bytes
+void forward(int motorSpeed)
+{          
+  //speed can be 16 bits, split into high and low bytes
 	CAN_TxData[0] = (-motorSpeed) >> 8;  //high byte for speed, shifted 8 because only buffer is only 8 bits
 	CAN_TxData[1] = (-motorSpeed);       //low bytes for speed
 	CAN_TxData[2] = (motorSpeed) >> 8;
