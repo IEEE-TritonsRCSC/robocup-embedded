@@ -223,60 +223,39 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
+
 	if (((uart_rx_buffer[0] << 8) | (uart_rx_buffer[1])) == RUN_HEADER)
   {
+
 		timeout = 0;
 
-		 targetSpeeds[0] = (int16_t)((uart_rx_buffer[2] << 8) | uart_rx_buffer[3]);
-		 targetSpeeds[1] = (int16_t)((uart_rx_buffer[4] << 8) | uart_rx_buffer[5]);
-		 targetSpeeds[2] = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);
-		 targetSpeeds[3] = (int16_t)((uart_rx_buffer[8] << 8) | uart_rx_buffer[9]);
+    targetSpeeds[0] = (int16_t)((uart_rx_buffer[2] << 8) | uart_rx_buffer[3]);
+    targetSpeeds[1] = (int16_t)((uart_rx_buffer[4] << 8) | uart_rx_buffer[5]);
+    targetSpeeds[2] = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);
+    targetSpeeds[3] = (int16_t)((uart_rx_buffer[8] << 8) | uart_rx_buffer[9]);
 
-		  if (targetSpeeds[0] > 18000)
+		for (int i = 0; i < 4; i++)
+    {
+      if (targetSpeeds[i] > 18000)
       {
-			  targetSpeeds[0] = 18000;
-		  }
-		  else if (targetSpeeds[0] < -18000)
+          targetSpeeds[i] = 18000;
+      }
+      if (targetSpeeds[i] < -18000)
       {
-			  targetSpeeds[0] = -18000;
-		  }
+          targetSpeeds[i] = -18000;
+      }
+    }
 
-		  if (targetSpeeds[1] > 18000)
-      {
-			  targetSpeeds[1] = 18000;
-		  }
-		  else if (targetSpeeds[1] < -18000)
-      {
-			  targetSpeeds[1] = -18000;
-		  }
+    if (uart_rx_buffer[10] == KICK)
+    {
+      kickFlag = 1;
+    }
 
-		  if (targetSpeeds[2] > 18000)
-      {
-			  targetSpeeds[2] = 18000;
-		  }
-		  else if (targetSpeeds[2] < -18000)
-      {
-			  targetSpeeds[2] = -18000;
-		  }
+    for (int i = 0; i < 11; i++)
+    {
+      uart_rx_buffer[i] = 0;
+    }
 
-		  if (targetSpeeds[3] > 18000)
-      {
-			  targetSpeeds[3] = 18000;
-		  }
-		  else if (targetSpeeds[3] < -18000)
-      {
-			  targetSpeeds[3] = -18000;
-		  }
-
-		  if (uart_rx_buffer[10] == KICK)
-      {
-			  kickFlag = 1;
-		  }
-
-		  for (int i = 0; i < 11; i++)
-      {
-			  uart_rx_buffer[i] = 0;
-		  }
 	}
 
 	HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
