@@ -162,36 +162,41 @@ int main(void)
   }
 
   HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
+
+  forward(5000, 5000);
+  backward(5000, 5000);
+  left(5000, 5000);
+  right(5000, 5000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
-	  if (kickFlag == 1){               //Triggers a kick
-		  kick(20);
-		  kickFlag = 0;
-	  }
-
-	  if (timeout >= 500){                 //Safety timeout when UART disconnectss
-		  for (int i = 0; i < 4; i++) {
-			  targetSpeeds[i] = 0;
-		  }
-	  }
-
-	  for(int i=0; i<4; i++){                          //PID control loop
-		  motor_pid[i].target = targetSpeeds[i];
-	      pid_calculate(&motor_pid[i],speed_data[i]);
-	  }
-	  setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
-
-	  timeout++;
-	  HAL_Delay(10);
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
-  /* USER CODE END 3 */
-  }
+//  while (1)
+//  {
+//	  if (kickFlag == 1){               //Triggers a kick
+//		  kick(20);
+//		  kickFlag = 0;
+//	  }
+//
+//	  if (timeout >= 500){                 //Safety timeout when UART disconnectss
+//		  for (int i = 0; i < 4; i++) {
+//			  targetSpeeds[i] = 0;
+//		  }
+//	  }
+//
+//	  for(int i=0; i<4; i++){                          //PID control loop
+//		  motor_pid[i].target = targetSpeeds[i];
+//	      pid_calculate(&motor_pid[i],speed_data[i]);
+//	  }
+//	  setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
+//
+//	  timeout++;
+//	  HAL_Delay(10);
+//    /* USER CODE END WHILE */
+//
+//    /* USER CODE BEGIN 3 */
+//  /* USER CODE END 3 */
+//  }
 }
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
@@ -336,16 +341,88 @@ void kick(int kickDuration){
 	HAL_GPIO_WritePin(Kicker_Port, Kicker_Pin, GPIO_PIN_RESET);
 }
 
-void forward(int motorSpeed){          //speed can be 16 bits, split into high and low bytes
-	CAN_TxData[0] = (-motorSpeed) >> 8;  //high byte for speed, shifted 8 because only buffer is only 8 bits
-	CAN_TxData[1] = (-motorSpeed);       //low bytes for speed
-	CAN_TxData[2] = (motorSpeed) >> 8;
-	CAN_TxData[3] = (motorSpeed);
-	CAN_TxData[4] = (-motorSpeed) >> 8;
-	CAN_TxData[5] = (-motorSpeed);
-	CAN_TxData[6] = (motorSpeed) >> 8;
-	CAN_TxData[7] = (motorSpeed);
-	HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
+void forward(int motorSpeed, int duration){    //duration is given in milliseconds, should be multiple of 10
+	int startTime = HAL_GetTick();
+	while (HAL_GetTick() < (startTime + duration))
+	{
+		for (int i = 0; i < 4; i++) {
+			if (i%2==1){
+				targetSpeeds[i] = -motorSpeed;
+			}
+			else {
+				targetSpeeds[i] = motorSpeed;
+			}
+		}
+		for(int i=0; i<4; i++){                          //PID control loop
+			motor_pid[i].target = targetSpeeds[i];
+			pid_calculate(&motor_pid[i],speed_data[i]);
+		}
+		setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
+		HAL_Delay(10);
+	 }
+}
+
+void backward(int motorSpeed, int duration){
+	int startTime = HAL_GetTick();
+	while (HAL_GetTick() < (startTime + duration))
+	{
+		for (int i = 0; i < 4; i++) {
+			if (i%2==1){
+				targetSpeeds[i] = motorSpeed;
+			}
+			else {
+				targetSpeeds[i] = -motorSpeed;
+			}
+		}
+		for(int i=0; i<4; i++){                          //PID control loop
+			motor_pid[i].target = targetSpeeds[i];
+			pid_calculate(&motor_pid[i],speed_data[i]);
+		}
+		setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
+		HAL_Delay(10);
+	 }
+}
+
+void left(int motorSpeed, int duration){
+	int startTime = HAL_GetTick();
+	while (HAL_GetTick() < (startTime + duration))
+	{
+		for (int i = 0; i < 4; i++) {
+			if (i/2<1){
+				targetSpeeds[i] = -motorSpeed;
+			}
+			else {
+				targetSpeeds[i] = motorSpeed;
+			}
+		}
+		for(int i=0; i<4; i++){                          //PID control loop
+			motor_pid[i].target = targetSpeeds[i];
+			pid_calculate(&motor_pid[i],speed_data[i]);
+		}
+		setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
+		HAL_Delay(10);
+	 }
+}
+
+void right(int motorSpeed, int duration){
+	int startTime = HAL_GetTick();
+	while (HAL_GetTick() < (startTime + duration))
+	{
+		for (int i = 0; i < 4; i++) {
+			if (i/2<1){
+				targetSpeeds[i] = motorSpeed;
+			}
+			else {
+				targetSpeeds[i] = -motorSpeed;
+			}
+		}
+		for(int i=0; i<4; i++){                          //PID control loop
+			motor_pid[i].target = targetSpeeds[i];
+			pid_calculate(&motor_pid[i],speed_data[i]);
+		}
+		setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
+		HAL_Delay(10);
+	 }
 }
 
 /* USER CODE END 4 */

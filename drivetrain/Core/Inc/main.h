@@ -50,7 +50,10 @@ extern "C" {
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
-void forward(int motorSpeed);
+void forward(int motorSpeed, int duration);
+void backward(int motorSpeed, int duration);
+void left(int motorSpeed, int duration);
+void right(int motorSpeed, int duration);
 void setMotorSpeeds(int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4);
 void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned char motorTwoHigh, unsigned char motorTwoLow, unsigned char motorThreeHigh, unsigned char motorThreeLow, unsigned char motorFourHigh, unsigned char motorFourLow);
 void kick(int kickDuration);
