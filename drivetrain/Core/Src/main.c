@@ -165,40 +165,40 @@ int main(void)
 
   HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
 
-  forward(5000, 5000);
-  backward(5000, 5000);
-  left(5000, 5000);
-  right(5000, 5000);
+  // forward(5000, 5000);
+  // backward(5000, 5000);
+  // left(5000, 5000);
+  // right(5000, 5000);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-//  while (1)
-//  {
-//	  if (kickFlag == 1){               //Triggers a kick
-//		  kick(20);
-//		  kickFlag = 0;
-//	  }
-//
-//	  if (timeout >= 500){                 //Safety timeout when UART disconnectss
-//		  for (int i = 0; i < 4; i++) {
-//			  targetSpeeds[i] = 0;
-//		  }
-//	  }
-//
-//	  for(int i=0; i<4; i++){                          //PID control loop
-//		  motor_pid[i].target = targetSpeeds[i];
-//	      pid_calculate(&motor_pid[i],speed_data[i]);
-//	  }
-//	  setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
-//
-//	  timeout++;
-//	  HAL_Delay(10);
-//    /* USER CODE END WHILE */
-//
-//    /* USER CODE BEGIN 3 */
-//  /* USER CODE END 3 */
-//  }
+ while (1)
+ {
+	  if (kickFlag == 1){               //Triggers a kick
+		  kick(20);
+		  kickFlag = 0;
+	  }
+
+	  if (timeout >= 500){                 //Safety timeout when UART disconnectss
+		  for (int i = 0; i < 4; i++) {
+			  targetSpeeds[i] = 0;
+		  }
+	  }
+
+	  for(int i=0; i<4; i++){                          //PID control loop
+		  motor_pid[i].target = targetSpeeds[i];
+	      pid_calculate(&motor_pid[i],speed_data[i]);
+	  }
+	  setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
+
+	  timeout++;
+	  HAL_Delay(10);
+   /* USER CODE END WHILE */
+
+   /* USER CODE BEGIN 3 */
+ /* USER CODE END 3 */
+ }
 }
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) 
