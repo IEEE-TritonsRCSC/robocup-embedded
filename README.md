@@ -1,0 +1,1 @@
+This is the repository for Robocup's embedded code from the 2023-2024 school year. The code is a simple bare metal program that receives commands over UART, sends kick signals when appropriate, and controls the motors using PID control.
