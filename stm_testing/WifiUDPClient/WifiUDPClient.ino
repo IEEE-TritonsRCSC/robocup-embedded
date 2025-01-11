@@ -1,10 +1,10 @@
-#include<WiFi.h>
-#include<WiFiUdp.h>
-#include "pb_decode.h"
-#include "messages_robocup_ssl_detection.pb.h"
-#include "ssl_simulation_robot_control.pb.h"
-#include "triton_bot_communication.pb.h"
-#include "velocityConversions.h"
+// #include<WiFi.h>
+// #include<WiFiUdp.h>
+// #include "pb_decode.h"
+// #include "messages_robocup_ssl_detection.pb.h"
+// #include "ssl_simulation_robot_control.pb.h"
+// #include "triton_bot_communication.pb.h"
+// #include "velocityConversions.h"
 
 // Define pins
 #define TX 17
@@ -14,14 +14,14 @@
 const char* ssid = "wlan3";
 const char* password = "a1b2c3d4";
 
-IPAddress local_IP(192, 168, 8, 80);
-IPAddress gateway(192, 168, 8, 1);
-IPAddress subnet(255, 255, 255, 0);
+// IPAddress local_IP(192, 168, 8, 80);
+// IPAddress gateway(192, 168, 8, 1);
+// IPAddress subnet(255, 255, 255, 0);
 
 
-// UDP setup
-WiFiUDP udp;
-const int udpPort = 3333;
+// // UDP setup
+// WiFiUDP udp;
+// const int udpPort = 3333;
 
 // UART setup
 HardwareSerial espSerial(2);
@@ -32,22 +32,22 @@ void setup() {
   Serial.begin(115200);
   espSerial.begin(115200, SERIAL_8N1, RX, TX);
 
-  if (!WiFi.config(local_IP, gateway, subnet)) {
-    Serial.println("STA Failed to configure");
-  }
+  // if (!WiFi.config(local_IP, gateway, subnet)) {
+  //   Serial.println("STA Failed to configure");
+  // }
 
-  // Connect to Wi-Fi
-  Serial.print("Connecting to Wi-Fi");
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("\nConnected to Wi-Fi!");
+  // // Connect to Wi-Fi
+  // Serial.print("Connecting to Wi-Fi");
+  // WiFi.begin(ssid, password);
+  // while (WiFi.status() != WL_CONNECTED) {
+  //   delay(500);
+  //   Serial.print(".");
+  // }
+  // Serial.println("\nConnected to Wi-Fi!");
   
   // Start UDP
-  udp.begin(udpPort);
-  Serial.printf("Listening on UDP port %d\n", udpPort);
+  // udp.begin(udpPort);
+  // Serial.printf("Listening on UDP port %d\n", udpPort);
 
   count = 0;
 }
@@ -63,7 +63,7 @@ void loop() {
       Serial.printf("%x ", msg.data()[i]);
   } Serial.printf("\n");
 
-  espSerial.flush();
+  // espSerial.flush();
   count++;
 
   Serial.println("wrote");
