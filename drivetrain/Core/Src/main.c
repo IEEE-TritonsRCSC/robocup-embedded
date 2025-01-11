@@ -193,21 +193,21 @@ int main(void)
 	  }
 	  setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
 
-	  int feedbackSize = sizeof(speed_data);
-	  uint8_t feedbackBuffer[(feedbackSize+2)];
-	  feedbackBuffer[0] = 0xB0;
-	  feedbackBuffer[1] = 0xBA;
-
-	  for (int i = 0; i < (sizeof(speed_data) / sizeof(float)); i++)
-	  {
-		  uint8_t *floatBytes = (uint8_t *)&speed_data[i];
-		  feedbackBuffer[2 + (i * 4) + 0] = floatBytes[0];
-		  feedbackBuffer[2 + (i * 4) + 1] = floatBytes[1];
-		  feedbackBuffer[2 + (i * 4) + 2] = floatBytes[2];
-		  feedbackBuffer[2 + (i * 4) + 3] = floatBytes[3];
-	  }
-
-	  HAL_UART_Transmit_DMA(&huart2, feedbackBuffer, sizeof(feedbackBuffer));
+//	  int feedbackSize = sizeof(speed_data);
+//	  uint8_t feedbackBuffer[(feedbackSize+2)];
+//	  feedbackBuffer[0] = 0xB0;
+//	  feedbackBuffer[1] = 0xBA;
+//
+//	  for (int i = 0; i < (sizeof(speed_data) / sizeof(float)); i++)
+//	  {
+//		  uint8_t *floatBytes = (uint8_t *)&speed_data[i];
+//		  feedbackBuffer[2 + (i * 4) + 0] = floatBytes[0];
+//		  feedbackBuffer[2 + (i * 4) + 1] = floatBytes[1];
+//		  feedbackBuffer[2 + (i * 4) + 2] = floatBytes[2];
+//		  feedbackBuffer[2 + (i * 4) + 3] = floatBytes[3];
+//	  }
+//
+//	  HAL_UART_Transmit_DMA(&huart2, feedbackBuffer, sizeof(feedbackBuffer));
 	  timeout++;
 	  HAL_Delay(10);
    /* USER CODE END WHILE */
