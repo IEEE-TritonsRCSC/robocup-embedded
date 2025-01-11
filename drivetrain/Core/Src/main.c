@@ -44,8 +44,9 @@
 /* USER CODE BEGIN PM */
 #define UART_RX_BUFFER_SIZE 11  //set to the size we want to limit receive messages to
 #define UART_TX_BUFFER_SIZE 12  //set to the size we want to limit send messages to
-#define RUN_HEADER 0x1111
+#define RUN_HEADER 0xCAFE
 #define KICK 0x14
+#define REDUCTION_RATIO 36.0
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -61,9 +62,9 @@ uint8_t CAN_RxData[8];
 //PID feedback variables
 volatile uint8_t motor_idx;
 volatile uint16_t angle_data[4];
-volatile int16_t speed_data[4];
+volatile float speed_data[4];
 volatile float torque_current_data[4];
-volatile int16_t targetSpeeds[4];
+volatile float targetSpeeds[4];
 PID_TypeDef motor_pid[4];
 
 volatile float Kp1 = 1;
@@ -192,6 +193,21 @@ int main(void)
 	  }
 	  setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
 
+	  int feedbackSize = sizeof(speed_data);
+	  uint8_t feedbackBuffer[(feedbackSize+2)];
+	  feedbackBuffer[0] = 0xB0;
+	  feedbackBuffer[1] = 0xBA;
+
+	  for (int i = 0; i < (sizeof(speed_data) / sizeof(float)); i++)
+	  {
+		  uint8_t *floatBytes = (uint8_t *)&speed_data[i];
+		  feedbackBuffer[2 + (i * 4) + 0] = floatBytes[0];
+		  feedbackBuffer[2 + (i * 4) + 1] = floatBytes[1];
+		  feedbackBuffer[2 + (i * 4) + 2] = floatBytes[2];
+		  feedbackBuffer[2 + (i * 4) + 3] = floatBytes[3];
+	  }
+
+	  HAL_UART_Transmit_DMA(&huart2, feedbackBuffer, sizeof(feedbackBuffer));
 	  timeout++;
 	  HAL_Delay(10);
    /* USER CODE END WHILE */
@@ -214,7 +230,7 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
         if(canRxHeader.StdId == 0x204) motor_idx = 3;
 
         angle_data[motor_idx] = (uint16_t)(CAN_RxData[0]<<8 | CAN_RxData[1]);
-        speed_data[motor_idx] = (int16_t)(CAN_RxData[2]<<8 | CAN_RxData[3]); // originally rpm
+        speed_data[motor_idx] = ((int16_t)(CAN_RxData[2]<<8 | CAN_RxData[3]) / REDUCTION_RATIO) ; // angular velocity in rpm
         torque_current_data[motor_idx] = (CAN_RxData[4]<<8 | CAN_RxData[5]);
     }
 }
@@ -234,13 +250,13 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 
 		for (int i = 0; i < 4; i++)
     {
-      if (targetSpeeds[i] > 18000)
+      if (targetSpeeds[i] > 500)
       {
-          targetSpeeds[i] = 18000;
+          targetSpeeds[i] = 500;
       }
-      if (targetSpeeds[i] < -18000)
+      if (targetSpeeds[i] < -500)
       {
-          targetSpeeds[i] = -18000;
+          targetSpeeds[i] = -500;
       }
     }
 
@@ -254,8 +270,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
       uart_rx_buffer[i] = 0;
     }
 
+    HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+
 	}
 
+	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
 	HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
 }
 
@@ -339,90 +358,6 @@ void kick(int kickDuration)
 	HAL_GPIO_WritePin(Kicker_Port, Kicker_Pin, GPIO_PIN_SET);
 	HAL_Delay(kickDuration);
 	HAL_GPIO_WritePin(Kicker_Port, Kicker_Pin, GPIO_PIN_RESET);
-}
-
-void forward(int motorSpeed, int duration){    //duration is given in milliseconds, should be multiple of 10
-	int startTime = HAL_GetTick();
-	while (HAL_GetTick() < (startTime + duration))
-	{
-		for (int i = 0; i < 4; i++) {
-			if (i%2==1){
-				targetSpeeds[i] = -motorSpeed;
-			}
-			else {
-				targetSpeeds[i] = motorSpeed;
-			}
-		}
-		for(int i=0; i<4; i++){                          //PID control loop
-			motor_pid[i].target = targetSpeeds[i];
-			pid_calculate(&motor_pid[i],speed_data[i]);
-		}
-		setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
-		HAL_Delay(10);
-	 }
-}
-
-void backward(int motorSpeed, int duration){
-	int startTime = HAL_GetTick();
-	while (HAL_GetTick() < (startTime + duration))
-	{
-		for (int i = 0; i < 4; i++) {
-			if (i%2==1){
-				targetSpeeds[i] = motorSpeed;
-			}
-			else {
-				targetSpeeds[i] = -motorSpeed;
-			}
-		}
-		for(int i=0; i<4; i++){                          //PID control loop
-			motor_pid[i].target = targetSpeeds[i];
-			pid_calculate(&motor_pid[i],speed_data[i]);
-		}
-		setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
-		HAL_Delay(10);
-	 }
-}
-
-void left(int motorSpeed, int duration){
-	int startTime = HAL_GetTick();
-	while (HAL_GetTick() < (startTime + duration))
-	{
-		for (int i = 0; i < 4; i++) {
-			if (i/2<1){
-				targetSpeeds[i] = -motorSpeed;
-			}
-			else {
-				targetSpeeds[i] = motorSpeed;
-			}
-		}
-		for(int i=0; i<4; i++){                          //PID control loop
-			motor_pid[i].target = targetSpeeds[i];
-			pid_calculate(&motor_pid[i],speed_data[i]);
-		}
-		setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
-		HAL_Delay(10);
-	 }
-}
-
-void right(int motorSpeed, int duration){
-	int startTime = HAL_GetTick();
-	while (HAL_GetTick() < (startTime + duration))
-	{
-		for (int i = 0; i < 4; i++) {
-			if (i/2<1){
-				targetSpeeds[i] = motorSpeed;
-			}
-			else {
-				targetSpeeds[i] = -motorSpeed;
-			}
-		}
-		for(int i=0; i<4; i++){                          //PID control loop
-			motor_pid[i].target = targetSpeeds[i];
-			pid_calculate(&motor_pid[i],speed_data[i]);
-		}
-		setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
-		HAL_Delay(10);
-	 }
 }
 
 /* USER CODE END 4 */

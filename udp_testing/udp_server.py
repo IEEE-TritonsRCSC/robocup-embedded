@@ -2,7 +2,7 @@ import socket
 import time
 from data_pb2 import SensorData  # Import the generated class
 
-UDP_IP = "192.168.137.205"  # Replace with the ESP32's IP address
+UDP_IP = "192.168.137.11"  # Replace with the ESP32's IP address
 UDP_PORT = 3333
 
 def main():

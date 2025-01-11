@@ -60,8 +60,8 @@ all: main-build
 main-build: drivetrain.elf secondary-outputs
 
 # Tool invocations
-drivetrain.elf drivetrain.map: $(OBJS) $(USER_OBJS) C:\Documents\GitHub\robocup-mechatronics\drivetrain\STM32F427IIHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "drivetrain.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Documents\GitHub\robocup-mechatronics\drivetrain\STM32F427IIHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="drivetrain.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+drivetrain.elf drivetrain.map: $(OBJS) $(USER_OBJS) C:\Documents\GitHub\robocup-embedded\drivetrain\STM32F427IIHX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "drivetrain.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Documents\GitHub\robocup-embedded\drivetrain\STM32F427IIHX_FLASH.ld" --specs=nosys.specs -Wl,-Map="drivetrain.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

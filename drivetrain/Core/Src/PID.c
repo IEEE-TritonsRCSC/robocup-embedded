@@ -6,10 +6,10 @@
 
 void pid_init(
 	PID_TypeDef * pid,
-	uint16_t maxout,
-	uint16_t integral_limit,
+	float maxout,
+	float integral_limit,
 	float deadband,
-	int16_t  target,
+	float  target,
 
 	float 	kp,
 	float 	ki,
