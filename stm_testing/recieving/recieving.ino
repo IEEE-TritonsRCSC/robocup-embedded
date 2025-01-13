@@ -7,7 +7,7 @@ HardwareSerial leSerial(2);
 void setup() {
     // Initialize serial ports
     Serial.begin(115200);  // Debugging
-    leSerial.begin(115200, SERIAL_8N1, TX, RX);
+    leSerial.begin(115200, SERIAL_8N1, RX, TX);
 
     Serial.println("Ready to read 11-byte array from Serial2.");
 }
