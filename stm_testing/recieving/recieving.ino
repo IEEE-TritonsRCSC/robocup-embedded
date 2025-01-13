@@ -1,10 +1,13 @@
 // Use Serial2 for demonstration
 HardwareSerial leSerial(2);
 
+#define TX 16 // TX=GPIO17
+#define RX 17 // RX=GPIO16
+
 void setup() {
     // Initialize serial ports
     Serial.begin(115200);  // Debugging
-    leSerial.begin(115200, SERIAL_8N1, 16, 17); // TX=GPIO16, RX=GPIO17
+    leSerial.begin(115200, SERIAL_8N1, TX, RX);
 
     Serial.println("Ready to read 11-byte array from Serial2.");
 }
