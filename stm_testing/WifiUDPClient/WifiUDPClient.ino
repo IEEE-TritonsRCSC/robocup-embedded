@@ -1,6 +1,6 @@
 // Define pins
-#define TX 16
-#define RX 17
+#define TX 17
+#define RX 16
 
 // UART setup
 HardwareSerial espSerial(2);
@@ -28,6 +28,6 @@ void loop() {
   // espSerial.flush();
   count++;
 
-  delay(1000);
+  delay(5000);
 
 }
