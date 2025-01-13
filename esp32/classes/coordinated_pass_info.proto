@@ -1,0 +1,14 @@
+syntax = "proto3";
+package proto.triton;
+
+message CoordinatedPass {
+  int32 receiverID = 1;
+  int32 senderID = 2;
+  float passLocX = 3;
+  float passLocY = 4;
+}
+
+message MoveRobot {
+  float moveVectorX = 1;
+  float moveVectorY = 2;
+}

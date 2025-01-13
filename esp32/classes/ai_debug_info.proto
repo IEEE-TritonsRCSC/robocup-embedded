@@ -1,0 +1,19 @@
+syntax = "proto3";
+package proto.triton;
+
+message Debug {
+  DebugPath path = 1;
+}
+
+message DebugPath {
+  int32 id = 1;
+  DebugVector fromPos = 3;
+  DebugVector toPos = 4;
+  DebugVector nextPos = 5;
+  repeated DebugVector nodes = 2;
+}
+
+message DebugVector {
+  float x = 1;
+  float y = 2;
+}

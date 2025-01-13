@@ -1,0 +1,59 @@
+syntax = "proto3";
+package proto.triton;
+
+import "messages_robocup_ssl_geometry.proto";
+
+message Ball {
+  int64 timestamp = 1;
+  float confidence = 2;
+  float x = 3;
+  float y = 4;
+  float z = 5;
+  float vx = 6;
+  float vy = 7;
+  float vz = 8;
+  float acc_x = 9;
+  float acc_y = 10;
+  float acc_z = 11;
+  oneof capture_state {
+    Free free = 12;
+    AllyCapture ally_capture = 13;
+    FoeCapture foe_capture = 14;
+  }
+}
+
+message Free {
+}
+
+message AllyCapture {
+  int32 id = 1;
+}
+
+message FoeCapture {
+  int32 id = 1;
+}
+
+message Robot {
+  int64 timestamp = 1;
+  int32 id = 2;
+  float x = 3;
+  float y = 4;
+  float orientation = 5;
+  float vx = 6;
+  float vy = 7;
+  float angular = 8;
+  float acc_x = 9;
+  float acc_y = 10;
+  float acc_angular = 11;
+  bool has_ball = 12;
+  float dribble_start_x = 13;
+  float dribble_start_y = 14;
+}
+
+message FilteredWrapperPacket {
+  int64 timestamp = 1;
+  proto.vision.SSL_GeometryFieldSize field = 2;
+  Ball ball = 3;
+  map<int32, Robot> allies = 4;
+  map<int32, Robot>  foes = 5;
+}
