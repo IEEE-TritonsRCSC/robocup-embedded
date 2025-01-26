@@ -120,6 +120,7 @@ int main(void)
 
 		  // Handle received data
 		  blinkGreen();	// For testing
+		  //blinkRed();
 		  HAL_UART_Transmit(&huart2, UART2_rxBuffer, sizeof(UART2_rxBuffer), HAL_MAX_DELAY);
 
 		  // Clear buffer after processing
@@ -299,8 +300,7 @@ static void MX_GPIO_Init(void)
 // Callback function when data is received
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-	blinkRed();
-    if (huart->Instance == USART2) // Check if the interrupt is from USART3
+    if (huart->Instance == USART2) // Check if the interrupt is from USART2
     {
         UART2_rxCompleteFlag = 1; // Set the flag
     }
