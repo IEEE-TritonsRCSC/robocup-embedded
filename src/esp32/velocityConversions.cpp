@@ -7,13 +7,10 @@ void getVelocityArray(array<int, 4>& wheel_speeds, double heading, double absV,
     // Takes heading, absolute velocity, theta, and rotational velocity
     // rotational velocity as input parameters and returns a byte array.
     
-
-                
-    
     array<double, 4> wheel_speeds_double;
 
     // constants
-    double twoPI = 2*M_PI;
+    double twoPI = 2 * M_PI;
     double maxRPM = 15000;
     double d = 0.13;
     double r = 0.05;
@@ -27,8 +24,12 @@ void getVelocityArray(array<int, 4>& wheel_speeds, double heading, double absV,
                  vy = absV * cos(relativeTheta)
         BECAUSE THETA IS RELATIVE TO UP/NORTH
     */
-    double vx = absV * cos(relativeTheta);
-    double vy = absV * sin(relativeTheta);
+    // double vx = absV * cos(relativeTheta);
+    // double vy = absV * sin(relativeTheta);
+
+    double vx = absV * sin(relativeTheta);
+    double vy = absV * cos(relativeTheta);
+
 
     // angle of each wheel relative to the x-axis
     array<double, 4> B = {-M_PI/6, M_PI/6, 5*M_PI/6, 7*M_PI/6};
@@ -63,7 +64,7 @@ void getVelocityArray(array<int, 4>& wheel_speeds, double heading, double absV,
     }
 }
 
-void valuesToBytes(array<int, 4>& wheel_speeds, array<unsigned char, 8>& wheel_speeds_byte) {
+void valuesToBytes(array<int, 4>& wheel_speeds, array<uint8_t, 8>& wheel_speeds_byte) {
     
     for (int i = 0; i < 4; i++) {
         wheel_speeds_byte[(i * 2)] = (wheel_speeds[i] >> 8 & 0xff); 
@@ -84,7 +85,7 @@ void getWheelVelocities(array<int, 4>& wheel_speeds,
     getVelocityArray(wheel_speeds, 0, absV, theta, rotV);
 }
 
-void action_to_byte_array(array<unsigned char, 8>& wheel_speeds_byte,
+void action_to_byte_array(array<uint8_t, 8>& wheel_speeds_byte,
                           proto_simulation_RobotMoveCommand& action) {
 
     array<int, 4> wheel_speeds;
