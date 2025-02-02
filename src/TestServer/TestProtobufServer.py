@@ -23,12 +23,12 @@ message.vision.pixel_y = 1.0
 message.vision.height = 1.0
 
 message.command.id = 1
-message.command.move_command.local_velocity.forward = 1.0
-message.command.move_command.local_velocity.left = 1.0
-message.command.move_command.local_velocity.angular = math.pi/4.0
-message.command.kick_speed = 1.0
-message.command.kick_angle = math.pi/2.0
-message.command.dribbler_speed = 1.0
+message.command.move_command.local_velocity.forward = 5.0
+message.command.move_command.local_velocity.left = 0
+message.command.move_command.local_velocity.angular = 0
+message.command.kick_speed = 0
+message.command.kick_angle = 0
+message.command.dribbler_speed = 0
 
 UDP_IP = '192.168.8.80' # Replace with the ESP32's IP address
 
@@ -47,7 +47,7 @@ def main():
             sock.sendto(data, (UDP_IP, UDP_PORT))
             print(f'Sent data, id = {message.id}')
 
-            time.sleep(1)
+            time.sleep(3)
     
     except KeyboardInterrupt:
         print('\nStopping sender.')
