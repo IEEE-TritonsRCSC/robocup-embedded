@@ -28,8 +28,7 @@ CAN_HandleTypeDef hcan1;
 CAN_FilterTypeDef canfilter1;
 
 /* CAN1 init function */
-void MX_CAN1_Init(void)
-{
+void MX_CAN1_Init(void) {
 
   /* USER CODE BEGIN CAN1_Init 0 */
 

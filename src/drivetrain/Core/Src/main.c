@@ -83,6 +83,12 @@ volatile float Kd4 = 0;
 //UART setup
 uint8_t uart_rx_buffer[UART_RX_BUFFER_SIZE]; //buffer that stores in an array of characters user inputs, aka a string
 uint8_t uart_tx_buffer[UART_TX_BUFFER_SIZE];
+
+uint8_t msg_buff[9];
+volatile uint8_t rx_byte;
+volatile int ca_flag;
+volatile int fe_flag;
+
 volatile int timeout;  //timeout for safety mechanism to shutoff robot
 
 volatile int kickFlag; //flag for kicking
@@ -105,93 +111,97 @@ void SystemClock_Config(void);
   * @retval int
   */
 
-int main(void)
-{
-  /* USER CODE BEGIN 1 */
-  /* USER CODE END 1 */
+int main(void) {
+	/* USER CODE BEGIN 1 */
+	/* USER CODE END 1 */
 
-  /* MCU Configuration--------------------------------------------------------*/
+	/* MCU Configuration--------------------------------------------------------*/
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+	HAL_Init();
 
-  /* USER CODE BEGIN Init */
+	/* USER CODE BEGIN Init */
 
-  /* USER CODE END Init */
+	/* USER CODE END Init */
 
-  /* Configure the system clock */
-  SystemClock_Config();
+	/* Configure the system clock */
+	SystemClock_Config();
 
-  /* USER CODE BEGIN SysInit */
+	/* USER CODE BEGIN SysInit */
 
-  /* USER CODE END SysInit */
+	/* USER CODE END SysInit */
 
-  /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_DMA_Init();
-  MX_CAN1_Init();
-  MX_TIM1_Init();
-  MX_USART2_UART_Init();
-  /* USER CODE BEGIN 2 */
+	/* Initialize all configured peripherals */
+	MX_GPIO_Init();
+	MX_DMA_Init();
+	MX_CAN1_Init();
+	MX_TIM1_Init();
+	MX_USART2_UART_Init();
+	/* USER CODE BEGIN 2 */
 
-  //HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+	//HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 
-  //Motor setup
-  HAL_GPIO_TogglePin(Motor_Port, Motor1_Pin);
-  HAL_GPIO_TogglePin(Motor_Port, Motor2_Pin);
-  HAL_GPIO_TogglePin(Motor_Port, Motor3_Pin);
-  HAL_GPIO_TogglePin(Motor_Port, Motor4_Pin);
+	// Motor setup
+	HAL_GPIO_TogglePin(Motor_Port, Motor1_Pin);
+	HAL_GPIO_TogglePin(Motor_Port, Motor2_Pin);
+	HAL_GPIO_TogglePin(Motor_Port, Motor3_Pin);
+	HAL_GPIO_TogglePin(Motor_Port, Motor4_Pin);
 
-  //CAN setup
-  canTxHeader.DLC = 8;
-  canTxHeader.IDE = CAN_ID_STD;
-  canTxHeader.RTR = CAN_RTR_DATA;
-  canTxHeader.StdId = 0x200;
-  canTxHeader.TransmitGlobalTime = DISABLE;
+	// CAN setup
+	canTxHeader.DLC = 8;
+	canTxHeader.IDE = CAN_ID_STD;
+	canTxHeader.RTR = CAN_RTR_DATA;
+	canTxHeader.StdId = 0x200;
+	canTxHeader.TransmitGlobalTime = DISABLE;
 
-  //PID Setup
-  for (int i = 0; i < 4; i++) 
-  {
-        speed_data[i] = 0;
-  }
-  pid_init(&motor_pid[0],9999,1000,20,0,Kp1,Ki1,Kd1);
-  pid_init(&motor_pid[1],9999,1000,20,0,Kp2,Ki2,Kd2);
-  pid_init(&motor_pid[2],9999,1000,20,0,Kp3,Ki3,Kd3);
-  pid_init(&motor_pid[3],9999,1000,20,0,Kp4,Ki4,Kd4);
+	// PID Setup
+	for (int i = 0; i < 4; i++) {
+		speed_data[i] = 0;
+	}
+	pid_init(&motor_pid[0],9999,1000,20,0,Kp1,Ki1,Kd1);
+	pid_init(&motor_pid[1],9999,1000,20,0,Kp2,Ki2,Kd2);
+	pid_init(&motor_pid[2],9999,1000,20,0,Kp3,Ki3,Kd3);
+	pid_init(&motor_pid[3],9999,1000,20,0,Kp4,Ki4,Kd4);
 
-  for (int i = 0; i < 4; i++) 
-  {
-	  targetSpeeds[i] = 0;
-  }
+	for (int i = 0; i < 4; i++) {
+		targetSpeeds[i] = 0;
+	}
 
-  HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
+	// HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
 
-  // forward(5000, 5000);
-  // backward(5000, 5000);
-  // left(5000, 5000);
-  // right(5000, 5000);
-  /* USER CODE END 2 */
+	HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
 
-  /* Infinite loop */
-  /* USER CODE BEGIN WHILE */
- while (1)
- {
-	  if (kickFlag == 1){               //Triggers a kick
-		  kick(20);
-		  kickFlag = 0;
-	  }
 
-	  if (timeout >= 500){                 //Safety timeout when UART disconnectss
-		  for (int i = 0; i < 4; i++) {
-			  targetSpeeds[i] = 0;
-		  }
-	  }
+	/* USER CODE END 2 */
 
-	  for(int i=0; i<4; i++){                          //PID control loop
-		  motor_pid[i].target = targetSpeeds[i];
-	      pid_calculate(&motor_pid[i],speed_data[i]);
-	  }
-	  setMotorSpeeds((motor_pid[0].output),(motor_pid[1].output),(motor_pid[2].output),(motor_pid[3].output));
+	/* Infinite loop */
+	/* USER CODE BEGIN WHILE */
+
+	HAL_GPIO_WritePin(GPIOF, GPIO_PIN_14, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOE, GPIO_PIN_11, GPIO_PIN_SET);
+
+	while (1) {
+		if (kickFlag == 1) {               //Triggers a kick
+			kick(20);
+			kickFlag = 0;
+		}
+
+		if (timeout >= 500) {                 //Safety timeout when UART disconnects
+			for (int i = 0; i < 4; i++) {
+				targetSpeeds[i] = 0;
+			}
+		}
+
+		/*
+		for (int i = 0; i < 4; i++) {                          //PID control loop
+			motor_pid[i].target = targetSpeeds[i];
+			pid_calculate(&motor_pid[i],speed_data[i]);
+		}
+
+		setMotorSpeeds((motor_pid[0].output), (motor_pid[1].output), (motor_pid[2].output), (motor_pid[3].output));
+		*/
+
+
 
 //	  int feedbackSize = sizeof(speed_data);
 //	  uint8_t feedbackBuffer[(feedbackSize+2)];
@@ -208,21 +218,19 @@ int main(void)
 //	  }
 //
 //	  HAL_UART_Transmit_DMA(&huart2, feedbackBuffer, sizeof(feedbackBuffer));
-	  timeout++;
-	  HAL_Delay(10);
+		timeout++;
+		HAL_Delay(10);
    /* USER CODE END WHILE */
 
    /* USER CODE BEGIN 3 */
  /* USER CODE END 3 */
- }
+	}
 }
 
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) 
-{
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
 	//HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
-    if(hcan == &hcan1) 
-    {
-        HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &canRxHeader, CAN_RxData);
+    if(hcan == &hcan1) {
+    	HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &canRxHeader, CAN_RxData);
 
         if(canRxHeader.StdId == 0x201) motor_idx = 0;
         if(canRxHeader.StdId == 0x202) motor_idx = 1;
@@ -235,47 +243,95 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan)
     }
 }
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
-{
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+	/*
+	 * Called when uart_rx_buffer is full
+	 */
 
-	if (((uart_rx_buffer[0] << 8) | (uart_rx_buffer[1])) == RUN_HEADER)
-  {
+	if (!ca_flag) {
 
-		timeout = 0;
+		if (rx_byte == 0xCA) {
+			ca_flag = 1;
+			HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
+			return;
+		}
 
-    targetSpeeds[0] = (int16_t)((uart_rx_buffer[2] << 8) | uart_rx_buffer[3]);
-    targetSpeeds[1] = (int16_t)((uart_rx_buffer[4] << 8) | uart_rx_buffer[5]);
-    targetSpeeds[2] = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);
-    targetSpeeds[3] = (int16_t)((uart_rx_buffer[8] << 8) | uart_rx_buffer[9]);
+	} else {
 
-		for (int i = 0; i < 4; i++)
-    {
-      if (targetSpeeds[i] > 500)
-      {
-          targetSpeeds[i] = 500;
-      }
-      if (targetSpeeds[i] < -500)
-      {
-          targetSpeeds[i] = -500;
-      }
-    }
+		if (fe_flag) {
 
-    if (uart_rx_buffer[10] == KICK)
-    {
-      kickFlag = 1;
-    }
+			timeout = 0;
 
-    for (int i = 0; i < 11; i++)
-    {
-      uart_rx_buffer[i] = 0;
-    }
+			targetSpeeds[0] = (int16_t)((msg_buff[0] << 8) | msg_buff[1]);
+			targetSpeeds[1] = (int16_t)((msg_buff[2] << 8) | msg_buff[3]);
+			targetSpeeds[2] = (int16_t)((msg_buff[4] << 8) | msg_buff[5]);
+			targetSpeeds[3] = (int16_t)((msg_buff[6] << 8) | msg_buff[7]);
 
-    HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+
+			ca_flag = fe_flag = 0;
+
+			for (int i = 0; i < 4; i++) {                          //PID control loop
+				motor_pid[i].target = targetSpeeds[i];
+				pid_calculate(&motor_pid[i], speed_data[i]);
+			}
+
+			setMotorSpeeds((motor_pid[0].output), (motor_pid[1].output), (motor_pid[2].output), (motor_pid[3].output));
+
+			// setMotorSpeeds(targetSpeeds[0], targetSpeeds[1], targetSpeeds[2], targetSpeeds[3]);
+
+			HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+			HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
+
+			return;
+
+		} else if (rx_byte == 0xFE) {
+			fe_flag = 1;
+			HAL_UART_Receive_IT(&huart2, msg_buff, 9);
+			return;
+		} else {
+			ca_flag = 0;
+			HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
+			return;
+		}
+
 
 	}
 
+	/*
+	if (((uart_rx_buffer[0] << 8) | (uart_rx_buffer[1])) == RUN_HEADER) {
+
+		timeout = 0;
+
+		targetSpeeds[0] = (int16_t)((uart_rx_buffer[2] << 8) | uart_rx_buffer[3]);
+		targetSpeeds[1] = (int16_t)((uart_rx_buffer[4] << 8) | uart_rx_buffer[5]);
+		targetSpeeds[2] = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);
+		targetSpeeds[3] = (int16_t)((uart_rx_buffer[8] << 8) | uart_rx_buffer[9]);
+
+		for (int i = 0; i < 4; i++) {
+			if (targetSpeeds[i] > 500) {
+				targetSpeeds[i] = 500;
+			} else if (targetSpeeds[i] < -500) {
+				targetSpeeds[i] = -500;
+			}
+		}
+
+		if (uart_rx_buffer[10] == KICK) {
+			kickFlag = 1;
+		}
+
+
+		for (int i = 0; i < 11; i++) {
+			uart_rx_buffer[i] = 0;
+		}
+
+		HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+
+	}
+
+
 	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
 	HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
+	*/
 }
 
 /**
@@ -334,7 +390,7 @@ void setMotorSpeeds(int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4)
 	uint8_t l3 = ms3;
 	uint8_t h4 = ms4 >> 8;
 	uint8_t l4 = ms4;
-	runMotors(h1,l1,h2,l2,h3,l3,h4,l4);
+	runMotors(h1, l1, h2, l2, h3, l3, h4, l4);
 }
 
 void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow, unsigned char motorTwoHigh, 
