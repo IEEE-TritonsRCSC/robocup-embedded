@@ -18,25 +18,16 @@ void getVelocityArray(array<int, 4>& wheel_speeds, double heading, double absV,
     // difference between current direction (heading) and desired direction (theta)
     double relativeTheta = fmod((theta - heading + 2 * twoPI), twoPI);
 
-    /*
-        I THINK vx AND vy SHOULD POSSIBLY BE SWITCHED
-            e.g. vx = absV * sin(relativeTheta)
-                 vy = absV * cos(relativeTheta)
-        BECAUSE THETA IS RELATIVE TO UP/NORTH
-    */
-    // double vx = absV * cos(relativeTheta);
-    // double vy = absV * sin(relativeTheta);
-
     double vx = absV * sin(relativeTheta);
     double vy = absV * cos(relativeTheta);
 
 
     // angle of each wheel relative to the x-axis
-    array<double, 4> B = {-M_PI/6, M_PI/6, 5*M_PI/6, 7*M_PI/6};
+    array<double, 4> B = {-M_PI/3, M_PI/6, -M_PI/6, M_PI/3};
     
-    // position of each wheel relative to center
-    array<double, 4> y = {d*cos(M_PI/6), d*cos(M_PI/6), d*(-cos(M_PI/6)), d*(-cos(M_PI/6))};
-    array<double, 4> x = {d*sin(M_PI/6), d*(-sin(M_PI/6)), d*(-sin(M_PI/6)), d*sin(M_PI/6)};
+    // position of each wheel relative to center (angle is relative to north/y-axis)
+    array<double, 4> y = {d*(-cos(M_PI/3)), d*(-cos(5 * M_PI/6)), d*cos(5 * M_PI/6), d*cos(M_PI/3)};
+    array<double, 4> x = {d*(-sin(M_PI/3)), d*(-sin(5 * M_PI/6)), d*sin(5 * M_PI/6), d*sin(M_PI/3)};
 
     // set wheel velocities based on desired angle
     for (int i = 0; i < 4; i++) {
