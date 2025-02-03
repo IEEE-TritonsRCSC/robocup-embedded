@@ -9,6 +9,7 @@
 // Define pins
 #define TX 17
 #define RX 16
+#define BUFF_SIZE 1024
 
 // WiFi credentials
 const char* ssid = "wlan3";
@@ -18,15 +19,15 @@ IPAddress local_IP(192, 168, 8, 80);
 IPAddress gateway(192, 168, 8, 1);
 IPAddress subnet(255, 255, 255, 0);
 
-
 // UDP setup
 WiFiUDP udp;
-const int udpPort = 3333;
+IPAddress multicastIP(224, 1, 1, 1);
+const int multicastPort = 10520;
 
 // UART setup
 HardwareSerial espSerial(2);
 
-int count;
+unsigned int count = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -44,20 +45,18 @@ void setup() {
     Serial.print(".");
   }
   Serial.println("\nConnected to Wi-Fi!");
-  
-  // Start UDP
-  udp.begin(udpPort);
-  Serial.printf("Listening on UDP port %d\n", udpPort);
 
-  count = 0;
+  // Start UDP
+  udp.beginMulticast(multicastIP, multicastPort);
+  Serial.println("Joined multicast group");
 }
 
 void loop() {
-  char packetBuffer[1024];  // Increase buffer size if needed
-  int packetSize = udp.parsePacket();
+  uint8_t packetBuffer[BUFF_SIZE];  // Increase buffer size if needed
+  unsigned int packetSize = udp.parsePacket();
   
   if (packetSize) {
-    int len = udp.read(packetBuffer, sizeof(packetBuffer));
+    int len = udp.read(packetBuffer, BUFF_SIZE);
     if (len > 0) {
       packetBuffer[len] = '\0';  // Null-terminate the buffer
 
@@ -86,35 +85,32 @@ void loop() {
         Serial.printf(".   kick_angle: %f\n", messageData.command.kick_angle);
         Serial.printf(".   dribbler_speed: %f\n\n", messageData.command.dribbler_speed);
 
-        std::array<unsigned char, 8> msg;
+        std::array<uint8_t, 8> msg;
 
         action_to_byte_array(msg, messageData.command.move_command);
 
-        std::array<unsigned char, 2> header = {0xca, 0xfe};
-        std::array<unsigned char, 1> kick = {0x00};
+        std::array<uint8_t, 2> header = {0xca, 0xfe};
+        std::array<uint8_t, 1> kick = {0x00};
 
-        std::array<unsigned char, 11> full_message;
+        std::array<uint8_t, 11> full_message;
 
         full_message[0] = header[0];
         full_message[1] = header[1];
 
-        int motor_speed = 50;
-
         for (int i = 0; i < 4; i++) {
-          full_message[(i * 2 + 2)] = (motor_speed >> 8 & 0xff);
-          full_message[(i * 2 + 3)] = (motor_speed & 0xff);
+          full_message[(i * 2 + 2)] = (msg[i * 2] >> 8 & 0xff);
+          full_message[(i * 2 + 3)] = (msg[i * 2 + 1] & 0xff);
         }
 
         full_message[10] = kick[0];
 
         espSerial.write(full_message.data(), full_message.size());
-        espSerial.flush();
-        //Serial.println("Message sent!");
+        Serial.printf("(%d) Message sent!\n", count);
+        count++;
 
         for (int i = 0; i < 11; i++) {
           Serial.printf("%x ", full_message[i]);
         } Serial.printf("\n");
-
 
       } else {
         Serial.println("Failed to decode message.");
