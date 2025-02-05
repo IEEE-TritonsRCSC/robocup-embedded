@@ -142,10 +142,10 @@ int main(void) {
 	//HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
 
 	// Motor setup
-	HAL_GPIO_TogglePin(Motor_Port, Motor1_Pin);
-	HAL_GPIO_TogglePin(Motor_Port, Motor2_Pin);
-	HAL_GPIO_TogglePin(Motor_Port, Motor3_Pin);
-	HAL_GPIO_TogglePin(Motor_Port, Motor4_Pin);
+	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR1_PIN);
+	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR2_PIN);
+	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR3_PIN);
+	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR4_PIN);
 
 	// CAN setup
 	canTxHeader.DLC = 8;
@@ -228,7 +228,7 @@ int main(void) {
 }
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
-	//HAL_GPIO_TogglePin(LED1_GPIO_Port,LED1_Pin);
+	//HAL_GPIO_TogglePin(LED_GREEN_PORT,LED_GREEN_PIN);
     if(hcan == &hcan1) {
     	HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &canRxHeader, CAN_RxData);
 
@@ -279,7 +279,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 
 			// setMotorSpeeds(targetSpeeds[0], targetSpeeds[1], targetSpeeds[2], targetSpeeds[3]);
 
-			HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+			HAL_GPIO_TogglePin(LED_GREEN_PORT, LED_GREEN_PIN);
 			HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
 
 			return;
@@ -324,12 +324,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 			uart_rx_buffer[i] = 0;
 		}
 
-		HAL_GPIO_TogglePin(LED2_GPIO_Port, LED2_Pin);
+		HAL_GPIO_TogglePin(LED_RED_PORT, LED_RED_PIN);
 
 	}
 
 
-	HAL_GPIO_TogglePin(LED1_GPIO_Port, LED1_Pin);
+	HAL_GPIO_TogglePin(LED_GREEN_PORT, LED_GREEN_PIN);
 	HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
 	*/
 }
@@ -411,9 +411,9 @@ unsigned char motorFourLow)
 
 void kick(int kickDuration)
 {
-	HAL_GPIO_WritePin(Kicker_Port, Kicker_Pin, GPIO_PIN_SET);
+	HAL_GPIO_WritePin(KICKER_PORT, KICKER_PIN, GPIO_PIN_SET);
 	HAL_Delay(kickDuration);
-	HAL_GPIO_WritePin(Kicker_Port, Kicker_Pin, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(KICKER_PORT, KICKER_PIN, GPIO_PIN_RESET);
 }
 
 /* USER CODE END 4 */

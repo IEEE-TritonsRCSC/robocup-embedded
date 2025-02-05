@@ -17,8 +17,8 @@
 #define _PID_H
 
 #include "stdint.h"
-typedef struct _PID_TypeDef
-{
+
+typedef struct _PID_TypeDef {
 	float target;
 	float lastNoneZeroTarget;
 	float kp;
@@ -47,11 +47,12 @@ typedef struct _PID_TypeDef
 	uint32_t thistime;
 	uint32_t lasttime;
 	uint8_t dtime;
-}PID_TypeDef;
+} PID_TypeDef;
 
 	void pid_init(PID_TypeDef* pid, float maxout, float integral_limit, float deadband, float  target, float kp, float ki, float kd);
 	void pid_set_constants(PID_TypeDef *pid, float kp,float ki, float kd);
 	float pid_calculate (PID_TypeDef *pid, float measure);
+
 #endif
 
 extern PID_TypeDef motor_pid[4];
