@@ -1,15 +1,15 @@
 /**
-  ******************************************************************************
-  * @file		 pid.h
-  * @author  Ginger
-  * @version V1.0.0
-  * @date    2015/11/14
-  * @brief
-  ******************************************************************************
-  * @attention
-  *
-  ******************************************************************************
-  */
+ ******************************************************************************
+ * @file		 pid.h
+ * @author  Ginger
+ * @version V1.0.0
+ * @date    2015/11/14
+ * @brief
+ ******************************************************************************
+ * @attention
+ *
+ ******************************************************************************
+ */
 
 /* Includes ------------------------------------------------------------------*/
 
@@ -49,9 +49,10 @@ typedef struct _PID_TypeDef {
 	uint8_t dtime;
 } PID_TypeDef;
 
-	void pid_init(PID_TypeDef* pid, float maxout, float integral_limit, float deadband, float  target, float kp, float ki, float kd);
-	void pid_set_constants(PID_TypeDef *pid, float kp,float ki, float kd);
-	float pid_calculate (PID_TypeDef *pid, float measure);
+void pid_init(PID_TypeDef *pid, float maxout, float integral_limit,
+		float deadband, float target, float kp, float ki, float kd);
+void pid_set_constants(PID_TypeDef *pid, float kp, float ki, float kd);
+float pid_calculate(PID_TypeDef *pid, float measure);
 
 #endif
 
