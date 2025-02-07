@@ -26,13 +26,13 @@ double[] posY = { d * cos(M_PI / 6), d * cos(M_PI / 6),      // 1, 2
                          d * (-cos(M_PI / 6)), d * (-cos(M_PI / 6)) }; // 3, 4
 
 
-void getVelocityArray(int[] wheel_speeds, double heading, double absV,
+void getVelocityArray(array<int, 4>& wheel_speeds, double heading, double absV,
                       double theta, double rotV);
 
-void valuesToBytes(int[] wheel_speeds, uint8_t[] wheel_speeds_byte);
+void valuesToBytes(array<int, 4>& wheel_speeds, array<uint8_t, 8>& wheel_speeds_byte);
 
-void getWheelVelocities(int[] wheel_speeds, 
+void getWheelVelocities(array<int, 4>& wheel_speeds, 
                         proto_simulation_RobotMoveCommand& action);
 
-void action_to_byte_array(uint8_t[] wheel_speeds_byte,
+void action_to_byte_array(array<uint8_t, 8>& wheel_speeds_byte,
                           proto_simulation_RobotMoveCommand& action);

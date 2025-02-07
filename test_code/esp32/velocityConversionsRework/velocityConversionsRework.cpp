@@ -9,7 +9,7 @@
 */
 
 // See if we can make int* wheel_speeds short* instead
-void getVelocityArray(int[] wheel_speeds, double heading, 
+void getVelocityArray(array<int, 4>& wheel_speeds, double heading, 
                              double absVel, double theta, double rotVel) {
 
     double wheel_speeds_double[4];
@@ -48,7 +48,7 @@ void getVelocityArray(int[] wheel_speeds, double heading,
 
 }
 
-void valuesToBytes(int[] wheel_speeds, uint8_t[] wheel_speeds_byte) {
+void valuesToBytes(array<int, 4>& wheel_speeds, array<uint8_t, 8>& wheel_speeds_byte) {
     
     for (int i = 0; i < 4; i++) {
         wheel_speeds_byte[(i * 2)] = (wheel_speeds[i] >> 8 & 0xff); 
@@ -57,7 +57,7 @@ void valuesToBytes(int[] wheel_speeds, uint8_t[] wheel_speeds_byte) {
 
 }
 
-void getWheelVelocities(int[] wheel_speeds, 
+void getWheelVelocities(array<int, 4>& wheel_speeds, 
                         proto_simulation_RobotMoveCommand& action) {
 
     proto_simulation_MoveLocalVelocity& local_v = action.command.local_velocity;
@@ -69,7 +69,7 @@ void getWheelVelocities(int[] wheel_speeds,
     getVelocityArray(wheel_speeds, 0, absV, theta, rotV);
 }
 
-void action_to_byte_array(uint8_t[] wheel_speeds_byte,
+void action_to_byte_array(array<uint8_t, 8>& wheel_speeds_byte,
                           proto_simulation_RobotMoveCommand& action) {
 
     array<int, 4> wheel_speeds;
