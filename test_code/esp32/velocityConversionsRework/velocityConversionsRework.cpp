@@ -1,7 +1,8 @@
 #include "velocityConversionsRework.h"
 
-// Work In Progress...
+// WIP...
 
+// Try to put all of these constexprs anywhere but inside the functio
 /* 
  * Takes heading, absolute vleocity, theta, and rotation velocity as input 
  * params. Returns a byte array consisting of individual wheel velocities.
@@ -9,24 +10,25 @@
 */
 
 // See if we can make int* wheel_speeds short* instead
-void getVelocityArray(array<int, 4>& wheel_speeds, double heading, 
-                             double absVel, double theta, double rotVel) {
+// wheel_speeds is returned
+void getVelocityArray(std::array<int, 4>& wheel_speeds, double heading, 
+                             double absV, double theta, double rotV) {
 
-    double wheel_speeds_double[4];
+    std::array<double, 4> wheel_speeds_double;
 
     // current - desired orientation. aka, heading - theta.
-    double relAngleOffset = fmod((theta - heading + (2 * twoPI)), twoPI);
+    double relativeAngleOffset = fmod((theta - heading + (2 * twoPI)), twoPI);
 
     // determine x/y velocities relative to current orientation (heading).
-    double velX = absV * sin(angularOffset);
-    double velY = absV * cos(relativeTheta);
+    double velX = absV * sin(relativeAngleOffset);
+    double velY = absV * cos(relativeAngleOffset);
 
     // set wheel velocities based on desired angle
     for (int i = 0; i < 4; i++) {
 
         // apply formula
-        wheel_speeds_double[i] = (velX - rotVel * posY[i]) * cos(wheelAngles[i])
-                               + (velY + rotVel * posX[i]) * sin(wheelAngles[i]);
+        wheel_speeds_double[i] = (velX - rotV * posY[i]) * cos(wheelAngles[i])
+                               + (velY + rotV * posX[i]) * sin(wheelAngles[i]);
 
         // m/s to RPM conversions
         wheel_speeds_double[i] /= MS_TO_RPM;
@@ -38,7 +40,7 @@ void getVelocityArray(array<int, 4>& wheel_speeds, double heading,
     // rescaling such that no wheel velocity exceeds our max rpm
     double rescale = 1;
     for (int i = 0; i < 4; i++) {
-        rescale = max(rescale, abs(wheel_speeds_double[i] / maxRPM);
+        rescale = std::max(rescale, std::abs(wheel_speeds_double[i] / maxRPM));
     }
 
     for (int i = 0; i < 4; i++) {
@@ -48,7 +50,7 @@ void getVelocityArray(array<int, 4>& wheel_speeds, double heading,
 
 }
 
-void valuesToBytes(array<int, 4>& wheel_speeds, array<uint8_t, 8>& wheel_speeds_byte) {
+void valuesToBytes(std::array<int, 4>& wheel_speeds, std::array<uint8_t, 8>& wheel_speeds_byte) {
     
     for (int i = 0; i < 4; i++) {
         wheel_speeds_byte[(i * 2)] = (wheel_speeds[i] >> 8 & 0xff); 
@@ -57,10 +59,9 @@ void valuesToBytes(array<int, 4>& wheel_speeds, array<uint8_t, 8>& wheel_speeds_
 
 }
 
-void getWheelVelocities(array<int, 4>& wheel_speeds, 
-                        proto_simulation_RobotMoveCommand& action) {
+void getWheelVelocities(std::array<int, 4>& wheel_speeds, _RobotMoveCommand& action) {
 
-    proto_simulation_MoveLocalVelocity& local_v = action.command.local_velocity;
+    _MoveLocalVelocity& local_v = action.command.local_velocity;
 
     double absV = sqrt(local_v.forward * local_v.forward + local_v.left * local_v.left);
     double theta = atan2(local_v.forward, local_v.left); // Using forward as y, left as x
@@ -69,10 +70,9 @@ void getWheelVelocities(array<int, 4>& wheel_speeds,
     getVelocityArray(wheel_speeds, 0, absV, theta, rotV);
 }
 
-void action_to_byte_array(array<uint8_t, 8>& wheel_speeds_byte,
-                          proto_simulation_RobotMoveCommand& action) {
+void action_to_byte_array(std::array<uint8_t, 8>& wheel_speeds_byte, _RobotMoveCommand& action) {
 
-    array<int, 4> wheel_speeds;
+    std::array<int, 4> wheel_speeds;
     getWheelVelocities(wheel_speeds, action);
     valuesToBytes(wheel_speeds, wheel_speeds_byte);
 }
