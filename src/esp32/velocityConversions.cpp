@@ -2,51 +2,71 @@
 
 using namespace std;
 
-void getVelocityArray(array<int, 4>& wheel_speeds, double heading, double absV,
-                      double theta, double rotV) {
+void getVelocityArray(array<int, 4>& wheel_speeds, double heading, double vx, double vy, double rotV) {
     // Takes heading, absolute velocity, theta, and rotational velocity
     // rotational velocity as input parameters and returns a byte array.
     
     array<double, 4> wheel_speeds_double;
 
-    // constants
-    double twoPI = 2 * M_PI;
-    double maxRPM = 15000;
-    double d = 0.13;
-    double r = 0.05;
+    // constant
+    constexpr double two_pi = 2 * M_PI;
 
     // difference between current direction (heading) and desired direction (theta)
-    double relativeTheta = fmod((theta - heading + 2 * twoPI), twoPI);
+    // double relativeTheta = fmod((theta - heading + 2 * two_pi), two_pi);
 
-    double vx = absV * sin(relativeTheta);
-    double vy = absV * cos(relativeTheta);
+    // add back in vx/vy relative to global heading later
+    // double vx = absV * sin(relativeTheta);
+    // double vy = absV * cos(relativeTheta);
 
 
-    // angle of each wheel relative to the x-axis
-    array<double, 4> B = {-M_PI/3, M_PI/6, -M_PI/6, M_PI/3};
+    // front right wheel 
+    wheel_speeds_double[0] = 
+        rotV * (sin(FR_WHEEL_ANGLE)*FR_X - cos(FR_WHEEL_ANGLE)*FR_Y) 
+        + vx * cos(FR_WHEEL_ANGLE)
+        + vy * sin(FR_WHEEL_ANGLE);
     
-    // position of each wheel relative to center (angle is relative to north/y-axis)
-    array<double, 4> y = {d*(-cos(M_PI/3)), d*(-cos(5 * M_PI/6)), d*cos(5 * M_PI/6), d*cos(M_PI/3)};
-    array<double, 4> x = {d*(-sin(M_PI/3)), d*(-sin(5 * M_PI/6)), d*sin(5 * M_PI/6), d*sin(M_PI/3)};
+    wheel_speeds_double[0] /= WHEEL_RADIUS;
+
+    // back right wheel
+    wheel_speeds_double[1] = 
+        rotV * (sin(BR_WHEEL_ANGLE)*BR_X - cos(BR_WHEEL_ANGLE)*BR_Y) 
+        + vx * cos(BR_WHEEL_ANGLE)
+        + vy * sin(BR_WHEEL_ANGLE);
+
+    wheel_speeds_double[1] /= WHEEL_RADIUS;
+    
+    // back left wheel
+    wheel_speeds_double[2] = 
+        rotV * (sin(BL_WHEEL_ANGLE)*BL_X - cos(BL_WHEEL_ANGLE)*BL_Y) 
+        + vx * cos(BL_WHEEL_ANGLE)
+        + vy * sin(BL_WHEEL_ANGLE);
+
+    wheel_speeds_double[2] /= WHEEL_RADIUS;
+
+    // front left wheel
+    wheel_speeds_double[3] = 
+        rotV * (sin(FL_WHEEL_ANGLE)*FL_X - cos(FL_WHEEL_ANGLE)*FL_Y) 
+        + vx * cos(FL_WHEEL_ANGLE)
+        + vy * sin(FL_WHEEL_ANGLE);
+
+    wheel_speeds_double[3] /= WHEEL_RADIUS;
 
     // set wheel velocities based on desired angle
     for (int i = 0; i < 4; i++) {
-
-        // apply formula
-        wheel_speeds_double[i] = (vx - rotV * y[i]) * cos(B[i]) + (vy + rotV * x[i]) * sin(B[i]);
-
-        // convert from m/s to RPM
-        wheel_speeds_double[i] /= r / 60;
+        
+        // convert from m/s to rpm
+        wheel_speeds_double[i] *= (1 / (two_pi * WHEEL_RADIUS));
+        wheel_speeds_double[i] *= 60;
 
         // account for gear ratio
-        wheel_speeds_double[i] *= 36;
+        wheel_speeds_double[i] *= GEAR_RATIO;
     }
 
     // rescale so that no wheel velocity exceeds our max RPM
     double rescale = 1;
 
     for (int i = 0; i < 4; i++) {
-        rescale = max(rescale, abs(wheel_speeds_double[i]) / maxRPM);
+        rescale = max(rescale, abs(wheel_speeds_double[i]) / MAX_RPM);
     }
 
     for (int i = 0; i < 4; i++) {
@@ -69,11 +89,11 @@ void getWheelVelocities(array<int, 4>& wheel_speeds,
 
     proto_simulation_MoveLocalVelocity& local_v = action.command.local_velocity;
 
-    double absV = sqrt(local_v.forward * local_v.forward + local_v.left * local_v.left);
-    double theta = atan2(local_v.forward, local_v.left); // Using forward as y, left as x
+    // double absV = sqrt(local_v.forward * local_v.forward + local_v.left * local_v.left);
+    // double theta = atan2(local_v.forward, local_v.left); // Using forward as y, left as x
     double rotV = local_v.angular;
 
-    getVelocityArray(wheel_speeds, 0, absV, theta, rotV);
+    getVelocityArray(wheel_speeds, 0, local_v.left, local_v.forward, rotV);
 }
 
 void action_to_byte_array(array<uint8_t, 8>& wheel_speeds_byte,
