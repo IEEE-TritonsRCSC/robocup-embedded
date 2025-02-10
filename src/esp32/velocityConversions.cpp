@@ -51,26 +51,36 @@ void getVelocityArray(array<int, 4>& wheel_speeds, double heading, double vx, do
 
     wheel_speeds_double[3] /= WHEEL_RADIUS;
 
-    // set wheel velocities based on desired angle
     for (int i = 0; i < 4; i++) {
-        
-        // convert from m/s to rpm
-        wheel_speeds_double[i] *= (1 / (two_pi * WHEEL_RADIUS));
-        wheel_speeds_double[i] *= 60;
-
-        // account for gear ratio
-        wheel_speeds_double[i] *= GEAR_RATIO;
+      if (wheel_speeds_double[i] > MAX_VELOCITY) {
+        wheel_speeds_double[i] = MAX_VELOCITY;
+      } else if (wheel_speeds_double[i] < -MAX_VELOCITY) {
+        wheel_speeds_double[i] = -MAX_VELOCITY;
+      }
     }
 
+    // set wheel velocities based on desired angle
+    // for (int i = 0; i < 4; i++) {
+        
+    //     // convert from m/s to rpm
+    //     wheel_speeds_double[i] *= (1 / (two_pi * WHEEL_RADIUS));
+    //     wheel_speeds_double[i] *= 60;
+
+    //     // account for gear ratio
+    //     wheel_speeds_double[i] *= GEAR_RATIO;
+    // }
+
     // rescale so that no wheel velocity exceeds our max RPM
-    double rescale = 1;
+    /* double rescale = 1;
 
     for (int i = 0; i < 4; i++) {
         rescale = max(rescale, abs(wheel_speeds_double[i]) / MAX_RPM);
-    }
+    } */
+
+
 
     for (int i = 0; i < 4; i++) {
-        wheel_speeds_double[i] /= rescale;
+        wheel_speeds_double[i] *= RESCALE_FACTOR;
         wheel_speeds[i] = (int)wheel_speeds_double[i];        
     }
 }
@@ -100,6 +110,7 @@ void action_to_byte_array(array<uint8_t, 8>& wheel_speeds_byte,
                           proto_simulation_RobotMoveCommand& action) {
 
     array<int, 4> wheel_speeds;
+
     getWheelVelocities(wheel_speeds, action);
     valuesToBytes(wheel_speeds, wheel_speeds_byte);
 }

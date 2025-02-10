@@ -1,12 +1,15 @@
 #include<cmath>
 #include<array>
 #include<iostream>
+#include<climits>
 #include "ssl_simulation_robot_control.pb.h"
 
 // wheel constants
 constexpr double WHEEL_RADIUS = 0.02425;
 constexpr double GEAR_RATIO = 36;
 constexpr double MAX_RPM = 15000;
+constexpr double MAX_VELOCITY = 175;
+constexpr double RESCALE_FACTOR = MAX_RPM/MAX_VELOCITY;
 
 // front right wheel constants
 constexpr double FR_X = 0.09 * cos(M_PI/6);
