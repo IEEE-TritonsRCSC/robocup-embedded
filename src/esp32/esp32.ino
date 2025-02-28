@@ -15,7 +15,7 @@
 #define KICK_PIN 2 
 #define LED_PIN 4
 #define DRIBBLER_PIN 18
-#define DRIBBLER_MAX 5
+#define DRIBBLER_MAX 6
 
 // WiFi credentials
 const char* ssid = "wlan3";
