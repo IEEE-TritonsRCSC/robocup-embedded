@@ -123,7 +123,8 @@ void loop() {
       proto_triton_TritonBotMessage messageData = proto_triton_TritonBotMessage_init_zero;
       pb_istream_t stream = pb_istream_from_buffer((uint8_t*)packetBuffer, len);
       
-      if (pb_decode(&stream, proto_triton_TritonBotMessage_fields, &messageData)) {
+      if (pb_decode(&stream, proto_triton_TritonBotMessage_fields, &messageData) && messageData.id == 2) {
+
         Serial.println("Received valid message:");
         Serial.printf("ID: %d\n", messageData.id);
         Serial.printf("Vision Data:\n");
@@ -185,8 +186,6 @@ void loop() {
           Serial.printf("%x ", full_message[i]);
         } Serial.printf("\n");
 
-      } else {
-        Serial.println("Failed to decode message.");
       }
     }
   }
