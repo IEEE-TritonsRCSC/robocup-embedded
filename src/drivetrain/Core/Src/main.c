@@ -181,7 +181,7 @@ int main(void) {
 			kickFlag = 0;
 		}
 
-		if (timeout >= 500) {             // Safety timeout when UART disconnects
+		if (timeout >= 200) {             // Safety timeout when UART disconnects
 			for (int i = 0; i < 4; ++i) {
 				targetSpeeds[i] = 0;
 			}
