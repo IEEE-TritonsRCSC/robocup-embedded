@@ -1,8 +1,14 @@
 .DS_Store
 
 # STM32CubeIDE auto-generated files
-src/drivetrain/Debug/Core/Src/*.o
-src/drivetrain/Debug/*.elf
-src/drivetrain/Debug/*.list
-src/drivetrain/Debug/*.map
-src/drivetrain/Debug/Core/Src/*.su
+*.elf
+*.bin
+*.hex
+*.list
+*.map
+*.o
+*.su
+*.dep
+*.d
+*.a
+*.log
