@@ -234,8 +234,8 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
 			motor_idx = 3;
 
 		angle_data[motor_idx] = (uint16_t) (CAN_RxData[0] << 8 | CAN_RxData[1]);
-		speed_data[motor_idx] = ((int16_t) (CAN_RxData[2] << 8 | CAN_RxData[3])
-				/ REDUCTION_RATIO); // angular velocity in rpm
+		speed_data[motor_idx] = ((int16_t) (CAN_RxData[2] << 8 | CAN_RxData[3]));
+				// / REDUCTION_RATIO); // angular velocity in rpm
 		torque_current_data[motor_idx] = (CAN_RxData[4] << 8 | CAN_RxData[5]);
 	}
 }
