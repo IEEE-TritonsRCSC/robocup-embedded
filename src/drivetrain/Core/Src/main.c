@@ -41,7 +41,7 @@
 #define UART_TX_BUFFER_SIZE 12  // set to the size we want to limit send messages to
 #define HEADER_BYTE_1 0xCA
 #define HEADER_BYTE_2 0xFE
-#define KICK 0x14
+#define TOGGLE_DRIBBLE 0x01
 #define REDUCTION_RATIO 36.0
 /* USER CODE END PD */
 
@@ -91,7 +91,7 @@ volatile int header2_flag = 0;
 
 volatile int timeout;  // timeout for safety mechanism to shutoff robot
 
-volatile int kickFlag; // flag for kicking
+volatile int dribbleFlag; // flag for dribbling
 
 /* USER CODE END PV */
 
@@ -176,9 +176,12 @@ int main(void) {
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
 	while (1) {
-		if (kickFlag == 1) {               // Triggers a kick
-			kick(20);
-			kickFlag = 0;
+		if (dribbleFlag == 1) {               // Turns dribbling on/off
+			/*
+			 *
+			 * CODE TO DRIBBLE
+			 *
+			 */
 		}
 
 		if (timeout >= 200) {             // Safety timeout when UART disconnects
@@ -269,8 +272,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 			 * Previously |targetSpeeds[i]| <= 500
 			 */
 
-			if (uart_rx_buffer[9] == KICK) {
-				 kickFlag = 1;
+			if (uart_rx_buffer[9] == TOGGLE_DRIBBLE) {
+				 dribbleFlag = !dribbleFlag;
 			}
 
 			for (int i = 0; i < UART_RX_BUFFER_SIZE; ++i) {
@@ -368,12 +371,6 @@ void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow,
 	CAN_TxData[6] = motorFourHigh;
 	CAN_TxData[7] = motorFourLow;
 	HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
-}
-
-void kick(int kickDuration) {
-	HAL_GPIO_WritePin(KICKER_PORT, KICKER_PIN, GPIO_PIN_SET);
-	HAL_Delay(kickDuration);
-	HAL_GPIO_WritePin(KICKER_PORT, KICKER_PIN, GPIO_PIN_RESET);
 }
 
 /* USER CODE END 4 */
