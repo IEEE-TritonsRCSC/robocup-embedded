@@ -61,10 +61,10 @@ void MX_GPIO_Init(void) {
 
 	/*Configure GPIO pin Output Level*/
 	HAL_GPIO_WritePin(MOTOR_PORT,
-			MOTOR1_PIN | MOTOR2_PIN | MOTOR3_PIN | MOTOR4_PIN, GPIO_PIN_RESET);
+			MOTOR1_PIN | MOTOR2_PIN | MOTOR3_PIN | MOTOR4_PIN | MOTOR5_PIN, GPIO_PIN_RESET);
 
 	/*Configure GPIO pins : Motor_Power_Switch_01_Pin Motor_Power_Switch_02_Pin Motor_Power_Switch_03_Pin Motor_Power_Switch_04_Pin */
-	GPIO_InitStruct.Pin = MOTOR1_PIN | MOTOR2_PIN | MOTOR3_PIN | MOTOR4_PIN;
+	GPIO_InitStruct.Pin = MOTOR1_PIN | MOTOR2_PIN | MOTOR3_PIN | MOTOR4_PIN | MOTOR5_PIN;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
@@ -89,15 +89,6 @@ void MX_GPIO_Init(void) {
 	GPIO_InitStruct.Pull = GPIO_NOPULL;
 	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
 	HAL_GPIO_Init(LED_RED_PORT, &GPIO_InitStruct);
-
-	/*Configure GPIO pin Output Level */
-	HAL_GPIO_WritePin(KICKER_PORT, KICKER_PIN, GPIO_PIN_RESET);
-
-	GPIO_InitStruct.Pin = KICKER_PIN;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_OD;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(KICKER_PORT, &GPIO_InitStruct);
 }
 
 /* USER CODE BEGIN 2 */

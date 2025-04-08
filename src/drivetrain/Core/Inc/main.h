@@ -56,12 +56,12 @@ void forward(int motorSpeed, int duration);
 void backward(int motorSpeed, int duration);
 void left(int motorSpeed, int duration);
 void right(int motorSpeed, int duration);
-void setMotorSpeeds(int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4);
+void setMotorSpeeds(int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4, int16_t msg5);
 void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow,
 		unsigned char motorTwoHigh, unsigned char motorTwoLow,
 		unsigned char motorThreeHigh, unsigned char motorThreeLow,
-		unsigned char motorFourHigh, unsigned char motorFourLow);
-void kick(int kickDuration);
+		unsigned char motorFourHigh, unsigned char motorFourLow,
+		unsigned char motorFiveHigh, unsigned char motorFiveLow);
 void Error_Handler(void);
 
 void dribble();
@@ -85,16 +85,16 @@ void noDribble();
  * motor 2 = back right motor
  * motor 3 = back left motor
  * motor 4 = front left motor
+ * motor 5 = dribbler
  */
 
 #define MOTOR1_PIN GPIO_PIN_2
 #define MOTOR2_PIN GPIO_PIN_3
 #define MOTOR3_PIN GPIO_PIN_4
 #define MOTOR4_PIN GPIO_PIN_5
+#define MOTOR5_PIN GPIO_PIN_6
 #define MOTOR_PORT GPIOH
 
-#define KICKER_PIN GPIO_PIN_1
-#define KICKER_PORT GPIOC
 
 /* USER CODE END Private defines */
 

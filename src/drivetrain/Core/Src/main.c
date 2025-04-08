@@ -43,6 +43,8 @@
 #define HEADER_BYTE_2 0xFE
 #define TOGGLE_DRIBBLE 0x01
 #define REDUCTION_RATIO 36.0
+
+#define DRIBBLE_SPEED 1500
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -57,8 +59,8 @@
 CAN_TxHeaderTypeDef canTxHeader;
 CAN_RxHeaderTypeDef canRxHeader;
 uint32_t canTxMailbox;
-uint8_t CAN_TxData[8];
-uint8_t CAN_RxData[8];
+uint8_t CAN_TxData[10];
+uint8_t CAN_RxData[10];
 
 // PID feedback variables
 volatile uint8_t motor_idx;
@@ -91,7 +93,7 @@ volatile int header2_flag = 0;
 
 volatile int timeout;  // timeout for safety mechanism to shutoff robot
 
-volatile int dribbleFlag; // flag for dribbling
+volatile int dribble_flag; // flag for dribbling
 
 /* USER CODE END PV */
 
@@ -144,6 +146,7 @@ int main(void) {
 	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR2_PIN);
 	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR3_PIN);
 	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR4_PIN);
+	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR5_PIN);
 
 	// CAN setup
 	canTxHeader.DLC = 8;
@@ -151,6 +154,9 @@ int main(void) {
 	canTxHeader.RTR = CAN_RTR_DATA;
 	canTxHeader.StdId = 0x200;
 	canTxHeader.TransmitGlobalTime = DISABLE;
+
+	// Dribbler initialization
+	dribble_flag = 0;
 
 	// PID Setup
 	for (int i = 0; i < 4; ++i) {
@@ -175,13 +181,13 @@ int main(void) {
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
+	int16_t dribble_speed;
 	while (1) {
-		if (dribbleFlag == 1) {               // Turns dribbling on/off
-			/*
-			 *
-			 * CODE TO DRIBBLE
-			 *
-			 */
+
+		if (dribble_flag) {               // Turns dribbling on/off
+			dribble_speed = DRIBBLE_SPEED;
+		} else {
+			dribble_speed = 0;
 		}
 
 		if (timeout >= 200) {             // Safety timeout when UART disconnects
@@ -195,24 +201,8 @@ int main(void) {
 			 pid_calculate(&motor_pid[i],speed_data[i]);
 		 }
 
-		 setMotorSpeeds((motor_pid[0].output), (motor_pid[1].output), (motor_pid[2].output), (motor_pid[3].output));
+		 setMotorSpeeds((motor_pid[0].output), (motor_pid[1].output), (motor_pid[2].output), (motor_pid[3].output), dribble_speed);
 
-
-//	  int feedbackSize = sizeof(speed_data);
-//	  uint8_t feedbackBuffer[(feedbackSize+2)];
-//	  feedbackBuffer[0] = 0xB0;
-//	  feedbackBuffer[1] = 0xBA;
-//
-//	  for (int i = 0; i < (sizeof(speed_data) / sizeof(float)); i++)
-//	  {
-//		  uint8_t *floatBytes = (uint8_t *)&speed_data[i];
-//		  feedbackBuffer[2 + (i * 4) + 0] = floatBytes[0];
-//		  feedbackBuffer[2 + (i * 4) + 1] = floatBytes[1];
-//		  feedbackBuffer[2 + (i * 4) + 2] = floatBytes[2];
-//		  feedbackBuffer[2 + (i * 4) + 3] = floatBytes[3];
-//	  }
-//
-//	  HAL_UART_Transmit_DMA(&huart2, feedbackBuffer, sizeof(feedbackBuffer));
 		timeout++;
 		HAL_Delay(10);
 		/* USER CODE END WHILE */
@@ -273,7 +263,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 			 */
 
 			if (uart_rx_buffer[9] == TOGGLE_DRIBBLE) {
-				 dribbleFlag = !dribbleFlag;
+				 dribble_flag = !dribble_flag;
 			}
 
 			for (int i = 0; i < UART_RX_BUFFER_SIZE; ++i) {
@@ -345,7 +335,7 @@ void SystemClock_Config(void) {
 }
 
 /* USER CODE BEGIN 4 */
-void setMotorSpeeds(int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4) {
+void setMotorSpeeds(int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4, int16_t msg5) {
 	uint8_t h1 = ms1 >> 8;
 	uint8_t l1 = ms1;
 	uint8_t h2 = ms2 >> 8;
@@ -354,13 +344,16 @@ void setMotorSpeeds(int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4) {
 	uint8_t l3 = ms3;
 	uint8_t h4 = ms4 >> 8;
 	uint8_t l4 = ms4;
-	runMotors(h1, l1, h2, l2, h3, l3, h4, l4);
+	uint8_t h5 = msg5 >> 8;
+	uint8_t l5 = msg5;
+	runMotors(h1, l1, h2, l2, h3, l3, h4, l4, h5, l5);
 }
 
 void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow,
 		unsigned char motorTwoHigh, unsigned char motorTwoLow,
 		unsigned char motorThreeHigh, unsigned char motorThreeLow,
-		unsigned char motorFourHigh, unsigned char motorFourLow) {
+		unsigned char motorFourHigh, unsigned char motorFourLow,
+		unsigned char motorFiveHigh, unsigned char motorFiveLow) {
 	//speed can be 16 bits, split into high and low bytes
 	CAN_TxData[0] = motorOneHigh; //high byte for speed, shifted 8 because only buffer is only 8 bits
 	CAN_TxData[1] = motorOneLow;       //low bytes for speed
@@ -370,6 +363,8 @@ void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow,
 	CAN_TxData[5] = motorThreeLow;
 	CAN_TxData[6] = motorFourHigh;
 	CAN_TxData[7] = motorFourLow;
+	CAN_TxData[8] = motorFiveHigh;
+	CAN_TxData[9] = motorFiveLow;
 	HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
 }
 
