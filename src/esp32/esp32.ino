@@ -9,12 +9,15 @@
 // Define pins
 #define TX 17
 #define RX 16
-#define BUFF_SIZE 1024
-#define START_CHARGE_PIN 15       //KIL - send signal to charge
+#define START_CHARGE_PIN 15      //KIL - send signal to charge
 #define KICK_PIN 2 
 #define LED_PIN 4
-#define DRIBBLER_PIN 18
-#define DRIBBLER_MAX 6
+
+// Buffer size for receiving messages
+#define BUFF_SIZE 1024
+
+// Robot ID number
+#define ROBOT_ID 2
 
 // WiFi credentials
 const char* ssid = "wlan3";
@@ -90,7 +93,7 @@ void loop() {
       proto_triton_TritonBotMessage messageData = proto_triton_TritonBotMessage_init_zero;
       pb_istream_t stream = pb_istream_from_buffer((uint8_t*)packetBuffer, len);
       
-      if (pb_decode(&stream, proto_triton_TritonBotMessage_fields, &messageData) && messageData.id == 2) {
+      if (pb_decode(&stream, proto_triton_TritonBotMessage_fields, &messageData) && messageData.id == ROBOT_ID) {
 
         Serial.println("Received valid message:");
         Serial.printf("ID: %d\n", messageData.id);
