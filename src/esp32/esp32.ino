@@ -39,9 +39,8 @@ HardwareSerial espSerial(2);
 unsigned int count = 0;
 unsigned int charge_timer = 0;
 
-// kick/dribbler flag
+// kick flag
 bool kick = false;
-bool dribbler_on = false;
 
 void setup() {
   Serial.begin(115200);
@@ -122,7 +121,11 @@ void loop() {
         action_to_byte_array(msg, messageData.command.move_command);
 
         std::array<uint8_t, 2> header = {0xca, 0xfe};
-        std::array<uint8_t, 1> kick = {0x00};
+        std::array<uint8_t, 1> dribble = {0x00};
+
+        if (messageData.command.dribbler_speed > 0) {
+          dribble[0] = 0x01;
+        }
 
         std::array<uint8_t, 11> full_message;
 
@@ -134,7 +137,7 @@ void loop() {
           full_message[(i * 2 + 3)] = msg[i * 2 + 1];
         }
 
-        full_message[10] = kick[0];
+        full_message[10] = dribble[0];
 
         espSerial.write(full_message.data(), full_message.size());
         Serial.printf("(%d) Message sent!\n", count);

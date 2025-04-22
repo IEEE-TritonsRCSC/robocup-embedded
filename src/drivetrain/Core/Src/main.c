@@ -41,7 +41,7 @@
 #define UART_TX_BUFFER_SIZE 12  // set to the size we want to limit send messages to
 #define HEADER_BYTE_1 0xCA
 #define HEADER_BYTE_2 0xFE
-#define TOGGLE_DRIBBLE 0x01
+#define DRIBBLE_ON 0x01
 #define REDUCTION_RATIO 36.0
 
 #define DRIBBLE_SPEED 1500
@@ -56,11 +56,15 @@
 /* USER CODE BEGIN PV */
 
 // CAN variables
-CAN_TxHeaderTypeDef canTxHeader;
+CAN_TxHeaderTypeDef canTxHeader;  // For motors 1-4
+CAN_TxHeaderTypeDef canTxHeader2; // For motors 5-8
+
 CAN_RxHeaderTypeDef canRxHeader;
 uint32_t canTxMailbox;
-uint8_t CAN_TxData[10];
-uint8_t CAN_RxData[10];
+uint8_t CAN_TxData[8];
+uint8_t CAN2_TxData[8];
+
+uint8_t CAN_RxData[8];
 
 // PID feedback variables
 volatile uint8_t motor_idx;
@@ -154,6 +158,12 @@ int main(void) {
 	canTxHeader.RTR = CAN_RTR_DATA;
 	canTxHeader.StdId = 0x200;
 	canTxHeader.TransmitGlobalTime = DISABLE;
+
+	canTxHeader2.DLC = 8;
+	canTxHeader2.IDE = CAN_ID_STD;
+	canTxHeader2.RTR = CAN_RTR_DATA;
+	canTxHeader2.StdId = 0x1FF;
+	canTxHeader2.TransmitGlobalTime = DISABLE;
 
 	// Dribbler initialization
 	dribble_flag = 0;
@@ -262,17 +272,19 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 			 * Previously |targetSpeeds[i]| <= 500
 			 */
 
-			if (uart_rx_buffer[9] == TOGGLE_DRIBBLE) {
-				 dribble_flag = !dribble_flag;
+			if (uart_rx_buffer[8] == DRIBBLE_ON) {
+				 dribble_flag = 1;
+			} else {
+				dribble_flag = 0;
 			}
 
 			for (int i = 0; i < UART_RX_BUFFER_SIZE; ++i) {
 				uart_rx_buffer[i] = 0;
 			}
 
-			header1_flag = header2_flag = 0;
-
 			HAL_GPIO_TogglePin(LED_GREEN_PORT, LED_GREEN_PIN);
+
+			header1_flag = header2_flag = 0;
 			HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
 			return;
 
@@ -354,8 +366,9 @@ void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow,
 		unsigned char motorThreeHigh, unsigned char motorThreeLow,
 		unsigned char motorFourHigh, unsigned char motorFourLow,
 		unsigned char motorFiveHigh, unsigned char motorFiveLow) {
+
 	//speed can be 16 bits, split into high and low bytes
-	CAN_TxData[0] = motorOneHigh; //high byte for speed, shifted 8 because only buffer is only 8 bits
+	CAN_TxData[0] = motorOneHigh;      //high byte for speed, shifted 8 because only buffer is only 8 bits
 	CAN_TxData[1] = motorOneLow;       //low bytes for speed
 	CAN_TxData[2] = motorTwoHigh;
 	CAN_TxData[3] = motorTwoLow;
@@ -363,9 +376,12 @@ void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow,
 	CAN_TxData[5] = motorThreeLow;
 	CAN_TxData[6] = motorFourHigh;
 	CAN_TxData[7] = motorFourLow;
-	CAN_TxData[8] = motorFiveHigh;
-	CAN_TxData[9] = motorFiveLow;
+
+	CAN2_TxData[0] = motorFiveHigh;
+	CAN2_TxData[1] = motorFiveLow;
+
 	HAL_CAN_AddTxMessage(&hcan1, &canTxHeader, CAN_TxData, &canTxMailbox);
+	HAL_CAN_AddTxMessage(&hcan1, &canTxHeader2, CAN2_TxData, &canTxMailbox);
 }
 
 /* USER CODE END 4 */
