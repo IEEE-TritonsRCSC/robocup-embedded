@@ -79,16 +79,16 @@ while(True):
     message.command.dribbler_speed = 0
 
     if (key_states['w']):
-        message.command.move_command.local_velocity.forward = 5
+        message.command.move_command.local_velocity.forward = 1
     
     if (key_states['s']):
-        message.command.move_command.local_velocity.forward = -5
+        message.command.move_command.local_velocity.forward = -1
 
     if (key_states['a']):
-        message.command.move_command.local_velocity.left = -5
+        message.command.move_command.local_velocity.left = -1
 
     if (key_states['d']):
-        message.command.move_command.local_velocity.left = 5
+        message.command.move_command.local_velocity.left = 1
 
     if (key_states['j']):
         message.command.move_command.local_velocity.angular = 25
@@ -104,7 +104,7 @@ while(True):
         message.command.dribbler_speed = 1
 
     data = message.SerializeToString()
-    sock.sendto(data, (UDP_IP, PORT))
+    sock.sendto(data, (UDP_IP, UDP_PORT))
     
     print(key_states)
 
