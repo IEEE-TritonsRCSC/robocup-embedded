@@ -27,10 +27,13 @@ IPAddress local_IP(192, 168, 8, 80);
 IPAddress gateway(192, 168, 8, 1);
 IPAddress subnet(255, 255, 255, 0);
 
-// UDP setup
+// Multicast setup
 WiFiUDP udp;
 IPAddress multicastIP(224, 1, 1, 1);
 const int multicastPort = 10500;
+
+// Unicast setup
+// const int udpPort = 3333;
 
 // UART setup
 HardwareSerial espSerial(2);
@@ -74,9 +77,13 @@ void setup() {
   }
   Serial.println("\nConnected to Wi-Fi!");
 
-  // Start UDP
+  // Start Multicast UDP
   udp.beginMulticast(multicastIP, multicastPort);
   Serial.println("Joined multicast group");
+
+  // Unicast
+  // udp.begin(udpPort);
+  // Serial.println("Listening for unicast UDP on port 3333");
 }
 
 void loop() {
