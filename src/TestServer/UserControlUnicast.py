@@ -79,16 +79,16 @@ while(True):
     message.command.dribbler_speed = 0
 
     if (key_states['w']):
-        message.command.move_command.local_velocity.forward = 1
+        message.command.move_command.local_velocity.forward = 3
     
     if (key_states['s']):
-        message.command.move_command.local_velocity.forward = -1
+        message.command.move_command.local_velocity.forward = -3
 
     if (key_states['a']):
-        message.command.move_command.local_velocity.left = -1
+        message.command.move_command.local_velocity.left = -3
 
     if (key_states['d']):
-        message.command.move_command.local_velocity.left = 1
+        message.command.move_command.local_velocity.left = 3
 
     if (key_states['j']):
         message.command.move_command.local_velocity.angular = 25

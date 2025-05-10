@@ -12,7 +12,7 @@ from triton_bot_communication_pb2 import TritonBotMessage
 
 # Create and populate the TritonBotMessage
 message = TritonBotMessage()
-message.id = 1
+message.id = 2
 
 message.vision.confidence = 0.8
 message.vision.robot_id = 1
@@ -51,7 +51,7 @@ key_states = {'w': False, # move forward
               'l':False,  # rotate cw
               'k':False,  # kick
               'b':False,  # dribble
-              }
+}
 
 def on_press(key):
     try:
@@ -83,16 +83,16 @@ while(True):
     message.command.dribbler_speed = 0
 
     if (key_states['w']):
-        message.command.move_command.local_velocity.forward = 5
+        message.command.move_command.local_velocity.forward = 3
     
     if (key_states['s']):
-        message.command.move_command.local_velocity.forward = -5
+        message.command.move_command.local_velocity.forward = -3
 
     if (key_states['a']):
-        message.command.move_command.local_velocity.left = -5
+        message.command.move_command.local_velocity.left = -3
 
     if (key_states['d']):
-        message.command.move_command.local_velocity.left = 5
+        message.command.move_command.local_velocity.left = 3
 
     if (key_states['j']):
         message.command.move_command.local_velocity.angular = 25

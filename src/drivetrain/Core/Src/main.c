@@ -74,16 +74,16 @@ volatile float torque_current_data[4];
 volatile float targetSpeeds[4];
 PID_TypeDef motor_pid[4];
 
-volatile float Kp1 = 0.1;
+volatile float Kp1 = 0.3;
 volatile float Ki1 = 0;
 volatile float Kd1 = 0;
-volatile float Kp2 = 0.1;
+volatile float Kp2 = 0.3;
 volatile float Ki2 = 0;
 volatile float Kd2 = 0;
-volatile float Kp3 = 0.1;
+volatile float Kp3 = 0.2;
 volatile float Ki3 = 0;
 volatile float Kd3 = 0;
-volatile float Kp4 = 0.1;
+volatile float Kp4 = 0.2;
 volatile float Ki4 = 0;
 volatile float Kd4 = 0;
 
