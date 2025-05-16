@@ -236,9 +236,13 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
 		if (canRxHeader.StdId == 0x204)
 			motor_idx = 3;
 
+		// angle of the motor (0 - 8191 corresponding with 0 - 360°)
 		angle_data[motor_idx] = (uint16_t) (CAN_RxData[0] << 8 | CAN_RxData[1]);
+
+		// speed of the motor in rpm
 		speed_data[motor_idx] = ((int16_t) (CAN_RxData[2] << 8 | CAN_RxData[3]));
-				// / REDUCTION_RATIO); // angular velocity in rpm
+
+		// torque current of the motor
 		torque_current_data[motor_idx] = (CAN_RxData[4] << 8 | CAN_RxData[5]);
 	}
 }
