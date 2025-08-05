@@ -33,7 +33,7 @@ IPAddress multicastIP(224, 1, 1, 1);
 const int multicastPort = 10500;
 
 // Unicast setup
-// const int udpPort = 3333;
+const int udpPort = 3333;
 
 // UART setup
 HardwareSerial espSerial(2);
@@ -78,22 +78,38 @@ void setup() {
   Serial.println("\nConnected to Wi-Fi!");
 
   // Start Multicast UDP
-  udp.beginMulticast(multicastIP, multicastPort);
-  Serial.println("Joined multicast group");
+  // udp.beginMulticast(multicastIP, multicastPort);
+  // Serial.println("Joined multicast group");
 
   // Unicast
-  // udp.begin(udpPort);
-  // Serial.println("Listening for unicast UDP on port 3333");
+  udp.begin(udpPort);
+  Serial.println("Listening for unicast UDP on port 3333");
 }
 
 void loop() {
   uint8_t packetBuffer[BUFF_SIZE];  // Increase buffer size if needed
   unsigned int packetSize = udp.parsePacket();
   
+  if (espSerial.available() >= 5) {
+      if (espSerial.read() == 0xca && espSerial.read() == 0xfe) {
+      uint8_t data[3];
+      espSerial.readBytes(data, 3);
+
+      int motor = data[0];
+      int speed = ((int16_t) (data[1] << 8 | data[2]));
+
+      Serial.printf("Motor %d", motor);
+      Serial.printf("Speed %d", speed);
+    }
+  }
+
   if (packetSize) {
     int len = udp.read(packetBuffer, BUFF_SIZE);
+    Serial.printf("Packet length: %d", len);
     if (len > 0) {
       packetBuffer[len] = '\0';  // Null-terminate the buffer
+
+      Serial.printf("%s\n", packetBuffer);
 
       // Decode Protocol Buffer message
       proto_triton_TritonBotMessage messageData = proto_triton_TritonBotMessage_init_zero;
@@ -147,12 +163,12 @@ void loop() {
         full_message[10] = dribble[0];
 
         espSerial.write(full_message.data(), full_message.size());
-        Serial.printf("(%d) Message sent!\n", count);
+        // Serial.printf("(%d) Message sent!\n", count);
         count++;
 
-        for (int i = 0; i < 11; i++) {
-          Serial.printf("%x ", full_message[i]);
-        } Serial.printf("\n");
+        // for (int i = 0; i < 11; i++) {
+        //   Serial.printf("%x ", full_message[i]);
+        // } Serial.printf("\n");
 
       }
     }
