@@ -6,7 +6,7 @@
 #define BAUD_RATE 115200
 #define TX_PIN 17
 #define RX_PIN 16
-
+#define ROBOT_NO 1
 WiFiUDP UDP;
 IPAddress multicastIP(239, 42, 42, 42);
 HardwareSerial robotSerial(2);
@@ -85,22 +85,28 @@ void loop() {
 }
 
 void processCommand(char* buffer, int size){
+  //per new spcifiation we check number first
   char com[4]; //grab string
   char* endPtr;
-  memcpy(com, &buffer[j], 4); //note: we only grabbed 4 chars, so it can only be 4 word strings
+
+  if(strtod(&buffer[0], &endPtr) != ROBOT_NO){
+    return
+  }
+
+  memcpy(com, &buffer[2], 4); //note: we only grabbed 4 chars, so it can only be 4 word strings
 
   if(strcmp(com, "kick")) { //if kick 
     kick = 1;
   } else if(strcmp(com, "turn")) {
     std::array<uint8_t, 8> msg;
-    double angle = strtod(&buffer[5], &endPtr);
+    double angle = strtod(&buffer[7], &endPtr);
     action_to_byte_array(msg, 0, angle);
     formatAndSend(msg);
     
 
   } else if(strcmp(com, "dash")) {
     std::array<uint8_t, 8> msg;
-    double pow = strtod(&buffer[5], &endPtr);
+    double pow = strtod(&buffer[7], &endPtr);
     double angle = strtod(endPtr+1, &endPtr);
     action_to_byte_array(msg, pow, angle);
     formatAndSend(msg);
