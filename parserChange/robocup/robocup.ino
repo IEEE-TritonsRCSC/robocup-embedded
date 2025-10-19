@@ -6,12 +6,15 @@
 #define BAUD_RATE 115200
 #define TX_PIN 17
 #define RX_PIN 16
+#define START_CHARGE_PIN 15
+#define KICK_PIN 2
+#define LED_PIN 2
 #define ROBOT_NO 1
 WiFiUDP UDP;
 IPAddress multicastIP(239, 42, 42, 42);
 HardwareSerial robotSerial(2);
 
-char[255] inputBuffer; //buffer for storing overflow command
+char inputBuffer[255]; //buffer for storing overflow command
 int bufferSize = 0; //how many actual chars it contains
 unsigned int kick = 0;
 unsigned int charge_timer = 0;
@@ -21,7 +24,24 @@ void setup() {
   connect_wifi();
   UDP.beginMulticast(multicastIP, MULTICAST_PORT);
 
+  //starts charging
+  pinMode(START_CHARGE_PIN, INPUT_PULLUP);
+  pinMode(START_CHARGE_PIN, OUTPUT);
+  digitalWrite(START_CHARGE_PIN, LOW);
+
+  //opens and closes solenoid
+  pinMode(KICK_PIN, INPUT_PULLUP);
+  pinMode(KICK_PIN, OUTPUT);
+  digitalWrite(KICK_PIN, HIGH);
+
+  //turns on and off led
+  pinMode(LED_PIN, INPUT_PULLUP);
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LOW);
+
+
   robotSerial.begin(BAUD_RATE, SERIAL_8N1, RX_PIN, TX_PIN);
+
 }
 
 void loop() {
@@ -38,21 +58,21 @@ void loop() {
     int firstTime = 1;
     for(int i = 0; i < size; i++){  //loop to split strings
       commandLen++;
-      if(buffer[i] == "\n"){
+      if(buffer[i] == '\n'){
         //split
         char commandLine[commandLen+bufferSize]; //bufferSize should be 0 if it is already appended
         if(firstTime){ //append the rest
           memcpy(commandLine, inputBuffer, bufferSize); //append inputBuffer first
-          memcpy(commandLine[bufferSize], buffer[i-commandLen+1], commandLen);
+          memcpy(&commandLine[bufferSize], &buffer[i-commandLen+1], commandLen);
         } else {
-          memcpy(commandLine, buffer[i-commandLen+1], commandLen);
+          memcpy(commandLine, &buffer[i-commandLen+1], commandLen);
         }
         processCommand(commandLine, commandLen); //command is parsed and sent
         commandLen = 0;
       }
     }
     if (commandLen != 0) { //grab remaining letters and stuff into global buffer
-      memcpy(inputBuffer, buffer[size-commandLen], commandLen);
+      memcpy(inputBuffer, &buffer[size-commandLen], commandLen);
       bufferSize = commandLen;
     }
   }
@@ -86,28 +106,34 @@ void loop() {
 
 void processCommand(char* buffer, int size){
   //per new spcifiation we check number first
-  char com[4]; //grab string
+  char com[5]; //grab string
   char* endPtr;
 
   if(strtod(&buffer[0], &endPtr) != ROBOT_NO){
-    return
+    return;
   }
-
   memcpy(com, &buffer[2], 4); //note: we only grabbed 4 chars, so it can only be 4 word strings
-
-  if(strcmp(com, "kick")) { //if kick 
+  com[4] = '\0';
+  Serial.printf("command: %s\n", com);
+  if(strcmp(com, "kick") == 0) { //if kick 
+    Serial.println("executing kick command");
     kick = 1;
-  } else if(strcmp(com, "turn")) {
+
+  } else if(strcmp(com, "turn") == 0) {
+    Serial.println("executing turn command");
     std::array<uint8_t, 8> msg;
     double angle = strtod(&buffer[7], &endPtr);
+    Serial.printf("turn: %f\n", angle);
     action_to_byte_array(msg, 0, angle);
     formatAndSend(msg);
     
 
-  } else if(strcmp(com, "dash")) {
+  } else if(strcmp(com, "dash") == 0) {
+    Serial.println("executing dash command");
     std::array<uint8_t, 8> msg;
     double pow = strtod(&buffer[7], &endPtr);
     double angle = strtod(endPtr+1, &endPtr);
+    Serial.printf("pow: %f, angle: %f\n", pow, angle);
     action_to_byte_array(msg, pow, angle);
     formatAndSend(msg);
   } else {
@@ -123,6 +149,7 @@ void formatAndSend(std::array<uint8_t, 8> msg){
   for (int i = 0; i < 8; i++) {
     full_message[i + 2] = msg[i];
   }
+  full_message[10] = 1; //dribbler 
   robotSerial.write(full_message.data(), full_message.size());
 }
 
