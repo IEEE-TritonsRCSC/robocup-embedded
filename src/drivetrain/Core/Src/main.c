@@ -37,7 +37,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define UART_RX_BUFFER_SIZE 9   // set to the size we want to limit receive messages to
+#define UART_RX_BUFFER_SIZE 10  // now includes a command byte + 9-byte payload
 #define UART_TX_BUFFER_SIZE 12  // set to the size we want to limit send messages to
 #define HEADER_BYTE_1 0xCA
 #define HEADER_BYTE_2 0xFE
@@ -248,9 +248,9 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-	/*
-	 * Called when uart_rx_buffer is full
-	 */
+     /*
+      * Called when uart_rx_buffer is full
+      */
 
 	if (!header1_flag) {
 		if (rx_byte == HEADER_BYTE_1) {
@@ -263,23 +263,52 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	} else {
 
 		if (header2_flag) {
-			// full message received
+			// full message received (command + 9-byte payload)
 
 			timeout = 0;
 
-			targetSpeeds[0] = (int16_t)((uart_rx_buffer[0] << 8) | uart_rx_buffer[1]);
-			targetSpeeds[1] = (int16_t)((uart_rx_buffer[2] << 8) | uart_rx_buffer[3]);
-			targetSpeeds[2] = (int16_t)((uart_rx_buffer[4] << 8) | uart_rx_buffer[5]);
-			targetSpeeds[3] = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);
+			uint8_t cmd = uart_rx_buffer[0];
+			if (cmd == 0x00) {
+				// Speed command: payload = [s0H s0L s1H s1L s2H s2L s3H s3L dribble]
+				targetSpeeds[0] = (int16_t)((uart_rx_buffer[1] << 8) | uart_rx_buffer[2]);
+				targetSpeeds[1] = (int16_t)((uart_rx_buffer[3] << 8) | uart_rx_buffer[4]);
+				targetSpeeds[2] = (int16_t)((uart_rx_buffer[5] << 8) | uart_rx_buffer[6]);
+				targetSpeeds[3] = (int16_t)((uart_rx_buffer[7] << 8) | uart_rx_buffer[8]);
 
-			/*
-			 * Previously |targetSpeeds[i]| <= 500
-			 */
+				if (uart_rx_buffer[9] == DRIBBLE_ON) {
+					dribble_flag = 1;
+				} else {
+					dribble_flag = 0;
+				}
 
-			if (uart_rx_buffer[8] == DRIBBLE_ON) {
-				 dribble_flag = 1;
+			} else if (cmd == 0xA0) {
+				// PID update: payload = [idx, kpH, kpL, kiH, kiL, kdH, kdL, rsv, rsv]
+				uint8_t idx = uart_rx_buffer[1];
+				int16_t kp_q = (int16_t)((uart_rx_buffer[2] << 8) | uart_rx_buffer[3]);
+				int16_t ki_q = (int16_t)((uart_rx_buffer[4] << 8) | uart_rx_buffer[5]);
+				int16_t kd_q = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);
+				const float scale = 1000.0f;
+				float kp = ((float)kp_q) / scale;
+				float ki = ((float)ki_q) / scale;
+				float kd = ((float)kd_q) / scale;
+
+				if (idx <= 3) {
+					pid_set_constants(&motor_pid[idx], kp, ki, kd);
+					// reset integral and last error for stability
+					motor_pid[idx].integral = 0;
+					motor_pid[idx].last_error = 0;
+				} else {
+					// broadcast (idx >= 4 or 0xFF)
+					for (int i = 0; i < 4; ++i) {
+						pid_set_constants(&motor_pid[i], kp, ki, kd);
+						motor_pid[i].integral = 0;
+						motor_pid[i].last_error = 0;
+					}
+				}
+
+				HAL_GPIO_TogglePin(LED_RED_PORT, LED_RED_PIN); // indicate PID update
 			} else {
-				dribble_flag = 0;
+				// Unknown command: ignore
 			}
 
 			for (int i = 0; i < UART_RX_BUFFER_SIZE; ++i) {
@@ -291,20 +320,19 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 			header1_flag = header2_flag = 0;
 			HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
 			return;
+         } else if (rx_byte == HEADER_BYTE_2) {
+             // second header byte received
 
-		} else if (rx_byte == HEADER_BYTE_2) {
-			// second header byte received
+             header2_flag = 1;
+             HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
+             return;
+         } else {
+             // first header byte received but not followed by second header byte
 
-			header2_flag = 1;
-			HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
-			return;
-		} else {
-			// first header byte received but not followed by second header byte
-
-			header1_flag = 0;
-			HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
-			return;
-		}
+             header1_flag = 0;
+             HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
+             return;
+         }
 	}
 }
 

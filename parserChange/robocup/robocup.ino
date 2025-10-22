@@ -104,18 +104,48 @@ void loop() {
   }
 }
 
+void formatAndSendCmd(uint8_t cmd, std::array<uint8_t, 9> payload){
+  std::array<uint8_t, 12> full_message;
+  full_message[0] = 0xCA;
+  full_message[1] = 0xFE;
+  full_message[2] = cmd;
+  for (int i = 0; i < 9; i++) full_message[3 + i] = payload[i];
+  robotSerial.write(full_message.data(), full_message.size());
+}
+
+void formatAndSend(std::array<uint8_t, 9> payload){
+  // default speed command (cmd = 0x00)
+  formatAndSendCmd(0x00, payload);
+}
+
+void valuesToBytes(std::array<int, 4>& wheel_speeds, std::array<uint8_t, 9>& wheel_speeds_byte) {
+  for (int i = 0; i < 4; i++) {
+    wheel_speeds_byte[(i * 2) + 1] = (wheel_speeds[i] >> 8) & 0xFF; // high byte after cmd position shift
+    wheel_speeds_byte[(i * 2) + 2] = (wheel_speeds[i]) & 0xFF;      // low byte
+  }
+}
+
+void action_to_byte_array(std::array<uint8_t, 9>& wheel_speeds_byte, double arg1, double arg2) {
+  std::array<int, 4> wheel_speeds;
+  getVelocityArray(wheel_speeds, 0, 0, arg1, arg2);
+  // Build payload: [s0H s0L s1H s1L s2H s2L s3H s3L dribble]
+  for (int i = 0; i < 4; i++){
+    wheel_speeds_byte[i*2]   = (wheel_speeds[i] >> 8) & 0xFF;
+    wheel_speeds_byte[i*2+1] = (wheel_speeds[i]) & 0xFF;
+  }
+  wheel_speeds_byte[8] = 1; // dribbler on by default
+}
+
 void processCommand(char* buffer, int size){
-  //per new spcifiation we check number first
-  char com[5]; //grab string
+  char com[5];
   char* endPtr;
 
   if(strtod(&buffer[0], &endPtr) != ROBOT_NO){
     return;
   }
-  memcpy(com, &buffer[2], 4); //note: we only grabbed 4 chars, so it can only be 4 word strings
+  memcpy(com, &buffer[2], 4);
   com[4] = '\0';
-  Serial.printf("command: %s\n", com);
-  if(strcmp(com, "kick") == 0) { //if kick 
+  if(strcmp(com, "kick") == 0){
     Serial.println("executing kick command");
     kick = 1;
 
@@ -130,27 +160,31 @@ void processCommand(char* buffer, int size){
 
   } else if(strcmp(com, "dash") == 0) {
     Serial.println("executing dash command");
-    std::array<uint8_t, 8> msg;
-    double pow = strtod(&buffer[7], &endPtr);
-    double angle = strtod(endPtr+1, &endPtr);
-    Serial.printf("pow: %f, angle: %f\n", pow, angle);
-    action_to_byte_array(msg, pow, angle);
-    formatAndSend(msg);
+    // expects: "<id> dash <power> <rot>\n"
+    double power = 0, rot = 0;
+    sscanf(buffer + 7, "%lf %lf", &power, &rot);
+    std::array<uint8_t, 9> payload;
+    action_to_byte_array(payload, power, rot);
+    formatAndSend(payload);
+  } else if(strcmp(com, "pidu") == 0){
+    Serial.println("executing pidu command");
+    // expects: "<id> pidu <idx> <kp_q> <ki_q> <kd_q>\n" (kp/ki/kd in milli-units)
+    int idx = 0; int kp_q = 0; int ki_q = 0; int kd_q = 0;
+    sscanf(buffer + 7, "%d %d %d %d", &idx, &kp_q, &ki_q, &kd_q);
+    std::array<uint8_t, 9> payload = {0};
+    payload[0] = (uint8_t)idx;
+    payload[1] = (uint8_t)((kp_q >> 8) & 0xFF);
+    payload[2] = (uint8_t)(kp_q & 0xFF);
+    payload[3] = (uint8_t)((ki_q >> 8) & 0xFF);
+    payload[4] = (uint8_t)(ki_q & 0xFF);
+    payload[5] = (uint8_t)((kd_q >> 8) & 0xFF);
+    payload[6] = (uint8_t)(kd_q & 0xFF);
+    payload[7] = 0;
+    payload[8] = 0;
+    formatAndSendCmd(0xA0, payload);
   } else {
     return; //if empty or malformed command, do nothing
   }
-}
-
-void formatAndSend(std::array<uint8_t, 8> msg){
-  std::array<uint8_t, 2> header = {0xca, 0xfe};
-  std::array<uint8_t, 11> full_message;
-  full_message[0] = header[0];
-  full_message[1] = header[1];
-  for (int i = 0; i < 8; i++) {
-    full_message[i + 2] = msg[i];
-  }
-  full_message[10] = 1; //dribbler 
-  robotSerial.write(full_message.data(), full_message.size());
 }
 
 void connect_wifi() {
