@@ -2,6 +2,18 @@
 #include "credentials.h"  // loads ssid and password
 #include "velocityConversions.h"
 
+// #define DEBUG_SERIAL // Uncomment this line to enable debug serial output
+
+#ifdef DEBUG_SERIAL
+#define DEBUG_PRINT(...) Serial.print(__VA_ARGS__)
+#define DEBUG_PRINTLN(...) Serial.println(__VA_ARGS__)
+#define DEBUG_PRINTF(...) Serial.printf(__VA_ARGS__)
+#else
+#define DEBUG_PRINT(...)
+#define DEBUG_PRINTLN(...)
+#define DEBUG_PRINTF(...)
+#endif
+
 #define MULTICAST_PORT 10000
 #define BAUD_RATE 115200
 #define TX_PIN 17
@@ -48,10 +60,10 @@ void loop() {
   int size = UDP.parsePacket();
   if (size) {
     char buffer[256];
-    Serial.println(size);
+    DEBUG_PRINTLN(size);
     size = UDP.read(buffer, 255);
     buffer[size] = '\0';
-    Serial.println(buffer);
+    DEBUG_PRINTLN(buffer);
     UDP.flush();
 
     int commandLen = 0;
@@ -79,15 +91,15 @@ void loop() {
 
   if (kick) {
     digitalWrite(START_CHARGE_PIN, HIGH);
-    digitalWrite(LED_PIN, HIGH);
-    Serial.println("charging");
+  	digitalWrite(LED_PIN, HIGH);
+    DEBUG_PRINTLN("charging");
     charge_timer = 1;
     kick = 0;
   }
 
   if (charge_timer) {
     if (charge_timer >= 2000) {
-      Serial.println("charge off, kicking!");
+      DEBUG_PRINTLN("charge off, kicking!");
       digitalWrite(START_CHARGE_PIN, LOW);
       digitalWrite(KICK_PIN, LOW);
       digitalWrite(LED_PIN, LOW);
@@ -95,7 +107,7 @@ void loop() {
       delay(100);
 
       digitalWrite(KICK_PIN, HIGH);
-      Serial.println("---------KICKED----------");
+      DEBUG_PRINTLN("---------KICKED----------");
       charge_timer = 0;
 
     } else {
@@ -114,26 +126,26 @@ void processCommand(char* buffer, int size){
   }
   memcpy(com, &buffer[2], 4); //note: we only grabbed 4 chars, so it can only be 4 word strings
   com[4] = '\0';
-  Serial.printf("command: %s\n", com);
+  DEBUG_PRINTF("command: %s\n", com);
   if(strcmp(com, "kick") == 0) { //if kick 
-    Serial.println("executing kick command");
+    DEBUG_PRINTLN("executing kick command");
     kick = 1;
 
   } else if(strcmp(com, "turn") == 0) {
-    Serial.println("executing turn command");
+    DEBUG_PRINTLN("executing turn command");
     std::array<uint8_t, 8> msg;
     double angle = strtod(&buffer[7], &endPtr);
-    Serial.printf("turn: %f\n", angle);
+    DEBUG_PRINTF("turn: %f\n", angle);
     action_to_byte_array(msg, 0, angle);
     formatAndSend(msg);
     
 
   } else if(strcmp(com, "dash") == 0) {
-    Serial.println("executing dash command");
+    DEBUG_PRINTLN("executing dash command");
     std::array<uint8_t, 8> msg;
     double pow = strtod(&buffer[7], &endPtr);
     double angle = strtod(endPtr+1, &endPtr);
-    Serial.printf("pow: %f, angle: %f\n", pow, angle);
+    DEBUG_PRINTF("pow: %f, angle: %f\n", pow, angle);
     action_to_byte_array(msg, pow, angle);
     formatAndSend(msg);
   } else {
@@ -154,16 +166,16 @@ void formatAndSend(std::array<uint8_t, 8> msg){
 }
 
 void connect_wifi() {
-  Serial.print("\nConnecting WiFi to ");
-  Serial.print(ssid);
+  DEBUG_PRINT("\nConnecting WiFi to ");
+  DEBUG_PRINT(ssid);
   // Attempt connection every 500 ms
   //WiFi.config(ip);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
-    Serial.print(".");
+    DEBUG_PRINT(".");
   }
-  Serial.print("\nWiFi connected");
-  Serial.print("\nIP address: ");
-  Serial.println(WiFi.localIP());
+  DEBUG_PRINT("\nWiFi connected");
+  DEBUG_PRINT("\nIP address: ");
+  DEBUG_PRINTLN(WiFi.localIP());
 }
