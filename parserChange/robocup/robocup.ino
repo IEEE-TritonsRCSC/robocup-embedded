@@ -151,40 +151,55 @@ void processCommand(char* buffer, int size){
 
   } else if(strcmp(com, "turn") == 0) {
     Serial.println("executing turn command");
-    std::array<uint8_t, 8> msg;
+    std::array<uint8_t, 9> msg; // 9-byte payload
     double angle = strtod(&buffer[7], &endPtr);
     Serial.printf("turn: %f\n", angle);
     action_to_byte_array(msg, 0, angle);
     formatAndSend(msg);
     
 
-  } else if(strcmp(com, "dash") == 0) {
-    Serial.println("executing dash command");
-    // expects: "<id> dash <power> <rot>\n"
-    double power = 0, rot = 0;
-    sscanf(buffer + 7, "%lf %lf", &power, &rot);
+  } else if(strcmp(com, "move") == 0) {
+    // expects: "<id> move <vx> <vy> <rot>\n"
+    Serial.println("executing move command");
+    double vx = 0, vy = 0, rot = 0;
+    sscanf(buffer + 7, "%lf %lf %lf", &vx, &vy, &rot);
+    std::array<int, 4> wheel_speeds;
+    getVelocityArray(wheel_speeds, 0, vx, vy, rot);
     std::array<uint8_t, 9> payload;
-    action_to_byte_array(payload, power, rot);
+    for (int i = 0; i < 4; i++){
+      payload[i*2]   = (wheel_speeds[i] >> 8) & 0xFF;
+      payload[i*2+1] = (wheel_speeds[i]) & 0xFF;
+    }
+    payload[8] = 1; // dribbler on by default
     formatAndSend(payload);
-  } else if(strcmp(com, "pidu") == 0){
-    Serial.println("executing pidu command");
-    // expects: "<id> pidu <idx> <kp_q> <ki_q> <kd_q>\n" (kp/ki/kd in milli-units)
-    int idx = 0; int kp_q = 0; int ki_q = 0; int kd_q = 0;
-    sscanf(buffer + 7, "%d %d %d %d", &idx, &kp_q, &ki_q, &kd_q);
-    std::array<uint8_t, 9> payload = {0};
-    payload[0] = (uint8_t)idx;
-    payload[1] = (uint8_t)((kp_q >> 8) & 0xFF);
-    payload[2] = (uint8_t)(kp_q & 0xFF);
-    payload[3] = (uint8_t)((ki_q >> 8) & 0xFF);
-    payload[4] = (uint8_t)(ki_q & 0xFF);
-    payload[5] = (uint8_t)((kd_q >> 8) & 0xFF);
-    payload[6] = (uint8_t)(kd_q & 0xFF);
-    payload[7] = 0;
-    payload[8] = 0;
-    formatAndSendCmd(0xA0, payload);
-  } else {
-    return; //if empty or malformed command, do nothing
-  }
+ 
+   } else if(strcmp(com, "dash") == 0) {
+     Serial.println("executing dash command");
+     // expects: "<id> dash <power> <rot>\n"
+     double power = 0, rot = 0;
+     sscanf(buffer + 7, "%lf %lf", &power, &rot);
+     std::array<uint8_t, 9> payload;
+     action_to_byte_array(payload, power, rot);
+     formatAndSend(payload);
+   } else if(strcmp(com, "pidu") == 0){
+     Serial.println("executing pidu command");
+     // expects: "<id> pidu <idx> <kp_q> <ki_q> <kd_q>\n" (kp/ki/kd in milli-units)
+     int idx = 0; int kp_q = 0; int ki_q = 0; int kd_q = 0;
+     sscanf(buffer + 7, "%d %d %d %d", &idx, &kp_q, &ki_q, &kd_q);
+     std::array<uint8_t, 9> payload = {0};
+     payload[0] = (uint8_t)idx;
+     payload[1] = (uint8_t)((kp_q >> 8) & 0xFF);
+     payload[2] = (uint8_t)(kp_q & 0xFF);
+     payload[3] = (uint8_t)((ki_q >> 8) & 0xFF);
+     payload[4] = (uint8_t)(ki_q & 0xFF);
+     payload[5] = (uint8_t)((kd_q >> 8) & 0xFF);
+     payload[6] = (uint8_t)(kd_q & 0xFF);
+     payload[7] = 0;
+     payload[8] = 0;
+     formatAndSendCmd(0xA0, payload);
+   } else {
+     return; //if empty or malformed command, do nothing
+   }
 }
 
 void connect_wifi() {
