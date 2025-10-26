@@ -37,8 +37,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define UART_RX_BUFFER_SIZE 10  // now includes a command byte + 9-byte payload
-#define UART_TX_BUFFER_SIZE 12  // set to the size we want to limit send messages to
+#define UART_RX_PAYLOAD_SIZE 10  // cmd (1) + payload (9)
+#define UART_TX_BUFFER_SIZE 12   // header(2)+cmd(1)+payload(9)
 #define HEADER_BYTE_1 0xCA
 #define HEADER_BYTE_2 0xFE
 #define DRIBBLE_ON 0x01
@@ -88,12 +88,14 @@ volatile float Ki4 = 0;
 volatile float Kd4 = 0;
 
 // UART setup
-uint8_t uart_rx_buffer[UART_RX_BUFFER_SIZE]; // buffer that stores in an array of characters user inputs, aka a string
 uint8_t uart_tx_buffer[UART_TX_BUFFER_SIZE];
 
+// Byte-wise RX state machine for frames: 0xCA 0xFE [cmd + 9-byte payload]
 volatile uint8_t rx_byte = 0;
-volatile int header1_flag = 0;
-volatile int header2_flag = 0;
+typedef enum { RX_WAIT_H1 = 0, RX_WAIT_H2, RX_READ_PAYLOAD } rx_state_t;
+volatile rx_state_t rx_state = RX_WAIT_H1;
+volatile uint8_t rx_buf[UART_RX_PAYLOAD_SIZE];
+volatile uint8_t rx_pos = 0;
 
 volatile int timeout;  // timeout for safety mechanism to shutoff robot
 
@@ -248,45 +250,54 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-     /*
-      * Called when uart_rx_buffer is full
-      */
+	if (huart != &huart2) {
+		return;
+	}
 
-	if (!header1_flag) {
-		if (rx_byte == HEADER_BYTE_1) {
-			// first header byte received
+	uint8_t b = rx_byte;
 
-			header1_flag = 1;
-			HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
-			return;
+	switch (rx_state) {
+	case RX_WAIT_H1:
+		if (b == HEADER_BYTE_1) {
+			rx_state = RX_WAIT_H2;
+		} else {
+			// stay in WAIT_H1
 		}
-	} else {
+		break;
+	case RX_WAIT_H2:
+		if (b == HEADER_BYTE_2) {
+			rx_state = RX_READ_PAYLOAD;
+			rx_pos = 0;
+		} else if (b == HEADER_BYTE_1) {
+			// possible start of a new frame
+			rx_state = RX_WAIT_H2;
+		} else {
+			rx_state = RX_WAIT_H1;
+		}
+		break;
+	case RX_READ_PAYLOAD:
+		if (rx_pos < UART_RX_PAYLOAD_SIZE) {
+			rx_buf[rx_pos++] = b;
+		}
+		if (rx_pos >= UART_RX_PAYLOAD_SIZE) {
+			// Full frame received: process
+			timeout = 0; // refresh watchdog
 
-		if (header2_flag) {
-			// full message received (command + 9-byte payload)
-
-			timeout = 0;
-
-			uint8_t cmd = uart_rx_buffer[0];
+			uint8_t cmd = rx_buf[0];
 			if (cmd == 0x00) {
-				// Speed command: payload = [s0H s0L s1H s1L s2H s2L s3H s3L dribble]
-				targetSpeeds[0] = (int16_t)((uart_rx_buffer[1] << 8) | uart_rx_buffer[2]);
-				targetSpeeds[1] = (int16_t)((uart_rx_buffer[3] << 8) | uart_rx_buffer[4]);
-				targetSpeeds[2] = (int16_t)((uart_rx_buffer[5] << 8) | uart_rx_buffer[6]);
-				targetSpeeds[3] = (int16_t)((uart_rx_buffer[7] << 8) | uart_rx_buffer[8]);
-
-				if (uart_rx_buffer[9] == DRIBBLE_ON) {
-					dribble_flag = 1;
-				} else {
-					dribble_flag = 0;
-				}
+				// Speed command
+				targetSpeeds[0] = (int16_t)((rx_buf[1] << 8) | rx_buf[2]);
+				targetSpeeds[1] = (int16_t)((rx_buf[3] << 8) | rx_buf[4]);
+				targetSpeeds[2] = (int16_t)((rx_buf[5] << 8) | rx_buf[6]);
+				targetSpeeds[3] = (int16_t)((rx_buf[7] << 8) | rx_buf[8]);
+				dribble_flag = (rx_buf[9] == DRIBBLE_ON) ? 1 : 0;
 
 			} else if (cmd == 0xA0) {
-				// PID update: payload = [idx, kpH, kpL, kiH, kiL, kdH, kdL, rsv, rsv]
-				uint8_t idx = uart_rx_buffer[1];
-				int16_t kp_q = (int16_t)((uart_rx_buffer[2] << 8) | uart_rx_buffer[3]);
-				int16_t ki_q = (int16_t)((uart_rx_buffer[4] << 8) | uart_rx_buffer[5]);
-				int16_t kd_q = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);
+				// PID update
+				uint8_t idx = rx_buf[1];
+				int16_t kp_q = (int16_t)((rx_buf[2] << 8) | rx_buf[3]);
+				int16_t ki_q = (int16_t)((rx_buf[4] << 8) | rx_buf[5]);
+				int16_t kd_q = (int16_t)((rx_buf[6] << 8) | rx_buf[7]);
 				const float scale = 1000.0f;
 				float kp = ((float)kp_q) / scale;
 				float ki = ((float)ki_q) / scale;
@@ -294,46 +305,33 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 
 				if (idx <= 3) {
 					pid_set_constants(&motor_pid[idx], kp, ki, kd);
-					// reset integral and last error for stability
 					motor_pid[idx].integral = 0;
 					motor_pid[idx].last_error = 0;
 				} else {
-					// broadcast (idx >= 4 or 0xFF)
 					for (int i = 0; i < 4; ++i) {
 						pid_set_constants(&motor_pid[i], kp, ki, kd);
 						motor_pid[i].integral = 0;
 						motor_pid[i].last_error = 0;
 					}
 				}
-
-				HAL_GPIO_TogglePin(LED_RED_PORT, LED_RED_PIN); // indicate PID update
+				HAL_GPIO_TogglePin(LED_RED_PORT, LED_RED_PIN);
 			} else {
-				// Unknown command: ignore
-			}
-
-			for (int i = 0; i < UART_RX_BUFFER_SIZE; ++i) {
-				uart_rx_buffer[i] = 0;
+				// Unknown cmd: ignore
 			}
 
 			HAL_GPIO_TogglePin(LED_GREEN_PORT, LED_GREEN_PIN);
-
-			header1_flag = header2_flag = 0;
-			HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
-			return;
-         } else if (rx_byte == HEADER_BYTE_2) {
-             // second header byte received
-
-             header2_flag = 1;
-             HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
-             return;
-         } else {
-             // first header byte received but not followed by second header byte
-
-             header1_flag = 0;
-             HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
-             return;
-         }
+			// Reset for next frame
+			rx_state = RX_WAIT_H1;
+			rx_pos = 0;
+		}
+		break;
+	default:
+		rx_state = RX_WAIT_H1;
+		break;
 	}
+
+	// Always re-arm for next byte
+	HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
 }
 
 /**
