@@ -51,7 +51,9 @@ void MX_CAN1_Init(void) {
 	hcan1.Init.TransmitFifoPriority = DISABLE;
 
 	if (HAL_CAN_Init(&hcan1) != HAL_OK) {
-		Error_Handler();
+		// CAN init failed - just return, don't halt everything
+		// This allows UART testing without motors connected
+		return;
 	}
 	/* USER CODE BEGIN CAN1_Init 2 */
 	canfilter1.FilterBank = 0;
