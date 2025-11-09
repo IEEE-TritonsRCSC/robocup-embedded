@@ -1,0 +1,8 @@
+# Python dependencies for RoboCup TestServer scripts
+
+# Protobuf runtime required by generated *_pb2.py files
+protobuf>=5.29.2,<6
+
+# Keyboard input for UserControl scripts (Windows/macOS/Linux)
+pynput>=1.7
+
