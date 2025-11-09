@@ -2,7 +2,7 @@
 #include "credentials.h"  // loads ssid and password
 #include "velocityConversions.h"
 
-// #define DEBUG_SERIAL // Uncomment this line to enable debug serial output
+#define DEBUG_SERIAL // Uncomment this line to enable debug serial output
 
 #ifdef DEBUG_SERIAL
 #define DEBUG_PRINT(...) Serial.print(__VA_ARGS__)
@@ -162,7 +162,34 @@ void formatAndSend(std::array<uint8_t, 8> msg){
     full_message[i + 2] = msg[i];
   }
   full_message[10] = 1; //dribbler 
+  
+  // Send to STM32
   robotSerial.write(full_message.data(), full_message.size());
+  
+  // Debug: print what we sent
+  DEBUG_PRINT("TX to STM32: ");
+  for (int i = 0; i < full_message.size(); i++) {
+    DEBUG_PRINTF("%02X ", full_message[i]);
+  }
+  DEBUG_PRINTLN();
+  
+  // Wait for ACK from STM32 (with timeout)
+  unsigned long start = millis();
+  while (millis() - start < 20) { // 20ms timeout (reduced to prevent queue buildup)
+    if (robotSerial.available() >= 3) {
+      uint8_t ack[3];
+      robotSerial.readBytes(ack, 3);
+      if (ack[0] == 0xAC && ack[1] == 0xCE) {
+        DEBUG_PRINTF("STM32 ACK received: %02X\n", ack[2]);
+        digitalWrite(LED_PIN, HIGH);
+        delay(10);
+        digitalWrite(LED_PIN, LOW);
+        return;
+      }
+    }
+    delay(1); // Small delay to prevent tight loop
+  }
+  DEBUG_PRINTLN("WARNING: No ACK from STM32!");
 }
 
 void connect_wifi() {

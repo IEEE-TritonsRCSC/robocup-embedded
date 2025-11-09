@@ -51,7 +51,9 @@ void MX_CAN1_Init(void) {
 	hcan1.Init.TransmitFifoPriority = DISABLE;
 
 	if (HAL_CAN_Init(&hcan1) != HAL_OK) {
-		Error_Handler();
+		// CAN init failed - likely no termination resistor or disconnected
+		// Instead of hanging, return and let code run without CAN
+		return;  // Non-fatal: allow system to continue
 	}
 	/* USER CODE BEGIN CAN1_Init 2 */
 	canfilter1.FilterBank = 0;
@@ -63,8 +65,15 @@ void MX_CAN1_Init(void) {
 	canfilter1.FilterMaskIdLow = 0x0000;
 	canfilter1.FilterFIFOAssignment = CAN_RX_FIFO0;
 	canfilter1.FilterActivation = CAN_FILTER_ENABLE;
-	HAL_CAN_ConfigFilter(&hcan1, &canfilter1);
-	HAL_CAN_Start(&hcan1); //start CAN
+	
+	if (HAL_CAN_ConfigFilter(&hcan1, &canfilter1) != HAL_OK) {
+		return;  // Filter config failed
+	}
+	
+	if (HAL_CAN_Start(&hcan1) != HAL_OK) {
+		return;  // CAN start failed
+	}
+	
 	HAL_CAN_ActivateNotification(&hcan1, CAN_IT_RX_FIFO0_MSG_PENDING); // Activate CAN receive interrupt for encoder data
 	/* USER CODE END CAN1_Init 2 */
 }

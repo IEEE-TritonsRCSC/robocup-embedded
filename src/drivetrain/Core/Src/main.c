@@ -28,6 +28,18 @@
 #include "PID.h"
 
 #include <string.h>
+
+// Robot-specific UART handle selection
+#ifdef ROBOT_1_ORIGINAL
+  #define huart_robot huart2
+  #define MX_UART_Robot_Init() MX_USART2_UART_Init()
+#elif defined(ROBOT_2_REWORK)
+  #define huart_robot huart4
+  #define MX_UART_Robot_Init() MX_UART4_Init()
+#else
+  #error "Must define either ROBOT_1_ORIGINAL or ROBOT_2_REWORK in main.h"
+#endif
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -139,10 +151,35 @@ int main(void) {
 
 	/* Initialize all configured peripherals */
 	MX_GPIO_Init();
+	
+	// LED diagnostic: 1 green blink = GPIO init OK
+	HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_ON);
+	HAL_Delay(200);
+	HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_OFF);
+	HAL_Delay(200);
+	
 	MX_DMA_Init();
-	MX_CAN1_Init();
+	
+	// LED diagnostic: 2 green blinks = DMA init OK
+	for(int i=0; i<2; i++) {
+		HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_ON);
+		HAL_Delay(200);
+		HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_OFF);
+		HAL_Delay(200);
+	}
+	
+	MX_CAN1_Init();  // << THIS IS LIKELY WHERE IT FAILS
+	
+	// LED diagnostic: 3 green blinks = CAN init OK
+	for(int i=0; i<3; i++) {
+		HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_ON);
+		HAL_Delay(200);
+		HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_OFF);
+		HAL_Delay(200);
+	}
+	
 	MX_TIM1_Init();
-	MX_USART2_UART_Init();
+	MX_UART_Robot_Init();  // Initialize robot-specific UART
 	/* USER CODE BEGIN 2 */
 
 	// Motor setup
@@ -185,7 +222,34 @@ int main(void) {
 	HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_OFF);
 	HAL_GPIO_WritePin(LED_RED_PORT, LED_RED_PIN, LED_OFF);
 
-	HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
+	// Startup diagnostic sequence
+	// 1. Blink green 2x = initialization complete
+	for (int i = 0; i < 2; i++) {
+		HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_ON);
+		HAL_Delay(150);
+		HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_OFF);
+		HAL_Delay(150);
+	}
+	
+	// 2. Both LEDs on briefly = UART starting
+	HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_ON);
+	HAL_GPIO_WritePin(LED_RED_PORT, LED_RED_PIN, LED_ON);
+	HAL_Delay(300);
+	HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_OFF);
+	HAL_GPIO_WritePin(LED_RED_PORT, LED_RED_PIN, LED_OFF);
+	HAL_Delay(200);
+
+	// Start UART reception (robot-specific)
+	if (HAL_UART_Receive_IT(&huart_robot, &rx_byte, 1) != HAL_OK) {
+		// If UART init fails, keep red LED solid
+		HAL_GPIO_WritePin(LED_RED_PORT, LED_RED_PIN, LED_ON);
+		while(1); // Halt here so you know there's a problem
+	}
+	
+	// 3. Green blink = ready and listening
+	HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_ON);
+	HAL_Delay(500);
+	HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_OFF);
 
 	/* USER CODE END 2 */
 
@@ -204,6 +268,8 @@ int main(void) {
 			for (int i = 0; i < 4; ++i) {
 				targetSpeeds[i] = 0;
 			}
+			// Blink red LED when in timeout state
+			HAL_GPIO_TogglePin(LED_RED_PORT, LED_RED_PIN);
 		}
 
 		 for (int i = 0; i < 4; ++i) {                          // PID control loop
@@ -212,6 +278,11 @@ int main(void) {
 		 }
 
 		 setMotorSpeeds((motor_pid[0].output), (motor_pid[1].output), (motor_pid[2].output), (motor_pid[3].output), dribble_speed);
+
+		// Turn off error LED if we've recovered
+		if (timeout < 200 && HAL_GPIO_ReadPin(LED_RED_PORT, LED_RED_PIN) == LED_ON) {
+			HAL_GPIO_WritePin(LED_RED_PORT, LED_RED_PIN, LED_OFF);
+		}
 
 		timeout++;
 		HAL_Delay(10);
@@ -247,6 +318,36 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
 	}
 }
 
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
+	/*
+	 * Called on UART errors (overrun, framing, etc.)
+	 * This is critical - without proper handling, UART will lock up
+	 */
+	if (huart == &huart_robot) {
+		// Clear ALL error flags immediately
+		uint32_t errorflags = huart->ErrorCode;
+		
+		__HAL_UART_CLEAR_OREFLAG(huart);   // Overrun
+		__HAL_UART_CLEAR_NEFLAG(huart);    // Noise
+		__HAL_UART_CLEAR_FEFLAG(huart);    // Framing
+		__HAL_UART_CLEAR_PEFLAG(huart);    // Parity
+		
+		// Abort any ongoing reception
+		HAL_UART_AbortReceive_IT(huart);
+		
+		// Reset state machine
+		header1_flag = 0;
+		header2_flag = 0;
+		
+		// Restart reception
+		HAL_UART_Receive_IT(&huart_robot, &rx_byte, 1);
+		
+		// Quick LED pulse to indicate error recovery (non-blocking)
+		// Don't use HAL_Delay in ISR!
+		HAL_GPIO_WritePin(LED_RED_PORT, LED_RED_PIN, LED_ON);
+	}
+}
+
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	/*
 	 * Called when uart_rx_buffer is full
@@ -257,7 +358,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 			// first header byte received
 
 			header1_flag = 1;
-			HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
+			HAL_UART_Receive_IT(&huart_robot, &rx_byte, 1);
+			return;
+		} else {
+			// Received byte but not header - restart listening
+			HAL_UART_Receive_IT(&huart_robot, &rx_byte, 1);
 			return;
 		}
 	} else {
@@ -288,21 +393,25 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 
 			HAL_GPIO_TogglePin(LED_GREEN_PORT, LED_GREEN_PIN);
 
+			// Send ACK back to ESP32 for debugging
+			uint8_t ack_msg[3] = {0xAC, 0xCE, 0x01}; // ACK header + success byte
+			HAL_UART_Transmit(&huart_robot, ack_msg, 3, 10);
+
 			header1_flag = header2_flag = 0;
-			HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
+			HAL_UART_Receive_IT(&huart_robot, &rx_byte, 1);
 			return;
 
 		} else if (rx_byte == HEADER_BYTE_2) {
 			// second header byte received
 
 			header2_flag = 1;
-			HAL_UART_Receive_IT(&huart2, uart_rx_buffer, UART_RX_BUFFER_SIZE);
+			HAL_UART_Receive_IT(&huart_robot, uart_rx_buffer, UART_RX_BUFFER_SIZE);
 			return;
 		} else {
 			// first header byte received but not followed by second header byte
 
 			header1_flag = 0;
-			HAL_UART_Receive_IT(&huart2, &rx_byte, 1);
+			HAL_UART_Receive_IT(&huart_robot, &rx_byte, 1);
 			return;
 		}
 	}
@@ -418,7 +527,15 @@ void Error_Handler(void) {
 	/* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
 	__disable_irq();
+	
+	// Flash both LEDs rapidly to indicate error
 	while (1) {
+		HAL_GPIO_WritePin(LED_RED_PORT, LED_RED_PIN, LED_ON);
+		HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_ON);
+		for(volatile int i=0; i<500000; i++); // Crude delay
+		HAL_GPIO_WritePin(LED_RED_PORT, LED_RED_PIN, LED_OFF);
+		HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_OFF);
+		for(volatile int i=0; i<500000; i++);
 	}
 	/* USER CODE END Error_Handler_Debug */
 }

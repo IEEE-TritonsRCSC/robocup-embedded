@@ -32,6 +32,10 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
+// Robot hardware configuration - uncomment ONE option:
+#define ROBOT_1_ORIGINAL  // USART2 on PD5/PD6 (original hardware)
+// #define ROBOT_2_REWORK    // UART4 on PA0/PA1 (reworked hardware)
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
