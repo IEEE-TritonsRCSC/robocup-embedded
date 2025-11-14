@@ -27,6 +27,7 @@ def main():
     p.add_argument("--rate", type=float, default=20.0, help="Send rate (Hz)")
     p.add_argument("--step-power", type=int, default=1, help="Increment per W/S keypress ([-10,10])")
     p.add_argument("--step-rot", type=int, default=1, help="Increment per A/D keypress ([-10,10])")
+    p.add_argument("--step-drib", type= int, default=1, help="Increment per C/B keypress ([0, 20])") #dont really know acutal value, do some testing
     p.add_argument("--iface", default=None, help="Optional local interface IP for multicast (e.g., 192.168.x.x)")
     args = p.parse_args()
 
@@ -47,11 +48,17 @@ def main():
         msg = f"{args.robot} kick\n"
         sock.sendto(msg.encode("utf-8"), (MCAST_GRP, MCAST_PORT))
 
+    def send_drib(drib_speed: int):
+        msg = f"{args.robot} drib {int(drib_speed)}\n"
+        sock.sendto(msg.encode("utf-8"), (MCAST_GRP, MCAST_PORT))
+
     # Current setpoints
     power = 0
     rot = 0
+    drib_speed = 0
     P_MIN, P_MAX = -10, 10
     R_MIN, R_MAX = -10, 10
+    D_MIN, D_MAX = 0, 20
 
     # Keyboard handling
     using_msvcrt = sys.platform.startswith("win")
@@ -85,8 +92,13 @@ def main():
                         power = 0; rot = 0
                     elif ch in ('k', 'K'):
                         send_kick()
+                    elif ch in ('b', 'B'):
+                        drib_speed = max(D_MAX, drib_speed + args.step_drib)
+                    elif ch in ('c', 'C'):
+                        drib_speed = min(D_MIN, drib_speed - args.step_drib)
 
                 send_dash(power, rot)
+                send_drib(drib_speed)
                 now = time.time()
                 if now - last_print > 0.5:
                     print(f"power={power:>4}, rot={rot:>4}", end="\r", flush=True)
@@ -117,7 +129,12 @@ def main():
                             power = 0; rot = 0
                         elif ch in ('k', 'K'):
                             send_kick()
+                        elif ch in ('b', 'B'):
+                            drib_speed = max(D_MAX, drib_speed + args.step_drib)
+                        elif ch in ('c', 'C'):
+                            drib_speed = min(D_MIN, drib_speed - args.step_drib)
                     send_dash(power, rot)
+                    send_drib(drib_speed)
                     now = time.time()
                     if now - last_print > 0.5:
                         print(f"power={power:>4}, rot={rot:>4}", end="\r", flush=True)

@@ -137,9 +137,7 @@ void processCommand(char* buffer, int size){
     double angle = strtod(&buffer[7], &endPtr);
     DEBUG_PRINTF("turn: %f\n", angle);
     action_to_byte_array(msg, 0, angle);
-    formatAndSend(msg);
-    
-
+    formatAndSendMotor(msg);
   } else if(strcmp(com, "dash") == 0) {
     DEBUG_PRINTLN("executing dash command");
     std::array<uint8_t, 8> msg;
@@ -147,13 +145,33 @@ void processCommand(char* buffer, int size){
     double angle = strtod(endPtr+1, &endPtr);
     DEBUG_PRINTF("pow: %f, angle: %f\n", pow, angle);
     action_to_byte_array(msg, pow, angle);
-    formatAndSend(msg);
-  } else {
+    formatAndSendMotor(msg);
+  } else if(strcmp(com, "drib") == 0) {
+    DEBUG_PRINTLN("executing dribble command");
+    double speed = strtod(&buffer[7], &endPtr);
+    DEBUG_PRINT("curSpeed: %f", speed);
+    formatAndSendDrib((uint8_t)speed);
+  } else { 
     return; //if empty or malformed command, do nothing
   }
 }
 
-void formatAndSend(std::array<uint8_t, 8> msg){
+//testing dribbler
+void formatAndSendDrib(uint8_t speed) {
+  //takes in speed and transfer into stm32 format
+  //currently formula: motor speed = speed * 100
+  std::array<uint8_t, 2> header = {0xca, 0xfe};
+  std::array<uint8_t, 11> message = full_message;
+  full_message[0] = header[0];
+  full_message[1] = header[1];
+  for(int i = 0; i < 8; i++) {
+    full_message[i+2] = 0;
+  }
+  full_message[10] = speed;
+  robotSerial.write(full_message.data(), full_message.size());
+}
+
+void formatAndSendMotor(std::array<uint8_t, 8> msg){
   std::array<uint8_t, 2> header = {0xca, 0xfe};
   std::array<uint8_t, 11> full_message;
   full_message[0] = header[0];
@@ -161,7 +179,7 @@ void formatAndSend(std::array<uint8_t, 8> msg){
   for (int i = 0; i < 8; i++) {
     full_message[i + 2] = msg[i];
   }
-  full_message[10] = 1; //dribbler 
+  full_message[10] = 0; //dribbler set to speed 0 (off)
   robotSerial.write(full_message.data(), full_message.size());
 }
 

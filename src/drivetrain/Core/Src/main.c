@@ -46,8 +46,6 @@ extern UART_HandleTypeDef huart4;
 #define HEADER_BYTE_2 0xFE
 #define DRIBBLE_ON 0x01
 #define REDUCTION_RATIO 36.0
-
-#define DRIBBLE_SPEED 1500
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -100,7 +98,7 @@ volatile int header2_flag = 0;
 
 volatile int timeout;  // timeout for safety mechanism to shutoff robot
 
-volatile int dribble_flag; // flag for dribbling
+volatile int dribble_speed; // speed for dribbler (0 means off)
 
 /* USER CODE END PV */
 
@@ -169,7 +167,7 @@ int main(void) {
 	canTxHeader2.TransmitGlobalTime = DISABLE;
 
 	// Dribbler initialization
-	dribble_flag = 0;
+	dribble_speed = 0;
 
 	// PID Setup
 	for (int i = 0; i < 4; ++i) {
@@ -194,14 +192,7 @@ int main(void) {
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
-	int16_t dribble_speed;
 	while (1) {
-
-		if (dribble_flag) {               // Turns dribbling on/off
-			dribble_speed = DRIBBLE_SPEED;
-		} else {
-			dribble_speed = 0;
-		}
 
 		if (timeout >= 200) {             // Safety timeout when UART disconnects
 			for (int i = 0; i < 4; ++i) {
@@ -279,11 +270,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 			 * Previously |targetSpeeds[i]| <= 500
 			 */
 
-			if (uart_rx_buffer[8] == DRIBBLE_ON) {
-				 dribble_flag = 1;
-			} else {
-				dribble_flag = 0;
-			}
+			dribble_speed = (uint8_t)uart_rx_buffer[8] * 100;
 
 			for (int i = 0; i < UART_RX_BUFFER_SIZE; ++i) {
 				uart_rx_buffer[i] = 0;
