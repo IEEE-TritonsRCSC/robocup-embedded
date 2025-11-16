@@ -161,7 +161,7 @@ void formatAndSendDrib(uint8_t speed) {
   //takes in speed and transfer into stm32 format
   //currently formula: motor speed = speed * 100
   std::array<uint8_t, 2> header = {0xca, 0xfe};
-  std::array<uint8_t, 11> message = full_message;
+  std::array<uint8_t, 11> full_message;
   full_message[0] = header[0];
   full_message[1] = header[1];
   for(int i = 0; i < 8; i++) {
