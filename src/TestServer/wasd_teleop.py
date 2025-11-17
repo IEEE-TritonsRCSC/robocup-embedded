@@ -93,15 +93,15 @@ def main():
                     elif ch in ('k', 'K'):
                         send_kick()
                     elif ch in ('b', 'B'):
-                        drib_speed = max(D_MAX, drib_speed + args.step_drib)
+                        drib_speed = min(D_MAX, drib_speed + args.step_drib)
                     elif ch in ('c', 'C'):
-                        drib_speed = min(D_MIN, drib_speed - args.step_drib)
+                        drib_speed = max(D_MIN, drib_speed - args.step_drib)
 
-                send_dash(power, rot)
+                #send_dash(power, rot)
                 send_drib(drib_speed)
                 now = time.time()
                 if now - last_print > 0.5:
-                    print(f"power={power:>4}, rot={rot:>4}", end="\r", flush=True)
+                    print(f"power={power:>4}, rot={rot:>4}, drib_speed={drib_speed}", end="\r", flush=True)
                     last_print = now
                 time.sleep(period)
         else:
@@ -130,14 +130,13 @@ def main():
                         elif ch in ('k', 'K'):
                             send_kick()
                         elif ch in ('b', 'B'):
-                            drib_speed = max(D_MAX, drib_speed + args.step_drib)
+                            drib_speed = min(D_MAX, drib_speed + args.step_drib)
                         elif ch in ('c', 'C'):
-                            drib_speed = min(D_MIN, drib_speed - args.step_drib)
-                    send_dash(power, rot)
-                    send_drib(drib_speed)
+                            drib_speed = max(D_MIN, drib_speed - args.step_drib)
+                    send_dash(power, rot, drib_speed)
                     now = time.time()
                     if now - last_print > 0.5:
-                        print(f"power={power:>4}, rot={rot:>4}", end="\r", flush=True)
+                        print(f"power={power:>4}, rot={rot:>4}, drib_speed={drib_speed:>4}", end="\r", flush=True)
                         last_print = now
                     time.sleep(period)
             finally:

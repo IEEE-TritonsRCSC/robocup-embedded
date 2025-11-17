@@ -2,7 +2,7 @@
 #include "credentials.h"  // loads ssid and password
 #include "velocityConversions.h"
 
-// #define DEBUG_SERIAL // Uncomment this line to enable debug serial output
+#define DEBUG_SERIAL // Uncomment this line to enable debug serial output
 
 #ifdef DEBUG_SERIAL
 #define DEBUG_PRINT(...) Serial.print(__VA_ARGS__)
@@ -30,6 +30,7 @@ char inputBuffer[255]; //buffer for storing overflow command
 int bufferSize = 0; //how many actual chars it contains
 unsigned int kick = 0;
 unsigned int charge_timer = 0;
+std::array<uint8_t, 11> cur_state;
 
 void setup() {
   Serial.begin(BAUD_RATE);
@@ -53,7 +54,9 @@ void setup() {
 
 
   robotSerial.begin(BAUD_RATE, SERIAL_8N1, RX_PIN, TX_PIN);
-
+  cur_state.fill(0);
+  cur_state[0] = 0xca;
+  cur_state[1] = 0xfe;
 }
 
 void loop() {
@@ -149,7 +152,7 @@ void processCommand(char* buffer, int size){
   } else if(strcmp(com, "drib") == 0) {
     DEBUG_PRINTLN("executing dribble command");
     double speed = strtod(&buffer[7], &endPtr);
-    DEBUG_PRINT("curSpeed: %f", speed);
+    DEBUG_PRINTF("curSpeed: %f\n", speed);
     formatAndSendDrib((uint8_t)speed);
   } else { 
     return; //if empty or malformed command, do nothing
@@ -161,26 +164,16 @@ void formatAndSendDrib(uint8_t speed) {
   //takes in speed and transfer into stm32 format
   //currently formula: motor speed = speed * 100
   std::array<uint8_t, 2> header = {0xca, 0xfe};
-  std::array<uint8_t, 11> full_message;
-  full_message[0] = header[0];
-  full_message[1] = header[1];
-  for(int i = 0; i < 8; i++) {
-    full_message[i+2] = 0;
-  }
-  full_message[10] = speed;
-  robotSerial.write(full_message.data(), full_message.size());
+  cur_state[10] = speed;
+  robotSerial.write(cur_state.data(), cur_state.size());
 }
 
 void formatAndSendMotor(std::array<uint8_t, 8> msg){
   std::array<uint8_t, 2> header = {0xca, 0xfe};
-  std::array<uint8_t, 11> full_message;
-  full_message[0] = header[0];
-  full_message[1] = header[1];
   for (int i = 0; i < 8; i++) {
-    full_message[i + 2] = msg[i];
+    cur_state[i + 2] = msg[i];
   }
-  full_message[10] = 0; //dribbler set to speed 0 (off)
-  robotSerial.write(full_message.data(), full_message.size());
+  robotSerial.write(cur_state.data(), cur_state.size());
 }
 
 void connect_wifi() {

@@ -73,6 +73,7 @@ volatile uint16_t angle_data[4];
 volatile float speed_data[4];
 volatile float torque_current_data[4];
 volatile float targetSpeeds[4];
+volatile int dribble_speed;
 PID_TypeDef motor_pid[4];
 
 volatile float Kp1 = 0.3;
@@ -97,8 +98,6 @@ volatile int header1_flag = 0;
 volatile int header2_flag = 0;
 
 volatile int timeout;  // timeout for safety mechanism to shutoff robot
-
-volatile int dribble_speed; // speed for dribbler (0 means off)
 
 /* USER CODE END PV */
 
@@ -265,12 +264,11 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 			targetSpeeds[1] = (int16_t)((uart_rx_buffer[2] << 8) | uart_rx_buffer[3]);
 			targetSpeeds[2] = (int16_t)((uart_rx_buffer[4] << 8) | uart_rx_buffer[5]);
 			targetSpeeds[3] = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);
-
+			dribble_speed = (int16_t)((uint8_t)uart_rx_buffer[8] * 100);
 			/*
 			 * Previously |targetSpeeds[i]| <= 500
 			 */
 
-			dribble_speed = (uint8_t)uart_rx_buffer[8] * 100;
 
 			for (int i = 0; i < UART_RX_BUFFER_SIZE; ++i) {
 				uart_rx_buffer[i] = 0;
