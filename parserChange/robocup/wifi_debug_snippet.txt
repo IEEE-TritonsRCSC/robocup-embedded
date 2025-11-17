@@ -1,0 +1,48 @@
+// Add this to your setup() function for debugging
+
+void setup() {
+  Serial.begin(115200);
+  delay(2000);  // Wait for serial monitor
+  
+  Serial.println("\n\n=== ESP32 WiFi Debug ===");
+  Serial.print("Chip Model: ");
+  Serial.println(ESP.getChipModel());
+  Serial.print("MAC Address: ");
+  Serial.println(WiFi.macAddress());
+  
+  // Check WiFi mode
+  WiFi.mode(WIFI_STA);
+  WiFi.setSleep(false);
+  
+  Serial.print("Scanning for networks...");
+  int n = WiFi.scanNetworks();
+  Serial.println(" done!");
+  
+  if (n == 0) {
+    Serial.println("⚠️  No networks found!");
+  } else {
+    Serial.printf("Found %d networks:\n", n);
+    for (int i = 0; i < n; i++) {
+      Serial.printf("  %d: %s (Signal: %d dBm) %s\n", 
+                    i + 1, 
+                    WiFi.SSID(i).c_str(), 
+                    WiFi.RSSI(i),
+                    WiFi.encryptionType(i) == WIFI_AUTH_OPEN ? "[OPEN]" : "[SECURED]");
+    }
+  }
+  
+  Serial.println("\nAttempting to connect to: " + String(ssid));
+  Serial.println("Password: " + String(password));
+  
+  connect_wifi();
+  
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("✅ SUCCESS!");
+    Serial.print("IP Address: ");
+    Serial.println(WiFi.localIP());
+  } else {
+    Serial.println("❌ FAILED TO CONNECT");
+    Serial.print("WiFi Status: ");
+    Serial.println(WiFi.status());
+  }
+}

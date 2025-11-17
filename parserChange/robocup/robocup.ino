@@ -30,6 +30,7 @@ char inputBuffer[255]; //buffer for storing overflow command
 int bufferSize = 0; //how many actual chars it contains
 unsigned int kick = 0;
 unsigned int charge_timer = 0;
+uint8_t current_dribbler_speed = 0; // Global variable to track dribbler speed
 
 void setup() {
   Serial.begin(BAUD_RATE);
@@ -160,6 +161,7 @@ void processCommand(char* buffer, int size){
 void formatAndSendDrib(uint8_t speed) {
   //takes in speed and transfer into stm32 format
   //currently formula: motor speed = speed * 100
+  current_dribbler_speed = speed;
   std::array<uint8_t, 2> header = {0xca, 0xfe};
   std::array<uint8_t, 11> full_message;
   full_message[0] = header[0];
@@ -179,7 +181,7 @@ void formatAndSendMotor(std::array<uint8_t, 8> msg){
   for (int i = 0; i < 8; i++) {
     full_message[i + 2] = msg[i];
   }
-  full_message[10] = 0; //dribbler set to speed 0 (off)
+  full_message[10] = current_dribbler_speed; // Use current dribbler speed instead of 0
   robotSerial.write(full_message.data(), full_message.size());
 }
 
