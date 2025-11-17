@@ -163,6 +163,7 @@ void processCommand(char* buffer, int size){
 void formatAndSendDrib(uint8_t speed) {
   //takes in speed and transfer into stm32 format
   //currently formula: motor speed = speed * 100
+  current_dribbler_speed = speed;
   std::array<uint8_t, 2> header = {0xca, 0xfe};
   cur_state[10] = speed;
   robotSerial.write(cur_state.data(), cur_state.size());

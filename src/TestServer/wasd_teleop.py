@@ -40,7 +40,7 @@ def main():
         except OSError as e:
             print(f"Warning: failed to set multicast interface {args.iface}: {e}")
 
-    def send_dash(power: int, rot: int = 0):
+    def send_dash(power: int, rot: int = 0, drib_speed: int = 0):
         msg = f"{args.robot} dash {int(power)} {int(rot)}\n"
         sock.sendto(msg.encode("utf-8"), (MCAST_GRP, MCAST_PORT))
 
@@ -97,8 +97,7 @@ def main():
                     elif ch in ('c', 'C'):
                         drib_speed = max(D_MIN, drib_speed - args.step_drib)
 
-                #send_dash(power, rot)
-                send_drib(drib_speed)
+                send_dash(power, rot, drib_speed)
                 now = time.time()
                 if now - last_print > 0.5:
                     print(f"power={power:>4}, rot={rot:>4}, drib_speed={drib_speed}", end="\r", flush=True)
