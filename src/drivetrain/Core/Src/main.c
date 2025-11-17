@@ -270,7 +270,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 			 * Previously |targetSpeeds[i]| <= 500
 			 */
 
-			dribble_speed = (uint8_t)uart_rx_buffer[8] * 100;
+			dribble_speed = (int8_t)uart_rx_buffer[8] * -100;
 
 			for (int i = 0; i < UART_RX_BUFFER_SIZE; ++i) {
 				uart_rx_buffer[i] = 0;
