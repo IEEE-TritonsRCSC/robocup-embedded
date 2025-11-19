@@ -40,7 +40,7 @@ def main():
         except OSError as e:
             print(f"Warning: failed to set multicast interface {args.iface}: {e}")
 
-    def send_dash(power: int, rot: int = 0):
+    def send_dash(power: int, rot: int = 0, drib_speed: int = 0):
         msg = f"{args.robot} dash {int(power)} {int(rot)}\n"
         sock.sendto(msg.encode("utf-8"), (MCAST_GRP, MCAST_PORT))
 
@@ -95,7 +95,9 @@ def main():
                         send_kick()
                     elif ch in ('b', 'B'):
                         drib_speed = min(D_MAX, drib_speed + args.step_drib)
+                        drib_speed = min(D_MAX, drib_speed + args.step_drib)
                     elif ch in ('c', 'C'):
+                        drib_speed = max(D_MIN, drib_speed - args.step_drib)
                         drib_speed = max(D_MIN, drib_speed - args.step_drib)
 
                 # Send drib command only when speed changes (updates current_dribbler_speed in ESP32)
@@ -136,6 +138,7 @@ def main():
                         elif ch in ('k', 'K'):
                             send_kick()
                         elif ch in ('b', 'B'):
+                            drib_speed = min(D_MAX, drib_speed + args.step_drib)
                             drib_speed = min(D_MAX, drib_speed + args.step_drib)
                         elif ch in ('c', 'C'):
                             drib_speed = max(D_MIN, drib_speed - args.step_drib)
