@@ -56,9 +56,10 @@ def main():
     power = 0
     rot = 0
     drib_speed = 0
+    last_drib_speed = -1  # Track when dribbler changes
     P_MIN, P_MAX = -10, 10
     R_MIN, R_MAX = -10, 10
-    D_MIN, D_MAX = 0, 20
+    D_MIN, D_MAX = -20, 20  # Negative reverses dribbler direction
 
     # Keyboard handling
     using_msvcrt = sys.platform.startswith("win")
@@ -93,15 +94,20 @@ def main():
                     elif ch in ('k', 'K'):
                         send_kick()
                     elif ch in ('b', 'B'):
-                        drib_speed = max(D_MAX, drib_speed + args.step_drib)
+                        drib_speed = min(D_MAX, drib_speed + args.step_drib)
                     elif ch in ('c', 'C'):
-                        drib_speed = min(D_MIN, drib_speed - args.step_drib)
+                        drib_speed = max(D_MIN, drib_speed - args.step_drib)
 
+                # Send drib command only when speed changes (updates current_dribbler_speed in ESP32)
+                if drib_speed != last_drib_speed:
+                    send_drib(drib_speed)
+                    last_drib_speed = drib_speed
+                    print(f"\nDrib set to: {drib_speed}")  # DEBUG
+                # Always send dash - it will include the current_dribbler_speed
                 send_dash(power, rot)
-                send_drib(drib_speed)
                 now = time.time()
                 if now - last_print > 0.5:
-                    print(f"power={power:>4}, rot={rot:>4}", end="\r", flush=True)
+                    print(f"power={power:>4}, rot={rot:>4}, drib={drib_speed:>2}", end="\r", flush=True)
                     last_print = now
                 time.sleep(period)
         else:
@@ -130,14 +136,17 @@ def main():
                         elif ch in ('k', 'K'):
                             send_kick()
                         elif ch in ('b', 'B'):
-                            drib_speed = max(D_MAX, drib_speed + args.step_drib)
+                            drib_speed = min(D_MAX, drib_speed + args.step_drib)
                         elif ch in ('c', 'C'):
-                            drib_speed = min(D_MIN, drib_speed - args.step_drib)
+                            drib_speed = max(D_MIN, drib_speed - args.step_drib)
                     send_dash(power, rot)
-                    send_drib(drib_speed)
+                    # Only send drib command when speed changes to avoid jittering
+                    if drib_speed != last_drib_speed:
+                        send_drib(drib_speed)
+                        last_drib_speed = drib_speed
                     now = time.time()
                     if now - last_print > 0.5:
-                        print(f"power={power:>4}, rot={rot:>4}", end="\r", flush=True)
+                        print(f"power={power:>4}, rot={rot:>4}, drib={drib_speed:>2}", end="\r", flush=True)
                         last_print = now
                     time.sleep(period)
             finally:
