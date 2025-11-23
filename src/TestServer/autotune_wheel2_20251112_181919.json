@@ -1,0 +1,450 @@
+{
+  "iteration": 2,
+  "wheel": 2,
+  "pid": {
+    "kp": 1.6875,
+    "ki": 0.05,
+    "kd": 0.0
+  },
+  "metrics": {
+    "rise_time": 999,
+    "settling_time": 4.0,
+    "overshoot_pct": -6.895531222255105,
+    "ss_error": 154.0,
+    "ss_error_pct": 4.557561408700799,
+    "oscillations": 0.0
+  },
+  "suggestions": [
+    "\u274c SLOW RESPONSE: Rise time too long",
+    "   \u2192 Increase Kp: 1.688 \u2192 2.531"
+  ],
+  "data": [
+    {
+      "time": 792.8,
+      "target": -318,
+      "actual": -158,
+      "error": -160,
+      "output": -138
+    },
+    {
+      "time": 792.9,
+      "target": -318,
+      "actual": -4,
+      "error": -314,
+      "output": -403
+    },
+    {
+      "time": 793.0,
+      "target": -318,
+      "actual": -304,
+      "error": -14,
+      "output": -65
+    },
+    {
+      "time": 793.1,
+      "target": -318,
+      "actual": -312,
+      "error": -6,
+      "output": -56
+    },
+    {
+      "time": 793.2,
+      "target": -318,
+      "actual": -187,
+      "error": -131,
+      "output": -197
+    },
+    {
+      "time": 793.3,
+      "target": -318,
+      "actual": -257,
+      "error": -61,
+      "output": -118
+    },
+    {
+      "time": 793.4,
+      "target": -318,
+      "actual": -228,
+      "error": -90,
+      "output": -151
+    },
+    {
+      "time": 793.5,
+      "target": -318,
+      "actual": -264,
+      "error": -54,
+      "output": -110
+    },
+    {
+      "time": 793.6,
+      "target": -318,
+      "actual": -231,
+      "error": -87,
+      "output": -147
+    },
+    {
+      "time": 793.7,
+      "target": -318,
+      "actual": -271,
+      "error": -47,
+      "output": -102
+    },
+    {
+      "time": 793.8,
+      "target": -318,
+      "actual": -239,
+      "error": -79,
+      "output": -138
+    },
+    {
+      "time": 793.9,
+      "target": -318,
+      "actual": -253,
+      "error": -65,
+      "output": -123
+    },
+    {
+      "time": 794.0,
+      "target": -318,
+      "actual": -250,
+      "error": -68,
+      "output": -126
+    },
+    {
+      "time": 794.1,
+      "target": -318,
+      "actual": -250,
+      "error": -68,
+      "output": -126
+    },
+    {
+      "time": 794.2,
+      "target": -318,
+      "actual": -246,
+      "error": -72,
+      "output": -138
+    },
+    {
+      "time": 794.3,
+      "target": -318,
+      "actual": -235,
+      "error": -83,
+      "output": -174
+    },
+    {
+      "time": 794.4,
+      "target": -318,
+      "actual": -239,
+      "error": -79,
+      "output": -183
+    },
+    {
+      "time": 794.5,
+      "target": -318,
+      "actual": -271,
+      "error": -47,
+      "output": -129
+    },
+    {
+      "time": 794.6,
+      "target": -318,
+      "actual": -290,
+      "error": -28,
+      "output": -97
+    },
+    {
+      "time": 794.7,
+      "target": -318,
+      "actual": -257,
+      "error": -61,
+      "output": -152
+    },
+    {
+      "time": 794.8,
+      "target": -318,
+      "actual": -293,
+      "error": -25,
+      "output": -92
+    },
+    {
+      "time": 794.9,
+      "target": -318,
+      "actual": -257,
+      "error": -61,
+      "output": -152
+    },
+    {
+      "time": 795.0,
+      "target": -318,
+      "actual": -224,
+      "error": -94,
+      "output": -208
+    },
+    {
+      "time": 795.1,
+      "target": -318,
+      "actual": -250,
+      "error": -68,
+      "output": -164
+    },
+    {
+      "time": 795.2,
+      "target": -318,
+      "actual": -290,
+      "error": -28,
+      "output": -97
+    },
+    {
+      "time": 795.3,
+      "target": -318,
+      "actual": -268,
+      "error": -50,
+      "output": -134
+    },
+    {
+      "time": 795.4,
+      "target": -318,
+      "actual": -286,
+      "error": -32,
+      "output": -103
+    },
+    {
+      "time": 795.5,
+      "target": -318,
+      "actual": -304,
+      "error": -14,
+      "output": -73
+    },
+    {
+      "time": 795.6,
+      "target": -318,
+      "actual": -217,
+      "error": -101,
+      "output": -220
+    },
+    {
+      "time": 795.7,
+      "target": -318,
+      "actual": -268,
+      "error": -50,
+      "output": -134
+    },
+    {
+      "time": 795.8,
+      "target": -318,
+      "actual": -282,
+      "error": -36,
+      "output": -110
+    },
+    {
+      "time": 795.9,
+      "target": -318,
+      "actual": -261,
+      "error": -57,
+      "output": -146
+    },
+    {
+      "time": 796.0,
+      "target": -318,
+      "actual": -264,
+      "error": -54,
+      "output": -141
+    },
+    {
+      "time": 796.1,
+      "target": -318,
+      "actual": -275,
+      "error": -43,
+      "output": -122
+    },
+    {
+      "time": 796.2,
+      "target": -3379,
+      "actual": -3439,
+      "error": 60,
+      "output": 54
+    },
+    {
+      "time": 796.3,
+      "target": -3379,
+      "actual": -3146,
+      "error": -233,
+      "output": -443
+    },
+    {
+      "time": 796.4,
+      "target": -3379,
+      "actual": -3271,
+      "error": -108,
+      "output": -232
+    },
+    {
+      "time": 796.5,
+      "target": -3379,
+      "actual": -3260,
+      "error": -119,
+      "output": -250
+    },
+    {
+      "time": 796.6,
+      "target": -3379,
+      "actual": -3230,
+      "error": -149,
+      "output": -301
+    },
+    {
+      "time": 796.7,
+      "target": -3379,
+      "actual": -3245,
+      "error": -134,
+      "output": -276
+    },
+    {
+      "time": 796.8,
+      "target": -3379,
+      "actual": -3267,
+      "error": -112,
+      "output": -238
+    },
+    {
+      "time": 796.9,
+      "target": -3379,
+      "actual": -3267,
+      "error": -112,
+      "output": -238
+    },
+    {
+      "time": 797.0,
+      "target": -3379,
+      "actual": -3252,
+      "error": -127,
+      "output": -264
+    },
+    {
+      "time": 797.1,
+      "target": -3379,
+      "actual": -3241,
+      "error": -138,
+      "output": -282
+    },
+    {
+      "time": 797.2,
+      "target": -3379,
+      "actual": -3238,
+      "error": -141,
+      "output": -287
+    },
+    {
+      "time": 797.3,
+      "target": -3379,
+      "actual": -3285,
+      "error": -94,
+      "output": -208
+    },
+    {
+      "time": 797.4,
+      "target": -3379,
+      "actual": -3190,
+      "error": -189,
+      "output": -368
+    },
+    {
+      "time": 797.5,
+      "target": -3379,
+      "actual": -3241,
+      "error": -138,
+      "output": -282
+    },
+    {
+      "time": 797.6,
+      "target": -3379,
+      "actual": -3157,
+      "error": -222,
+      "output": -424
+    },
+    {
+      "time": 797.7,
+      "target": -3379,
+      "actual": -3271,
+      "error": -108,
+      "output": -232
+    },
+    {
+      "time": 797.8,
+      "target": -3379,
+      "actual": -3234,
+      "error": -145,
+      "output": -294
+    },
+    {
+      "time": 797.9,
+      "target": -3379,
+      "actual": -3238,
+      "error": -141,
+      "output": -287
+    },
+    {
+      "time": 798.0,
+      "target": -3379,
+      "actual": -3219,
+      "error": -160,
+      "output": -319
+    },
+    {
+      "time": 798.1,
+      "target": -3379,
+      "actual": -3263,
+      "error": -116,
+      "output": -245
+    },
+    {
+      "time": 798.2,
+      "target": -3379,
+      "actual": -3245,
+      "error": -134,
+      "output": -294
+    },
+    {
+      "time": 798.3,
+      "target": -3379,
+      "actual": -3212,
+      "error": -167,
+      "output": -331
+    },
+    {
+      "time": 798.4,
+      "target": -3379,
+      "actual": -3209,
+      "error": -170,
+      "output": -336
+    },
+    {
+      "time": 798.5,
+      "target": -3379,
+      "actual": -3157,
+      "error": -222,
+      "output": -424
+    },
+    {
+      "time": 798.6,
+      "target": -3379,
+      "actual": -3274,
+      "error": -105,
+      "output": -227
+    },
+    {
+      "time": 798.7,
+      "target": -3379,
+      "actual": -3176,
+      "error": -203,
+      "output": -392
+    },
+    {
+      "time": 798.8,
+      "target": -3379,
+      "actual": -3322,
+      "error": -57,
+      "output": -146
+    }
+  ]
+}

@@ -1,0 +1,352 @@
+{
+  "iteration": 1,
+  "wheel": 0,
+  "pid": {
+    "kp": 0.5,
+    "ki": 0.05,
+    "kd": 0.0
+  },
+  "metrics": {
+    "rise_time": 999,
+    "settling_time": 999,
+    "overshoot_pct": -16.63216011042098,
+    "ss_error": 320.5,
+    "ss_error_pct": 22.11870255348516,
+    "oscillations": 0
+  },
+  "suggestions": [
+    "\u274c SLOW RESPONSE: Rise time too long",
+    "   \u2192 Increase Kp: 0.500 \u2192 0.750"
+  ],
+  "data": [
+    {
+      "time": 581.7,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -177
+    },
+    {
+      "time": 581.8,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -206
+    },
+    {
+      "time": 581.9,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -190
+    },
+    {
+      "time": 582.0,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 582.1,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 582.2,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 582.3,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 582.4,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 582.5,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 582.6,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 582.7,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 582.8,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 582.9,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 583.0,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 583.1,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 583.2,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 583.3,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 583.4,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 583.5,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 583.6,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 583.7,
+      "target": -318,
+      "actual": 0,
+      "error": -318,
+      "output": -209
+    },
+    {
+      "time": 583.8,
+      "target": 1449,
+      "actual": 186,
+      "error": 1263,
+      "output": 681
+    },
+    {
+      "time": 583.9,
+      "target": 1449,
+      "actual": 941,
+      "error": 508,
+      "output": 303
+    },
+    {
+      "time": 584.0,
+      "target": 1449,
+      "actual": 1120,
+      "error": 329,
+      "output": 214
+    },
+    {
+      "time": 584.1,
+      "target": 1449,
+      "actual": 1091,
+      "error": 358,
+      "output": 229
+    },
+    {
+      "time": 584.2,
+      "target": 1449,
+      "actual": 1094,
+      "error": 355,
+      "output": 227
+    },
+    {
+      "time": 584.3,
+      "target": 1449,
+      "actual": 1120,
+      "error": 329,
+      "output": 214
+    },
+    {
+      "time": 584.4,
+      "target": 1449,
+      "actual": 1116,
+      "error": 333,
+      "output": 216
+    },
+    {
+      "time": 584.6,
+      "target": 1449,
+      "actual": 1142,
+      "error": 307,
+      "output": 203
+    },
+    {
+      "time": 584.7,
+      "target": 1449,
+      "actual": 1160,
+      "error": 289,
+      "output": 194
+    },
+    {
+      "time": 584.8,
+      "target": 1449,
+      "actual": 1208,
+      "error": 241,
+      "output": 170
+    },
+    {
+      "time": 584.9,
+      "target": 1449,
+      "actual": 1142,
+      "error": 307,
+      "output": 203
+    },
+    {
+      "time": 585.0,
+      "target": 1449,
+      "actual": 1142,
+      "error": 307,
+      "output": 203
+    },
+    {
+      "time": 585.1,
+      "target": 1449,
+      "actual": 1124,
+      "error": 325,
+      "output": 212
+    },
+    {
+      "time": 585.2,
+      "target": 1449,
+      "actual": 1168,
+      "error": 281,
+      "output": 190
+    },
+    {
+      "time": 585.3,
+      "target": 1449,
+      "actual": 1087,
+      "error": 362,
+      "output": 230
+    },
+    {
+      "time": 585.4,
+      "target": 1449,
+      "actual": 1087,
+      "error": 362,
+      "output": 231
+    },
+    {
+      "time": 585.5,
+      "target": 1449,
+      "actual": 1153,
+      "error": 296,
+      "output": 197
+    },
+    {
+      "time": 585.6,
+      "target": 1449,
+      "actual": 1160,
+      "error": 289,
+      "output": 194
+    },
+    {
+      "time": 585.7,
+      "target": 1449,
+      "actual": 1127,
+      "error": 322,
+      "output": 210
+    },
+    {
+      "time": 585.8,
+      "target": 1449,
+      "actual": 1135,
+      "error": 314,
+      "output": 206
+    },
+    {
+      "time": 585.9,
+      "target": 1449,
+      "actual": 1113,
+      "error": 336,
+      "output": 218
+    },
+    {
+      "time": 586.0,
+      "target": 1449,
+      "actual": 1109,
+      "error": 340,
+      "output": 220
+    },
+    {
+      "time": 586.1,
+      "target": 1449,
+      "actual": 1120,
+      "error": 329,
+      "output": 186
+    },
+    {
+      "time": 586.2,
+      "target": 1449,
+      "actual": 1142,
+      "error": 307,
+      "output": 203
+    },
+    {
+      "time": 586.3,
+      "target": 1449,
+      "actual": 1149,
+      "error": 300,
+      "output": 199
+    },
+    {
+      "time": 586.4,
+      "target": 1449,
+      "actual": 1138,
+      "error": 311,
+      "output": 205
+    }
+  ]
+}

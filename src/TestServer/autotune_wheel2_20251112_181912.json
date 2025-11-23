@@ -1,0 +1,359 @@
+{
+  "iteration": 1,
+  "wheel": 2,
+  "pid": {
+    "kp": 1.125,
+    "ki": 0.05,
+    "kd": 0.0
+  },
+  "metrics": {
+    "rise_time": 999,
+    "settling_time": 999,
+    "overshoot_pct": -38.85765019236461,
+    "ss_error": 224.83333333333334,
+    "ss_error_pct": 6.653842359672487,
+    "oscillations": 0
+  },
+  "suggestions": [
+    "\u274c SLOW RESPONSE: Rise time too long",
+    "   \u2192 Increase Kp: 1.125 \u2192 1.688"
+  ],
+  "data": [
+    {
+      "time": 788.0,
+      "target": -318,
+      "actual": -154,
+      "error": -164,
+      "output": -198
+    },
+    {
+      "time": 788.1,
+      "target": -318,
+      "actual": -242,
+      "error": -76,
+      "output": -94
+    },
+    {
+      "time": 788.2,
+      "target": -318,
+      "actual": -202,
+      "error": -116,
+      "output": -136
+    },
+    {
+      "time": 788.3,
+      "target": -318,
+      "actual": -213,
+      "error": -105,
+      "output": -123
+    },
+    {
+      "time": 788.4,
+      "target": -318,
+      "actual": -242,
+      "error": -76,
+      "output": -114
+    },
+    {
+      "time": 788.5,
+      "target": -318,
+      "actual": -239,
+      "error": -79,
+      "output": -112
+    },
+    {
+      "time": 788.6,
+      "target": -318,
+      "actual": -246,
+      "error": -72,
+      "output": -98
+    },
+    {
+      "time": 788.7,
+      "target": -318,
+      "actual": -184,
+      "error": -134,
+      "output": -161
+    },
+    {
+      "time": 788.8,
+      "target": -318,
+      "actual": -180,
+      "error": -138,
+      "output": -162
+    },
+    {
+      "time": 788.9,
+      "target": -318,
+      "actual": -206,
+      "error": -112,
+      "output": -131
+    },
+    {
+      "time": 789.0,
+      "target": -318,
+      "actual": -250,
+      "error": -68,
+      "output": -126
+    },
+    {
+      "time": 789.1,
+      "target": -318,
+      "actual": -231,
+      "error": -87,
+      "output": -114
+    },
+    {
+      "time": 789.2,
+      "target": -318,
+      "actual": -173,
+      "error": -145,
+      "output": -182
+    },
+    {
+      "time": 789.3,
+      "target": -318,
+      "actual": -220,
+      "error": -98,
+      "output": -118
+    },
+    {
+      "time": 789.4,
+      "target": -318,
+      "actual": -217,
+      "error": -101,
+      "output": -118
+    },
+    {
+      "time": 789.5,
+      "target": -318,
+      "actual": -246,
+      "error": -72,
+      "output": -103
+    },
+    {
+      "time": 789.6,
+      "target": -318,
+      "actual": -176,
+      "error": -142,
+      "output": -183
+    },
+    {
+      "time": 789.7,
+      "target": -318,
+      "actual": -184,
+      "error": -134,
+      "output": -165
+    },
+    {
+      "time": 789.8,
+      "target": -318,
+      "actual": -180,
+      "error": -138,
+      "output": -166
+    },
+    {
+      "time": 789.9,
+      "target": -318,
+      "actual": -191,
+      "error": -127,
+      "output": -177
+    },
+    {
+      "time": 790.0,
+      "target": -318,
+      "actual": -198,
+      "error": -120,
+      "output": -178
+    },
+    {
+      "time": 790.1,
+      "target": -3379,
+      "actual": -2066,
+      "error": -1313,
+      "output": -1526
+    },
+    {
+      "time": 790.2,
+      "target": -3379,
+      "actual": -3326,
+      "error": -53,
+      "output": -109
+    },
+    {
+      "time": 790.3,
+      "target": -3379,
+      "actual": -3088,
+      "error": -291,
+      "output": -377
+    },
+    {
+      "time": 790.4,
+      "target": -3379,
+      "actual": -3113,
+      "error": -266,
+      "output": -349
+    },
+    {
+      "time": 790.5,
+      "target": -3379,
+      "actual": -3084,
+      "error": -295,
+      "output": -381
+    },
+    {
+      "time": 790.6,
+      "target": -3379,
+      "actual": -3113,
+      "error": -266,
+      "output": -349
+    },
+    {
+      "time": 790.7,
+      "target": -3379,
+      "actual": -3205,
+      "error": -174,
+      "output": -245
+    },
+    {
+      "time": 790.8,
+      "target": -3379,
+      "actual": -3095,
+      "error": -284,
+      "output": -369
+    },
+    {
+      "time": 790.9,
+      "target": -3379,
+      "actual": -3117,
+      "error": -262,
+      "output": -344
+    },
+    {
+      "time": 791.0,
+      "target": -3379,
+      "actual": -3154,
+      "error": -225,
+      "output": -303
+    },
+    {
+      "time": 791.1,
+      "target": -3379,
+      "actual": -3198,
+      "error": -181,
+      "output": -253
+    },
+    {
+      "time": 791.2,
+      "target": -3379,
+      "actual": -3190,
+      "error": -189,
+      "output": -262
+    },
+    {
+      "time": 791.3,
+      "target": -3379,
+      "actual": -3201,
+      "error": -178,
+      "output": -241
+    },
+    {
+      "time": 791.4,
+      "target": -3379,
+      "actual": -3194,
+      "error": -185,
+      "output": -258
+    },
+    {
+      "time": 791.5,
+      "target": -3379,
+      "actual": -3135,
+      "error": -244,
+      "output": -324
+    },
+    {
+      "time": 791.6,
+      "target": -3379,
+      "actual": -3172,
+      "error": -207,
+      "output": -282
+    },
+    {
+      "time": 791.7,
+      "target": -3379,
+      "actual": -3150,
+      "error": -229,
+      "output": -307
+    },
+    {
+      "time": 791.8,
+      "target": -3379,
+      "actual": -3190,
+      "error": -189,
+      "output": -262
+    },
+    {
+      "time": 791.9,
+      "target": -3379,
+      "actual": -3124,
+      "error": -255,
+      "output": -336
+    },
+    {
+      "time": 792.0,
+      "target": -3379,
+      "actual": -3172,
+      "error": -207,
+      "output": -282
+    },
+    {
+      "time": 792.1,
+      "target": -3379,
+      "actual": -3084,
+      "error": -295,
+      "output": -381
+    },
+    {
+      "time": 792.2,
+      "target": -3379,
+      "actual": -3150,
+      "error": -229,
+      "output": -307
+    },
+    {
+      "time": 792.3,
+      "target": -3379,
+      "actual": -3154,
+      "error": -225,
+      "output": -303
+    },
+    {
+      "time": 792.4,
+      "target": -3379,
+      "actual": -3139,
+      "error": -240,
+      "output": -320
+    },
+    {
+      "time": 792.5,
+      "target": -3379,
+      "actual": -3168,
+      "error": -211,
+      "output": -287
+    },
+    {
+      "time": 792.6,
+      "target": -3379,
+      "actual": -3157,
+      "error": -222,
+      "output": -299
+    },
+    {
+      "time": 792.7,
+      "target": -3379,
+      "actual": -3157,
+      "error": -222,
+      "output": -299
+    }
+  ]
+}

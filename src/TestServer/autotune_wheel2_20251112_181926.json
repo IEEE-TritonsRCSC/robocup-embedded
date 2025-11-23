@@ -1,0 +1,450 @@
+{
+  "iteration": 3,
+  "wheel": 2,
+  "pid": {
+    "kp": 2.53125,
+    "ki": 0.05,
+    "kd": 0.0
+  },
+  "metrics": {
+    "rise_time": 999,
+    "settling_time": 3.8999999999999773,
+    "overshoot_pct": -4.498372299496892,
+    "ss_error": 79.16666666666667,
+    "ss_error_pct": 2.3429022393212984,
+    "oscillations": 0.0
+  },
+  "suggestions": [
+    "\u274c SLOW RESPONSE: Rise time too long",
+    "   \u2192 Increase Kp: 2.531 \u2192 3.797"
+  ],
+  "data": [
+    {
+      "time": 798.9,
+      "target": -318,
+      "actual": -198,
+      "error": -120,
+      "output": -158
+    },
+    {
+      "time": 799.0,
+      "target": -318,
+      "actual": -304,
+      "error": -14,
+      "output": -73
+    },
+    {
+      "time": 799.1,
+      "target": -318,
+      "actual": -315,
+      "error": -3,
+      "output": -48
+    },
+    {
+      "time": 799.2,
+      "target": -318,
+      "actual": -228,
+      "error": -90,
+      "output": -201
+    },
+    {
+      "time": 799.3,
+      "target": -318,
+      "actual": -290,
+      "error": -28,
+      "output": -97
+    },
+    {
+      "time": 799.4,
+      "target": -318,
+      "actual": -279,
+      "error": -39,
+      "output": -115
+    },
+    {
+      "time": 799.5,
+      "target": -318,
+      "actual": -282,
+      "error": -36,
+      "output": -110
+    },
+    {
+      "time": 799.6,
+      "target": -318,
+      "actual": -279,
+      "error": -39,
+      "output": -115
+    },
+    {
+      "time": 799.7,
+      "target": -318,
+      "actual": -217,
+      "error": -101,
+      "output": -220
+    },
+    {
+      "time": 799.8,
+      "target": -318,
+      "actual": -264,
+      "error": -54,
+      "output": -141
+    },
+    {
+      "time": 799.9,
+      "target": -318,
+      "actual": -279,
+      "error": -39,
+      "output": -115
+    },
+    {
+      "time": 800.0,
+      "target": -318,
+      "actual": -271,
+      "error": -47,
+      "output": -129
+    },
+    {
+      "time": 800.1,
+      "target": -318,
+      "actual": -242,
+      "error": -76,
+      "output": -178
+    },
+    {
+      "time": 800.2,
+      "target": -318,
+      "actual": -220,
+      "error": -98,
+      "output": -256
+    },
+    {
+      "time": 800.3,
+      "target": -318,
+      "actual": -253,
+      "error": -65,
+      "output": -169
+    },
+    {
+      "time": 800.4,
+      "target": -318,
+      "actual": -297,
+      "error": -21,
+      "output": -81
+    },
+    {
+      "time": 800.5,
+      "target": -318,
+      "actual": -286,
+      "error": -32,
+      "output": -128
+    },
+    {
+      "time": 800.6,
+      "target": -318,
+      "actual": -268,
+      "error": -50,
+      "output": -176
+    },
+    {
+      "time": 800.7,
+      "target": -318,
+      "actual": -282,
+      "error": -36,
+      "output": -141
+    },
+    {
+      "time": 800.8,
+      "target": -318,
+      "actual": -293,
+      "error": -25,
+      "output": -113
+    },
+    {
+      "time": 800.9,
+      "target": -318,
+      "actual": -304,
+      "error": -14,
+      "output": -85
+    },
+    {
+      "time": 801.0,
+      "target": -318,
+      "actual": -308,
+      "error": -10,
+      "output": -75
+    },
+    {
+      "time": 801.1,
+      "target": -318,
+      "actual": -286,
+      "error": -32,
+      "output": -131
+    },
+    {
+      "time": 801.2,
+      "target": -318,
+      "actual": -268,
+      "error": -50,
+      "output": -176
+    },
+    {
+      "time": 801.3,
+      "target": -318,
+      "actual": -330,
+      "error": 12,
+      "output": -18
+    },
+    {
+      "time": 801.4,
+      "target": -318,
+      "actual": -264,
+      "error": -54,
+      "output": -186
+    },
+    {
+      "time": 801.5,
+      "target": -318,
+      "actual": -301,
+      "error": -17,
+      "output": -93
+    },
+    {
+      "time": 801.6,
+      "target": -318,
+      "actual": -315,
+      "error": -3,
+      "output": -57
+    },
+    {
+      "time": 801.7,
+      "target": -318,
+      "actual": -286,
+      "error": -32,
+      "output": -131
+    },
+    {
+      "time": 801.8,
+      "target": -318,
+      "actual": -242,
+      "error": -76,
+      "output": -242
+    },
+    {
+      "time": 801.9,
+      "target": -318,
+      "actual": -304,
+      "error": -14,
+      "output": -85
+    },
+    {
+      "time": 802.0,
+      "target": -318,
+      "actual": -261,
+      "error": -57,
+      "output": -194
+    },
+    {
+      "time": 802.1,
+      "target": -318,
+      "actual": -326,
+      "error": 8,
+      "output": -29
+    },
+    {
+      "time": 802.2,
+      "target": -318,
+      "actual": -242,
+      "error": -76,
+      "output": -242
+    },
+    {
+      "time": 802.3,
+      "target": -3379,
+      "actual": -3388,
+      "error": 9,
+      "output": -16
+    },
+    {
+      "time": 802.4,
+      "target": -3379,
+      "actual": -3337,
+      "error": -42,
+      "output": -156
+    },
+    {
+      "time": 802.5,
+      "target": -3379,
+      "actual": -3311,
+      "error": -68,
+      "output": -222
+    },
+    {
+      "time": 802.6,
+      "target": -3379,
+      "actual": -3271,
+      "error": -108,
+      "output": -323
+    },
+    {
+      "time": 802.7,
+      "target": -3379,
+      "actual": -3326,
+      "error": -53,
+      "output": -184
+    },
+    {
+      "time": 802.8,
+      "target": -3379,
+      "actual": -3285,
+      "error": -94,
+      "output": -287
+    },
+    {
+      "time": 802.9,
+      "target": -3379,
+      "actual": -3311,
+      "error": -68,
+      "output": -222
+    },
+    {
+      "time": 803.0,
+      "target": -3379,
+      "actual": -3289,
+      "error": -90,
+      "output": -277
+    },
+    {
+      "time": 803.1,
+      "target": -3379,
+      "actual": -3271,
+      "error": -108,
+      "output": -323
+    },
+    {
+      "time": 803.2,
+      "target": -3379,
+      "actual": -3296,
+      "error": -83,
+      "output": -260
+    },
+    {
+      "time": 803.3,
+      "target": -3379,
+      "actual": -3293,
+      "error": -86,
+      "output": -267
+    },
+    {
+      "time": 803.4,
+      "target": -3379,
+      "actual": -3318,
+      "error": -61,
+      "output": -204
+    },
+    {
+      "time": 803.5,
+      "target": -3379,
+      "actual": -3296,
+      "error": -83,
+      "output": -260
+    },
+    {
+      "time": 803.6,
+      "target": -3379,
+      "actual": -3230,
+      "error": -149,
+      "output": -427
+    },
+    {
+      "time": 803.7,
+      "target": -3379,
+      "actual": -3227,
+      "error": -152,
+      "output": -434
+    },
+    {
+      "time": 803.8,
+      "target": -3379,
+      "actual": -3289,
+      "error": -90,
+      "output": -277
+    },
+    {
+      "time": 803.9,
+      "target": -3379,
+      "actual": -3267,
+      "error": -112,
+      "output": -333
+    },
+    {
+      "time": 804.0,
+      "target": -3379,
+      "actual": -3256,
+      "error": -123,
+      "output": -361
+    },
+    {
+      "time": 804.1,
+      "target": -3379,
+      "actual": -3311,
+      "error": -68,
+      "output": -222
+    },
+    {
+      "time": 804.2,
+      "target": -3379,
+      "actual": -3304,
+      "error": -75,
+      "output": -239
+    },
+    {
+      "time": 804.3,
+      "target": -3379,
+      "actual": -3315,
+      "error": -64,
+      "output": -211
+    },
+    {
+      "time": 804.4,
+      "target": -3379,
+      "actual": -3296,
+      "error": -83,
+      "output": -260
+    },
+    {
+      "time": 804.5,
+      "target": -3379,
+      "actual": -3307,
+      "error": -72,
+      "output": -232
+    },
+    {
+      "time": 804.6,
+      "target": -3379,
+      "actual": -3285,
+      "error": -94,
+      "output": -287
+    },
+    {
+      "time": 804.7,
+      "target": -3379,
+      "actual": -3340,
+      "error": -39,
+      "output": -148
+    },
+    {
+      "time": 804.8,
+      "target": -3379,
+      "actual": -3271,
+      "error": -108,
+      "output": -323
+    },
+    {
+      "time": 804.9,
+      "target": -3379,
+      "actual": -3300,
+      "error": -79,
+      "output": -249
+    }
+  ]
+}
