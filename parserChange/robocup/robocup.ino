@@ -22,6 +22,11 @@
 #define KICK_PIN 2
 #define LED_PIN 2
 #define ROBOT_NO 1
+
+// LED timing constants (in milliseconds)
+#define LED_WIFI_CONNECTING_INTERVAL 500  // Slow flash during WiFi connect
+#define LED_COMMAND_BLINK_DURATION 50      // Rapid blink duration when receiving commands
+
 WiFiUDP UDP;
 IPAddress multicastIP(239, 42, 42, 42);
 HardwareSerial robotSerial(2);
@@ -31,6 +36,10 @@ int bufferSize = 0; //how many actual chars it contains
 unsigned int kick = 0;
 unsigned int charge_timer = 0;
 std::array<uint8_t, 11> cur_state;
+
+// LED state variables
+unsigned long last_command_time = 0;
+bool led_state = false;
 
 void setup() {
   Serial.begin(BAUD_RATE);
@@ -60,8 +69,20 @@ void setup() {
 }
 
 void loop() {
+  // LED management: rapid blink when receiving commands, solid when idle
+  unsigned long current_time = millis();
+  if (current_time - last_command_time < LED_COMMAND_BLINK_DURATION) {
+    // Rapid blink during command processing
+    led_state = !led_state;
+    digitalWrite(LED_PIN, led_state ? HIGH : LOW);
+  } else {
+    // Solid LED when idle (connected but no commands)
+    digitalWrite(LED_PIN, HIGH);
+  }
+  
   int size = UDP.parsePacket();
   if (size) {
+    last_command_time = millis();  // Update command timestamp
     char buffer[256];
     DEBUG_PRINTLN(size);
     size = UDP.read(buffer, 255);
@@ -165,7 +186,14 @@ void formatAndSendDrib(uint8_t speed) {
   //currently formula: motor speed = speed * 100
   std::array<uint8_t, 2> header = {0xca, 0xfe};
   cur_state[10] = speed;
+  DEBUG_PRINT("DRIB sending cur_state: ");
+  for(int i = 0; i < 11; i++) {
+    DEBUG_PRINTF("%02X ", cur_state[i]);
+  }
+  DEBUG_PRINTLN();
+  digitalWrite(LED_PIN, LOW);  // Brief flash when transmitting
   robotSerial.write(cur_state.data(), cur_state.size());
+  last_command_time = millis();  // Extend blink period
 }
 
 void formatAndSendMotor(std::array<uint8_t, 8> msg){
@@ -173,6 +201,11 @@ void formatAndSendMotor(std::array<uint8_t, 8> msg){
   for (int i = 0; i < 8; i++) {
     cur_state[i + 2] = msg[i];
   }
+  // DEBUG_PRINT("Sending UART bytes: ");
+  // for(int i = 0; i < 11; i++) {
+  //   DEBUG_PRINTF("%02X ", cur_state[i]);
+  // }
+  // DEBUG_PRINTLN();
   robotSerial.write(cur_state.data(), cur_state.size());
 }
 
@@ -183,9 +216,14 @@ void connect_wifi() {
   //WiFi.config(ip);
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
+    // Slow flash LED during connection
+    led_state = !led_state;
+    digitalWrite(LED_PIN, led_state ? HIGH : LOW);
+    delay(LED_WIFI_CONNECTING_INTERVAL);
     DEBUG_PRINT(".");
   }
+  // Solid LED when connected
+  digitalWrite(LED_PIN, HIGH);
   DEBUG_PRINT("\nWiFi connected");
   DEBUG_PRINT("\nIP address: ");
   DEBUG_PRINTLN(WiFi.localIP());
