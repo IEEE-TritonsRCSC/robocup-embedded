@@ -5,6 +5,7 @@
 #include "ssl_simulation_robot_control.pb.h"
 #include "triton_bot_communication.pb.h"
 #include "velocityConversions.h"
+#include "freertos/task.h"
 
 // Define pins
 #define TX 17
@@ -88,7 +89,6 @@ void setup() {
 
 void loop() {
   uint8_t packetBuffer[BUFF_SIZE];  // Increase buffer size if needed
-  unsigned int packetSize = udp.parsePacket();
   
   if (espSerial.available() >= 5) {
       if (espSerial.read() == 0xca && espSerial.read() == 0xfe) {
@@ -103,7 +103,7 @@ void loop() {
     }
   }
 
-  if (packetSize) {
+  while (udp.parsePacket()) {
     int len = udp.read(packetBuffer, BUFF_SIZE);
     Serial.printf("Packet length: %d", len);
     if (len > 0) {
@@ -211,5 +211,5 @@ void loop() {
     Serial.println("\nReconnected to Wi-Fi!");
   }
 
-  delay(1);
+  vTaskDelay(1);
 }
