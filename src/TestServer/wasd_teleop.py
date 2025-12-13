@@ -18,7 +18,7 @@ import sys
 import time
 
 MCAST_GRP = "239.42.42.42"
-MCAST_PORT = 10000
+MCAST_PORT = 11000
 
 
 def main():
