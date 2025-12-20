@@ -76,18 +76,18 @@ volatile float targetSpeeds[4];
 volatile int dribble_speed;
 PID_TypeDef motor_pid[4];
 
-volatile float Kp1 = 0.3;
-volatile float Ki1 = 0;
-volatile float Kd1 = 0;
+volatile float Kp1 = 0.503;
+volatile float Ki1 = 0.005;
+volatile float Kd1 = 0.00;
 volatile float Kp2 = 0.3;
-volatile float Ki2 = 0;
-volatile float Kd2 = 0;
-volatile float Kp3 = 0.2;
-volatile float Ki3 = 0;
-volatile float Kd3 = 0;
-volatile float Kp4 = 0.2;
-volatile float Ki4 = 0;
-volatile float Kd4 = 0;
+volatile float Ki2 = 0.0;
+volatile float Kd2 = 0.00;
+volatile float Kp3 = 0.273;
+volatile float Ki3 = 0.0;
+volatile float Kd3 = 0.00;
+volatile float Kp4 = 0.403;
+volatile float Ki4 = 0.0;
+volatile float Kd4 = 0.00;
 
 // UART setup
 uint8_t uart_rx_buffer[UART_RX_BUFFER_SIZE]; // buffer that stores in an array of characters user inputs, aka a string
@@ -263,8 +263,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 			targetSpeeds[0] = (int16_t)((uart_rx_buffer[0] << 8) | uart_rx_buffer[1]);
 			targetSpeeds[1] = (int16_t)((uart_rx_buffer[2] << 8) | uart_rx_buffer[3]);
 			targetSpeeds[2] = (int16_t)((uart_rx_buffer[4] << 8) | uart_rx_buffer[5]);
-			targetSpeeds[3] = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);
-			dribble_speed = (int16_t)((uint8_t)uart_rx_buffer[8] * 100);
+			targetSpeeds[3] = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);		
+		// Boost front right wheel (motor 0) by 15% to compensate for drift
+		targetSpeeds[0] = (int16_t)(targetSpeeds[0] * 1.15);			dribble_speed = (int16_t)((uint8_t)uart_rx_buffer[8] * 100);
 			/*
 			 * Previously |targetSpeeds[i]| <= 500
 			 */
