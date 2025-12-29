@@ -141,10 +141,10 @@ void setDribbler(float power) {
 
 void prepare_and_send_motor_command() {
   // Translate vel_u and vel_v into wheel velocities
-	wheel_velocities[0] = (vel_u * -sinFront) + (vel_v * -cosFront);  // front-right
+  wheel_velocities[0] = (vel_u * -sinFront) + (vel_v * -cosFront);  // front-right
   wheel_velocities[1] = (vel_u * sinBack) + (vel_v * -cosBack);  // back-right
   wheel_velocities[2] = (vel_u * sinBack) + (vel_v * cosBack);  // back-left
-	wheel_velocities[3] = (vel_u * -sinFront) + (vel_v * cosFront);  // front-left
+  wheel_velocities[3] = (vel_u * -sinFront) + (vel_v * cosFront);  // front-left
 
   PRINT("(");
 	for (int wheel_i = 0; wheel_i < 4; wheel_i++) {
