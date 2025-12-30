@@ -147,20 +147,20 @@ void prepare_and_send_motor_command() {
   wheel_velocities[3] = (vel_u * -sinFront) + (vel_v * cosFront);  // front-left
 
   PRINT("(");
-	for (int wheel_i = 0; wheel_i < 4; wheel_i++) {
-		// Translate wheel velocities into angular velocities
-		wheel_velocities[wheel_i] = wheel_velocities[wheel_i] / rad_wheel;
-		// Add in angular velocities
-		wheel_velocities[wheel_i] += vel_w * rad_robot / rad_wheel;
-		
-		// Set wheel rad/s in motor command
-		int speed = static_cast<int>(roundf(wheel_velocities[wheel_i] * 100.0f));
-		speed = std::clamp(speed, static_cast<int>(INT16_MIN), static_cast<int>(INT16_MAX));
-		int index = MOTOR_CMD_HEADER_SIZE + (wheel_i * 2);
-		motor_command[index] = (speed >> 8 & 0xFF);
-		motor_command[index + 1] = (speed & 0xFF);
-		PRINT(speed, " ");
-	}
+  for (int wheel_i = 0; wheel_i < 4; wheel_i++) {
+    // Translate wheel velocities into angular velocities
+    wheel_velocities[wheel_i] = wheel_velocities[wheel_i] / rad_wheel;
+    // Add in angular velocities
+    wheel_velocities[wheel_i] += vel_w * rad_robot / rad_wheel;
+    
+    // Set wheel rad/s in motor command
+    int speed = static_cast<int>(roundf(wheel_velocities[wheel_i] * 100.0f));
+    speed = std::clamp(speed, static_cast<int>(INT16_MIN), static_cast<int>(INT16_MAX));
+    int index = MOTOR_CMD_HEADER_SIZE + (wheel_i * 2);
+    motor_command[index] = (speed >> 8 & 0xFF);
+    motor_command[index + 1] = (speed & 0xFF);
+    PRINT(speed, " ");
+  }
 
   // Send motor command
   PRINT(static_cast<int8_t>(motor_command[DRIBBLER_MOTOR_INDEX]), ") | ");
