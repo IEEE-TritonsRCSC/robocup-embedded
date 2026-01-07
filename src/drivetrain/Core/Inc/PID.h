@@ -38,7 +38,6 @@ typedef struct _PID_TypeDef {
 	float error_buf[3];
 
 	float output;
-	float last_output;
 
 	float MaxOutput;
 	float IntegralLimit;

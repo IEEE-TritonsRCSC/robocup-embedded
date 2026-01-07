@@ -1,6 +1,7 @@
 // #include "pid.h"
 #include "stm32f4xx.h"
 #include "PID.h"
+#include <math.h>
 
 #define ABS(x)	((x>0)? x: -x)
 
@@ -41,8 +42,38 @@ float pid_calculate(PID_TypeDef* pid, float measure)
 	pid->error = pid->target - pid->measure;
 	pid->pout = pid->kp * pid->error;
 
+	float friction_comp = 0.0f;
+	float abs_measure = fabsf(pid->measure);
+
+    // Only apply friction compensation when:
+    // - We actually want to move (non-zero target)
+    // - We're in the low-speed zone where static friction matters
+	if (fabsf(pid->target) >= 1 && abs_measure < 1) {
+		float smooth_factor = 1.0f - abs_measure;
+
+		// Use reduced friction for crossing to prevent overshoot
+		char is_crossing = (pid->target * pid->measure) < 0.0f;
+		float max_friction = is_crossing ? 100.0f : 400.0f;
+
+		friction_comp = smooth_factor * max_friction;
+		if (pid->target < 0.0f) {
+			friction_comp = -friction_comp;
+		}
+	}
+	pid->output = pid->pout + friction_comp;
+
+	if (pid->output > pid->MaxOutput) {
+		pid->output = pid->MaxOutput;
+	} else if (pid->output < -pid->MaxOutput) {
+		pid->output = -pid->MaxOutput;
+	}
+
+	if (pid->target == 0.0f) {
+		pid->output = 0.0f;
+	}
+
 	// Prevent integral windup
-	pid->integral += pid->error;
+	/*pid->integral += pid->error;
 	if(pid->integral > pid->IntegralLimit)
 	{
 		pid->integral = pid->IntegralLimit;
