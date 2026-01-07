@@ -1,83 +1,178 @@
-#include "velocityConversions.h"
+#include "helpers.h"
 
-using namespace std;
+int size;
+char buffer[MAX_BUFFER_SIZE];
+char cmd_buffer[MAX_COMMAND_BUFFER];
 
-void getVelocityArray(array<int, 4>& wheel_speeds, double heading, double vx, double vy, double rotV) {
-    // Takes heading, absolute velocity, theta, and rotational velocity
-    // rotational velocity as input parameters and returns a byte array.
-    
-    array<double, 4> wheel_speeds_double;
+int n_read = 0;
+float power = 0.0;
+float dir = 0.0f;
+float angular_speed = 0.0f;
 
-    // constant
-    constexpr double two_pi = 2 * M_PI;
+float vel_u = 0.0f;
+float vel_v = 0.0f;
+float vel_w = 0.0f;
 
-    // difference between current direction (heading) and desired direction (theta)
-    // double relativeTheta = fmod((theta - heading + 2 * two_pi), two_pi);
+bool kicker_charged = false;
+bool charging_kicker = false;
+unsigned long start_charge_time = 0;
+unsigned long last_kick_time = 0;
 
-    // add back in vx/vy relative to global heading later
-    // double vx = absV * sin(relativeTheta);
-    // double vy = absV * cos(relativeTheta);
+bool stop_dribbler_on_next_command = false;
 
+float cosFront = cosf(FRONT_ANGLE * M_PI/180);
+float sinFront = sinf(FRONT_ANGLE * M_PI/180);
+float cosBack = cosf(BACK_ANGLE * M_PI/180);
+float sinBack = sinf(BACK_ANGLE * M_PI/180);
+float wheel_velocities[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 
-    // front right wheel 
-    wheel_speeds_double[0] = 
-        rotV * (sin(FR_WHEEL_ANGLE)*FR_X - cos(FR_WHEEL_ANGLE)*FR_Y) 
-        + vx * cos(FR_WHEEL_ANGLE)
-        + vy * sin(FR_WHEEL_ANGLE);
-    
-    wheel_speeds_double[0] /= WHEEL_RADIUS;
+// --------------------------------Parsers--------------------------------
+void handleNewChar(char c) {
+  // Each line or "string" received is a message
+  if (c == '\n' || c == '\0') {
+    buffer[size] = '\0';  // null terminate the string
+    if (size) {  // if buffer not empty
+      parseMsg(buffer);  // process the message
+      buffer[0] = '\0';  // reset buffer
+      size = 0;  // reset size
+    }
+  } else {
+    buffer[size] = c;  // add char to buffer
+    if (++size == MAX_BUFFER_SIZE - 1) {  // prevent overflow
+      handleNewChar('\0');  // force terminate the string
+    }
+  }
+}
 
-    // back right wheel
-    wheel_speeds_double[1] = 
-        rotV * (sin(BR_WHEEL_ANGLE)*BR_X - cos(BR_WHEEL_ANGLE)*BR_Y) 
-        + vx * cos(BR_WHEEL_ANGLE)
-        + vy * sin(BR_WHEEL_ANGLE);
+void parseMsg(char *msg) {
+  if (strcmp(msg, "stop") == 0) {
+    execute_stop();
+  } else if (sscanf(msg, RELEVANT_FORMAT, &cmd_buffer, &n_read) == 1) {
+    msg += n_read;
+    parseCommand(cmd_buffer, msg);
+  }
+  cmd_buffer[0] = '\0';
+}
 
-    wheel_speeds_double[1] /= WHEEL_RADIUS;
-    
-    // back left wheel
-    wheel_speeds_double[2] = 
-        rotV * (sin(BL_WHEEL_ANGLE)*BL_X - cos(BL_WHEEL_ANGLE)*BL_Y) 
-        + vx * cos(BL_WHEEL_ANGLE)
-        + vy * sin(BL_WHEEL_ANGLE);
-
-    wheel_speeds_double[2] /= WHEEL_RADIUS;
-
-    // front left wheel
-    wheel_speeds_double[3] = 
-        rotV * (sin(FL_WHEEL_ANGLE)*FL_X - cos(FL_WHEEL_ANGLE)*FL_Y) 
-        + vx * cos(FL_WHEEL_ANGLE)
-        + vy * sin(FL_WHEEL_ANGLE);
-
-    wheel_speeds_double[3] /= WHEEL_RADIUS;
-
-    for (int i = 0; i < 4; i++) {
-      if (wheel_speeds_double[i] > MAX_VELOCITY) {
-        wheel_speeds_double[i] = MAX_VELOCITY;
-      } else if (wheel_speeds_double[i] < -MAX_VELOCITY) {
-        wheel_speeds_double[i] = -MAX_VELOCITY;
+void parseCommand(char *command, char *parameters) {
+  switch (command[0]) {
+    case 't':  // turn
+      if (sscanf(parameters, " %f", &angular_speed) == 1) {
+        execute_turn(angular_speed);
+        break;
       }
-    }
-
-    for (int i = 0; i < 4; i++) {
-        wheel_speeds_double[i] *= RESCALE_FACTOR;
-        wheel_speeds[i] = (int)wheel_speeds_double[i];        
-    }
+      return;
+    case 'd':  // dash
+      if (sscanf(parameters, " %f %f", &power, &dir) == 2) {
+        execute_dash(power, dir);
+        break;
+      }
+      return;
+    case 's':  // skick
+      if (sscanf(parameters, " %f", &power) == 1) {
+        execute_skick(power);
+        break;
+      }
+      return;
+    case 'k':  // kick
+      execute_kick();
+      break;
+    case 'c':  // catch
+      execute_catch();
+      break;
+    default:
+      return;
+  }
+  prepare_and_send_motor_command();
+  Serial.println(micros() - packet_time);
 }
 
-void valuesToBytes(array<int, 4>& wheel_speeds, array<uint8_t, 8>& wheel_speeds_byte) {
+// --------------------------------Executors--------------------------------
+void execute_stop() {
+  PRINT("Stopping | ");
+  vel_u = 0.0f;
+  vel_v = 0.0f;
+  vel_w = 0.0f;
+  setDribbler(0.0f);
+  prepare_and_send_motor_command();
+}
+
+void execute_turn(float angular_speed) {
+  PRINT("Turning at ", angular_speed, " rad/s | ");
+  vel_w = angular_speed;
+}
+
+void execute_dash(float power, float dir) {
+  PRINT("Dashing with ", power, " power in ", dir, " radians | ");
+  float acceleration = 0.006 * power;
+  vel_u += acceleration * sinf(dir);
+  vel_v += acceleration * cosf(dir);
+  vel_w = 0.0f;
+}
+
+void execute_skick(float power) {
+  PRINT("Short Kicking the ball with ", power, " power | ");
+  setDribbler(-power);    // reverse the direction to skick the ball
+  stop_dribbler_on_next_command = true;
+  vel_w = 0.0f;
+}
+
+void execute_kick() {
+  PRINT("Kicking the ball | ");
+  setDribbler(0.0f);
+  if (kicker_charged) {
+    kicker_charged = false;
+    digitalWrite(KICKER_PIN, LOW);  // turn ON the kicker
+    last_kick_time = millis();
+  }
+  vel_w = 0.0f;
+}
+
+void execute_catch() {
+  PRINT("Catching the ball | ");
+  setDribbler(100.0f);
+  vel_w = 0.0f;
+}
+
+// --------------------------------Hardware Controllers--------------------------------
+void setDribbler(float power) {
+  motor_command[DRIBBLER_MOTOR_INDEX] = static_cast<int8_t>(roundf(power));
+}
+
+void prepare_and_send_motor_command() {
+  // Translate vel_u and vel_v into wheel velocities
+  wheel_velocities[0] = (vel_u * -sinFront) + (vel_v * -cosFront);  // front-right
+  wheel_velocities[1] = (vel_u * sinBack) + (vel_v * -cosBack);  // back-right
+  wheel_velocities[2] = (vel_u * sinBack) + (vel_v * cosBack);  // back-left
+  wheel_velocities[3] = (vel_u * -sinFront) + (vel_v * cosFront);  // front-left
+
+  PRINT("(");
+  for (int wheel_i = 0; wheel_i < 4; wheel_i++) {
+    // Translate wheel velocities into angular velocities
+    wheel_velocities[wheel_i] = wheel_velocities[wheel_i] / rad_wheel;
+    // Add in angular velocities
+    wheel_velocities[wheel_i] += vel_w * rad_robot / rad_wheel;
     
-    for (int i = 0; i < 4; i++) {
-        wheel_speeds_byte[(i * 2)] = (wheel_speeds[i] >> 8 & 0xff); 
-        wheel_speeds_byte[(i * 2 + 1)] = (wheel_speeds[i] & 0xff);
-    }
+    // Set wheel rad/s in motor command
+    int speed = static_cast<int>(roundf(wheel_velocities[wheel_i] * 100.0f));
+    speed = std::clamp(speed, static_cast<int>(INT16_MIN), static_cast<int>(INT16_MAX));
+    int index = MOTOR_CMD_HEADER_SIZE + (wheel_i * 2);
+    motor_command[index] = (speed >> 8 & 0xFF);
+    motor_command[index + 1] = (speed & 0xFF);
+    PRINT(speed, " ");
+  }
 
-}
+  // Send motor command
+  PRINT(static_cast<int8_t>(motor_command[DRIBBLER_MOTOR_INDEX]), ") | ");
+  PRINT("(", vel_u, " ", vel_v, " ", vel_w, ")\n");
+  robotSerial.write(motor_command.data(), motor_command.size());
 
-void action_to_byte_array(array<uint8_t, 8>& wheel_speeds_byte) {
+  if (stop_dribbler_on_next_command) {
+    setDribbler(0.0f);
+    stop_dribbler_on_next_command = false;
+  }
 
-    array<int, 4> wheel_speeds;
-
-    getVelocityArray(wheel_speeds, 0, 0, 1, 0.5);
-    valuesToBytes(wheel_speeds, wheel_speeds_byte);
+  // Decay vel_u and vel_v
+  vel_u *= 0.4;
+  vel_v *= 0.4;
 }
