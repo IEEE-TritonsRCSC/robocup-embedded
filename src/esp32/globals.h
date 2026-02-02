@@ -35,9 +35,24 @@ void PRINT(const Args&...) {}
 #define RELEVANT_FORMAT ROBOT_NO " %s %n"
 
 // Send Motor Command over UART
+#define DEFAULT_HEADER_BYTE_1 0xCA
+#define DEFAULT_HEADER_BYTE_2 0xFE
 #define MOTOR_CMD_HEADER_SIZE 2
-#define MOTOR_COMMAND_SIZE 11
-#define DRIBBLER_MOTOR_INDEX 10
+#define MOTOR_CMD_TYPE_SIZE 1
+#define MOTOR_CMD_PAYLOAD_OFFSET (MOTOR_CMD_HEADER_SIZE + MOTOR_CMD_TYPE_SIZE)
+#define MOTOR_COMMAND_SIZE 12
+#define DRIBBLER_MOTOR_INDEX 11
+#define FRAME_TYPE_DRIVE_COMMAND 0x01
+#define FRAME_TYPE_PID_UPDATE 0x02
+#define FRAME_TYPE_HEADER_CONFIG 0x03
+#define UART_DRIVE_PAYLOAD_SIZE 9
+#define UART_PID_PAYLOAD_SIZE 13
+#define UART_CONFIG_PAYLOAD_SIZE 3
+#define HEADER_CHECKSUM_SEED 0xA5
+#define TELEMETRY_HEADER_BYTE_1 0xFE
+#define TELEMETRY_HEADER_BYTE_2 0xED
+#define TELEMETRY_FRAME_SIZE 32
+#define TELEMETRY_PORT 10001
 #define TX_PIN 17
 #define RX_PIN 16
 
@@ -57,7 +72,8 @@ extern bool charging_kicker;
 extern unsigned long start_charge_time;
 extern unsigned long last_kick_time;
 
-extern std::array<uint8_t, 11> motor_command;
+extern std::array<uint8_t, MOTOR_COMMAND_SIZE> motor_command;
+extern std::array<uint8_t, MOTOR_CMD_HEADER_SIZE> motor_cmd_headers;
 extern HardwareSerial robotSerial;
 
 #endif

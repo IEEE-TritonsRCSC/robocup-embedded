@@ -21,6 +21,9 @@ void execute_dash(float power, float dir);
 void execute_skick(float power);
 void execute_kick();
 void execute_catch();
+void command_velocity(float u, float v, float w);
+void send_pid_update(uint8_t wheel, float kp, float ki, float kd);
+void send_header_config(uint8_t header1, uint8_t header2);
 
 // Hardware Controllers
 void setDribbler(float power);

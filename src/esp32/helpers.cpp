@@ -1,4 +1,23 @@
 #include "helpers.h"
+#include <algorithm>
+#include <array>
+#include <cstring>
+
+namespace {
+
+constexpr size_t PID_FRAME_SIZE = MOTOR_CMD_HEADER_SIZE + MOTOR_CMD_TYPE_SIZE + UART_PID_PAYLOAD_SIZE;
+constexpr size_t CONFIG_FRAME_SIZE = MOTOR_CMD_HEADER_SIZE + MOTOR_CMD_TYPE_SIZE + UART_CONFIG_PAYLOAD_SIZE;
+
+inline void write_float_be(float value, uint8_t *dest) {
+  uint32_t raw;
+  std::memcpy(&raw, &value, sizeof(float));
+  dest[0] = static_cast<uint8_t>((raw >> 24) & 0xFF);
+  dest[1] = static_cast<uint8_t>((raw >> 16) & 0xFF);
+  dest[2] = static_cast<uint8_t>((raw >> 8) & 0xFF);
+  dest[3] = static_cast<uint8_t>(raw & 0xFF);
+}
+
+}
 
 int size;
 char buffer[MAX_BUFFER_SIZE];
@@ -140,6 +159,7 @@ void setDribbler(float power) {
 }
 
 void prepare_and_send_motor_command() {
+  motor_command[MOTOR_CMD_HEADER_SIZE] = FRAME_TYPE_DRIVE_COMMAND;
   // Translate vel_u and vel_v into wheel velocities
   wheel_velocities[0] = (vel_u * -sinFront) + (vel_v * -cosFront);  // front-right
   wheel_velocities[1] = (vel_u * sinBack) + (vel_v * -cosBack);  // back-right
@@ -156,7 +176,7 @@ void prepare_and_send_motor_command() {
     // Set wheel rad/s in motor command
     int speed = static_cast<int>(roundf(wheel_velocities[wheel_i] * 100.0f));
     speed = std::clamp(speed, static_cast<int>(INT16_MIN), static_cast<int>(INT16_MAX));
-    int index = MOTOR_CMD_HEADER_SIZE + (wheel_i * 2);
+    int index = MOTOR_CMD_PAYLOAD_OFFSET + (wheel_i * 2);
     motor_command[index] = (speed >> 8 & 0xFF);
     motor_command[index + 1] = (speed & 0xFF);
     PRINT(speed, " ");
@@ -175,4 +195,37 @@ void prepare_and_send_motor_command() {
   // Decay vel_u and vel_v
   vel_u *= 0.4;
   vel_v *= 0.4;
+}
+
+void command_velocity(float u, float v, float w) {
+  vel_u = u;
+  vel_v = v;
+  vel_w = w;
+  prepare_and_send_motor_command();
+}
+
+void send_pid_update(uint8_t wheel, float kp, float ki, float kd) {
+  std::array<uint8_t, PID_FRAME_SIZE> pid_frame{};
+  pid_frame[0] = motor_cmd_headers[0];
+  pid_frame[1] = motor_cmd_headers[1];
+  pid_frame[MOTOR_CMD_HEADER_SIZE] = FRAME_TYPE_PID_UPDATE;
+  pid_frame[MOTOR_CMD_HEADER_SIZE + 1] = wheel;
+
+  write_float_be(kp, pid_frame.data() + MOTOR_CMD_HEADER_SIZE + 2);
+  write_float_be(ki, pid_frame.data() + MOTOR_CMD_HEADER_SIZE + 6);
+  write_float_be(kd, pid_frame.data() + MOTOR_CMD_HEADER_SIZE + 10);
+
+  robotSerial.write(pid_frame.data(), pid_frame.size());
+}
+
+void send_header_config(uint8_t header1, uint8_t header2) {
+  std::array<uint8_t, CONFIG_FRAME_SIZE> config_frame{};
+  config_frame[0] = motor_cmd_headers[0];
+  config_frame[1] = motor_cmd_headers[1];
+  config_frame[MOTOR_CMD_HEADER_SIZE] = FRAME_TYPE_HEADER_CONFIG;
+  config_frame[MOTOR_CMD_HEADER_SIZE + 1] = header1;
+  config_frame[MOTOR_CMD_HEADER_SIZE + 2] = header2;
+  config_frame[MOTOR_CMD_HEADER_SIZE + 3] = HEADER_CHECKSUM_SEED ^ header1 ^ header2;
+
+  robotSerial.write(config_frame.data(), config_frame.size());
 }
