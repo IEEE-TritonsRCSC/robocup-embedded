@@ -71,7 +71,7 @@ void init_motor_command() {
 }
 
 void start_charging_kicker() {
-  digitalWrite(KICKER_PIN, HIGH);  // turn OFF kicker
+  digitalWrite(KICKER_PIN, LOW);  // turn OFF kicker
   digitalWrite(SOLENOID_PIN, HIGH);  // START charging 
   delay(KICKER_CHARGING_TIME);
   digitalWrite(SOLENOID_PIN, LOW);  // STOP charging
@@ -93,7 +93,7 @@ void check_kicker_status() {
       charging_kicker = true;
       start_charge_time = millis();
     } else if (time_elasped >= KICKING_TIME) {
-      digitalWrite(KICKER_PIN, HIGH);  // turn OFF the kicker
+      digitalWrite(KICKER_PIN, LOW);  // turn OFF the kicker
     }
   }
 }

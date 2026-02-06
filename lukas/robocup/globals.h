@@ -41,10 +41,10 @@ void PRINT(const Args&...) {}
 #define TX_PIN 17
 #define RX_PIN 16
 
-#define KICKER_PIN 2
-#define SOLENOID_PIN 15
+#define KICKER_PIN 5
+#define SOLENOID_PIN 18 // change name to CHARGE_PIN later
 #define KICKER_CHARGING_TIME 100  // ms
-#define KICKING_TIME 100  // ms
+#define KICKING_TIME 500  // ms
 #define WAIT_BEFORE_CHARGE_AGAIN 5000  // 5 seconds
 
 extern unsigned long packet_time;

@@ -122,8 +122,9 @@ void execute_kick() {
   setDribbler(0.0f);
   if (kicker_charged) {
     kicker_charged = false;
-    digitalWrite(KICKER_PIN, LOW);  // turn ON the kicker
+    digitalWrite(KICKER_PIN, HIGH);  // turn ON the kicker
     last_kick_time = millis();
+    PRINT(" Kicker fired! | ");
   }
   vel_w = 0.0f;
 }
