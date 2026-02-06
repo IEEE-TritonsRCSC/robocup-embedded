@@ -90,6 +90,11 @@ volatile float Kp4 = 0.403;
 volatile float Ki4 = 0.0;
 volatile float Kd4 = 0.00;*/
 
+const float INTEGRAL_LIMIT = 1000;
+const float MAXOUT = 999;
+const float DEADBAND = 20;
+const float TARGET = 0;
+
 volatile float Kp1 = 100.0f;  // front-right
 volatile float Ki1 = 0.0f;
 volatile float Kd1 = 0.0f;
@@ -186,10 +191,11 @@ int main(void) {
 	for (int i = 0; i < 4; ++i) {
 		speed_data[i] = 0;
 	}
-	pid_init(&motor_pid[0], 9999, 1000, 20, 0, Kp1, Ki1, Kd1);
-	pid_init(&motor_pid[1], 9999, 1000, 20, 0, Kp2, Ki2, Kd2);
-	pid_init(&motor_pid[2], 9999, 1000, 20, 0, Kp3, Ki3, Kd3);
-	pid_init(&motor_pid[3], 9999, 1000, 20, 0, Kp4, Ki4, Kd4);
+
+	pid_init(&motor_pid[0], MAXOUT, INTEGRAL_LIMIT, DEADBAND, TARGET, Kp1, Ki1, Kd1);
+	pid_init(&motor_pid[1], MAXOUT, INTEGRAL_LIMIT, DEADBAND, TARGET, Kp2, Ki2, Kd2);
+	pid_init(&motor_pid[2], MAXOUT, INTEGRAL_LIMIT, DEADBAND, TARGET, Kp3, Ki3, Kd3);
+	pid_init(&motor_pid[3], MAXOUT, INTEGRAL_LIMIT, DEADBAND, TARGET, Kp4, Ki4, Kd4);
 
 	for (int i = 0; i < 4; ++i) {
 		targetSpeeds[i] = 0;
