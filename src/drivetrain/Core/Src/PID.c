@@ -35,20 +35,44 @@ void pid_set_constants(PID_TypeDef * pid, float kp, float ki, float kd)
 	pid->kd = kd;
 }
 
-float pid_calculate(PID_TypeDef* pid, float measure)
+float pid_calculate(PID_TypeDef *pid, float measure)
 {
+	uint32_t current_time = HAL_GetTick();
+	float dt = (current_time - pid->lasttime) / 1000.0f;
+	pid->lasttime = current_time;
+
 	pid->measure = measure;
 	pid->last_error = pid->error;
 	pid->error = pid->target - pid->measure;
+
+	// Calculate proportional term
 	pid->pout = pid->kp * pid->error;
 
+	// Calculate integral term
+	pid->integral += pid->error * dt;
+
+	if (pid->integral > pid->IntegralLimit)
+	{
+		pid->integral = pid->IntegralLimit;
+	}
+	else if (pid->integral < -pid->IntegralLimit)
+	{
+		pid->integral = -pid->IntegralLimit;
+	}
+	pid->iout = pid->ki * pid->integral;
+
+	// Calculate derivative term
+	pid->dout = pid->kd * (pid->error - pid->last_error) / dt;
+
+	// Friction compensation
 	float friction_comp = 0.0f;
 	float abs_measure = fabsf(pid->measure);
 
-    // Only apply friction compensation when:
-    // - We actually want to move (non-zero target)
-    // - We're in the low-speed zone where static friction matters
-	if (fabsf(pid->target) >= 1 && abs_measure < 1) {
+	// Only apply friction compensation when:
+	// - We actually want to move (non-zero target)
+	// - We're in the low-speed zone where static friction matters
+	if (fabsf(pid->target) >= 1 && abs_measure < 1)
+	{
 		float smooth_factor = 1.0f - abs_measure;
 
 		// Use reduced friction for crossing to prevent overshoot
@@ -56,70 +80,26 @@ float pid_calculate(PID_TypeDef* pid, float measure)
 		float max_friction = is_crossing ? 100.0f : 400.0f;
 
 		friction_comp = smooth_factor * max_friction;
-		if (pid->target < 0.0f) {
+		if (pid->target < 0.0f)
+		{
 			friction_comp = -friction_comp;
 		}
 	}
+	// pid->output = pid->pout + pid->iout + pid->dout + friction_comp;
 	pid->output = pid->pout + friction_comp;
 
-	if (pid->output > pid->MaxOutput) {
+	if (pid->output > pid->MaxOutput)
+	{
 		pid->output = pid->MaxOutput;
-	} else if (pid->output < -pid->MaxOutput) {
+	}
+	else if (pid->output < -pid->MaxOutput)
+	{
 		pid->output = -pid->MaxOutput;
 	}
 
-	if (pid->target == 0.0f) {
+	if (pid->target == 0.0f)
+	{
 		pid->output = 0.0f;
+		pid->integral = 0.0f;
 	}
-
-	// Prevent integral windup
-	/*pid->integral += pid->error;
-	if(pid->integral > pid->IntegralLimit)
-	{
-		pid->integral = pid->IntegralLimit;
-	}
-	if(pid->integral < -(pid->IntegralLimit))
-	{
-		pid->integral = -pid->IntegralLimit;
-	}
-	pid->iout = pid->ki * pid->integral;
-
-	pid->dout =  pid->kd * (pid->error - pid->last_error);
-
-	pid->output = pid->pout + pid->iout + pid->dout;
-
-	//Clamping output -> using direct instead of incremental PID
-	if(pid->output>pid->MaxOutput)
-	{
-		pid->output = pid->MaxOutput;
-	}
-	if(pid->output < -(pid->MaxOutput))
-	{
-		pid->output = -(pid->MaxOutput);
-	}
-	//}
-
-	/*
-	pid->error_buf[2] = pid->error_buf[1];
-	pid->error_buf[1] = pid->error_buf[0];
-	pid->error_buf[0] = pid->target - pid->measure;
-	pid->pout = pid->kp * (pid->error - pid->lasterror);
-	pid->iout = pid->ki * pid->error;
-	pid->d_buf[2] = pid->d_buf[1];
-	pid->d_buf[1] = pid->d_buf[0];
-	pid->d_buf[0] = (pid->error_buf[0] - 2.0f * pid->error_buf[1] + pid->error_buf[2]);
-	pid->dout = pid->kd * pid->d_buf[0];
-	pid->output += pid->pout + pid->iout + pid->dout;
-	if(pid->output>pid->MaxOutput)
-	{
-		pid->output = pid->MaxOutput;
-	}
-	if(pid->output < -(pid->MaxOutput))
-	{
-		pid->output = -(pid->MaxOutput);
-	}
-	*/
-
-
 	return pid->output;
-}
