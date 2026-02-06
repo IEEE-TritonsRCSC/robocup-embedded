@@ -91,16 +91,16 @@ volatile float Ki4 = 0.0;
 volatile float Kd4 = 0.00;*/
 
 volatile float Kp1 = 100.0f;  // front-right
-volatile float Ki1 = 0.0f;
+volatile float Ki1 = 0.003f;
 volatile float Kd1 = 0.0f;
 volatile float Kp2 = 100.0f;  // back-right
-volatile float Ki2 = 0.0f;
+volatile float Ki2 = 0.003f;
 volatile float Kd2 = 0.0f;
 volatile float Kp3 = 100.0f;  // back-left
-volatile float Ki3 = 0.0f;
+volatile float Ki3 = 0.003f;
 volatile float Kd3 = 0.0f;
 volatile float Kp4 = 100.0f;  // front-left
-volatile float Ki4 = 0.0f;
+volatile float Ki4 = 0.003f;
 volatile float Kd4 = 0.0f;
 
 // UART setup
@@ -164,7 +164,6 @@ int main(void) {
 	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR2_PIN);
 	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR3_PIN);
 	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR4_PIN);
-	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR5_PIN);
 
 	// CAN setup
 	canTxHeader.DLC = 8;
