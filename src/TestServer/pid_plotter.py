@@ -14,6 +14,7 @@ import numpy as np
 
 TELEMETRY_PORT = 10001
 MULTICAST_IP = "239.42.42.42"
+TELEMETRY_MIN_LEN = 30
 
 class PIDPlotter:
     def __init__(self, max_points=500, wheel_idx=0):
@@ -69,7 +70,7 @@ class PIDPlotter:
     
     def parse_telemetry(self, data):
         """Parse telemetry packet from robot"""
-        if len(data) < 32:
+        if len(data) < TELEMETRY_MIN_LEN:
             return None
         
         # Check header

@@ -13,6 +13,7 @@ MULTICAST_IP = "239.42.42.42"
 COMMAND_PORT = 10000
 ROBOT_ID = 1
 WHEEL_IDX = 0
+TELEMETRY_MIN_LEN = 30
 
 # Setup sockets
 recv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
@@ -25,7 +26,7 @@ recv_sock.settimeout(0.5)
 send_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 def parse_telemetry(data):
-    if len(data) < 32 or data[0] != 0xFE or data[1] != 0xED:
+    if len(data) < TELEMETRY_MIN_LEN or data[0] != 0xFE or data[1] != 0xED:
         return None
     
     timestamp_ms = struct.unpack('>I', data[2:6])[0]
