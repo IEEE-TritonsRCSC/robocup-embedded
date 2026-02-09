@@ -19,7 +19,7 @@ WiFiUDP UDP;
 WiFiUDP telemetryUdp;
 IPAddress multicastIP(239, 42, 42, 42);
 HardwareSerial robotSerial(2);
-AsyncWebServer server(80);
+AsyncWebServer server(4321);
 AsyncEventSource telemetryEvents("/telemetry");
 
 uint16_t packet_size;
@@ -43,6 +43,20 @@ struct TelemetrySnapshot {
 struct HeaderBytes {
   uint8_t byte1;
   uint8_t byte2;
+};
+
+struct WheelPidGains {
+  float kp;
+  float ki;
+  float kd;
+  bool confirmed;
+};
+
+WheelPidGains confirmedPidGains[TELEMETRY_WHEEL_COUNT] = {
+  {100.0f, 0.0f, 0.0f, false},
+  {100.0f, 0.0f, 0.0f, false},
+  {100.0f, 0.0f, 0.0f, false},
+  {100.0f, 0.0f, 0.0f, false}
 };
 
 Preferences headerPrefs;
@@ -182,6 +196,16 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
       <div id="dribbler">Dribbler: --</div>
     </section>
 
+    <section class="panel">
+      <h2>Current PID Gains</h2>
+      <table>
+        <thead>
+          <tr><th>Wheel</th><th>Kp</th><th>Ki</th><th>Kd</th><th>Status</th></tr>
+        </thead>
+        <tbody id="pid-gains-body"></tbody>
+      </table>
+    </section>
+
     <section class="grid">
       <div class="panel">
         <h2>PID Gains</h2>
@@ -233,11 +257,15 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
   <script>
     const wheelNames = ["Front Right", "Back Right", "Back Left", "Front Left"];
     const telemetryBody = document.getElementById('telemetry-body');
+    const pidGainsBody = document.getElementById('pid-gains-body');
     const dribblerEl = document.getElementById('dribbler');
     const telemetryStatus = document.getElementById('telemetry-status');
     const pidStatus = document.getElementById('pid-status');
     const setpointStatus = document.getElementById('setpoint-status');
     const headerStatus = document.getElementById('header-status');
+    const wheelSelect = document.getElementById('wheel-select');
+
+    const pidGains = wheelNames.map(() => ({ kp: '--', ki: '--', kd: '--', confirmed: false }));
 
     function renderSkeleton() {
       telemetryBody.innerHTML = wheelNames.map((name, idx) => `
@@ -248,6 +276,21 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
           <td class="output">--</td>
         </tr>
       `).join('');
+    }
+
+    function renderPidGainsTable() {
+      pidGainsBody.innerHTML = wheelNames.map((name, idx) => {
+        const g = pidGains[idx];
+        const statusText = g.confirmed ? 'Confirmed' : 'Default';
+        const statusColor = g.confirmed ? 'var(--accent)' : 'var(--muted)';
+        return `<tr data-pid-wheel="${idx}">
+          <td class="wheel-name">${name}</td>
+          <td>${g.kp}</td>
+          <td>${g.ki}</td>
+          <td>${g.kd}</td>
+          <td style="color:${statusColor}">${statusText}</td>
+        </tr>`;
+      }).join('');
     }
 
     function setStatus(el, message, type) {
@@ -274,6 +317,22 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
       setStatus(telemetryStatus, `Telemetry streaming · ${timeLabel}`, 'success');
     }
 
+    function updatePidGain(wheel, kp, ki, kd, confirmed) {
+      if (wheel >= 0 && wheel < pidGains.length) {
+        pidGains[wheel] = { kp: kp.toFixed(3), ki: ki.toFixed(4), kd: kd.toFixed(4), confirmed: confirmed };
+        renderPidGainsTable();
+      }
+    }
+
+    function populateFormFromGains() {
+      const idx = parseInt(wheelSelect.value, 10);
+      if (idx >= 0 && idx < pidGains.length && pidGains[idx].confirmed) {
+        document.getElementById('kp-input').value = pidGains[idx].kp;
+        document.getElementById('ki-input').value = pidGains[idx].ki;
+        document.getElementById('kd-input').value = pidGains[idx].kd;
+      }
+    }
+
     function pollTelemetryFallback() {
       fetch('/api/telemetry')
         .then((resp) => (resp.status === 204 ? null : resp.json()))
@@ -286,6 +345,8 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
     }
 
     renderSkeleton();
+    renderPidGainsTable();
+
     fetch('/api/header')
       .then((resp) => resp.json())
       .then((data) => {
@@ -295,9 +356,24 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
       })
       .catch(() => {});
 
+    fetch('/api/pid')
+      .then((resp) => resp.json())
+      .then((data) => {
+        if (!data || !data.wheels) return;
+        data.wheels.forEach((w) => {
+          updatePidGain(w.index, w.kp, w.ki, w.kd, w.confirmed);
+        });
+      })
+      .catch(() => {});
+
     const eventSource = new EventSource('/telemetry');
     eventSource.addEventListener('telemetry', (event) => {
       updateTelemetry(JSON.parse(event.data));
+    });
+    eventSource.addEventListener('pid_ack', (event) => {
+      const data = JSON.parse(event.data);
+      updatePidGain(data.wheel, data.kp, data.ki, data.kd, true);
+      setStatus(pidStatus, `PID confirmed for ${wheelNames[data.wheel] || 'wheel ' + data.wheel}`, 'success');
     });
     eventSource.onerror = () => {
       setStatus(telemetryStatus, 'Telemetry stream offline – retrying…', 'error');
@@ -305,15 +381,18 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     setInterval(pollTelemetryFallback, 4000);
 
+    wheelSelect.addEventListener('change', populateFormFromGains);
+
     document.getElementById('pid-form').addEventListener('submit', (event) => {
       event.preventDefault();
       const payload = {
-        wheel: parseInt(document.getElementById('wheel-select').value, 10),
+        wheel: parseInt(wheelSelect.value, 10),
         kp: parseFloat(document.getElementById('kp-input').value),
         ki: parseFloat(document.getElementById('ki-input').value),
         kd: parseFloat(document.getElementById('kd-input').value)
       };
 
+      setStatus(pidStatus, 'Sending PID gains…', '');
       fetch('/api/pid', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -326,7 +405,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
           return resp;
         })
         .then(() => {
-          setStatus(pidStatus, 'PID gains sent successfully', 'success');
+          setStatus(pidStatus, 'PID gains sent — waiting for ACK…', 'success');
         })
         .catch((error) => setStatus(pidStatus, error.message, 'error'));
     });
@@ -389,22 +468,35 @@ portMUX_TYPE telemetryMux = portMUX_INITIALIZER_UNLOCKED;
 TelemetrySnapshot latestTelemetry;
 bool telemetryAvailable = false;
 
-enum class TelemetryParseState {
+enum class SerialParseState {
   WAIT_HEADER_1 = 0,
   WAIT_HEADER_2,
   READ_FRAME
 };
 
-TelemetryParseState telemetryState = TelemetryParseState::WAIT_HEADER_1;
-std::array<uint8_t, TELEMETRY_FRAME_SIZE> telemetryBuffer;
-size_t telemetryBytesRead = 0;
+enum class SerialFrameType {
+  NONE = 0,
+  TELEMETRY,
+  PID_ACK
+};
+
+constexpr size_t SERIAL_RX_MAX_FRAME = TELEMETRY_FRAME_SIZE;
+SerialParseState serialParseState = SerialParseState::WAIT_HEADER_1;
+SerialFrameType activeFrameType = SerialFrameType::NONE;
+std::array<uint8_t, SERIAL_RX_MAX_FRAME> serialRxBuffer;
+size_t serialBytesRead = 0;
+size_t serialExpectedSize = 0;
+uint8_t pendingHeader1 = 0;
 
 void process_robot_serial();
-void resetTelemetryParser();
+void resetSerialParser();
 void handleTelemetryFrame(const uint8_t *frame);
+void handlePidAckFrame(const uint8_t *frame);
 bool copy_latest_telemetry(TelemetrySnapshot &out);
 String telemetry_to_json(const TelemetrySnapshot &snapshot);
+String pid_gains_to_json();
 String header_config_to_json();
+float read_be_float(const uint8_t *data);
 int16_t read_be16(const uint8_t *data);
 uint32_t read_be32(const uint8_t *data);
 void start_web_server();
@@ -462,6 +554,7 @@ void connect_wifi() {
     PRINT(".");
   }
   PRINT("\nWiFi connected", "\nIP address: ", WiFi.localIP(), "\n");
+  PRINT("PID Dashboard: http://", WiFi.localIP(), ":4321/\n");
 }
 
 void init_motor_command() {
@@ -477,46 +570,60 @@ void init_motor_command() {
 void process_robot_serial() {
   while (robotSerial.available() > 0) {
     uint8_t byte_read = robotSerial.read();
-    switch (telemetryState) {
-      case TelemetryParseState::WAIT_HEADER_1:
-        if (byte_read == TELEMETRY_HEADER_BYTE_1) {
-          telemetryBuffer[0] = byte_read;
-          telemetryBytesRead = 1;
-          telemetryState = TelemetryParseState::WAIT_HEADER_2;
+    switch (serialParseState) {
+      case SerialParseState::WAIT_HEADER_1:
+        if (byte_read == TELEMETRY_HEADER_BYTE_1 || byte_read == PID_ACK_HEADER_BYTE_1) {
+          pendingHeader1 = byte_read;
+          serialParseState = SerialParseState::WAIT_HEADER_2;
         }
         break;
-      case TelemetryParseState::WAIT_HEADER_2:
-        if (byte_read == TELEMETRY_HEADER_BYTE_2) {
-          telemetryBuffer[1] = byte_read;
-          telemetryBytesRead = 2;
-          telemetryState = TelemetryParseState::READ_FRAME;
-        } else if (byte_read == TELEMETRY_HEADER_BYTE_1) {
-          telemetryBuffer[0] = byte_read;
-          telemetryBytesRead = 1;
-          telemetryState = TelemetryParseState::WAIT_HEADER_2;
+      case SerialParseState::WAIT_HEADER_2:
+        if (pendingHeader1 == TELEMETRY_HEADER_BYTE_1 && byte_read == TELEMETRY_HEADER_BYTE_2) {
+          activeFrameType = SerialFrameType::TELEMETRY;
+          serialExpectedSize = TELEMETRY_FRAME_SIZE;
+          serialRxBuffer[0] = pendingHeader1;
+          serialRxBuffer[1] = byte_read;
+          serialBytesRead = 2;
+          serialParseState = SerialParseState::READ_FRAME;
+        } else if (pendingHeader1 == PID_ACK_HEADER_BYTE_1 && byte_read == PID_ACK_HEADER_BYTE_2) {
+          activeFrameType = SerialFrameType::PID_ACK;
+          serialExpectedSize = PID_ACK_FRAME_SIZE;
+          serialRxBuffer[0] = pendingHeader1;
+          serialRxBuffer[1] = byte_read;
+          serialBytesRead = 2;
+          serialParseState = SerialParseState::READ_FRAME;
+        } else if (byte_read == TELEMETRY_HEADER_BYTE_1 || byte_read == PID_ACK_HEADER_BYTE_1) {
+          pendingHeader1 = byte_read;
         } else {
-          resetTelemetryParser();
+          resetSerialParser();
         }
         break;
-      case TelemetryParseState::READ_FRAME:
-        if (telemetryBytesRead < TELEMETRY_FRAME_SIZE) {
-          telemetryBuffer[telemetryBytesRead++] = byte_read;
+      case SerialParseState::READ_FRAME:
+        if (serialBytesRead < serialExpectedSize) {
+          serialRxBuffer[serialBytesRead++] = byte_read;
         }
-        if (telemetryBytesRead >= TELEMETRY_FRAME_SIZE) {
-          handleTelemetryFrame(telemetryBuffer.data());
-          resetTelemetryParser();
+        if (serialBytesRead >= serialExpectedSize) {
+          if (activeFrameType == SerialFrameType::TELEMETRY) {
+            handleTelemetryFrame(serialRxBuffer.data());
+          } else if (activeFrameType == SerialFrameType::PID_ACK) {
+            handlePidAckFrame(serialRxBuffer.data());
+          }
+          resetSerialParser();
         }
         break;
       default:
-        resetTelemetryParser();
+        resetSerialParser();
         break;
     }
   }
 }
 
-void resetTelemetryParser() {
-  telemetryState = TelemetryParseState::WAIT_HEADER_1;
-  telemetryBytesRead = 0;
+void resetSerialParser() {
+  serialParseState = SerialParseState::WAIT_HEADER_1;
+  activeFrameType = SerialFrameType::NONE;
+  serialBytesRead = 0;
+  serialExpectedSize = 0;
+  pendingHeader1 = 0;
 }
 
 void handleTelemetryFrame(const uint8_t *frame) {
@@ -546,6 +653,37 @@ void handleTelemetryFrame(const uint8_t *frame) {
   telemetryUdp.beginPacket(multicastIP, TELEMETRY_PORT);
   telemetryUdp.write(frame, TELEMETRY_FRAME_SIZE);
   telemetryUdp.endPacket();
+}
+
+void handlePidAckFrame(const uint8_t *frame) {
+  if (frame[0] != PID_ACK_HEADER_BYTE_1 || frame[1] != PID_ACK_HEADER_BYTE_2) {
+    return;
+  }
+
+  uint8_t wheel = frame[2];
+  if (wheel >= TELEMETRY_WHEEL_COUNT) {
+    return;
+  }
+
+  float kp = read_be_float(frame + 3);
+  float ki = read_be_float(frame + 7);
+  float kd = read_be_float(frame + 11);
+
+  portENTER_CRITICAL(&telemetryMux);
+  confirmedPidGains[wheel].kp = kp;
+  confirmedPidGains[wheel].ki = ki;
+  confirmedPidGains[wheel].kd = kd;
+  confirmedPidGains[wheel].confirmed = true;
+  portEXIT_CRITICAL(&telemetryMux);
+
+  StaticJsonDocument<128> doc;
+  doc["wheel"] = wheel;
+  doc["kp"] = kp;
+  doc["ki"] = ki;
+  doc["kd"] = kd;
+  String json;
+  serializeJson(doc, json);
+  telemetryEvents.send(json.c_str(), "pid_ack");
 }
 
 bool copy_latest_telemetry(TelemetrySnapshot &out) {
@@ -590,6 +728,31 @@ String header_config_to_json() {
   return json;
 }
 
+String pid_gains_to_json() {
+  StaticJsonDocument<512> doc;
+  JsonArray wheels = doc.createNestedArray("wheels");
+  portENTER_CRITICAL(&telemetryMux);
+  for (size_t i = 0; i < TELEMETRY_WHEEL_COUNT; ++i) {
+    JsonObject w = wheels.createNestedObject();
+    w["index"] = static_cast<uint8_t>(i);
+    w["kp"] = confirmedPidGains[i].kp;
+    w["ki"] = confirmedPidGains[i].ki;
+    w["kd"] = confirmedPidGains[i].kd;
+    w["confirmed"] = confirmedPidGains[i].confirmed;
+  }
+  portEXIT_CRITICAL(&telemetryMux);
+  String json;
+  serializeJson(doc, json);
+  return json;
+}
+
+float read_be_float(const uint8_t *data) {
+  uint32_t raw = read_be32(data);
+  float result;
+  memcpy(&result, &raw, sizeof(float));
+  return result;
+}
+
 int16_t read_be16(const uint8_t *data) {
   return static_cast<int16_t>((static_cast<uint16_t>(data[0]) << 8) | data[1]);
 }
@@ -627,6 +790,10 @@ void start_web_server() {
     } else {
       request->send(204);
     }
+  });
+
+  server.on("/api/pid", HTTP_GET, [](AsyncWebServerRequest *request) {
+    request->send(200, "application/json", pid_gains_to_json());
   });
 
   auto pidHandler = new AsyncCallbackJsonWebHandler("/api/pid", [](AsyncWebServerRequest *request, JsonVariant &json) {

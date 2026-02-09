@@ -75,6 +75,9 @@ typedef struct {
 #define HEADER_STORAGE_PTR ((HeaderStorageRecord *)BKPSRAM_BASE)
 #define HEADER_STORAGE_VERSION 1u
 #define HEADER_LEGACY_GRACE_MS 5000u
+#define PID_ACK_HEADER_BYTE_1 0xAC
+#define PID_ACK_HEADER_BYTE_2 0x4B
+#define PID_ACK_FRAME_SIZE 15
 
 /* USER CODE END PD */
 
@@ -185,6 +188,8 @@ static uint32_t pack_header_pair(uint8_t h1, uint8_t h2);
 static uint32_t calculate_storage_checksum(uint32_t magic, uint32_t version,
 		uint32_t active_pair, uint32_t legacy_pair, uint32_t legacy_enabled);
 static void maybe_disable_legacy_window(void);
+static void send_pid_ack(uint8_t wheel, float kp, float ki, float kd);
+static void float_to_bytes_be(float value, uint8_t *dest);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -529,9 +534,11 @@ static void handle_pid_payload(void) {
 	float kd = bytes_to_float_be(&uart_rx_buffer[9]);
 	if (wheel < 4) {
 		apply_pid_constants_for_wheel(wheel, kp, ki, kd);
+		send_pid_ack(wheel, kp, ki, kd);
 	} else if (wheel == 0xFF) {
 		for (uint8_t i = 0; i < 4; ++i) {
 			apply_pid_constants_for_wheel(i, kp, ki, kd);
+			send_pid_ack(i, kp, ki, kd);
 		}
 	}
 }
@@ -696,6 +703,26 @@ static void maybe_disable_legacy_window(void) {
 		persist_header_state(active_header_byte_1, active_header_byte_2,
 			legacy_header_byte_1, legacy_header_byte_2, legacy_accept_enabled);
 	}
+}
+
+static void float_to_bytes_be(float value, uint8_t *dest) {
+	uint32_t raw;
+	memcpy(&raw, &value, sizeof(float));
+	dest[0] = (raw >> 24) & 0xFF;
+	dest[1] = (raw >> 16) & 0xFF;
+	dest[2] = (raw >> 8) & 0xFF;
+	dest[3] = raw & 0xFF;
+}
+
+static void send_pid_ack(uint8_t wheel, float kp, float ki, float kd) {
+	uint8_t ack_buf[PID_ACK_FRAME_SIZE];
+	ack_buf[0] = PID_ACK_HEADER_BYTE_1;
+	ack_buf[1] = PID_ACK_HEADER_BYTE_2;
+	ack_buf[2] = wheel;
+	float_to_bytes_be(kp, &ack_buf[3]);
+	float_to_bytes_be(ki, &ack_buf[7]);
+	float_to_bytes_be(kd, &ack_buf[11]);
+	HAL_UART_Transmit(&huart4, ack_buf, PID_ACK_FRAME_SIZE, HAL_MAX_DELAY);
 }
 
 static void compose_telemetry_frame(void) {
