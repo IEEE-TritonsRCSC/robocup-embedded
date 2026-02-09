@@ -41,11 +41,21 @@ extern UART_HandleTypeDef huart4;
 /* USER CODE BEGIN PD */
 #define MOTOR_COUNT 4
 
-#define UART_RX_BUFFER_SIZE 9   // bytes after the header
+#define UART_RX_PAYLOAD_RUNTIME 9
+#define UART_RX_PAYLOAD_PID 7
+#define UART_RX_BUFFER_SIZE UART_RX_PAYLOAD_RUNTIME
 #define UART_TX_BUFFER_SIZE 12  // reserved for transmit (unused today)
-#define HEADER_BYTE_1 0xCA       // UART sync byte 1
-#define HEADER_BYTE_2 0xFE       // UART sync byte 2
-#define DRIBBLE_ON 0x01          // command flag for dribbler
+#define HEADER_BYTE_1 0xCA        // UART sync byte 1
+#define HEADER_BYTE_2_RUNTIME 0xFE // UART sync byte 2 (runtime)
+#define HEADER_BYTE_2_PID 0xEE     // UART sync byte 2 (PID tuning)
+#define DRIBBLE_ON 0x01           // command flag for dribbler
+#define PID_SCALE 1000.0f
+#define PID_WHEEL_ALL 4
+#define PID_WHEEL_ALL_ALT 0xFF
+
+#define UART_RX_MODE_NONE 0
+#define UART_RX_MODE_RUNTIME 1
+#define UART_RX_MODE_PID 2
 
 #define CONTROL_LOOP_DELAY_MS 10
 #define TARGET_SCALE 100.0f
@@ -152,6 +162,8 @@ uint8_t uart_tx_buffer[UART_TX_BUFFER_SIZE];
 volatile uint8_t rx_byte = 0;
 volatile int header1_flag = 0;
 volatile int header2_flag = 0;
+volatile uint8_t rx_mode = UART_RX_MODE_NONE;
+volatile uint8_t rx_expected_length = 0;
 
 // Telemetry TX state.
 static uint8_t telemetry_tx_buffer[TELEMETRY_PACKET_SIZE];
@@ -185,6 +197,7 @@ static void start_uart_rx(void);
 static uint8_t motor_index_from_std_id(uint32_t std_id, uint8_t *out_index);
 static void update_feedback_from_can(uint8_t index, const uint8_t data[8]);
 static void apply_uart_packet(const uint8_t *payload);
+static void apply_pid_packet(const uint8_t *payload);
 static int16_t bytes_to_int16_be(const uint8_t *bytes);
 static int16_t clamp_int16_from_float(float value);
 static void telemetry_try_send(void);
@@ -194,6 +207,7 @@ static void clear_buffer(uint8_t *buffer, uint32_t length);
 static void split_int16(int16_t value, uint8_t *high, uint8_t *low);
 static float ramp_linear(float current, float target, float ms_per_unit, float dt_ms);
 static float ramp_get_dt_ms(void);
+static void set_pid_for_wheel(uint8_t wheel, float kp, float ki, float kd);
 
 /* USER CODE END PFP */
 
@@ -347,6 +361,8 @@ static void init_uart_state(void)
 	rx_byte = 0;
 	header1_flag = 0;
 	header2_flag = 0;
+	rx_mode = UART_RX_MODE_NONE;
+	rx_expected_length = 0;
 	timeout = 0;
 	telemetry_tx_busy = 0;
 	telemetry_last_ms = 0;
@@ -413,6 +429,28 @@ static void apply_uart_packet(const uint8_t *payload)
 	// targetSpeeds[0] = targetSpeeds[0] * 1.15f;
 	// Historical note: |targetSpeeds[i]| was previously limited to 500.
 	dribble_speed = (int8_t)payload[8];
+}
+
+// Update PID gains from a tuning packet payload.
+static void apply_pid_packet(const uint8_t *payload)
+{
+	uint8_t wheel = payload[0];
+	int16_t kp_q = bytes_to_int16_be(&payload[1]);
+	int16_t ki_q = bytes_to_int16_be(&payload[3]);
+	int16_t kd_q = bytes_to_int16_be(&payload[5]);
+
+	float kp = ((float)kp_q) / PID_SCALE;
+	float ki = ((float)ki_q) / PID_SCALE;
+	float kd = ((float)kd_q) / PID_SCALE;
+
+	if (wheel == PID_WHEEL_ALL || wheel == PID_WHEEL_ALL_ALT) {
+		for (uint8_t i = 0; i < MOTOR_COUNT; ++i) {
+			set_pid_for_wheel(i, kp, ki, kd);
+		}
+		return;
+	}
+
+	set_pid_for_wheel(wheel, kp, ki, kd);
 }
 
 // One iteration of the main control loop.
@@ -489,6 +527,41 @@ static void telemetry_try_send(void)
 		telemetry_last_ms = now;
 	}
 #endif
+}
+
+// Update PID gains for a single wheel and keep shadow variables in sync.
+static void set_pid_for_wheel(uint8_t wheel, float kp, float ki, float kd)
+{
+	if (wheel >= MOTOR_COUNT) {
+		return;
+	}
+
+	switch (wheel) {
+	case 0:
+		Kp1 = kp;
+		Ki1 = ki;
+		Kd1 = kd;
+		break;
+	case 1:
+		Kp2 = kp;
+		Ki2 = ki;
+		Kd2 = kd;
+		break;
+	case 2:
+		Kp3 = kp;
+		Ki3 = ki;
+		Kd3 = kd;
+		break;
+	case 3:
+		Kp4 = kp;
+		Ki4 = ki;
+		Kd4 = kd;
+		break;
+	default:
+		return;
+	}
+
+	pid_set_constants(&motor_pid[wheel], kp, ki, kd);
 }
 
 /* USER CODE END 0 */
@@ -583,20 +656,37 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 		// Full message received.
 		timeout = 0;
 
-		apply_uart_packet(uart_rx_buffer);
+		if (rx_mode == UART_RX_MODE_RUNTIME) {
+			apply_uart_packet(uart_rx_buffer);
+		} else if (rx_mode == UART_RX_MODE_PID) {
+			apply_pid_packet(uart_rx_buffer);
+		}
 		clear_buffer(uart_rx_buffer, UART_RX_BUFFER_SIZE);
 		HAL_GPIO_TogglePin(LED_GREEN_PORT, LED_GREEN_PIN);
 
 		header1_flag = 0;
 		header2_flag = 0;
+		rx_mode = UART_RX_MODE_NONE;
+		rx_expected_length = 0;
 		HAL_UART_Receive_IT(&huart4, &rx_byte, 1);
 		return;
 	}
 
-	if (rx_byte == HEADER_BYTE_2) {
+	if (rx_byte == HEADER_BYTE_2_RUNTIME) {
 		// Second header byte received; read full payload.
 		header2_flag = 1;
-		HAL_UART_Receive_IT(&huart4, uart_rx_buffer, UART_RX_BUFFER_SIZE);
+		rx_mode = UART_RX_MODE_RUNTIME;
+		rx_expected_length = UART_RX_PAYLOAD_RUNTIME;
+		HAL_UART_Receive_IT(&huart4, uart_rx_buffer, rx_expected_length);
+		return;
+	}
+
+	if (rx_byte == HEADER_BYTE_2_PID) {
+		// PID tuning packet received; read tuning payload.
+		header2_flag = 1;
+		rx_mode = UART_RX_MODE_PID;
+		rx_expected_length = UART_RX_PAYLOAD_PID;
+		HAL_UART_Receive_IT(&huart4, uart_rx_buffer, rx_expected_length);
 		return;
 	}
 

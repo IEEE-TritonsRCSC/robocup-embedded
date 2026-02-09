@@ -25,5 +25,6 @@ void execute_catch();
 // Hardware Controllers
 void setDribbler(float power);
 void prepare_and_send_motor_command();
+void send_pid_update(int wheel_idx, int kp_q, int ki_q, int kd_q);
 
 #endif

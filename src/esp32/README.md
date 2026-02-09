@@ -97,6 +97,7 @@ Commands are sent via UDP multicast to `239.42.42.42:11000`:
 | `skick` | `1 skick <power>` | Short kick using dribbler | 0-100 |
 | `catch` | `1 catch` | Activate dribbler | - |
 | `stop` | `stop` | Emergency stop all motion | - |
+| `pidu` | `1 pidu <wheel> <kp_q> <ki_q> <kd_q>` | Update PID gains | kp_q = kp * 1000 |
 
 ### Using tester.py
 
@@ -138,6 +139,15 @@ Enter command: q           # Quit (sends stop)
 - **Wheel Speeds**: 4x int16 big-endian (rad/s * 100)
   - FR = Front-Right, BR = Back-Right, BL = Back-Left, FL = Front-Left
 - **Dribbler**: int8 signed (-100 to 100)
+
+### PID Update Format (UART)
+9-byte packet sent to STM32 for live tuning:
+```
+[0xCA][0xEE][WHEEL][KP_H][KP_L][KI_H][KI_L][KD_H][KD_L]
+```
+- **Header**: `0xCA 0xEE`
+- **Wheel**: 0..3 for a single wheel, 4 or 255 for all wheels
+- **Gains**: int16 big-endian, quantized by 1000 (kp_q = kp * 1000)
 
 ## System Behavior
 

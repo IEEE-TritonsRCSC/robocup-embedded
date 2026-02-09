@@ -55,6 +55,22 @@ void parseMsg(char *msg) {
 }
 
 void parseCommand(char *command, char *parameters) {
+  if (strcmp(command, "pidu") == 0) {
+    int wheel_idx = 0;
+    long kp_q = 0;
+    long ki_q = 0;
+    long kd_q = 0;
+    int parsed = sscanf(parameters, " %d %ld %ld %ld", &wheel_idx, &kp_q, &ki_q, &kd_q);
+    if (parsed >= 3) {
+      if (parsed == 3) {
+        kd_q = 0;
+      }
+      send_pid_update(wheel_idx, static_cast<int>(kp_q), static_cast<int>(ki_q), static_cast<int>(kd_q));
+      PRINT("PID update | ");
+    }
+    return;
+  }
+
   switch (command[0]) {
     case 't':  // turn
       if (sscanf(parameters, " %f", &angular_speed) == 1) {
@@ -175,4 +191,38 @@ void prepare_and_send_motor_command() {
   // Decay vel_u and vel_v
   vel_u *= 0.4;
   vel_v *= 0.4;
+}
+
+static int16_t clamp_int16_value(long value) {
+  if (value > 32767) {
+    return 32767;
+  }
+  if (value < -32768) {
+    return -32768;
+  }
+  return static_cast<int16_t>(value);
+}
+
+void send_pid_update(int wheel_idx, int kp_q, int ki_q, int kd_q) {
+  if (wheel_idx < 0 || wheel_idx > 255) {
+    return;
+  }
+
+  uint8_t packet[UART_PID_PACKET_SIZE];
+  packet[0] = UART_HEADER_1;
+  packet[1] = UART_HEADER_2_PID;
+  packet[2] = static_cast<uint8_t>(wheel_idx);
+
+  int16_t kp = clamp_int16_value(kp_q);
+  int16_t ki = clamp_int16_value(ki_q);
+  int16_t kd = clamp_int16_value(kd_q);
+
+  packet[3] = static_cast<uint8_t>((kp >> 8) & 0xFF);
+  packet[4] = static_cast<uint8_t>(kp & 0xFF);
+  packet[5] = static_cast<uint8_t>((ki >> 8) & 0xFF);
+  packet[6] = static_cast<uint8_t>(ki & 0xFF);
+  packet[7] = static_cast<uint8_t>((kd >> 8) & 0xFF);
+  packet[8] = static_cast<uint8_t>(kd & 0xFF);
+
+  robotSerial.write(packet, sizeof(packet));
 }

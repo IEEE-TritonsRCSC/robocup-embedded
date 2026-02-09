@@ -23,6 +23,9 @@ Key protocols and formats:
 - UART frame from ESP32 → STM32:
   - Header: 0xCA 0xFE
   - Payload (9 bytes): 4× int16_t wheel speeds (big‑endian), 1 byte dribbler flag
+- UART PID update frame (live tuning):
+  - Header: 0xCA 0xEE
+  - Payload (7 bytes): wheel index (0..3, 4/255 = all), kp/ki/kd int16 (scale 1000)
 - CAN frames (to motors):
   - StdId 0x200, DLC=8: 4× int16 high/low bytes (motors 1..4)
   - StdId 0x1FF, DLC=8: uses bytes 0–1 for dribbler value; other bytes unused

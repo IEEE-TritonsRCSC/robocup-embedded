@@ -12,7 +12,7 @@ uint16_t packet_size;
 char packet_buffer[MAX_PACKET_SIZE];
 unsigned long packet_time;
 std::array<uint8_t, 11> motor_command;
-std::array<uint8_t, 2> motor_cmd_headers = {0xCA, 0xFE};
+std::array<uint8_t, 2> motor_cmd_headers = {UART_HEADER_1, UART_HEADER_2_RUNTIME};
 
 void setup() {
   Serial.begin(BAUD_RATE);

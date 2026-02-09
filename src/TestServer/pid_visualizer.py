@@ -30,7 +30,7 @@ from collections import deque
 try:
     import matplotlib.pyplot as plt
     import matplotlib.animation as animation
-    from matplotlib.widgets import Button
+    from matplotlib.widgets import Button, TextBox
 except ImportError as exc:
     raise SystemExit("matplotlib is required. Install with: pip install matplotlib") from exc
 
@@ -54,6 +54,13 @@ class PIDVisualizer:
         self.start_time = time.time()
         self.last_rx_time = None
         self.warned_no_telemetry = False
+        self.adaptive_enabled = False
+        self.adaptive_last_time = 0.0
+        self.adaptive_interval = 1.0
+        self.adaptive_window = 40
+        self.adaptive_error_threshold = 20.0
+        self.adaptive_ki_step = 0.001
+        self.adaptive_ki_max = 1.0
 
         # Telemetry socket (multicast)
         self.recv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
@@ -129,7 +136,7 @@ class PIDVisualizer:
                 text = self.fig.text(xpos, 0.105, f"{WHEEL_NAMES[i]} Diff=--", fontsize=9)
                 self.error_texts.append(text)
 
-        self.fig.subplots_adjust(bottom=0.2)
+        self.fig.subplots_adjust(bottom=0.26)
 
         reset_ax = self.fig.add_axes([0.54, 0.04, 0.12, 0.06])
         stop_ax = self.fig.add_axes([0.68, 0.04, 0.12, 0.06])
@@ -140,6 +147,23 @@ class PIDVisualizer:
         self.reset_button.on_clicked(self._on_reset_clicked)
         self.stop_button.on_clicked(self._on_stop_clicked)
         self.dash_button.on_clicked(self._on_dash50_clicked)
+
+        kp_ax = self.fig.add_axes([0.05, 0.04, 0.08, 0.05])
+        ki_ax = self.fig.add_axes([0.16, 0.04, 0.08, 0.05])
+        kd_ax = self.fig.add_axes([0.27, 0.04, 0.08, 0.05])
+        set_ax = self.fig.add_axes([0.38, 0.04, 0.12, 0.06])
+
+        self.kp_box = TextBox(kp_ax, "Kp", initial="0.30")
+        self.ki_box = TextBox(ki_ax, "Ki", initial="0.00")
+        self.kd_box = TextBox(kd_ax, "Kd", initial="0.00")
+        self.set_pid_button = Button(set_ax, "Set PID", color="#e6f2e6", hovercolor="#d3ead3")
+        self.set_pid_button.on_clicked(self._on_set_pid_clicked)
+
+        pid_target = "ALL wheels" if self.args.view == "all" else (
+            f"Wheel {self.args.wheel} ({WHEEL_NAMES[self.args.wheel]})"
+        )
+        self.pid_target_text = self.fig.text(0.02, 0.012, f"PID target: {pid_target}", fontsize=9)
+        self.adaptive_text = self.fig.text(0.28, 0.012, "Adaptive: OFF", fontsize=9)
 
         # Avoid tight_layout warnings with manually placed button axes.
 
@@ -164,6 +188,106 @@ class PIDVisualizer:
         cmd = f"{self.args.robot_id} dash 50 0"
         self.send_command(cmd)
         print(f"Sent: {cmd}")
+
+    def _textbox_value(self, textbox):
+        value = textbox.text
+        if hasattr(value, "get_text"):
+            return value.get_text()
+        return value
+
+    def _get_pid_values(self):
+        try:
+            kp = float(self._textbox_value(self.kp_box).strip())
+            ki = float(self._textbox_value(self.ki_box).strip())
+            kd = float(self._textbox_value(self.kd_box).strip())
+        except ValueError:
+            print("Invalid PID values in input boxes.")
+            return None
+        return kp, ki, kd
+
+    def _pid_target_wheels(self):
+        if self.args.view == "single":
+            return [self.args.wheel]
+        return [0, 1, 2, 3]
+
+    def _on_set_pid_clicked(self, _event):
+        values = self._get_pid_values()
+        if values is None:
+            return
+        kp, ki, kd = values
+        wheels = self._pid_target_wheels()
+        for wheel in wheels:
+            self.send_pid_update(wheel, kp, ki, kd)
+        if len(wheels) == 1:
+            label = f"wheel {wheels[0]} ({WHEEL_NAMES[wheels[0]]})"
+        else:
+            label = "all wheels"
+        print(f"Set PID for {label}: Kp={kp:.3f}, Ki={ki:.3f}, Kd={kd:.3f}")
+
+    def _count_zero_crossings(self, values):
+        crossings = 0
+        last_sign = None
+        for value in values:
+            if value == 0:
+                continue
+            sign = 1 if value > 0 else -1
+            if last_sign is None:
+                last_sign = sign
+                continue
+            if sign != last_sign:
+                crossings += 1
+                last_sign = sign
+        return crossings
+
+    def _adaptive_step(self):
+        if not self.adaptive_enabled:
+            return
+        now = time.time()
+        if (now - self.adaptive_last_time) < self.adaptive_interval:
+            return
+        self.adaptive_last_time = now
+
+        values = self._get_pid_values()
+        if values is None:
+            return
+        kp, ki, kd = values
+
+        wheels = self._pid_target_wheels()
+        if not wheels:
+            return
+
+        metrics = []
+        for wheel in wheels:
+            errors = list(self.data[wheel]["error"])
+            if len(errors) < self.adaptive_window:
+                return
+            window = errors[-self.adaptive_window:]
+            avg_abs = sum(abs(err) for err in window) / len(window)
+            zero_crossings = self._count_zero_crossings(window)
+            metrics.append((avg_abs, zero_crossings))
+
+        avg_abs_error = sum(m[0] for m in metrics) / len(metrics)
+        avg_zero_crossings = sum(m[1] for m in metrics) / len(metrics)
+
+        new_kp, new_ki, new_kd = kp, ki, kd
+        if avg_abs_error > self.adaptive_error_threshold:
+            if avg_zero_crossings >= 3:
+                new_kp = max(0.0, kp * 0.9)
+                new_ki = max(0.0, ki * 0.9)
+            else:
+                new_ki = min(self.adaptive_ki_max, ki + self.adaptive_ki_step)
+        else:
+            return
+
+        if new_kp == kp and new_ki == ki and new_kd == kd:
+            return
+
+        self.kp_box.set_val(f"{new_kp:.3f}")
+        self.ki_box.set_val(f"{new_ki:.3f}")
+        self.kd_box.set_val(f"{new_kd:.3f}")
+        for wheel in wheels:
+            self.send_pid_update(wheel, new_kp, new_ki, new_kd)
+        print(f"Adaptive PID: Kp={new_kp:.3f}, Ki={new_ki:.3f}, Kd={new_kd:.3f}")
 
     def _format_error(self, value):
         if value is None:
@@ -236,6 +360,9 @@ class PIDVisualizer:
             )
             self.warned_no_telemetry = True
 
+        self._adaptive_step()
+        self.adaptive_text.set_text(f"Adaptive: {'ON' if self.adaptive_enabled else 'OFF'}")
+
         if self.args.view == "single":
             idx = self.args.wheel
             times = list(self.data[idx]["t"])
@@ -294,6 +421,8 @@ class PIDVisualizer:
             "\nCommands:\n"
             "  pid <wheel|all> <kp> <ki> [kd]   Set PID (kp/ki/kd in float)\n"
             "  pidraw <wheel|all> <kp_q> <ki_q> <kd_q>  Set PID in quantized units\n"
+            "  (GUI) Kp/Ki/Kd boxes + Set PID button apply to current view\n"
+            "  adaptive <on|off>                Toggle adaptive Ki tuning\n"
             "  t <deg_per_sec>                  Turn (degrees/sec, auto-converted to rad/s)\n"
             "  d <power> <dir_deg>               Dash (power, direction in degrees)\n"
             "  s <power>                         Short kick (skick)\n"
