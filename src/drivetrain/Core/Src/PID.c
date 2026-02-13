@@ -103,3 +103,4 @@ float pid_calculate(PID_TypeDef *pid, float measure)
 		pid->integral = 0.0f;
 	}
 	return pid->output;
+}
