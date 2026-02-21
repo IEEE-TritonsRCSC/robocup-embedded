@@ -1,0 +1,3 @@
+C:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Debug/CMakeFiles/drivetraincpp.dir
+C:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Debug/CMakeFiles/edit_cache.dir
+C:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Debug/CMakeFiles/rebuild_cache.dir
