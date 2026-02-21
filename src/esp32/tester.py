@@ -11,14 +11,14 @@ sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 print("The commands are as follows:")
 print("  t <angle>       -> turn to angle (in degrees/second)")
 print("  d <speed> <dir> -> dash with speed in direction (dir in degrees between -180 and 180)")
-print("  s <power>       -> skick with power (0-100)")
+print("  s <power>       -> skick (dribbler pulse; power ignored by STM32)")
 print("  k               -> kick")
 print("  c               -> catch")
 
 short_to_long = {
     't': 'turn',
     'd': 'dash',
-    's': 'setpower',
+    's': 'skick',
     'k': 'kick',
     'c': 'catch'
 }

@@ -5,7 +5,7 @@
 ### 1. Flash Updated Firmware
 
 **STM32:**
-- Build and flash `src/drivetrain` with telemetry enabled
+- Build and flash `src/drivetraincpp` with telemetry enabled
 - Telemetry now runs every 500ms (non-blocking)
 
 **ESP32:**

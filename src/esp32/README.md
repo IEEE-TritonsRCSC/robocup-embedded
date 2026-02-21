@@ -72,7 +72,8 @@ prepare_and_send_motor_command()
   - Translate (u,v,w) to 4 wheel velocities
   - Convert m/s to rad/s (divide by wheel radius)
   - Add rotational component
-  - Scale by 100 and convert to int16
+  - Convert wheel rad/s to motor RPM (rads -> RPM, apply reduction ratio)
+  - Convert to int16
   - Pack into motor command buffer
   - Send 11 bytes to STM32
   - Apply velocity decay: vel_u *= 0.4, vel_v *= 0.4
@@ -94,7 +95,7 @@ Commands are sent via UDP multicast to `239.42.42.42:11000`:
 | `turn` | `1 turn <angular_speed>` | Set rotational velocity | rad/s |
 | `dash` | `1 dash <power> <dir>` | Accelerate in direction | power (unitless), dir (radians) |
 | `kick` | `1 kick` | Fire kicker solenoid | - |
-| `skick` | `1 skick <power>` | Short kick using dribbler | 0-100 |
+| `skick` | `1 skick <power>` | Short kick (dribbler pulse) | 0-100 (ignored) |
 | `catch` | `1 catch` | Activate dribbler | - |
 | `stop` | `stop` | Emergency stop all motion | - |
 
@@ -110,8 +111,8 @@ python3 tester.py
 Enter command: t 90        # Turn at 90 deg/s
 Enter command: d 50 45     # Dash power 50 at 45 degrees
 Enter command: k           # Kick
-Enter command: c           # Catch (dribbler at 100%)
-Enter command: s 80        # Short kick power 80
+Enter command: c           # Catch (dribbler on)
+Enter command: s 80        # Short kick pulse
 Enter command: q           # Quit (sends stop)
 ```
 
@@ -135,9 +136,9 @@ Enter command: q           # Quit (sends stop)
 [0xCA][0xFE][FR_H][FR_L][BR_H][BR_L][BL_H][BL_L][FL_H][FL_L][DRIBBLER]
 ```
 - **Header**: `0xCA 0xFE`
-- **Wheel Speeds**: 4x int16 big-endian (rad/s * 100)
+- **Wheel Speeds**: 4x int16 big-endian (motor RPM)
   - FR = Front-Right, BR = Back-Right, BL = Back-Left, FL = Front-Left
-- **Dribbler**: int8 signed (-100 to 100)
+- **Dribbler**: 0x01 = on, 0x00 = off
 
 ## System Behavior
 
@@ -146,6 +147,7 @@ Enter command: q           # Quit (sends stop)
 - **Velocity Decay**: Linear velocities decay by 60% per command (multiply by 0.4)
 - **Dash Acceleration**: `0.006 * power` added to velocity components
 - **Turn**: Directly sets `w`, clears linear velocities
+- **Motor RPM**: Wheel rad/s is converted to motor RPM using the reduction ratio before sending
 
 ### Kicker State Machine
 1. **Charging** (100ms): Solenoid ON → charges capacitor
@@ -182,10 +184,10 @@ When `DEBUG` is defined in `globals.h`, the PRINT() macro outputs:
 
 Example output:
 ```
-18 | Dashing with 50 power in 1.57 radians | (245 -156 -156 245 0) | (0.3 0.0 0.0)
+18 | Dashing with 50 power in 1.57 radians | (2300 -1500 -1500 2300 0) | (0.3 0.0 0.0)
 1234
 ```
 - `18`: Packet size in bytes
-- Wheel speeds: FR, BR, BL, FL, Dribbler
+- Wheel speeds (RPM): FR, BR, BL, FL, Dribbler
 - Velocities: (u, v, w)
 - `1234`: Processing time in microseconds

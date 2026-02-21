@@ -93,7 +93,7 @@ void execute_stop() {
   vel_u = 0.0f;
   vel_v = 0.0f;
   vel_w = 0.0f;
-  setDribbler(0.0f);
+  setDribbler(false);
   prepare_and_send_motor_command();
 }
 
@@ -112,14 +112,15 @@ void execute_dash(float power, float dir) {
 
 void execute_skick(float power) {
   PRINT("Short Kicking the ball with ", power, " power | ");
-  setDribbler(-power);    // reverse the direction to skick the ball
-  stop_dribbler_on_next_command = true;
+  bool dribbler_on = (power > 0.0f);
+  setDribbler(dribbler_on);
+  stop_dribbler_on_next_command = dribbler_on;
   vel_w = 0.0f;
 }
 
 void execute_kick() {
   PRINT("Kicking the ball | ");
-  setDribbler(0.0f);
+  setDribbler(false);
   if (kicker_charged) {
     kicker_charged = false;
     digitalWrite(KICKER_PIN, HIGH);  // turn ON the kicker
@@ -131,13 +132,13 @@ void execute_kick() {
 
 void execute_catch() {
   PRINT("Catching the ball | ");
-  setDribbler(100.0f);
+  setDribbler(true);
   vel_w = 0.0f;
 }
 
 // --------------------------------Hardware Controllers--------------------------------
-void setDribbler(float power) {
-  motor_command[DRIBBLER_MOTOR_INDEX] = static_cast<int8_t>(roundf(power));
+void setDribbler(bool on) {
+  motor_command[DRIBBLER_MOTOR_INDEX] = on ? DRIBBLER_ON : DRIBBLER_OFF;
 }
 
 void prepare_and_send_motor_command() {
@@ -149,13 +150,15 @@ void prepare_and_send_motor_command() {
 
   PRINT("(");
   for (int wheel_i = 0; wheel_i < 4; wheel_i++) {
-    // Translate wheel velocities into angular velocities
+    // Translate wheel velocities into angular velocities (rad/s)
     wheel_velocities[wheel_i] = wheel_velocities[wheel_i] / rad_wheel;
     // Add in angular velocities
     wheel_velocities[wheel_i] += vel_w * rad_robot / rad_wheel;
-    
-    // Set wheel rad/s in motor command
-    int speed = static_cast<int>(roundf(wheel_velocities[wheel_i] * 100.0f));
+
+    // Convert wheel rad/s -> motor rpm
+    float wheel_rpm = wheel_velocities[wheel_i] * RADS_TO_RPM;
+    float motor_rpm = wheel_rpm * MOTOR_REDUCTION_RATIO;
+    int speed = static_cast<int>(roundf(motor_rpm));
     speed = std::clamp(speed, static_cast<int>(INT16_MIN), static_cast<int>(INT16_MAX));
     int index = MOTOR_CMD_HEADER_SIZE + (wheel_i * 2);
     motor_command[index] = (speed >> 8 & 0xFF);
@@ -164,12 +167,12 @@ void prepare_and_send_motor_command() {
   }
 
   // Send motor command
-  PRINT(static_cast<int8_t>(motor_command[DRIBBLER_MOTOR_INDEX]), ") | ");
+  PRINT(static_cast<int>(motor_command[DRIBBLER_MOTOR_INDEX]), ") | ");
   PRINT("(", vel_u, " ", vel_v, " ", vel_w, ")\n");
   robotSerial.write(motor_command.data(), motor_command.size());
 
   if (stop_dribbler_on_next_command) {
-    setDribbler(0.0f);
+    setDribbler(false);
     stop_dribbler_on_next_command = false;
   }
 

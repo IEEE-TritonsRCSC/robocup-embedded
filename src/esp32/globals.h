@@ -38,6 +38,8 @@ void PRINT(const Args&...) {}
 #define MOTOR_CMD_HEADER_SIZE 2
 #define MOTOR_COMMAND_SIZE 11
 #define DRIBBLER_MOTOR_INDEX 10
+#define DRIBBLER_ON 0x01
+#define DRIBBLER_OFF 0x00
 #define TX_PIN 17
 #define RX_PIN 16
 
