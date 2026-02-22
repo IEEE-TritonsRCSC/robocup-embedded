@@ -15,7 +15,7 @@ void updateDribblerSpeedFromFlag(int dribble_flag, int16_t* dribble_speed)
     }
 }
 
-void applySafetyTimeoutToTargetSpeeds(int timeout, float *targetSpeeds)
+void applySafetyTimeoutToTargetSpeeds(int timeout, volatile float *targetSpeeds)
 {
     if (timeout >= TIMEOUT_DELAY)
     { // Safety timeout when UART disconnects
@@ -26,7 +26,8 @@ void applySafetyTimeoutToTargetSpeeds(int timeout, float *targetSpeeds)
     }
 }
 
-void updateMotorPidLoop(PID_Data* motor_pids, float* targetSpeeds, float* speed_data) {
+void updateMotorPidLoop(PID_Data *motor_pids, volatile float *targetSpeeds, volatile float *speed_data)
+{
     for (int i = 0; i < 4; ++i)
     { // PID control loop
         motor_pids[i].setTarget(targetSpeeds[i]);

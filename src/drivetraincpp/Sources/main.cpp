@@ -173,9 +173,9 @@ extern "C" int main(void) {
 
 		updateDribblerSpeedFromFlag(dribble_flag,&dribble_speed);
 
-		applySafetyTimeoutToTargetSpeeds(timeout,(float*)targetSpeeds);
+		applySafetyTimeoutToTargetSpeeds(timeout, targetSpeeds);
 		
-		updateMotorPidLoop(motor_pids, (float*) targetSpeeds, (float*)speed_data);
+		updateMotorPidLoop(motor_pids, targetSpeeds, speed_data);
 		
 		setMotorSpeeds(motor_pids[0].getOutput(), motor_pids[1].getOutput(), motor_pids[2].getOutput(), motor_pids[3].getOutput(), dribble_speed);
 
