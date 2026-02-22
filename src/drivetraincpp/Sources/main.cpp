@@ -50,6 +50,7 @@ extern "C" UART_HandleTypeDef huart4;
 #define HEADER_BYTE_2 0xFE
 #define DRIBBLE_ON 0x01
 #define REDUCTION_RATIO 36.0
+#define HAL_DELAY 10
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -178,9 +179,9 @@ extern "C" int main(void) {
 		updateMotorPidLoop(motor_pids, targetSpeeds, speed_data);
 		
 		setMotorSpeeds(motor_pids[0].getOutput(), motor_pids[1].getOutput(), motor_pids[2].getOutput(), motor_pids[3].getOutput(), dribble_speed);
-
-		 timeout++;
-		 HAL_Delay(10);
+		 
+		timeout++;
+		HAL_Delay(HAL_DELAY);
 		 /* USER CODE END WHILE */
 
 		 /* USER CODE BEGIN 3 */
