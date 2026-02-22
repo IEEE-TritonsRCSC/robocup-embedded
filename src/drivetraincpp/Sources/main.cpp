@@ -30,7 +30,6 @@ extern "C" {
 #include "gpio.h"
 }
 
-#include "PID.h"
 #include "PID_Data.h"
 #include "PID_Gains.h"
 #include "CanHeader.h"
@@ -79,9 +78,9 @@ uint8_t CAN_RxData[8];
 // PID feedback variables
 volatile uint8_t motor_idx;
 volatile uint16_t angle_data[4];
-volatile float speed_data[4];
+volatile float speed_data[4] = {0};
 volatile float torque_current_data[4];
-volatile float targetSpeeds[4];
+volatile float targetSpeeds[4] = {0};
 uint16_t motorPins[5] = {
 	MOTOR1_PIN,
 	MOTOR2_PIN,
@@ -168,15 +167,6 @@ extern "C" int main(void) {
 
 	// Dribbler initialization
 	dribble_flag = 0;
-
-	// PID Setup
-	for (int i = 0; i < 4; ++i) {
-		speed_data[i] = 0;
-	}
-
-	for (int i = 0; i < 4; ++i) {
-		targetSpeeds[i] = 0;
-	}
 
 	// Start program with LEDs off
 	HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_OFF);
