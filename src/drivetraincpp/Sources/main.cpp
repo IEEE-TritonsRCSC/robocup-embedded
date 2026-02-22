@@ -165,9 +165,7 @@ extern "C" int main(void) {
 
 	setupMotors(motorPins);
 
-	// Start program with LEDs off
-	HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_OFF);
-	HAL_GPIO_WritePin(LED_RED_PORT, LED_RED_PIN, LED_OFF);
+	turnLEDsOff();
 
 	HAL_UART_Receive_IT(&huart4, const_cast<uint8_t *>(&rx_byte), 1);
 

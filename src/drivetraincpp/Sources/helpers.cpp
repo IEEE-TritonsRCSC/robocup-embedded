@@ -43,3 +43,8 @@ void setupMotors(uint16_t* motorPins)
         HAL_GPIO_TogglePin(MOTOR_PORT, motorPins[i]);
     }
 }
+
+void turnLEDsOff() {
+    HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_OFF);
+    HAL_GPIO_WritePin(LED_RED_PORT, LED_RED_PIN, LED_OFF);
+}
