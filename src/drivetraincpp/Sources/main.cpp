@@ -44,21 +44,8 @@ extern "C" UART_HandleTypeDef huart4;
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define UART_RX_BUFFER_SIZE 9   // set to the size we want to limit receive messages to
-#define UART_TX_BUFFER_SIZE 12  // set to the size we want to limit send messages to
-#define HEADER_BYTE_1 0xCA
-#define HEADER_BYTE_2 0xFE
-#define DRIBBLE_ON 0x01
 #define REDUCTION_RATIO 36.0
 #define HAL_DELAY 10
-#define MAX_OUTPUT 9999.0f
-#define INTEGRAL_LIMIT 1000.0f
-#define DEADBAND 20.0f
-#define NUM_WHEELS 4
-#define NUM_MOTORS 5
-#define FRAME_LENGTH 8
-#define CANTXHEADER1_STDID 0x200
-#define CANTXHEADER2_STDID 0x1FF
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -69,57 +56,7 @@ extern "C" UART_HandleTypeDef huart4;
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
 
-// CAN variables
-CAN_TxHeaderTypeDef canTxHeader;  // For motors 1-4
-CAN_TxHeaderTypeDef canTxHeader2; // For motors 5-8
-CanHeader canHeader1(canTxHeader, FRAME_LENGTH, CAN_ID_STD, CAN_RTR_DATA, CANTXHEADER1_STDID, DISABLE);
-CanHeader canHeader2(canTxHeader2, FRAME_LENGTH, CAN_ID_STD, CAN_RTR_DATA, CANTXHEADER2_STDID, DISABLE);
-
-CAN_RxHeaderTypeDef canRxHeader;
-uint32_t canTxMailbox;
-uint8_t CAN_TxData[FRAME_LENGTH];
-uint8_t CAN2_TxData[FRAME_LENGTH];
-
-uint8_t CAN_RxData[FRAME_LENGTH];
-
-// PID feedback variables
-volatile uint8_t motor_idx;
-volatile uint16_t angle_data[NUM_WHEELS];
-volatile float speed_data[NUM_WHEELS] = {0};
-volatile float torque_current_data[NUM_WHEELS];
-volatile float targetSpeeds[NUM_WHEELS] = {0};
-uint16_t motorPins[NUM_MOTORS] = {
-	MOTOR1_PIN,
-	MOTOR2_PIN,
-	MOTOR3_PIN,
-	MOTOR4_PIN,
-	MOTOR5_PIN
-};
-
-PID_Gains motor1_gains(0.3,0,0);
-PID_Gains motor2_gains(0.3,0,0);
-PID_Gains motor3_gains(0.2,0,0);
-PID_Gains motor4_gains(0.2,0,0);
-
-PID_Data motor1PID(MAX_OUTPUT, INTEGRAL_LIMIT, DEADBAND, 0, motor1_gains);
-PID_Data motor2PID(MAX_OUTPUT, INTEGRAL_LIMIT, DEADBAND, 0, motor2_gains);
-PID_Data motor3PID(MAX_OUTPUT, INTEGRAL_LIMIT, DEADBAND, 0, motor3_gains);
-PID_Data motor4PID(MAX_OUTPUT, INTEGRAL_LIMIT, DEADBAND, 0, motor4_gains);
-
-PID_Data motor_pids[NUM_WHEELS] = {motor1PID, motor2PID, motor3PID, motor4PID};
-
-// UART setup
-uint8_t uart_rx_buffer[UART_RX_BUFFER_SIZE]; // buffer that stores in an array of characters user inputs, aka a string
-uint8_t uart_tx_buffer[UART_TX_BUFFER_SIZE];
-
-volatile uint8_t rx_byte = 0;
-volatile int header1_flag = 0;
-volatile int header2_flag = 0;
-
-volatile int timeout;  // timeout for safety mechanism to shutoff robot
-
-volatile int dribble_flag = 0; // flag for dribbling
-int16_t dribble_speed;
+static DrivetrainState state;
 
 /* USER CODE END PV */
 
@@ -166,11 +103,14 @@ extern "C" int main(void) {
 	MX_UART4_Init();
 	/* USER CODE BEGIN 2 */
 
-	setupMotors(motorPins);
+	state.can = &hcan1;
+	state.uart = &huart4;
+
+	setupMotors(state.motorPins);
 
 	turnLEDsOff();
 
-	HAL_UART_Receive_IT(&huart4, const_cast<uint8_t *>(&rx_byte), 1);
+	HAL_UART_Receive_IT(state.uart, const_cast<uint8_t *>(&state.rx_byte), 1);
 
 	/* USER CODE END 2 */
 
@@ -178,15 +118,18 @@ extern "C" int main(void) {
 	/* USER CODE BEGIN WHILE */
 	while (1) {
 
-		updateDribblerSpeedFromFlag(dribble_flag,&dribble_speed);
+		updateDribblerSpeedFromFlag(state.dribble_flag, &state.dribble_speed);
 
-		applySafetyTimeoutToTargetSpeeds(timeout, targetSpeeds);
+		applySafetyTimeoutToTargetSpeeds(state.timeout, state.targetSpeeds);
 		
-		updateMotorPidLoop(motor_pids, targetSpeeds, speed_data);
+		updateMotorPidLoop(state.motor_pids, state.targetSpeeds, state.speed_data);
 		
-		setMotorSpeeds(motor_pids[0].getOutput(), motor_pids[1].getOutput(), motor_pids[2].getOutput(), motor_pids[3].getOutput(), dribble_speed);
+		setMotorSpeeds(&state,
+				state.motor_pids[0].getOutput(), state.motor_pids[1].getOutput(),
+				state.motor_pids[2].getOutput(), state.motor_pids[3].getOutput(),
+				state.dribble_speed);
 		 
-		timeout++;
+		state.timeout++;
 		HAL_Delay(HAL_DELAY);
 		 /* USER CODE END WHILE */
 
@@ -197,208 +140,12 @@ extern "C" int main(void) {
 
 extern "C" {
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
-	//HAL_GPIO_TogglePin(LED_GREEN_PORT,LED_GREEN_PIN);
-	if (hcan == &hcan1) {
-		HAL_CAN_GetRxMessage(&hcan1, CAN_RX_FIFO0, &canRxHeader, CAN_RxData);
-
-		if (canRxHeader.StdId == 0x201)
-			motor_idx = 0;
-		if (canRxHeader.StdId == 0x202)
-			motor_idx = 1;
-		if (canRxHeader.StdId == 0x203)
-			motor_idx = 2;
-		if (canRxHeader.StdId == 0x204)
-			motor_idx = 3;
-
-		// angle of the motor (0 - 8191 corresponding with 0 - 360°)
-		angle_data[motor_idx] = (uint16_t)(CAN_RxData[0] << 8 | CAN_RxData[1]);
-
-		// speed of the motor in rpm
-		speed_data[motor_idx] = ((int16_t)(CAN_RxData[2] << 8 | CAN_RxData[3]));
-
-		// torque current of the motor
-		torque_current_data[motor_idx] = (CAN_RxData[4] << 8 | CAN_RxData[5]);
-	}
+	handleCanRxFifo0(&state, hcan);
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-	/*
-	 * Called when uart_rx_buffer is full
-	 */
-
-	if (!header1_flag) {
-		if (rx_byte == HEADER_BYTE_1) {
-			// first header byte received
-
-			header1_flag = 1;
-			HAL_UART_Receive_IT(&huart4, const_cast<uint8_t *>(&rx_byte), 1);
-			return;
-		}
-	} else {
-
-		if (header2_flag) {
-			// full message received
-
-			timeout = 0;
-
-			targetSpeeds[0] = (int16_t)((uart_rx_buffer[0] << 8) | uart_rx_buffer[1]);
-			targetSpeeds[1] = (int16_t)((uart_rx_buffer[2] << 8) | uart_rx_buffer[3]);
-			targetSpeeds[2] = (int16_t)((uart_rx_buffer[4] << 8) | uart_rx_buffer[5]);
-			targetSpeeds[3] = (int16_t)((uart_rx_buffer[6] << 8) | uart_rx_buffer[7]);
-
-			/*
-			 * Previously |targetSpeeds[i]| <= 500
-			 */
-
-			if (uart_rx_buffer[8] == DRIBBLE_ON)
-			{
-				dribble_flag = 1;
-			}
-			else
-			{
-				dribble_flag = 0;
-			}
-
-			for (int i = 0; i < UART_RX_BUFFER_SIZE; ++i) {
-				uart_rx_buffer[i] = 0;
-			}
-
-			HAL_GPIO_TogglePin(LED_GREEN_PORT, LED_GREEN_PIN);
-
-			header1_flag = header2_flag = 0;
-			HAL_UART_Receive_IT(&huart4, const_cast<uint8_t *>(&rx_byte), 1);
-			return;
-
-		} else if (rx_byte == HEADER_BYTE_2) {
-			// second header byte received
-
-			header2_flag = 1;
-			HAL_UART_Receive_IT(&huart4, uart_rx_buffer, UART_RX_BUFFER_SIZE);
-			return;
-		} else {
-			// first header byte received but not followed by second header byte
-
-			header1_flag = 0;
-			HAL_UART_Receive_IT(&huart4, const_cast<uint8_t *>(&rx_byte), 1);
-			return;
-		}
-	}
+	handleUartRxComplete(&state, huart);
 }
-}
-
-/**
- * @brief System Clock Configuration
- * @retval None
- */
-extern "C" void SystemClock_Config(void) {
-	RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
-	RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
-
-	/** Configure the main internal regulator output voltage
-	 */
-	__HAL_RCC_PWR_CLK_ENABLE();
-	__HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
-
-	/** Initializes the RCC Oscillators according to the specified parameters
-	 * in the RCC_OscInitTypeDef structure.
-	 */
-	RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
-	RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-	RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-	RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-	RCC_OscInitStruct.PLL.PLLM = 6;
-	RCC_OscInitStruct.PLL.PLLN = 168;
-	RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-	RCC_OscInitStruct.PLL.PLLQ = 4;
-	if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
-		Error_Handler();
-	}
-
-	/** Initializes the CPU, AHB and APB buses clocks
-	 */
-	RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
-			| RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
-	RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-	RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-	RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
-	RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
-
-	if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK) {
-		Error_Handler();
-	}
-}
-
-/* USER CODE BEGIN 4 */
-extern "C" void setMotorSpeeds(int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4, int16_t msg5) {
-	uint8_t h1 = ms1 >> 8;
-	uint8_t l1 = ms1;
-	uint8_t h2 = ms2 >> 8;
-	uint8_t l2 = ms2;
-	uint8_t h3 = ms3 >> 8;
-	uint8_t l3 = ms3;
-	uint8_t h4 = ms4 >> 8;
-	uint8_t l4 = ms4;
-	uint8_t h5 = msg5 >> 8;
-	uint8_t l5 = msg5;
-	runMotors(h1, l1, h2, l2, h3, l3, h4, l4, h5, l5);
-}
-
-extern "C" void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow,
-		unsigned char motorTwoHigh, unsigned char motorTwoLow,
-		unsigned char motorThreeHigh, unsigned char motorThreeLow,
-		unsigned char motorFourHigh, unsigned char motorFourLow,
-		unsigned char motorFiveHigh, unsigned char motorFiveLow) {
-
-	//speed can be 16 bits, split into high and low bytes
-	CAN_TxData[0] = motorOneHigh;      //high byte for speed, shifted 8 because only buffer is only 8 bits
-	CAN_TxData[1] = motorOneLow;       //low bytes for speed
-	CAN_TxData[2] = motorTwoHigh;
-	CAN_TxData[3] = motorTwoLow;
-	CAN_TxData[4] = motorThreeHigh;
-	CAN_TxData[5] = motorThreeLow;
-	CAN_TxData[6] = motorFourHigh;
-	CAN_TxData[7] = motorFourLow;
-
-	CAN2_TxData[0] = motorFiveHigh;
-	CAN2_TxData[1] = motorFiveLow;
-
-	HAL_CAN_AddTxMessage(&hcan1, canHeader1.getTxHeaderPointer(), CAN_TxData, &canTxMailbox);
-	HAL_CAN_AddTxMessage(&hcan1, canHeader2.getTxHeaderPointer(), CAN2_TxData, &canTxMailbox);
-}
-
-/* USER CODE END 4 */
-
-/**
- * @brief  Period elapsed callback in non blocking mode
- * @note   This function is called  when TIM6 interrupt took place, inside
- * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
- * a global variable "uwTick" used as application time base.
- * @param  htim : TIM handle
- * @retval None
- */
-extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-	/* USER CODE BEGIN Callback 0 */
-
-	/* USER CODE END Callback 0 */
-	if (htim->Instance == TIM6) {
-		HAL_IncTick();
-	}
-	/* USER CODE BEGIN Callback 1 */
-
-	/* USER CODE END Callback 1 */
-}
-
-/**
- * @brief  This function is executed in case of error occurrence.
- * @retval None
- */
-extern "C" void Error_Handler(void) {
-	/* USER CODE BEGIN Error_Handler_Debug */
-	/* User can add his own implementation to report the HAL error return state */
-	__disable_irq();
-	while (1) {
-	}
-	/* USER CODE END Error_Handler_Debug */
 }
 
 #ifdef  USE_FULL_ASSERT
