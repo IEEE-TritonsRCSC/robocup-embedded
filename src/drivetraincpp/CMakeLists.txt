@@ -50,10 +50,10 @@ set (PROJECT_SOURCES
 	# LIST SOURCE FILES HERE
 	Startup/startup_stm32f427iihx.s
 	Sources/can.cpp
+	Sources/CanHeader.cpp
 	Sources/dma.cpp
 	Sources/gpio.cpp
 	Sources/main.cpp
-	Sources/PID.cpp
 	Sources/PID_Data.cpp
 	Sources/PID_Gains.cpp
 	Sources/PID_Outputs.cpp
