@@ -56,6 +56,7 @@ extern "C" UART_HandleTypeDef huart4;
 #define DEADBAND 20.0f
 #define NUM_WHEELS 4
 #define NUM_MOTORS 5
+#define FRAME_LENGTH 8
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -69,15 +70,15 @@ extern "C" UART_HandleTypeDef huart4;
 // CAN variables
 CAN_TxHeaderTypeDef canTxHeader;  // For motors 1-4
 CAN_TxHeaderTypeDef canTxHeader2; // For motors 5-8
-CanHeader canHeader1(canTxHeader, 8, CAN_ID_STD, CAN_RTR_DATA, 0x200, DISABLE);
-CanHeader canHeader2(canTxHeader2, 8, CAN_ID_STD, CAN_RTR_DATA, 0x1FF, DISABLE);
+CanHeader canHeader1(canTxHeader, FRAME_LENGTH, CAN_ID_STD, CAN_RTR_DATA, 0x200, DISABLE);
+CanHeader canHeader2(canTxHeader2, FRAME_LENGTH, CAN_ID_STD, CAN_RTR_DATA, 0x1FF, DISABLE);
 
 CAN_RxHeaderTypeDef canRxHeader;
 uint32_t canTxMailbox;
-uint8_t CAN_TxData[8];
-uint8_t CAN2_TxData[8];
+uint8_t CAN_TxData[FRAME_LENGTH];
+uint8_t CAN2_TxData[FRAME_LENGTH];
 
-uint8_t CAN_RxData[8];
+uint8_t CAN_RxData[FRAME_LENGTH];
 
 // PID feedback variables
 volatile uint8_t motor_idx;
@@ -208,10 +209,10 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
 			motor_idx = 3;
 
 		// angle of the motor (0 - 8191 corresponding with 0 - 360°)
-		angle_data[motor_idx] = (uint16_t) (CAN_RxData[0] << 8 | CAN_RxData[1]);
+		angle_data[motor_idx] = (uint16_t)(CAN_RxData[0] << 8 | CAN_RxData[1]);
 
 		// speed of the motor in rpm
-		speed_data[motor_idx] = ((int16_t) (CAN_RxData[2] << 8 | CAN_RxData[3]));
+		speed_data[motor_idx] = ((int16_t)(CAN_RxData[2] << 8 | CAN_RxData[3]));
 
 		// torque current of the motor
 		torque_current_data[motor_idx] = (CAN_RxData[4] << 8 | CAN_RxData[5]);
@@ -247,9 +248,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 			 * Previously |targetSpeeds[i]| <= 500
 			 */
 
-			if (uart_rx_buffer[8] == DRIBBLE_ON) {
-				 dribble_flag = 1;
-			} else {
+			if (uart_rx_buffer[8] == DRIBBLE_ON)
+			{
+				dribble_flag = 1;
+			}
+			else
+			{
 				dribble_flag = 0;
 			}
 
