@@ -53,6 +53,7 @@ set (PROJECT_SOURCES
 	Sources/CanHeader.cpp
 	Sources/dma.cpp
 	Sources/gpio.cpp
+	Sources/helpers.cpp
 	Sources/main.cpp
 	Sources/PID_Data.cpp
 	Sources/PID_Gains.cpp
