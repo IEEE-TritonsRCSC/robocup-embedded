@@ -109,7 +109,8 @@ volatile int header2_flag = 0;
 
 volatile int timeout;  // timeout for safety mechanism to shutoff robot
 
-volatile int dribble_flag; // flag for dribbling
+volatile int dribble_flag = 0; // flag for dribbling
+int16_t dribble_speed;
 
 /* USER CODE END PV */
 
@@ -156,13 +157,7 @@ extern "C" int main(void) {
 	MX_UART4_Init();
 	/* USER CODE BEGIN 2 */
 
-	// Motor setup
-	for (int i=0;i<5;i++) {
-		HAL_GPIO_TogglePin(MOTOR_PORT, motorPins[i]);
-	}
-
-	// Dribbler initialization
-	dribble_flag = 0;
+	setupMotors(motorPins);
 
 	// Start program with LEDs off
 	HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, LED_OFF);
@@ -174,7 +169,6 @@ extern "C" int main(void) {
 
 	/* Infinite loop */
 	/* USER CODE BEGIN WHILE */
-	int16_t dribble_speed;
 	while (1) {
 
 		updateDribblerSpeedFromFlag(dribble_flag,&dribble_speed);

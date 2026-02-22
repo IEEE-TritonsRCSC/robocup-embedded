@@ -1,5 +1,5 @@
+#include "main.h"
 #include "helpers.h"
-
 #define DRIBBLE_SPEED 1500
 #define TIMEOUT_DELAY 200
 
@@ -31,5 +31,14 @@ void updateMotorPidLoop(PID_Data* motor_pids, float* targetSpeeds, float* speed_
     { // PID control loop
         motor_pids[i].setTarget(targetSpeeds[i]);
         motor_pids[i].pidCalculate(speed_data[i]);
+    }
+}
+
+void setupMotors(uint16_t* motorPins)
+{
+    // Motor setup
+    for (int i = 0; i < 5; i++)
+    {
+        HAL_GPIO_TogglePin(MOTOR_PORT, motorPins[i]);
     }
 }
