@@ -57,6 +57,8 @@ extern "C" UART_HandleTypeDef huart4;
 #define NUM_WHEELS 4
 #define NUM_MOTORS 5
 #define FRAME_LENGTH 8
+#define CANTXHEADER1_STDID 0x200
+#define CANTXHEADER2_STDID 0x1FF
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -70,8 +72,8 @@ extern "C" UART_HandleTypeDef huart4;
 // CAN variables
 CAN_TxHeaderTypeDef canTxHeader;  // For motors 1-4
 CAN_TxHeaderTypeDef canTxHeader2; // For motors 5-8
-CanHeader canHeader1(canTxHeader, FRAME_LENGTH, CAN_ID_STD, CAN_RTR_DATA, 0x200, DISABLE);
-CanHeader canHeader2(canTxHeader2, FRAME_LENGTH, CAN_ID_STD, CAN_RTR_DATA, 0x1FF, DISABLE);
+CanHeader canHeader1(canTxHeader, FRAME_LENGTH, CAN_ID_STD, CAN_RTR_DATA, CANTXHEADER1_STDID, DISABLE);
+CanHeader canHeader2(canTxHeader2, FRAME_LENGTH, CAN_ID_STD, CAN_RTR_DATA, CANTXHEADER2_STDID, DISABLE);
 
 CAN_RxHeaderTypeDef canRxHeader;
 uint32_t canTxMailbox;
