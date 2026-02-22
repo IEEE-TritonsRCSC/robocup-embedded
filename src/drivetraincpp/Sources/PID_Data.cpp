@@ -183,31 +183,81 @@ void PID_Data::updateDBuf() {
     this->d_buf[0] = this->error_buf[0] - second_diff_coeff * this->error_buf[1] + this->error_buf[2];
 }
 
+void PID_Data::updateProportionalOutput()
+{
+    this->outputs.setPout(this->gains.getP() * this->error);
+}
+
+void PID_Data::updateIntegralOutput()
+{
+    this->outputs.setIout(this->gains.getI() * this->integral);
+}
+
+void PID_Data::updateDerivativeOutput()
+{
+    this->outputs.setDout(this->gains.getD() * (this->error - this->lastError));
+}
+
+void PID_Data::updateOutputSum()
+{
+    setOutput(this->outputs.getPout() + this->outputs.getIout() + this->outputs.getDout());
+}
+
+void PID_Data::updateProportionalOutputFromErrorDelta()
+{
+    this->outputs.setPout(this->gains.getP() * (this->error - this->lastError));
+}
+
+void PID_Data::updateIntegralOutputFromError()
+{
+    this->outputs.setIout(this->gains.getI() * this->error);
+}
+
+void PID_Data::updateDerivativeOutputFromDBuf()
+{
+    this->outputs.setDout(this->gains.getD() * this->d_buf[0]);
+}
+
+void PID_Data::addOutputSum()
+{
+    this->output += this->outputs.getOutputSum();
+}
+
+void PID_Data::updateErrorFromTargetAndMeasure()
+{
+    setError(this->target - this->measure);
+}
+
+void PID_Data::updateLastError()
+{
+    setLastError(this->error);
+}
+
 float PID_Data::pidCalculate(float measure) {
     setMeasure(measure);
-    setLastError(this->error);
-    setError(this->target - this->measure);
+    updateLastError();
+    updateErrorFromTargetAndMeasure();
 
-    this->outputs.setPout(this->gains.getP() * this->error);
+    updateProportionalOutput();
 
     preventIntegralWindup();
 
-    this->outputs.setIout(this->gains.getI() * this->integral);
-    this->outputs.setDout(this->gains.getD() * (this->error - this->lastError));
-    setOutput(this->outputs.getPout() + this->outputs.getIout() + this->outputs.getDout());
-
+    updateIntegralOutput();
+    updateDerivativeOutput();
+    
+    updateOutputSum();
     clampOutput();
 
     updateErrorBuf();
 
-    this->outputs.setPout(this->gains.getP() * (this->error - this->lastError));
-    this->outputs.setIout(this->gains.getI() * this->error);
+    updateProportionalOutputFromErrorDelta();
+    updateIntegralOutputFromError();
 
     updateDBuf();
+    updateDerivativeOutputFromDBuf();
 
-    this->outputs.setDout(this->gains.getD() * this->d_buf[0]);
-    this->output += this->outputs.getOutputSum();
-
+    addOutputSum();
     clampOutput();
+
     return this->output;
 }

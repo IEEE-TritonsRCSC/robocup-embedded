@@ -71,10 +71,66 @@ public:
     const PID_Gains& getGains() const;
     const PID_Outputs& getOutputs() const;
 
+    /**
+     * Accumulate integral term and clamp to integral limits to prevent windup.
+     */
     void preventIntegralWindup();
+    /**
+     * Clamp the overall output to the configured max output bounds.
+     */
     void clampOutput();
+    /**
+     * Shift and update the error history buffer from target and measure.
+     */
     void updateErrorBuf();
+    /**
+     * Shift and update the derivative buffer using the error history.
+     */
     void updateDBuf();
-
+    /**
+     * Compute and store proportional output from current error.
+     */
+    void updateProportionalOutput();
+    /**
+     * Compute and store integral output from current integral accumulator.
+     */
+    void updateIntegralOutput();
+    /**
+     * Compute and store derivative output from current error delta.
+     */
+    void updateDerivativeOutput();
+    /**
+     * Compute and store the sum of P, I, and D outputs as the current output.
+     */
+    void updateOutputSum();
+    /**
+     * Compute and store proportional output using error delta.
+     */
+    void updateProportionalOutputFromErrorDelta();
+    /**
+     * Compute and store integral output using current error.
+     */
+    void updateIntegralOutputFromError();
+    /**
+     * Compute and store derivative output using the derivative buffer.
+     */
+    void updateDerivativeOutputFromDBuf();
+    /**
+     * Add the sum of output components to the current output accumulator.
+     */
+    void addOutputSum();
+    /**
+     * Update error from target and current measurement.
+     */
+    void updateErrorFromTargetAndMeasure();
+    /**
+     * Store current error as last error.
+     */
+    void updateLastError();
+    /**
+     * Run one PID update step and return the computed output.
+     * @param measure Current measured value.
+     * @return Computed PID output.
+     */
     float pidCalculate(float measure);
 };
