@@ -1,6 +1,5 @@
 .DS_Store
-*.vscode
-*.gitignore
+.vscode
 
 # STM32CubeIDE auto-generated files
 *.elf
