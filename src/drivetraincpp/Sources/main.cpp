@@ -54,6 +54,8 @@ extern "C" UART_HandleTypeDef huart4;
 #define MAX_OUTPUT 9999.0f
 #define INTEGRAL_LIMIT 1000.0f
 #define DEADBAND 20.0f
+#define NUM_WHEELS 4
+#define NUM_MOTORS 5
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -79,11 +81,11 @@ uint8_t CAN_RxData[8];
 
 // PID feedback variables
 volatile uint8_t motor_idx;
-volatile uint16_t angle_data[4];
-volatile float speed_data[4] = {0};
-volatile float torque_current_data[4];
-volatile float targetSpeeds[4] = {0};
-uint16_t motorPins[5] = {
+volatile uint16_t angle_data[NUM_WHEELS];
+volatile float speed_data[NUM_WHEELS] = {0};
+volatile float torque_current_data[NUM_WHEELS];
+volatile float targetSpeeds[NUM_WHEELS] = {0};
+uint16_t motorPins[NUM_MOTORS] = {
 	MOTOR1_PIN,
 	MOTOR2_PIN,
 	MOTOR3_PIN,
@@ -101,7 +103,7 @@ PID_Data motor2PID(MAX_OUTPUT, INTEGRAL_LIMIT, DEADBAND, 0, motor2_gains);
 PID_Data motor3PID(MAX_OUTPUT, INTEGRAL_LIMIT, DEADBAND, 0, motor3_gains);
 PID_Data motor4PID(MAX_OUTPUT, INTEGRAL_LIMIT, DEADBAND, 0, motor4_gains);
 
-PID_Data motor_pids[4] = {motor1PID, motor2PID, motor3PID, motor4PID};
+PID_Data motor_pids[NUM_WHEELS] = {motor1PID, motor2PID, motor3PID, motor4PID};
 
 // UART setup
 uint8_t uart_rx_buffer[UART_RX_BUFFER_SIZE]; // buffer that stores in an array of characters user inputs, aka a string
