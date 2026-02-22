@@ -54,6 +54,9 @@ set (PROJECT_SOURCES
 	Sources/gpio.cpp
 	Sources/main.cpp
 	Sources/PID.cpp
+	Sources/PID_Data.cpp
+	Sources/PID_Gains.cpp
+	Sources/PID_Outputs.cpp
 	Sources/stm32f4xx_hal_msp.cpp
 	Sources/stm32f4xx_hal_timebase_tim.cpp
 	Sources/stm32f4xx_it.cpp

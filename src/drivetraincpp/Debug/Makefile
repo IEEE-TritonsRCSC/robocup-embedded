@@ -561,6 +561,78 @@ Sources/PID.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/PID.cpp.s
 .PHONY : Sources/PID.cpp.s
 
+Sources/PID_Data.obj: Sources/PID_Data.cpp.obj
+.PHONY : Sources/PID_Data.obj
+
+# target to build an object file
+Sources/PID_Data.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.obj
+.PHONY : Sources/PID_Data.cpp.obj
+
+Sources/PID_Data.i: Sources/PID_Data.cpp.i
+.PHONY : Sources/PID_Data.i
+
+# target to preprocess a source file
+Sources/PID_Data.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.i
+.PHONY : Sources/PID_Data.cpp.i
+
+Sources/PID_Data.s: Sources/PID_Data.cpp.s
+.PHONY : Sources/PID_Data.s
+
+# target to generate assembly for a file
+Sources/PID_Data.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.s
+.PHONY : Sources/PID_Data.cpp.s
+
+Sources/PID_Gains.obj: Sources/PID_Gains.cpp.obj
+.PHONY : Sources/PID_Gains.obj
+
+# target to build an object file
+Sources/PID_Gains.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.obj
+.PHONY : Sources/PID_Gains.cpp.obj
+
+Sources/PID_Gains.i: Sources/PID_Gains.cpp.i
+.PHONY : Sources/PID_Gains.i
+
+# target to preprocess a source file
+Sources/PID_Gains.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.i
+.PHONY : Sources/PID_Gains.cpp.i
+
+Sources/PID_Gains.s: Sources/PID_Gains.cpp.s
+.PHONY : Sources/PID_Gains.s
+
+# target to generate assembly for a file
+Sources/PID_Gains.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.s
+.PHONY : Sources/PID_Gains.cpp.s
+
+Sources/PID_Outputs.obj: Sources/PID_Outputs.cpp.obj
+.PHONY : Sources/PID_Outputs.obj
+
+# target to build an object file
+Sources/PID_Outputs.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.obj
+.PHONY : Sources/PID_Outputs.cpp.obj
+
+Sources/PID_Outputs.i: Sources/PID_Outputs.cpp.i
+.PHONY : Sources/PID_Outputs.i
+
+# target to preprocess a source file
+Sources/PID_Outputs.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.i
+.PHONY : Sources/PID_Outputs.cpp.i
+
+Sources/PID_Outputs.s: Sources/PID_Outputs.cpp.s
+.PHONY : Sources/PID_Outputs.s
+
+# target to generate assembly for a file
+Sources/PID_Outputs.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.s
+.PHONY : Sources/PID_Outputs.cpp.s
+
 Sources/can.obj: Sources/can.cpp.obj
 .PHONY : Sources/can.obj
 
@@ -920,6 +992,15 @@ help:
 	@echo "... Sources/PID.obj"
 	@echo "... Sources/PID.i"
 	@echo "... Sources/PID.s"
+	@echo "... Sources/PID_Data.obj"
+	@echo "... Sources/PID_Data.i"
+	@echo "... Sources/PID_Data.s"
+	@echo "... Sources/PID_Gains.obj"
+	@echo "... Sources/PID_Gains.i"
+	@echo "... Sources/PID_Gains.s"
+	@echo "... Sources/PID_Outputs.obj"
+	@echo "... Sources/PID_Outputs.i"
+	@echo "... Sources/PID_Outputs.s"
 	@echo "... Sources/can.obj"
 	@echo "... Sources/can.i"
 	@echo "... Sources/can.s"

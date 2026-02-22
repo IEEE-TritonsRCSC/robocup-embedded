@@ -1,0 +1,28 @@
+#include "PID_Gains.h"
+
+PID_Gains::PID_Gains(float kp, float ki, float kd) : kp(kp), ki(ki), kd(kd) {}
+
+void PID_Gains::setP(float p)
+{
+    this->kp = p;
+}
+void PID_Gains::setI(float i)
+{
+    this->ki = i;
+}
+void PID_Gains::setD(float d)
+{
+    this->kd = d;
+}
+
+float PID_Gains::getP() { return kp; }
+float PID_Gains::getI() { return ki; }
+float PID_Gains::getD() { return kd; }
+
+PID_Gains::PID_Gains()
+{
+    this->kp = 0;
+    this->ki = 0;
+    this->kd = 0;
+}
+PID_Gains::PID_Gains() = default;

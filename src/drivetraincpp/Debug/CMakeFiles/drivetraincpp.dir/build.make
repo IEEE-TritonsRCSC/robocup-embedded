@@ -152,10 +152,52 @@ CMakeFiles/drivetraincpp.dir/Sources/PID.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/drivetraincpp.dir/Sources/PID.cpp.s"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/PID.cpp -o CMakeFiles/drivetraincpp.dir/Sources/PID.cpp.s
 
+CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.obj: CMakeFiles/drivetraincpp.dir/flags.make
+CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/PID_Data.cpp
+CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.obj"
+	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.obj -MF CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.obj.d -o CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/PID_Data.cpp
+
+CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.i"
+	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/PID_Data.cpp > CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.i
+
+CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.s"
+	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/PID_Data.cpp -o CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.s
+
+CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.obj: CMakeFiles/drivetraincpp.dir/flags.make
+CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/PID_Gains.cpp
+CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.obj"
+	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.obj -MF CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.obj.d -o CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/PID_Gains.cpp
+
+CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.i"
+	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/PID_Gains.cpp > CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.i
+
+CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.s"
+	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/PID_Gains.cpp -o CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.s
+
+CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.obj: CMakeFiles/drivetraincpp.dir/flags.make
+CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/PID_Outputs.cpp
+CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.obj"
+	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.obj -MF CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.obj.d -o CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/PID_Outputs.cpp
+
+CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.i"
+	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/PID_Outputs.cpp > CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.i
+
+CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.s"
+	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/PID_Outputs.cpp -o CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.s
+
 CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_msp.cpp.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_msp.cpp.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/stm32f4xx_hal_msp.cpp
 CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_msp.cpp.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_msp.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_msp.cpp.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_msp.cpp.obj -MF CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_msp.cpp.obj.d -o CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_msp.cpp.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/stm32f4xx_hal_msp.cpp
 
 CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_msp.cpp.i: cmake_force
@@ -169,7 +211,7 @@ CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_msp.cpp.s: cmake_force
 CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_timebase_tim.cpp.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_timebase_tim.cpp.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/stm32f4xx_hal_timebase_tim.cpp
 CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_timebase_tim.cpp.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_timebase_tim.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_timebase_tim.cpp.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_timebase_tim.cpp.obj -MF CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_timebase_tim.cpp.obj.d -o CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_timebase_tim.cpp.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/stm32f4xx_hal_timebase_tim.cpp
 
 CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_timebase_tim.cpp.i: cmake_force
@@ -183,7 +225,7 @@ CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_timebase_tim.cpp.s: cmake_for
 CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_it.cpp.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_it.cpp.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/stm32f4xx_it.cpp
 CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_it.cpp.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_it.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_it.cpp.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_it.cpp.obj -MF CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_it.cpp.obj.d -o CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_it.cpp.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/stm32f4xx_it.cpp
 
 CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_it.cpp.i: cmake_force
@@ -197,7 +239,7 @@ CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_it.cpp.s: cmake_force
 CMakeFiles/drivetraincpp.dir/Sources/syscalls.cpp.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Sources/syscalls.cpp.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/syscalls.cpp
 CMakeFiles/drivetraincpp.dir/Sources/syscalls.cpp.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/syscalls.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/syscalls.cpp.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Sources/syscalls.cpp.obj -MF CMakeFiles/drivetraincpp.dir/Sources/syscalls.cpp.obj.d -o CMakeFiles/drivetraincpp.dir/Sources/syscalls.cpp.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/syscalls.cpp
 
 CMakeFiles/drivetraincpp.dir/Sources/syscalls.cpp.i: cmake_force
@@ -211,7 +253,7 @@ CMakeFiles/drivetraincpp.dir/Sources/syscalls.cpp.s: cmake_force
 CMakeFiles/drivetraincpp.dir/Sources/sysmem.cpp.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Sources/sysmem.cpp.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/sysmem.cpp
 CMakeFiles/drivetraincpp.dir/Sources/sysmem.cpp.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/sysmem.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/sysmem.cpp.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Sources/sysmem.cpp.obj -MF CMakeFiles/drivetraincpp.dir/Sources/sysmem.cpp.obj.d -o CMakeFiles/drivetraincpp.dir/Sources/sysmem.cpp.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/sysmem.cpp
 
 CMakeFiles/drivetraincpp.dir/Sources/sysmem.cpp.i: cmake_force
@@ -225,7 +267,7 @@ CMakeFiles/drivetraincpp.dir/Sources/sysmem.cpp.s: cmake_force
 CMakeFiles/drivetraincpp.dir/Sources/system_stm32f4xx.cpp.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Sources/system_stm32f4xx.cpp.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/system_stm32f4xx.cpp
 CMakeFiles/drivetraincpp.dir/Sources/system_stm32f4xx.cpp.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/system_stm32f4xx.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/system_stm32f4xx.cpp.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Sources/system_stm32f4xx.cpp.obj -MF CMakeFiles/drivetraincpp.dir/Sources/system_stm32f4xx.cpp.obj.d -o CMakeFiles/drivetraincpp.dir/Sources/system_stm32f4xx.cpp.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/system_stm32f4xx.cpp
 
 CMakeFiles/drivetraincpp.dir/Sources/system_stm32f4xx.cpp.i: cmake_force
@@ -239,7 +281,7 @@ CMakeFiles/drivetraincpp.dir/Sources/system_stm32f4xx.cpp.s: cmake_force
 CMakeFiles/drivetraincpp.dir/Sources/tim.cpp.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Sources/tim.cpp.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/tim.cpp
 CMakeFiles/drivetraincpp.dir/Sources/tim.cpp.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/tim.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/tim.cpp.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Sources/tim.cpp.obj -MF CMakeFiles/drivetraincpp.dir/Sources/tim.cpp.obj.d -o CMakeFiles/drivetraincpp.dir/Sources/tim.cpp.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/tim.cpp
 
 CMakeFiles/drivetraincpp.dir/Sources/tim.cpp.i: cmake_force
@@ -253,7 +295,7 @@ CMakeFiles/drivetraincpp.dir/Sources/tim.cpp.s: cmake_force
 CMakeFiles/drivetraincpp.dir/Sources/usart.cpp.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Sources/usart.cpp.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/usart.cpp
 CMakeFiles/drivetraincpp.dir/Sources/usart.cpp.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/usart.cpp.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object CMakeFiles/drivetraincpp.dir/Sources/usart.cpp.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Sources/usart.cpp.obj -MF CMakeFiles/drivetraincpp.dir/Sources/usart.cpp.obj.d -o CMakeFiles/drivetraincpp.dir/Sources/usart.cpp.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Sources/usart.cpp
 
 CMakeFiles/drivetraincpp.dir/Sources/usart.cpp.i: cmake_force
@@ -267,7 +309,7 @@ CMakeFiles/drivetraincpp.dir/Sources/usart.cpp.s: cmake_force
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c.i: cmake_force
@@ -281,7 +323,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c.s:
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.c.i: cmake_force
@@ -295,7 +337,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_can.
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c.i: cmake_force
@@ -309,7 +351,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cort
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c.i: cmake_force
@@ -323,7 +365,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c.i: cmake_force
@@ -337,7 +379,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c.i: cmake_force
@@ -351,7 +393,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c.i: cmake_force
@@ -365,7 +407,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flas
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c.i: cmake_force
@@ -379,7 +421,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flas
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c.i: cmake_force
@@ -393,7 +435,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flas
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c.i: cmake_force
@@ -407,7 +449,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c.i: cmake_force
@@ -421,7 +463,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c.i: cmake_force
@@ -435,7 +477,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c.i: cmake_force
@@ -449,7 +491,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c.i: cmake_force
@@ -463,7 +505,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c.i: cmake_force
@@ -477,7 +519,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_33) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c.i: cmake_force
@@ -491,7 +533,7 @@ CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.obj: CMakeFiles/drivetraincpp.dir/flags.make
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.obj: C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.obj: CMakeFiles/drivetraincpp.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.obj"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_34) "Building C object CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.obj"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-gcc.exe $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.obj -MF CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.obj.d -o CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.obj -c C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c
 
 CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.i: cmake_force
@@ -510,6 +552,9 @@ drivetraincpp_OBJECTS = \
 "CMakeFiles/drivetraincpp.dir/Sources/gpio.cpp.obj" \
 "CMakeFiles/drivetraincpp.dir/Sources/main.cpp.obj" \
 "CMakeFiles/drivetraincpp.dir/Sources/PID.cpp.obj" \
+"CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.obj" \
+"CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.obj" \
+"CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.obj" \
 "CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_msp.cpp.obj" \
 "CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_timebase_tim.cpp.obj" \
 "CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_it.cpp.obj" \
@@ -545,6 +590,9 @@ drivetraincpp.elf: CMakeFiles/drivetraincpp.dir/Sources/dma.cpp.obj
 drivetraincpp.elf: CMakeFiles/drivetraincpp.dir/Sources/gpio.cpp.obj
 drivetraincpp.elf: CMakeFiles/drivetraincpp.dir/Sources/main.cpp.obj
 drivetraincpp.elf: CMakeFiles/drivetraincpp.dir/Sources/PID.cpp.obj
+drivetraincpp.elf: CMakeFiles/drivetraincpp.dir/Sources/PID_Data.cpp.obj
+drivetraincpp.elf: CMakeFiles/drivetraincpp.dir/Sources/PID_Gains.cpp.obj
+drivetraincpp.elf: CMakeFiles/drivetraincpp.dir/Sources/PID_Outputs.cpp.obj
 drivetraincpp.elf: CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_msp.cpp.obj
 drivetraincpp.elf: CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_hal_timebase_tim.cpp.obj
 drivetraincpp.elf: CMakeFiles/drivetraincpp.dir/Sources/stm32f4xx_it.cpp.obj
@@ -571,7 +619,7 @@ drivetraincpp.elf: CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src
 drivetraincpp.elf: CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c.obj
 drivetraincpp.elf: CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.obj
 drivetraincpp.elf: CMakeFiles/drivetraincpp.dir/build.make
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_32) "Linking CXX executable drivetraincpp.elf"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_35) "Linking CXX executable drivetraincpp.elf"
 	C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe -mcpu=Cortex-M4 -std=gnu++17 -mfpu=fpv4-sp-d16  --specs=nano.specs -mthumb -Wall -Werror -g -T../STM32F427IIHX_FLASH.ld --specs=nosys.specs -Wl,-Map=test.map -Wl,--gc-sections -static -Wl,--start-group -lc -lm -Wl,--end-group $(drivetraincpp_OBJECTS) $(drivetraincpp_EXTERNAL_OBJECTS) -o drivetraincpp.elf
 	arm-none-eabi-size C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/drivetraincpp.elf
 
