@@ -233,31 +233,34 @@ void PID_Data::updateLastError()
     setLastError(this->error);
 }
 
+void PID_Data::runDirectPidStep()
+{
+    updateProportionalOutput();
+    preventIntegralWindup();
+    updateIntegralOutput();
+    updateDerivativeOutput();
+    updateOutputSum();
+    clampOutput();
+}
+
+void PID_Data::runIncrementalPidStep()
+{
+    updateErrorBuf();
+    updateProportionalOutputFromErrorDelta();
+    updateIntegralOutputFromError();
+    updateDBuf();
+    updateDerivativeOutputFromDBuf();
+    addOutputSum();
+    clampOutput();
+}
+
 float PID_Data::pidCalculate(float measure) {
     setMeasure(measure);
     updateLastError();
     updateErrorFromTargetAndMeasure();
 
-    updateProportionalOutput();
-
-    preventIntegralWindup();
-
-    updateIntegralOutput();
-    updateDerivativeOutput();
-    
-    updateOutputSum();
-    clampOutput();
-
-    updateErrorBuf();
-
-    updateProportionalOutputFromErrorDelta();
-    updateIntegralOutputFromError();
-
-    updateDBuf();
-    updateDerivativeOutputFromDBuf();
-
-    addOutputSum();
-    clampOutput();
+    runDirectPidStep();
+    runIncrementalPidStep();
 
     return this->output;
 }

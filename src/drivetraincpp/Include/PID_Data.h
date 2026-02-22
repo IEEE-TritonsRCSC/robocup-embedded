@@ -128,6 +128,14 @@ public:
      */
     void updateLastError();
     /**
+     * Run the direct PID update (P/I/D from current error).
+     */
+    void runDirectPidStep();
+    /**
+     * Run the incremental PID update (error buffer, d buffer, incremental sum).
+     */
+    void runIncrementalPidStep();
+    /**
      * Run one PID update step and return the computed output.
      * @param measure Current measured value.
      * @return Computed PID output.
