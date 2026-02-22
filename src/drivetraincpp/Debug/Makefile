@@ -57,10 +57,10 @@ RM = C:/Strawberry/c/bin/cmake.exe -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = C:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp
+CMAKE_SOURCE_DIR = C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = C:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Debug
+CMAKE_BINARY_DIR = C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Debug/CMakeFiles C:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

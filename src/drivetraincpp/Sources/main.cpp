@@ -204,11 +204,17 @@ extern "C" int main(void) {
 			dribble_speed = 0;
 		}
 
-		if (timeout >= 200) {             // Safety timeout when UART disconnects
-			for (int i = 0; i < 4; ++i) {
-				targetSpeeds[i] = 0;
-			}
-		}
+
+		///////////
+		/////////// COMMENTED OUT FOR TESTING
+		/////////// UNCOMMENT FOR COMPETITION
+		///////////
+		///////////
+//		if (timeout >= 200) {             // Safety timeout when UART disconnects
+//			for (int i = 0; i < 4; ++i) {
+//				targetSpeeds[i] = 0;
+//			}
+//		}
 
 		 for (int i = 0; i < 4; ++i) {                          // PID control loop
 			 motor_pid[i].target = targetSpeeds[i];

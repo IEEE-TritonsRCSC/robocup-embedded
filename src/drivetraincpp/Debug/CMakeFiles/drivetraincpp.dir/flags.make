@@ -6,19 +6,19 @@
 # compile CXX with C:/ST/STM32CubeIDE_1.19.0/STM32CubeIDE/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.13.3.rel1.win32_1.0.0.202411081344/tools/bin/arm-none-eabi-g++.exe
 ASM_DEFINES = -DSTM32F427xx -DUSE_HAL_DRIVER
 
-ASM_INCLUDES = -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Include -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Inc -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Drivers/CMSIS/Device/ST/STM32F4xx/Include -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Drivers/CMSIS/Include
+ASM_INCLUDES = -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Include -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Inc -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/CMSIS/Device/ST/STM32F4xx/Include -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/CMSIS/Include
 
 ASM_FLAGS = -mcpu=Cortex-M4 -std=gnu11 -mfpu=fpv4-sp-d16  --specs=nano.specs -mthumb -Wall -Werror -x assembler-with-cpp -g
 
 C_DEFINES = -DSTM32F427xx -DUSE_HAL_DRIVER
 
-C_INCLUDES = -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Include -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Inc -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Drivers/CMSIS/Device/ST/STM32F4xx/Include -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Drivers/CMSIS/Include
+C_INCLUDES = -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Include -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Inc -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/CMSIS/Device/ST/STM32F4xx/Include -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/CMSIS/Include
 
 C_FLAGS = -mcpu=Cortex-M4 -std=gnu11 -mfpu=fpv4-sp-d16  --specs=nano.specs -mthumb -Wall -Werror -g
 
 CXX_DEFINES = -DSTM32F427xx -DUSE_HAL_DRIVER
 
-CXX_INCLUDES = -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Include -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Inc -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Drivers/CMSIS/Device/ST/STM32F4xx/Include -IC:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/Drivers/CMSIS/Include
+CXX_INCLUDES = -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Include -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Inc -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/CMSIS/Device/ST/STM32F4xx/Include -IC:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/Drivers/CMSIS/Include
 
 CXX_FLAGS = -mcpu=Cortex-M4 -std=gnu++17 -mfpu=fpv4-sp-d16  --specs=nano.specs -mthumb -Wall -Werror -g
 

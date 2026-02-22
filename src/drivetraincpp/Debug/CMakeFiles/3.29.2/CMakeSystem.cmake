@@ -3,7 +3,7 @@ set(CMAKE_HOST_SYSTEM_NAME "Windows")
 set(CMAKE_HOST_SYSTEM_VERSION "6.2.9200")
 set(CMAKE_HOST_SYSTEM_PROCESSOR "AMD64")
 
-include("C:/Users/bjsek/STM32CubeIDE/workspace_1.19.2/drivetraincpp/cubeide-gcc.cmake")
+include("C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/src/drivetraincpp/cubeide-gcc.cmake")
 
 set(CMAKE_SYSTEM "Generic")
 set(CMAKE_SYSTEM_NAME "Generic")
