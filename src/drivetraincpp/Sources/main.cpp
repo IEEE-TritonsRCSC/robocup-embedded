@@ -79,6 +79,13 @@ volatile uint16_t angle_data[4];
 volatile float speed_data[4];
 volatile float torque_current_data[4];
 volatile float targetSpeeds[4];
+uint16_t motorPins[5] = {
+	MOTOR1_PIN,
+	MOTOR2_PIN,
+	MOTOR3_PIN,
+	MOTOR4_PIN,
+	MOTOR5_PIN
+};
 
 PID_Gains motor1_gains(0.3,0,0);
 PID_Gains motor2_gains(0.3,0,0);
@@ -150,11 +157,9 @@ extern "C" int main(void) {
 	/* USER CODE BEGIN 2 */
 
 	// Motor setup
-	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR1_PIN);
-	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR2_PIN);
-	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR3_PIN);
-	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR4_PIN);
-	HAL_GPIO_TogglePin(MOTOR_PORT, MOTOR5_PIN);
+	for (int i=0;i<5;i++) {
+		HAL_GPIO_TogglePin(MOTOR_PORT, motorPins[i]);
+	}
 
 	// CAN setup
 	canTxHeader.DLC = 8;
