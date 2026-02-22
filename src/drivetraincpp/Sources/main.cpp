@@ -51,6 +51,9 @@ extern "C" UART_HandleTypeDef huart4;
 #define DRIBBLE_ON 0x01
 #define REDUCTION_RATIO 36.0
 #define HAL_DELAY 10
+#define MAX_OUTPUT 9999.0f
+#define INTEGRAL_LIMIT 1000.0f
+#define DEADBAND 20.0f
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -93,10 +96,10 @@ PID_Gains motor2_gains(0.3,0,0);
 PID_Gains motor3_gains(0.2,0,0);
 PID_Gains motor4_gains(0.2,0,0);
 
-PID_Data motor1PID(9999, 1000, 20, 0, motor1_gains);
-PID_Data motor2PID(9999, 1000, 20, 0, motor2_gains);
-PID_Data motor3PID(9999, 1000, 20, 0, motor3_gains);
-PID_Data motor4PID(9999, 1000, 20, 0, motor4_gains);
+PID_Data motor1PID(MAX_OUTPUT, INTEGRAL_LIMIT, DEADBAND, 0, motor1_gains);
+PID_Data motor2PID(MAX_OUTPUT, INTEGRAL_LIMIT, DEADBAND, 0, motor2_gains);
+PID_Data motor3PID(MAX_OUTPUT, INTEGRAL_LIMIT, DEADBAND, 0, motor3_gains);
+PID_Data motor4PID(MAX_OUTPUT, INTEGRAL_LIMIT, DEADBAND, 0, motor4_gains);
 
 PID_Data motor_pids[4] = {motor1PID, motor2PID, motor3PID, motor4PID};
 
