@@ -537,29 +537,29 @@ Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.s
 .PHONY : Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c.s
 
-Sources/PID.obj: Sources/PID.cpp.obj
-.PHONY : Sources/PID.obj
+Sources/CanHeader.obj: Sources/CanHeader.cpp.obj
+.PHONY : Sources/CanHeader.obj
 
 # target to build an object file
-Sources/PID.cpp.obj:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/PID.cpp.obj
-.PHONY : Sources/PID.cpp.obj
+Sources/CanHeader.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/CanHeader.cpp.obj
+.PHONY : Sources/CanHeader.cpp.obj
 
-Sources/PID.i: Sources/PID.cpp.i
-.PHONY : Sources/PID.i
+Sources/CanHeader.i: Sources/CanHeader.cpp.i
+.PHONY : Sources/CanHeader.i
 
 # target to preprocess a source file
-Sources/PID.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/PID.cpp.i
-.PHONY : Sources/PID.cpp.i
+Sources/CanHeader.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/CanHeader.cpp.i
+.PHONY : Sources/CanHeader.cpp.i
 
-Sources/PID.s: Sources/PID.cpp.s
-.PHONY : Sources/PID.s
+Sources/CanHeader.s: Sources/CanHeader.cpp.s
+.PHONY : Sources/CanHeader.s
 
 # target to generate assembly for a file
-Sources/PID.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/PID.cpp.s
-.PHONY : Sources/PID.cpp.s
+Sources/CanHeader.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/CanHeader.cpp.s
+.PHONY : Sources/CanHeader.cpp.s
 
 Sources/PID_Data.obj: Sources/PID_Data.cpp.obj
 .PHONY : Sources/PID_Data.obj
@@ -704,6 +704,30 @@ Sources/gpio.s: Sources/gpio.cpp.s
 Sources/gpio.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/gpio.cpp.s
 .PHONY : Sources/gpio.cpp.s
+
+Sources/helpers.obj: Sources/helpers.cpp.obj
+.PHONY : Sources/helpers.obj
+
+# target to build an object file
+Sources/helpers.cpp.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/helpers.cpp.obj
+.PHONY : Sources/helpers.cpp.obj
+
+Sources/helpers.i: Sources/helpers.cpp.i
+.PHONY : Sources/helpers.i
+
+# target to preprocess a source file
+Sources/helpers.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/helpers.cpp.i
+.PHONY : Sources/helpers.cpp.i
+
+Sources/helpers.s: Sources/helpers.cpp.s
+.PHONY : Sources/helpers.s
+
+# target to generate assembly for a file
+Sources/helpers.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/drivetraincpp.dir/build.make CMakeFiles/drivetraincpp.dir/Sources/helpers.cpp.s
+.PHONY : Sources/helpers.cpp.s
 
 Sources/main.obj: Sources/main.cpp.obj
 .PHONY : Sources/main.obj
@@ -989,9 +1013,9 @@ help:
 	@echo "... Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.obj"
 	@echo "... Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.i"
 	@echo "... Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.s"
-	@echo "... Sources/PID.obj"
-	@echo "... Sources/PID.i"
-	@echo "... Sources/PID.s"
+	@echo "... Sources/CanHeader.obj"
+	@echo "... Sources/CanHeader.i"
+	@echo "... Sources/CanHeader.s"
 	@echo "... Sources/PID_Data.obj"
 	@echo "... Sources/PID_Data.i"
 	@echo "... Sources/PID_Data.s"
@@ -1010,6 +1034,9 @@ help:
 	@echo "... Sources/gpio.obj"
 	@echo "... Sources/gpio.i"
 	@echo "... Sources/gpio.s"
+	@echo "... Sources/helpers.obj"
+	@echo "... Sources/helpers.i"
+	@echo "... Sources/helpers.s"
 	@echo "... Sources/main.obj"
 	@echo "... Sources/main.i"
 	@echo "... Sources/main.s"
