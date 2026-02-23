@@ -3,6 +3,9 @@
 #include "credentials.h"
 
 #define BAUD_RATE 115200
+#define LED_PIN 2
+#define LED_ON HIGH
+#define LED_OFF LOW
 
 WiFiUDP UDP;
 IPAddress multicastIP(239, 42, 42, 42);
@@ -16,6 +19,8 @@ std::array<uint8_t, 2> motor_cmd_headers = {0xCA, 0xFE};
 
 void setup() {
   Serial.begin(BAUD_RATE);
+  pinMode(LED_PIN, OUTPUT);
+  digitalWrite(LED_PIN, LED_OFF);
   connect_wifi();
   UDP.beginMulticast(multicastIP, MULTICAST_PORT);
   robotSerial.begin(BAUD_RATE, SERIAL_8N1, RX_PIN, TX_PIN);
@@ -38,12 +43,14 @@ void loop() {
   }
 
   if (last_packet_size > 0) {
+    digitalWrite(LED_PIN, LED_ON);
     packet_time = micros();
     PRINT((int)last_packet_size, " | ");
     for (uint16_t i = 0; i < last_packet_size; i++) {
       char c = packet_buffer[i];
       handleNewChar(c);
     }
+    digitalWrite(LED_PIN, LED_OFF);
   }
 
   check_kicker_status();
