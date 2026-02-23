@@ -14,6 +14,7 @@ print("  d <speed> <dir> -> dash with speed in direction (dir in degrees between
 print("  s <power>       -> skick (dribbler pulse; power ignored by STM32)")
 print("  k               -> kick")
 print("  c               -> catch")
+print("  stop            -> stop all motors")
 
 short_to_long = {
     't': 'turn',
@@ -40,6 +41,10 @@ try:
         command = input("Enter command (or 'q' to quit): ")
         if command.lower() == 'q':
             raise KeyboardInterrupt
+        if command.strip().lower() == 'stop':
+            sock.sendto(b"stop\0", (COMMAND_IP, COMMAND_PORT))
+            time.sleep(0.5)
+            continue
         first_char = command[0] if command else ''
         if first_char == 't':
             params = get_params(command, 1)
