@@ -120,7 +120,7 @@ extern "C" int main(void) {
 
 		updateDribblerSpeedFromFlag(state.dribble_flag, &state.dribble_speed);
 
-		applySafetyTimeoutToTargetSpeeds(state.timeout, state.targetSpeeds);
+		//applySafetyTimeoutToTargetSpeeds(state.timeout, state.targetSpeeds);
 		
 		updateMotorPidLoop(state.motor_pids, state.targetSpeeds, state.speed_data);
 		
