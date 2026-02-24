@@ -323,3 +323,8 @@ void initializeSpeedCommandsAndSetMotors(DrivetrainState *state, int16_t *speedC
 	initializeSpeedCommands(state, speedCommands);
 	setMotorSpeeds(state, speedCommands);
 }
+
+void initializeSpeedCommandsAndSetMotorsAndIncrementTimeout(DrivetrainState *state, int16_t *speedCommands) {
+	initializeSpeedCommandsAndSetMotors(state, speedCommands);
+	state->timeout++;
+}

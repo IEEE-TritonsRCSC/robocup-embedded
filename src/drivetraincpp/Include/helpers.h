@@ -223,6 +223,14 @@ void initializeSpeedCommands(DrivetrainState *state, int16_t *speedCommands);
  */
 void initializeSpeedCommandsAndSetMotors(DrivetrainState *state, int16_t *speedCommands);
 
+/**
+ * @brief Build and transmit motor commands, then increment the timeout counter.
+ *
+ * @param state Shared drivetrain state; `timeout` is incremented.
+ * @param speedCommands Output array sized NUM_MOTORS (wheels + dribbler).
+ */
+void initializeSpeedCommandsAndSetMotorsAndIncrementTimeout(DrivetrainState *state, int16_t *speedCommands);
+
 // System hooks.
 #ifdef __cplusplus
     extern "C" {

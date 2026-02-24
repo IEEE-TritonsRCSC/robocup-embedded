@@ -62,13 +62,11 @@ int main(void) {
 		//applySafetyTimeoutToTargetSpeeds(state.timeout, state.targetSpeeds);
 		
 		updateMotorPidLoop(state.motor_pids, state.targetSpeeds, state.speed_data);
-		
 
 		int16_t speedCommands[NUM_MOTORS] = {};
-		
-		initializeSpeedCommandsAndSetMotors(&state,speedCommands);
 
-		state.timeout++;
+		initializeSpeedCommandsAndSetMotorsAndIncrementTimeout(&state, speedCommands);
+
 		HAL_Delay(HAL_DELAY);
 	}
 }
