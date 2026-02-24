@@ -52,14 +52,7 @@ extern "C" {
 /* Exported functions prototypes ---------------------------------------------*/
 /* USER CODE BEGIN EFP */
 
-void forward(int motorSpeed, int duration);
-void backward(int motorSpeed, int duration);
-void left(int motorSpeed, int duration);
-void right(int motorSpeed, int duration);
 void Error_Handler(void);
-
-void dribble();
-void noDribble();
 
 /* USER CODE END EFP */
 
