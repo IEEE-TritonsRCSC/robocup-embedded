@@ -182,7 +182,7 @@ void handleUartRxComplete(DrivetrainState *state, UART_HandleTypeDef *huart)
 	}
 }
 
-extern "C" void SystemClock_Config(void) {
+void SystemClock_Config(void) {
 	RCC_OscInitTypeDef RCC_OscInitStruct = { 0 };
 	RCC_ClkInitTypeDef RCC_ClkInitStruct = { 0 };
 
@@ -242,7 +242,7 @@ void setMotorSpeeds(DrivetrainState *state, int16_t speedCommands[5]) {
 	HAL_CAN_AddTxMessage(state->can, state->canHeader2.getTxHeaderPointer(), state->can2TxData, &state->canTxMailbox);
 }
 
- extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	/* USER CODE BEGIN Callback 0 */
 
 	/* USER CODE END Callback 0 */
@@ -254,7 +254,7 @@ void setMotorSpeeds(DrivetrainState *state, int16_t speedCommands[5]) {
 	/* USER CODE END Callback 1 */
 }
 
-extern "C" void Error_Handler(void) {
+void Error_Handler(void) {
 	/* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
 	__disable_irq();
