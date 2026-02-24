@@ -42,12 +42,7 @@ int main(void) {
 	/* Configure the system clock */
 	SystemClock_Config();
 
-	/* Initialize all configured peripherals */
-	MX_GPIO_Init();
-	MX_DMA_Init();
-	MX_CAN1_Init();
-	MX_TIM1_Init();
-	MX_UART4_Init();
+	initializePeripherals();
 
 	state.can = &hcan1;
 	state.uart = &huart4;

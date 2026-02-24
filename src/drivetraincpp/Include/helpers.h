@@ -186,6 +186,8 @@ void initializeAndConfigureClockTreeOrDie(RCC_ClkInitTypeDef *RCC_ClkInitStruct)
  */
 void initializeAndConfigureOscillatorAndClockTreeOrDie(RCC_OscInitTypeDef *RCC_OscInitStruct, RCC_ClkInitTypeDef *RCC_ClkInitStruct);
 
+void initializePeripherals();
+
 // System hooks.
 #ifdef __cplusplus
     extern "C" {

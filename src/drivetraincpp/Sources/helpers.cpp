@@ -3,6 +3,7 @@
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
+#include "dma.h"
 #include "helpers.h"
 #define DRIBBLE_SPEED 1500
 
@@ -291,3 +292,11 @@ void Error_Handler(void) {
 	/* USER CODE END Error_Handler_Debug */
 }
 
+/* Initialize all configured peripherals */
+void initializePeripherals() {
+	MX_GPIO_Init();
+	MX_DMA_Init();
+	MX_CAN1_Init();
+	MX_TIM1_Init();
+	MX_UART4_Init();
+}
