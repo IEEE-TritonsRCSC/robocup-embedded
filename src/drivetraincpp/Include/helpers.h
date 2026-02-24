@@ -258,6 +258,29 @@ void updateMotorCommandsAndTimeout(DrivetrainState *state);
  */
 void updateMotorCommandsTimeoutAndDelay(DrivetrainState *state);
 
+/**
+ * @brief Interleave two input arrays into a single output array.
+ *
+ * Even indices of `arr` are filled from `first`; odd indices from `second`.
+ *
+ * @param arr Output array of size `size` to receive interleaved bytes.
+ * @param size Number of bytes to write into `arr`.
+ * @param first Source array for even indices (0, 2, 4, ...).
+ * @param second Source array for odd indices (1, 3, 5, ...).
+ */
+void split(uint8_t *arr, int size, uint8_t *first, uint8_t *second);
+
+/**
+ * @brief Split signed speed commands into high/low byte payload arrays.
+ *
+ * @param speedCommands Input array of signed speed commands.
+ * @param highBytes Output array for each command's high byte.
+ * @param lowBytes Output array for each command's low byte.
+ * @param size Number of commands to process.
+ * @param shift Bit shift applied before splitting into bytes.
+ */
+void encodeSpeedCommands(int16_t *speedCommands, uint8_t *highBytes, uint8_t *lowBytes, int size, int shift);
+
 // System hooks.
 #ifdef __cplusplus
     extern "C" {

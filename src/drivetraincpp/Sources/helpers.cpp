@@ -254,21 +254,32 @@ void SystemClock_Config(void) {
 	initializeAndConfigureOscillatorAndClockTreeOrDie(&RCC_OscInitStruct, &RCC_ClkInitStruct);
 }
 
+void split(uint8_t* arr, int size, uint8_t* first, uint8_t* second) {
+	for (int i=0;i<size;i++) {
+		if (i % 2 == 0) {
+			arr[i] = first[i / 2];
+		} else {
+			arr[i] = second[i/2];
+		}
+	}
+}
+
+void encodeSpeedCommands(int16_t *speedCommands, uint8_t *highBytes, uint8_t *lowBytes, int size, int shift)
+{
+	for (int i = 0; i < NUM_MOTORS; i++)
+	{
+		highBytes[i] = speedCommands[i] >> shift;
+		lowBytes[i] = speedCommands[i];
+	}
+}
+
 void setMotorSpeeds(DrivetrainState *state, int16_t speedCommands[5]) {
 	uint8_t highBytes[5] = {0};
 	uint8_t lowBytes[5] = {0};
 
-	for (int i=0;i<NUM_MOTORS;i++) {
-		highBytes[i] = speedCommands[i] >> 8;
-		lowBytes[i] = speedCommands[i];
-	}
-	for (int i=0;i<8;i++) {
-		if (i % 2 == 0) {
-			state->canTxData[i] = highBytes[i / 2];
-		} else {
-			state->canTxData[i] = lowBytes[i / 2];
-		}
-	}
+	encodeSpeedCommands(speedCommands,highBytes,lowBytes,NUM_MOTORS,8);
+	split(state->canTxData,8,highBytes,lowBytes);
+
 	state->can2TxData[0] = highBytes[4];
 	state->can2TxData[1] = lowBytes[4];
 
