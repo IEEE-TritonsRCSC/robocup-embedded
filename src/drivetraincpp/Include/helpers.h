@@ -20,6 +20,11 @@
 #define DEADBAND 20.0f
 #define CANTXHEADER1_STDID 0x200
 #define CANTXHEADER2_STDID 0x1FF
+#define MOTOR1_GAINS {0.3f, 0.0f, 0.0f}
+#define MOTOR2_GAINS {0.3f, 0.0f, 0.0f}
+#define MOTOR3_GAINS {0.2f, 0.0f, 0.0f}
+#define MOTOR4_GAINS {0.2f, 0.0f, 0.0f}
+#define TIMEOUT_DELAY 200
 
 struct DrivetrainState {
     // Hardware handles (assigned in main after init).

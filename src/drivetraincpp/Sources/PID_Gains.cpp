@@ -23,3 +23,10 @@ PID_Gains::PID_Gains()
     this->ki = 0;
     this->kd = 0;
 }
+
+PID_Gains::PID_Gains(float* gains_array)
+{
+    this->kp = gains_array[0];
+    this->ki = gains_array[1];
+    this->kd = gains_array[2];
+}

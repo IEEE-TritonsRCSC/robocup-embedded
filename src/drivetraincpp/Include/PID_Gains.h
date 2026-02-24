@@ -7,6 +7,7 @@ private:
 
 public:
     PID_Gains(float kp, float ki, float kd) : kp(kp), ki(ki), kd(kd) {}
+    PID_Gains(float *gains_array);
     PID_Gains();
 
     void setP(float p);
