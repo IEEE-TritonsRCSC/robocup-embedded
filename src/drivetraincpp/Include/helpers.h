@@ -131,26 +131,60 @@ void handleCanRxFifo0(DrivetrainState *state, CAN_HandleTypeDef *hcan);
  */
 void handleUartRxComplete(DrivetrainState *state, UART_HandleTypeDef *huart);
 
-/** Configure the main internal regulator output voltage
+/**
+ * @brief Enable the power interface clock and set voltage scaling for max speed.
  */
 void configureOutputVoltage();
 
-/** Initializes the RCC Oscillators according to the specified parameters
- * in the RCC_OscInitTypeDef structure.
+/**
+ * @brief Populate the RCC oscillator config struct for the HSE + PLL setup.
+ *
+ * @param RCC_OscInitStruct Target oscillator config to fill in.
  */
 void initializeRCCOscillator(RCC_OscInitTypeDef *RCC_OscInitStruct);
 
-/** Initializes the CPU, AHB and APB buses clocks
+/**
+ * @brief Populate the clock tree config struct for SYSCLK/HCLK/PCLK dividers.
+ *
+ * @param RCC_ClkInitStruct Target clock config to fill in.
  */
 void initializeClocks(RCC_ClkInitTypeDef *RCC_ClkInitStruct);
 
+/**
+ * @brief Apply oscillator configuration and halt on failure.
+ *
+ * @param RCC_OscInitStruct Oscillator configuration to apply.
+ */
 void configureOscillatorOrDie(RCC_OscInitTypeDef *RCC_OscInitStruct);
 
+/**
+ * @brief Apply clock tree configuration and halt on failure.
+ *
+ * @param RCC_ClkInitStruct Clock configuration to apply.
+ */
 void configureClockTreeOrDie(RCC_ClkInitTypeDef *RCC_ClkInitStruct);
 
+/**
+ * @brief Initialize and apply the oscillator configuration.
+ *
+ * @param RCC_OscInitStruct Oscillator configuration to initialize and apply.
+ */
 void initializeAndConfigureOscillatorOrDie(RCC_OscInitTypeDef *RCC_OscInitStruct);
 
+/**
+ * @brief Initialize and apply the clock tree configuration.
+ *
+ * @param RCC_ClkInitStruct Clock configuration to initialize and apply.
+ */
 void initializeAndConfigureClockTreeOrDie(RCC_ClkInitTypeDef *RCC_ClkInitStruct);
+
+/**
+ * @brief Initialize and apply oscillator and clock tree configurations.
+ *
+ * @param RCC_OscInitStruct Oscillator configuration to initialize and apply.
+ * @param RCC_ClkInitStruct Clock configuration to initialize and apply.
+ */
+void initializeAndConfigureOscillatorAndClockTreeOrDie(RCC_OscInitTypeDef *RCC_OscInitStruct, RCC_ClkInitTypeDef *RCC_ClkInitStruct);
 
 // System hooks.
 #ifdef __cplusplus
