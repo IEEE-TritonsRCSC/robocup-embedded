@@ -60,9 +60,7 @@ set (PROJECT_SOURCES
 	Sources/PID_Outputs.cpp
 	Sources/stm32f4xx_hal_msp.cpp
 	Sources/stm32f4xx_hal_timebase_tim.cpp
-	Sources/stm32f4xx_it.cpp
 	Sources/syscalls.cpp
-	Sources/sysmem.cpp
 	Sources/system_stm32f4xx.cpp
 	Sources/tim.cpp
 	Sources/usart.cpp
