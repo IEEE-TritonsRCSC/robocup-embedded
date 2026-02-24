@@ -69,17 +69,66 @@ struct DrivetrainState {
     DrivetrainState();
 };
 
+/**
+ * @brief Update the dribbler speed based on the dribble flag state.
+ *
+ * @param dribble_flag Flag indicating whether dribbler should be active.
+ * @param dribble_speed Pointer to the dribbler speed output value.
+ */
 void updateDribblerSpeedFromFlag(int dribble_flag, int16_t* dribble_speed);
+/**
+ * @brief Apply safety timeout behavior to target wheel speeds.
+ *
+ * @param timeout Timeout flag/counter indicating communication loss.
+ * @param targetSpeeds Target speed array to modify when timed out.
+ */
 void applySafetyTimeoutToTargetSpeeds(int timeout, volatile float *targetSpeeds);
+/**
+ * @brief Run one PID update step for all motors.
+ *
+ * @param motor_pids Array of PID state for each motor.
+ * @param targetSpeeds Target speed array for each motor.
+ * @param speed_data Current speed feedback array for each motor.
+ */
 void updateMotorPidLoop(PID_Data *motor_pids, volatile float *targetSpeeds, volatile float *speed_data);
+/**
+ * @brief Initialize motor GPIO pin mappings.
+ *
+ * @param motorPins Array to receive motor GPIO pin identifiers.
+ */
 void setupMotors(uint16_t* motorPins);
+/**
+ * @brief Turn off all status LEDs.
+ */
 void turnLEDsOff();
 
+/**
+ * @brief Set motor speed commands and transmit them over CAN.
+ *
+ * @param state Shared drivetrain state.
+ * @param ms1 Motor 1 speed command.
+ * @param ms2 Motor 2 speed command.
+ * @param ms3 Motor 3 speed command.
+ * @param ms4 Motor 4 speed command.
+ * @param msg5 Motor 5 speed command (dribbler).
+ */
 void setMotorSpeeds(DrivetrainState *state,
         int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4, int16_t msg5);
 
 // Helper routines for HAL callbacks (use shared state).
+/**
+ * @brief Handle CAN RX FIFO0 callback logic using shared state.
+ *
+ * @param state Shared drivetrain state.
+ * @param hcan CAN handle associated with the interrupt.
+ */
 void handleCanRxFifo0(DrivetrainState *state, CAN_HandleTypeDef *hcan);
+/**
+ * @brief Handle UART RX complete callback logic using shared state.
+ *
+ * @param state Shared drivetrain state.
+ * @param huart UART handle associated with the interrupt.
+ */
 void handleUartRxComplete(DrivetrainState *state, UART_HandleTypeDef *huart);
 
 // System hooks.
