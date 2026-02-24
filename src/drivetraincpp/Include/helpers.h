@@ -108,17 +108,12 @@ void setupMotors(uint16_t* motorPins);
 void turnLEDsOff();
 
 /**
- * @brief Set motor speed commands and transmit them over CAN.
+ * @brief Pack motor speed commands into CAN payloads and transmit them.
  *
  * @param state Shared drivetrain state.
- * @param ms1 Motor 1 speed command.
- * @param ms2 Motor 2 speed command.
- * @param ms3 Motor 3 speed command.
- * @param ms4 Motor 4 speed command.
- * @param msg5 Motor 5 speed command (dribbler).
+ * @param speedCommands Array of 5 motor speed commands (motors 1-4, dribbler 5).
  */
-void setMotorSpeeds(DrivetrainState *state,
-        int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4, int16_t msg5);
+void setMotorSpeeds(DrivetrainState *state, int16_t speedCommands[5]);
 
 // Helper routines for HAL callbacks (use shared state).
 /**

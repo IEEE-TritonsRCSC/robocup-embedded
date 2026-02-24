@@ -220,38 +220,29 @@ extern "C" void SystemClock_Config(void) {
 	}
 }
 
+void setMotorSpeeds(DrivetrainState *state, int16_t speedCommands[5]) {
+	uint8_t highBytes[5] = {0};
+	uint8_t lowBytes[5] = {0};
 
-void setMotorSpeeds(DrivetrainState *state,
-        int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4, int16_t msg5) {
-	uint8_t h1 = ms1 >> 8;
-	uint8_t l1 = ms1;
-	uint8_t h2 = ms2 >> 8;
-	uint8_t l2 = ms2;
-	uint8_t h3 = ms3 >> 8;
-	uint8_t l3 = ms3;
-	uint8_t h4 = ms4 >> 8;
-	uint8_t l4 = ms4;
-	uint8_t h5 = msg5 >> 8;
-	uint8_t l5 = msg5;
-
-	//speed can be 16 bits, split into high and low bytes
-	state->canTxData[0] = h1;      //high byte for speed, shifted 8 because only buffer is only 8 bits
-	state->canTxData[1] = l1;       //low bytes for speed
-	state->canTxData[2] = h2;
-	state->canTxData[3] = l2;
-	state->canTxData[4] = h3;
-	state->canTxData[5] = l3;
-	state->canTxData[6] = h4;
-	state->canTxData[7] = l4;
-
-	state->can2TxData[0] = h5;
-	state->can2TxData[1] = l5;
+	for (int i=0;i<NUM_MOTORS;i++) {
+		highBytes[i] = speedCommands[i] >> 8;
+		lowBytes[i] = speedCommands[i];
+	}
+	for (int i=0;i<8;i++) {
+		if (i % 2 == 0) {
+			state->canTxData[i] = highBytes[i / 2];
+		} else {
+			state->canTxData[i] = lowBytes[i / 2];
+		}
+	}
+	state->can2TxData[0] = highBytes[4];
+	state->can2TxData[1] = lowBytes[4];
 
 	HAL_CAN_AddTxMessage(state->can, state->canHeader1.getTxHeaderPointer(), state->canTxData, &state->canTxMailbox);
 	HAL_CAN_AddTxMessage(state->can, state->canHeader2.getTxHeaderPointer(), state->can2TxData, &state->canTxMailbox);
 }
 
-extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+ extern "C" void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	/* USER CODE BEGIN Callback 0 */
 
 	/* USER CODE END Callback 0 */

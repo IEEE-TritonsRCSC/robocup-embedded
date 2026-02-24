@@ -124,10 +124,16 @@ extern "C" int main(void) {
 		
 		updateMotorPidLoop(state.motor_pids, state.targetSpeeds, state.speed_data);
 		
-		setMotorSpeeds(&state,
-				state.motor_pids[0].getOutput(), state.motor_pids[1].getOutput(),
-				state.motor_pids[2].getOutput(), state.motor_pids[3].getOutput(),
-				state.dribble_speed);
+
+		int16_t speedCommands[NUM_MOTORS] = {
+				static_cast<int16_t>(state.motor_pids[0].getOutput()),
+				static_cast<int16_t>(state.motor_pids[1].getOutput()),
+				static_cast<int16_t>(state.motor_pids[2].getOutput()),
+				static_cast<int16_t>(state.motor_pids[3].getOutput()),
+				state.dribble_speed
+		};
+		
+		setMotorSpeeds(&state, speedCommands);
 		 
 		state.timeout++;
 		HAL_Delay(HAL_DELAY);
