@@ -89,14 +89,13 @@ void updateDribblerSpeedFromFlag(int dribble_flag, int16_t* dribble_speed);
  * @param targetSpeeds Target speed array to modify when timed out.
  */
 void applySafetyTimeoutToTargetSpeeds(int timeout, volatile float *targetSpeeds);
+
 /**
- * @brief Run one PID update step for all motors.
+ * @brief Run one PID update step for all motors using state data.
  *
- * @param motor_pids Array of PID state for each motor.
- * @param targetSpeeds Target speed array for each motor.
- * @param speed_data Current speed feedback array for each motor.
+ * @param state Shared drivetrain state containing targets and feedback.
  */
-void updateMotorPidLoop(PID_Data *motor_pids, volatile float *targetSpeeds, volatile float *speed_data);
+void updateMotorPidLoop(DrivetrainState *state);
 /**
  * @brief Initialize motor GPIO pin mappings.
  *

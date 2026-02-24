@@ -65,12 +65,12 @@ void applySafetyTimeoutToTargetSpeeds(int timeout, volatile float *targetSpeeds)
     }
 }
 
-void updateMotorPidLoop(PID_Data *motor_pids, volatile float *targetSpeeds, volatile float *speed_data)
+void updateMotorPidLoop(DrivetrainState *state)
 {
     for (int i = 0; i < 4; ++i)
     { // PID control loop
-        motor_pids[i].setTarget(targetSpeeds[i]);
-        motor_pids[i].pidCalculate(speed_data[i]);
+        state->motor_pids[i].setTarget(state->targetSpeeds[i]);
+        state->motor_pids[i].pidCalculate(state->speed_data[i]);
     }
 }
 

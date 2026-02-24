@@ -60,7 +60,7 @@ int main(void) {
 
 		//applySafetyTimeoutToTargetSpeeds(state.timeout, state.targetSpeeds);
 		
-		updateMotorPidLoop(state.motor_pids, state.targetSpeeds, state.speed_data);
+		updateMotorPidLoop(&state);
 
 		updateMotorCommandsTimeoutAndDelay(&state);
 	}
