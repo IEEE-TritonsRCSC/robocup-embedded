@@ -56,7 +56,7 @@ int main(void) {
 	/* Infinite loop */
 	while (1) {
 
-		updateDribblerSpeedFromFlag(state.dribble_flag, &state.dribble_speed);
+		updateDribblerSpeedFromFlag(&state);
 
 		//applySafetyTimeoutToTargetSpeeds(state.timeout, state.targetSpeeds);
 		

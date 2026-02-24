@@ -76,12 +76,11 @@ struct DrivetrainState {
 };
 
 /**
- * @brief Update the dribbler speed based on the dribble flag state.
+ * @brief Update dribbler speed based on the current state flags.
  *
- * @param dribble_flag Flag indicating whether dribbler should be active.
- * @param dribble_speed Pointer to the dribbler speed output value.
+ * @param state Shared drivetrain state; updates `dribble_speed`.
  */
-void updateDribblerSpeedFromFlag(int dribble_flag, int16_t* dribble_speed);
+void updateDribblerSpeedFromFlag(DrivetrainState *state);
 /**
  * @brief Apply safety timeout behavior to target wheel speeds.
  *

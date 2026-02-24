@@ -42,15 +42,15 @@ DrivetrainState::DrivetrainState()
 {
 }
 
-void updateDribblerSpeedFromFlag(int dribble_flag, int16_t* dribble_speed)
+void updateDribblerSpeedFromFlag(DrivetrainState *state)
 {
-    if (dribble_flag)
+    if (state->dribble_flag)
     { // Turns dribbling on/off
-        *dribble_speed = DRIBBLE_SPEED;
+        state->dribble_speed = DRIBBLE_SPEED;
     }
     else
     {
-        *dribble_speed = 0;
+        state->dribble_speed = 0;
     }
 }
 
