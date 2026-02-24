@@ -319,17 +319,18 @@ void initializeSpeedCommands(DrivetrainState *state, int16_t *speedCommands) {
 	speedCommands[NUM_WHEELS] = state->dribble_speed;
 }
 
-void initializeSpeedCommandsAndSetMotors(DrivetrainState *state, int16_t *speedCommands) {
+void updateMotorCommands(DrivetrainState *state) {
+	int16_t speedCommands[NUM_MOTORS] = {};
 	initializeSpeedCommands(state, speedCommands);
 	setMotorSpeeds(state, speedCommands);
 }
 
-void initializeSpeedCommandsAndSetMotorsAndIncrementTimeout(DrivetrainState *state, int16_t *speedCommands) {
-	initializeSpeedCommandsAndSetMotors(state, speedCommands);
+void updateMotorCommandsAndTimeout(DrivetrainState *state) {
+	updateMotorCommands(state);
 	state->timeout++;
 }
 
-void initSpeedCommandsSetMotorsIncrementTimeoutAndDelay(DrivetrainState *state, int16_t *speedCommands) {
-	initializeSpeedCommandsAndSetMotorsAndIncrementTimeout(state, speedCommands);
+void updateMotorCommandsTimeoutAndDelay(DrivetrainState *state) {
+	updateMotorCommandsAndTimeout(state);
 	HAL_Delay(HAL_DELAY);
 }

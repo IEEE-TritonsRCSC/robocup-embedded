@@ -62,9 +62,7 @@ int main(void) {
 		
 		updateMotorPidLoop(state.motor_pids, state.targetSpeeds, state.speed_data);
 
-		int16_t speedCommands[NUM_MOTORS] = {};
-
-		initSpeedCommandsSetMotorsIncrementTimeoutAndDelay(&state, speedCommands);
+		updateMotorCommandsTimeoutAndDelay(&state);
 	}
 }
 

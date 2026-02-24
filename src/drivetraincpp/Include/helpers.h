@@ -217,28 +217,25 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 void initializeSpeedCommands(DrivetrainState *state, int16_t *speedCommands);
 
 /**
- * @brief Build speed commands from state and transmit them to the motors.
+ * @brief Build motor command payloads from state and transmit them.
  *
- * @param state Shared drivetrain state containing PID outputs and dribbler speed.
- * @param speedCommands Output array sized NUM_MOTORS (wheels + dribbler).
+ * @param state Shared drivetrain state with PID outputs and dribbler speed.
  */
-void initializeSpeedCommandsAndSetMotors(DrivetrainState *state, int16_t *speedCommands);
+void updateMotorCommands(DrivetrainState *state);
 
 /**
- * @brief Build and transmit motor commands, then increment the timeout counter.
+ * @brief Update motor commands and increment the timeout counter.
  *
  * @param state Shared drivetrain state; `timeout` is incremented.
- * @param speedCommands Output array sized NUM_MOTORS (wheels + dribbler).
  */
-void initializeSpeedCommandsAndSetMotorsAndIncrementTimeout(DrivetrainState *state, int16_t *speedCommands);
+void updateMotorCommandsAndTimeout(DrivetrainState *state);
 
 /**
- * @brief Build and transmit motor commands, increment timeout, then delay.
+ * @brief Update motor commands, increment timeout, and wait for HAL_DELAY.
  *
  * @param state Shared drivetrain state; `timeout` is incremented.
- * @param speedCommands Output array sized NUM_MOTORS (wheels + dribbler).
  */
-void initSpeedCommandsSetMotorsIncrementTimeoutAndDelay(DrivetrainState *state, int16_t *speedCommands);
+void updateMotorCommandsTimeoutAndDelay(DrivetrainState *state);
 
 // System hooks.
 #ifdef __cplusplus
