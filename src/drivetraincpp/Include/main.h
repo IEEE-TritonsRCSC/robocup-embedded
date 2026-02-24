@@ -56,11 +56,6 @@ void forward(int motorSpeed, int duration);
 void backward(int motorSpeed, int duration);
 void left(int motorSpeed, int duration);
 void right(int motorSpeed, int duration);
-void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow,
-		unsigned char motorTwoHigh, unsigned char motorTwoLow,
-		unsigned char motorThreeHigh, unsigned char motorThreeLow,
-		unsigned char motorFourHigh, unsigned char motorFourLow,
-		unsigned char motorFiveHigh, unsigned char motorFiveLow);
 void Error_Handler(void);
 
 void dribble();
