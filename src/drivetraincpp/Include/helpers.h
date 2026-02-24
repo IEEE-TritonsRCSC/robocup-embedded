@@ -215,6 +215,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
  */
 void initializeSpeedCommands(DrivetrainState *state, int16_t *speedCommands);
 
+/**
+ * @brief Build speed commands from state and transmit them to the motors.
+ *
+ * @param state Shared drivetrain state containing PID outputs and dribbler speed.
+ * @param speedCommands Output array sized NUM_MOTORS (wheels + dribbler).
+ */
+void initializeSpeedCommandsAndSetMotors(DrivetrainState *state, int16_t *speedCommands);
+
 // System hooks.
 #ifdef __cplusplus
     extern "C" {

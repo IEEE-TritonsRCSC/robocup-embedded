@@ -65,10 +65,8 @@ int main(void) {
 		
 
 		int16_t speedCommands[NUM_MOTORS] = {};
-
-		initializeSpeedCommands(&state,speedCommands);
-
-		setMotorSpeeds(&state, speedCommands);
+		
+		initializeSpeedCommandsAndSetMotors(&state,speedCommands);
 
 		state.timeout++;
 		HAL_Delay(HAL_DELAY);

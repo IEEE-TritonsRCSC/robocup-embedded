@@ -319,3 +319,7 @@ void initializeSpeedCommands(DrivetrainState *state, int16_t *speedCommands) {
 	speedCommands[NUM_WHEELS] = state->dribble_speed;
 }
 
+void initializeSpeedCommandsAndSetMotors(DrivetrainState *state, int16_t *speedCommands) {
+	initializeSpeedCommands(state, speedCommands);
+	setMotorSpeeds(state, speedCommands);
+}
