@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "can.h"
+#include "helpers.h"
 
 #ifdef __cplusplus
 extern "C" {

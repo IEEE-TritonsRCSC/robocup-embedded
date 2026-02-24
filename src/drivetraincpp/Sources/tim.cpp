@@ -19,6 +19,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "tim.h"
+#include "helpers.h"
 
 #ifdef __cplusplus
 extern "C" {

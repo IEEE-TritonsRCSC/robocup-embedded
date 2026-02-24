@@ -3,7 +3,7 @@
 #include <stdint.h>
 #include "PID_Data.h"
 #include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_can.h"
+
 #include "CanHeader.h"
 
 // Protocol constants shared with helper callbacks.
@@ -26,6 +26,29 @@
 #define MOTOR4_GAINS {0.2f, 0.0f, 0.0f}
 #define TIMEOUT_DELAY 200
 #define HAL_DELAY 10
+#define KEY_PIN GPIO_PIN_10
+#define KEY_PORT GPIOD
+#define LED_GREEN_PIN GPIO_PIN_14
+#define LED_GREEN_PORT GPIOF
+#define LED_RED_PIN GPIO_PIN_11
+#define LED_RED_PORT GPIOE
+#define LED_ON GPIO_PIN_RESET
+#define LED_OFF GPIO_PIN_SET
+
+/*
+ * motor 1 = front right motor
+ * motor 2 = back right motor
+ * motor 3 = back left motor
+ * motor 4 = front left motor
+ * motor 5 = dribbler
+ */
+
+#define MOTOR1_PIN GPIO_PIN_2
+#define MOTOR2_PIN GPIO_PIN_3
+#define MOTOR3_PIN GPIO_PIN_4
+#define MOTOR4_PIN GPIO_PIN_5
+#define MOTOR5_PIN GPIO_PIN_6
+#define MOTOR_PORT GPIOH
 
 struct DrivetrainState {
     // Hardware handles (assigned in main after init).

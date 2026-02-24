@@ -27,7 +27,8 @@ extern "C" {
 
 /* Includes ------------------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "main.h"
+#include "helpers.h"
+
 /* USER CODE END Includes */
 
 extern CAN_HandleTypeDef hcan1;

@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "gpio.h"
+#include "helpers.h"
 
 #ifdef __cplusplus
 extern "C" {

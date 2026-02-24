@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "dma.h"
+#include "helpers.h"
 
 #ifdef __cplusplus
 extern "C" {

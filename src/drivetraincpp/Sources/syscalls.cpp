@@ -29,6 +29,7 @@
 #include <time.h>
 #include <sys/time.h>
 #include <sys/times.h>
+#include "helpers.h"
 
 #ifdef __cplusplus
 extern "C" {

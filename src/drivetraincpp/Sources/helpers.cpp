@@ -1,10 +1,15 @@
-#include "main.h"
 #include "can.h"
 #include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 #include "dma.h"
 #include "helpers.h"
+#include "stm32f4xx_hal_tim_ex.h"
+#include "stm32f4xx_hal_tim.h"
+#include "stm32f4xx_hal_uart.h"
+#include "stm32f4xx_hal_rcc.h"
+#include "stm32f4xx_hal_can.h"
+#include "CanHeader.h"
 #define DRIBBLE_SPEED 1500
 
 DrivetrainState::DrivetrainState()
