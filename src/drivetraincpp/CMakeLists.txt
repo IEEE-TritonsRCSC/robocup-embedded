@@ -58,7 +58,6 @@ set (PROJECT_SOURCES
 	Sources/PID_Data.cpp
 	Sources/PID_Gains.cpp
 	Sources/PID_Outputs.cpp
-	Sources/stm32f4xx_hal_msp.cpp
 	Sources/syscalls.cpp
 	Sources/system_stm32f4xx.cpp
 	Sources/tim.cpp
