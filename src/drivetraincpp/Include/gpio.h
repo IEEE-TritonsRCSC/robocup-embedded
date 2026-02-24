@@ -36,6 +36,17 @@ extern "C" {
 
 /* USER CODE END Private defines */
 
+void enableGPIOClocks();
+void configureMotorPins(GPIO_InitTypeDef* GPIO_InitStruct);
+void configureKeyPin(GPIO_InitTypeDef* GPIO_InitStruct);
+void configureGreenLED(GPIO_InitTypeDef *GPIO_InitStruct);
+void configureRedLED(GPIO_InitTypeDef *GPIO_InitStruct);
+void configureAndInitializePins(GPIO_InitTypeDef *GPIO_InitStruct);
+void configureGreenLEDOutputLevel();
+void configureRedLEDOutputLevel();
+void configureMotorPinsOutputLevel();
+void configurePinsOutputLevel();
+void configureOutputLevelsAndInitializePins(GPIO_InitTypeDef *GPIO_InitStruct);
 void MX_GPIO_Init(void);
 
 /* USER CODE BEGIN Prototypes */

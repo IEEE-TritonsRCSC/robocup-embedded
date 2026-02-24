@@ -40,18 +40,16 @@ extern "C" {
 }
 #endif
 
-/** Configure pins as
- * Analog
- * Input
- * Output
- * EVENT_OUT
- * EXTI
- */
-void MX_GPIO_Init(void) {
+/*Configure GPIO pins : Motor_Power_Switch_01_Pin Motor_Power_Switch_02_Pin Motor_Power_Switch_03_Pin Motor_Power_Switch_04_Pin */
+void configureMotorPins(GPIO_InitTypeDef* GPIO_InitStruct) {
+	GPIO_InitStruct->Pin = MOTOR1_PIN | MOTOR2_PIN | MOTOR3_PIN | MOTOR4_PIN | MOTOR5_PIN;
+	GPIO_InitStruct->Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct->Pull = GPIO_NOPULL;
+	GPIO_InitStruct->Speed = GPIO_SPEED_FREQ_LOW;
+}
 
-	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
-
-	/* GPIO Ports Clock Enable */
+/* GPIO Ports Clock Enable */
+void enableGPIOClocks() {
 	__HAL_RCC_GPIOA_CLK_ENABLE();
 	__HAL_RCC_GPIOB_CLK_ENABLE();
 	__HAL_RCC_GPIOC_CLK_ENABLE();
@@ -60,43 +58,88 @@ void MX_GPIO_Init(void) {
 	__HAL_RCC_GPIOF_CLK_ENABLE();
 	__HAL_RCC_GPIOG_CLK_ENABLE();
 	__HAL_RCC_GPIOH_CLK_ENABLE();
+}
 
-	/*Configure GPIO pin Output Level */
+/*Configure GPIO pin : PtPin */
+void configureKeyPin(GPIO_InitTypeDef* GPIO_InitStruct)
+{
+	GPIO_InitStruct->Pin = KEY_PIN;
+	GPIO_InitStruct->Mode = GPIO_MODE_INPUT;
+	GPIO_InitStruct->Pull = GPIO_NOPULL;
+}
+
+/*Configure GPIO pin : PtPin */
+void configureGreenLED(GPIO_InitTypeDef* GPIO_InitStruct) {
+	GPIO_InitStruct->Pin = LED_GREEN_PIN;
+	GPIO_InitStruct->Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct->Pull = GPIO_NOPULL;
+	GPIO_InitStruct->Speed = GPIO_SPEED_FREQ_LOW;
+}
+
+/*Configure GPIO pin : PtPin */
+void configureRedLED(GPIO_InitTypeDef *GPIO_InitStruct) {
+	GPIO_InitStruct->Pin = LED_RED_PIN;
+	GPIO_InitStruct->Mode = GPIO_MODE_OUTPUT_PP;
+	GPIO_InitStruct->Pull = GPIO_NOPULL;
+	GPIO_InitStruct->Speed = GPIO_SPEED_FREQ_LOW;
+}
+
+/*Configure GPIO pin Output Level */
+void configureGreenLEDOutputLevel() {
 	HAL_GPIO_WritePin(LED_GREEN_PORT, LED_GREEN_PIN, GPIO_PIN_RESET);
+}
 
-	/*Configure GPIO pin Output Level */
+/*Configure GPIO pin Output Level */
+void configureRedLEDOutputLevel() {
 	HAL_GPIO_WritePin(LED_RED_PORT, LED_RED_PIN, GPIO_PIN_RESET);
+}
 
-	/*Configure GPIO pin Output Level*/
-	HAL_GPIO_WritePin(MOTOR_PORT,
-			MOTOR1_PIN | MOTOR2_PIN | MOTOR3_PIN | MOTOR4_PIN | MOTOR5_PIN, GPIO_PIN_RESET);
+/*Configure GPIO pin Output Level */
+void configureMotorPinsOutputLevel()
+{
+	HAL_GPIO_WritePin(MOTOR_PORT, MOTOR1_PIN | MOTOR2_PIN | MOTOR3_PIN | MOTOR4_PIN | MOTOR5_PIN, GPIO_PIN_RESET);
+}
 
-	/*Configure GPIO pins : Motor_Power_Switch_01_Pin Motor_Power_Switch_02_Pin Motor_Power_Switch_03_Pin Motor_Power_Switch_04_Pin */
-	GPIO_InitStruct.Pin = MOTOR1_PIN | MOTOR2_PIN | MOTOR3_PIN | MOTOR4_PIN | MOTOR5_PIN;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(MOTOR_PORT, &GPIO_InitStruct);
+void configurePinsOutputLevel() {
+	configureGreenLEDOutputLevel();
+	configureRedLEDOutputLevel();
+	configureMotorPinsOutputLevel();
+}
 
-	/*Configure GPIO pin : PtPin */
-	GPIO_InitStruct.Pin = KEY_PIN;
-	GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	HAL_GPIO_Init(KEY_PORT, &GPIO_InitStruct);
+void configureAndInitializePins(GPIO_InitTypeDef *GPIO_InitStruct) {
+	configureMotorPins(GPIO_InitStruct);
+	HAL_GPIO_Init(MOTOR_PORT, GPIO_InitStruct);
 
-	/*Configure GPIO pin : PtPin */
-	GPIO_InitStruct.Pin = LED_GREEN_PIN;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(LED_GREEN_PORT, &GPIO_InitStruct);
+	configureKeyPin(GPIO_InitStruct);
+	HAL_GPIO_Init(KEY_PORT, GPIO_InitStruct);
 
-	/*Configure GPIO pin : PtPin */
-	GPIO_InitStruct.Pin = LED_RED_PIN;
-	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	GPIO_InitStruct.Pull = GPIO_NOPULL;
-	GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-	HAL_GPIO_Init(LED_RED_PORT, &GPIO_InitStruct);
+	configureGreenLED(GPIO_InitStruct);
+	HAL_GPIO_Init(LED_GREEN_PORT, GPIO_InitStruct);
+
+	configureRedLED(GPIO_InitStruct);
+	HAL_GPIO_Init(LED_RED_PORT, GPIO_InitStruct);
+}
+
+void configureOutputLevelsAndInitializePins(GPIO_InitTypeDef *GPIO_InitStruct) {
+	configurePinsOutputLevel();
+	configureAndInitializePins(GPIO_InitStruct);
+}
+
+	/** Configure pins as
+	 * Analog
+	 * Input
+	 * Output
+	 * EVENT_OUT
+	 * EXTI
+	 */
+	void MX_GPIO_Init(void)
+{
+
+	GPIO_InitTypeDef GPIO_InitStruct = { 0 };
+
+	enableGPIOClocks();
+
+	configureOutputLevelsAndInitializePins(&GPIO_InitStruct);
 }
 
 /* USER CODE BEGIN 2 */
