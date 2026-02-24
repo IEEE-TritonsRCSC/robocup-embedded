@@ -131,9 +131,30 @@ void handleCanRxFifo0(DrivetrainState *state, CAN_HandleTypeDef *hcan);
  */
 void handleUartRxComplete(DrivetrainState *state, UART_HandleTypeDef *huart);
 
+/** Configure the main internal regulator output voltage
+ */
+void configureOutputVoltage();
+
+/** Initializes the RCC Oscillators according to the specified parameters
+ * in the RCC_OscInitTypeDef structure.
+ */
+void initializeRCCOscillator(RCC_OscInitTypeDef *RCC_OscInitStruct);
+
+/** Initializes the CPU, AHB and APB buses clocks
+ */
+void initializeClocks(RCC_ClkInitTypeDef *RCC_ClkInitStruct);
+
+void configureOscillatorOrDie(RCC_OscInitTypeDef *RCC_OscInitStruct);
+
+void configureClockTreeOrDie(RCC_ClkInitTypeDef *RCC_ClkInitStruct);
+
+void initializeAndConfigureOscillatorOrDie(RCC_OscInitTypeDef *RCC_OscInitStruct);
+
+void initializeAndConfigureClockTreeOrDie(RCC_ClkInitTypeDef *RCC_ClkInitStruct);
+
 // System hooks.
 #ifdef __cplusplus
-extern "C" {
+    extern "C" {
 #endif
 void SystemClock_Config(void);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);

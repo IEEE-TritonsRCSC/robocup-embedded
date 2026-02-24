@@ -56,7 +56,6 @@ void forward(int motorSpeed, int duration);
 void backward(int motorSpeed, int duration);
 void left(int motorSpeed, int duration);
 void right(int motorSpeed, int duration);
-void setMotorSpeeds(int16_t ms1, int16_t ms2, int16_t ms3, int16_t ms4, int16_t msg5);
 void runMotors(unsigned char motorOneHigh, unsigned char motorOneLow,
 		unsigned char motorTwoHigh, unsigned char motorTwoLow,
 		unsigned char motorThreeHigh, unsigned char motorThreeLow,
