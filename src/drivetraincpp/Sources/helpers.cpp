@@ -311,3 +311,11 @@ void HAL_UART_RxCpltCallback(DrivetrainState *state, UART_HandleTypeDef *huart)
 	handleUartRxComplete(state, huart);
 }
 
+void initializeSpeedCommands(DrivetrainState *state, int16_t *speedCommands) {
+	for (int i = 0; i < NUM_WHEELS; i++)
+	{
+		speedCommands[i] = static_cast<int16_t>(state->motor_pids[i].getOutput());
+	}
+	speedCommands[NUM_WHEELS] = state->dribble_speed;
+}
+

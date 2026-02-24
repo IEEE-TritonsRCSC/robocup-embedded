@@ -207,6 +207,14 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan);
  */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 
+/**
+ * @brief Fill speed command array from PID outputs and dribbler speed.
+ *
+ * @param state Shared drivetrain state containing PID outputs and dribbler speed.
+ * @param speedCommands Output array sized NUM_MOTORS (wheels + dribbler).
+ */
+void initializeSpeedCommands(DrivetrainState *state, int16_t *speedCommands);
+
 // System hooks.
 #ifdef __cplusplus
     extern "C" {
