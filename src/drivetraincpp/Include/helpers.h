@@ -186,18 +186,44 @@ void initializeAndConfigureClockTreeOrDie(RCC_ClkInitTypeDef *RCC_ClkInitStruct)
  */
 void initializeAndConfigureOscillatorAndClockTreeOrDie(RCC_OscInitTypeDef *RCC_OscInitStruct, RCC_ClkInitTypeDef *RCC_ClkInitStruct);
 
+/**
+ * @brief Initialize board peripherals (GPIO/CAN/UART/timers).
+ *
+ * Called during startup to bring up the hardware drivers used by drivetrain.
+ */
 void initializePeripherals();
 
+/**
+ * @brief HAL callback for CAN RX FIFO0 message pending.
+ *
+ * @param hcan CAN handle that triggered the callback.
+ */
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan);
 
+/**
+ * @brief HAL callback for UART receive complete.
+ *
+ * @param huart UART handle that triggered the callback.
+ */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
 
 // System hooks.
 #ifdef __cplusplus
     extern "C" {
 #endif
+/**
+ * @brief Configure system clocks and PLL.
+ */
 void SystemClock_Config(void);
+/**
+ * @brief HAL timer period elapsed callback.
+ *
+ * @param htim Timer handle that triggered the callback.
+ */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim);
+/**
+ * @brief Error handler for unrecoverable faults.
+ */
 void Error_Handler(void);
 #ifdef __cplusplus
 }
