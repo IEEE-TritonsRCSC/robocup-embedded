@@ -328,3 +328,8 @@ void initializeSpeedCommandsAndSetMotorsAndIncrementTimeout(DrivetrainState *sta
 	initializeSpeedCommandsAndSetMotors(state, speedCommands);
 	state->timeout++;
 }
+
+void initSpeedCommandsSetMotorsIncrementTimeoutAndDelay(DrivetrainState *state, int16_t *speedCommands) {
+	initializeSpeedCommandsAndSetMotorsAndIncrementTimeout(state, speedCommands);
+	HAL_Delay(HAL_DELAY);
+}

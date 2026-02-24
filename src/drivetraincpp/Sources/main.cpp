@@ -31,7 +31,6 @@
 
 
 #define REDUCTION_RATIO 36.0
-#define HAL_DELAY 10
 
 static DrivetrainState state;
 
@@ -65,9 +64,7 @@ int main(void) {
 
 		int16_t speedCommands[NUM_MOTORS] = {};
 
-		initializeSpeedCommandsAndSetMotorsAndIncrementTimeout(&state, speedCommands);
-
-		HAL_Delay(HAL_DELAY);
+		initSpeedCommandsSetMotorsIncrementTimeoutAndDelay(&state, speedCommands);
 	}
 }
 

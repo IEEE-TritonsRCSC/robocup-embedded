@@ -25,6 +25,7 @@
 #define MOTOR3_GAINS {0.2f, 0.0f, 0.0f}
 #define MOTOR4_GAINS {0.2f, 0.0f, 0.0f}
 #define TIMEOUT_DELAY 200
+#define HAL_DELAY 10
 
 struct DrivetrainState {
     // Hardware handles (assigned in main after init).
@@ -230,6 +231,14 @@ void initializeSpeedCommandsAndSetMotors(DrivetrainState *state, int16_t *speedC
  * @param speedCommands Output array sized NUM_MOTORS (wheels + dribbler).
  */
 void initializeSpeedCommandsAndSetMotorsAndIncrementTimeout(DrivetrainState *state, int16_t *speedCommands);
+
+/**
+ * @brief Build and transmit motor commands, increment timeout, then delay.
+ *
+ * @param state Shared drivetrain state; `timeout` is incremented.
+ * @param speedCommands Output array sized NUM_MOTORS (wheels + dribbler).
+ */
+void initSpeedCommandsSetMotorsIncrementTimeoutAndDelay(DrivetrainState *state, int16_t *speedCommands);
 
 // System hooks.
 #ifdef __cplusplus
