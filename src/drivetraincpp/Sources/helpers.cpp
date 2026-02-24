@@ -300,3 +300,14 @@ void initializePeripherals() {
 	MX_TIM1_Init();
 	MX_UART4_Init();
 }
+
+void HAL_CAN_RxFifo0MsgPendingCallback(DrivetrainState* state, CAN_HandleTypeDef *hcan)
+{
+	handleCanRxFifo0(state, hcan);
+}
+
+void HAL_UART_RxCpltCallback(DrivetrainState *state, UART_HandleTypeDef *huart)
+{
+	handleUartRxComplete(state, huart);
+}
+

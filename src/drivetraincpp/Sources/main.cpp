@@ -79,14 +79,6 @@ int main(void) {
 	}
 }
 
-void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
-	handleCanRxFifo0(&state, hcan);
-}
-
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-	handleUartRxComplete(&state, huart);
-}
-
 #ifdef  USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number

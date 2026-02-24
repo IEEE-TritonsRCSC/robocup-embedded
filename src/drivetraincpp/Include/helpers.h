@@ -188,6 +188,10 @@ void initializeAndConfigureOscillatorAndClockTreeOrDie(RCC_OscInitTypeDef *RCC_O
 
 void initializePeripherals();
 
+void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan);
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
+
 // System hooks.
 #ifdef __cplusplus
     extern "C" {
