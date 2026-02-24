@@ -81,13 +81,13 @@ struct DrivetrainState {
  * @param state Shared drivetrain state; updates `dribble_speed`.
  */
 void updateDribblerSpeedFromFlag(DrivetrainState *state);
+
 /**
  * @brief Apply safety timeout behavior to target wheel speeds.
  *
- * @param timeout Timeout flag/counter indicating communication loss.
- * @param targetSpeeds Target speed array to modify when timed out.
+ * @param state Shared drivetrain state; uses `timeout` and updates `targetSpeeds`.
  */
-void applySafetyTimeoutToTargetSpeeds(int timeout, volatile float *targetSpeeds);
+void applySafetyTimeoutToTargetSpeeds(DrivetrainState *state);
 
 /**
  * @brief Run one PID update step for all motors using state data.

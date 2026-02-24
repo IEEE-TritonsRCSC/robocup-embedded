@@ -54,13 +54,13 @@ void updateDribblerSpeedFromFlag(DrivetrainState *state)
     }
 }
 
-void applySafetyTimeoutToTargetSpeeds(int timeout, volatile float *targetSpeeds)
+void applySafetyTimeoutToTargetSpeeds(DrivetrainState *state)
 {
-    if (timeout >= TIMEOUT_DELAY)
+    if (state->timeout >= TIMEOUT_DELAY)
     { // Safety timeout when UART disconnects
         for (int i = 0; i < 4; ++i)
         {
-            targetSpeeds[i] = 0;
+            state->targetSpeeds[i] = 0;
         }
     }
 }

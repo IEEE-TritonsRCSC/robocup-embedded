@@ -58,7 +58,7 @@ int main(void) {
 
 		updateDribblerSpeedFromFlag(&state);
 
-		//applySafetyTimeoutToTargetSpeeds(state.timeout, state.targetSpeeds);
+		//applySafetyTimeoutToTargetSpeeds(&state);
 		
 		updateMotorPidLoop(&state);
 
