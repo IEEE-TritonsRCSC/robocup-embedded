@@ -21,6 +21,7 @@ void execute_dash(float power, float dir);
 void execute_skick(float power);
 void execute_kick();
 void execute_catch();
+void execute_kicktest();
 
 // Hardware Controllers
 void setDribbler(float power);
