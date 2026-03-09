@@ -59,7 +59,7 @@ extern UART_HandleTypeDef huart4;
 
 #define CONTROL_LOOP_DELAY_MS 10
 #define TARGET_SCALE 100.0f
-#define DRIBBLE_SCALE 100
+#define DRIBBLE_SCALE -100
 
 // Ramp tuning: milliseconds per unit of target.
 // Smaller values ramp faster; larger values ramp slower.
@@ -78,7 +78,7 @@ extern UART_HandleTypeDef huart4;
 #define DERIVATIVE_GAIN 0.0f
 
 #define RIGHT_GAIN_MULT 1.0f
-#define LEFT_GAIN_MULT 1.0f
+#define LEFT_GAIN_MULT 0.925f
 
 // Telemetry over UART -> ESP32 -> UDP.
 #define TELEMETRY_ENABLED 1
