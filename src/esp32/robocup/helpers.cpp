@@ -124,7 +124,7 @@ void execute_turn(float angular_speed) {
 void execute_dash(float power, float dir) {
   PRINT("Dashing with ", power, " power in ", dir, " radians | ");
   float acceleration = 0.006 * power;
-  vel_u += acceleration * sinf(dir);
+  vel_u += -acceleration * sinf(dir);
   vel_v += acceleration * cosf(dir);
   vel_w = 0.0f;
 }

@@ -27,7 +27,7 @@ void PRINT(const Args&...) {}
 #endif
 
 // Receive Messages over multicast
-#define MULTICAST_PORT 11000
+#define MULTICAST_PORT 10000
 #define MAX_PACKET_SIZE 512
 #define MAX_BUFFER_SIZE 64
 #define MAX_COMMAND_BUFFER 8

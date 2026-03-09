@@ -4,7 +4,7 @@ import socket
 
 ROBOT_ID = 1
 COMMAND_IP = "239.42.42.42"
-COMMAND_PORT = 10000
+COMMAND_PORT = 11000
 
 # Yellow team: 10000
 # Blue team: 11000
