@@ -78,7 +78,7 @@ extern UART_HandleTypeDef huart4;
 #define DERIVATIVE_GAIN 0.0f
 
 #define RIGHT_GAIN_MULT 1.0f
-#define LEFT_GAIN_MULT 0.925f
+#define LEFT_GAIN_MULT 0.9f
 
 // Telemetry over UART -> ESP32 -> UDP.
 #define TELEMETRY_ENABLED 1
@@ -457,14 +457,14 @@ static void apply_pid_packet(const uint8_t *payload)
 static void control_loop_step(void)
 {
 	float dt_ms = ramp_get_dt_ms();
-	/*
+	
 	// Safety timeout when UART disconnects (uncomment if needed).
 	if (timeout >= 200) {
 		for (int i = 0; i < MOTOR_COUNT; ++i) {
 			targetSpeeds[i] = 0.0f;
 		}
 	}
-	*/
+	
 
 	for (int i = 0; i < MOTOR_COUNT; ++i) {
 		// Target speeds arrive in centi-units; scale to match feedback units.
