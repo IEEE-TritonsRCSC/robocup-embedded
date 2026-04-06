@@ -1,6 +1,8 @@
 .DS_Store
+.history
 
 # STM32CubeIDE auto-generated files
+*.s
 *.elf
 *.bin
 *.hex
