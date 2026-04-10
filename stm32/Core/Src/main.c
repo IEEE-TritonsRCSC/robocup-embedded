@@ -109,7 +109,7 @@ static void MX_TIM1_Init(void);
 void StartIdleTask(void *argument);
 void StartMotorControlTask(void *argument);
 void StartSensorTask(void *argument);
-void StartTask04(void *argument);
+void StartActuatorTask(void *argument);
 void StartESPCommTask(void *argument);
 
 /* USER CODE BEGIN PFP */
@@ -194,7 +194,7 @@ int main(void)
   SensorTaskHandle = osThreadNew(StartSensorTask, NULL, &SensorTask_attributes);
 
   /* creation of ActuatorTask */
-  ActuatorTaskHandle = osThreadNew(StartTask04, NULL, &ActuatorTask_attributes);
+  ActuatorTaskHandle = osThreadNew(StartActuatorTask, NULL, &ActuatorTask_attributes);
 
   /* creation of ESPCommTask */
   ESPCommTaskHandle = osThreadNew(StartESPCommTask, NULL, &ESPCommTask_attributes);
@@ -652,22 +652,22 @@ void StartSensorTask(void *argument)
   /* USER CODE END StartSensorTask */
 }
 
-/* USER CODE BEGIN Header_StartTask04 */
+/* USER CODE BEGIN Header_StartActuatorTask */
 /**
 * @brief Function implementing the ActuatorTask thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_StartTask04 */
-void StartTask04(void *argument)
+/* USER CODE END Header_StartActuatorTask */
+void StartActuatorTask(void *argument)
 {
-  /* USER CODE BEGIN StartTask04 */
+  /* USER CODE BEGIN StartActuatorTask */
   /* Infinite loop */
   for(;;)
   {
     osDelay(1);
   }
-  /* USER CODE END StartTask04 */
+  /* USER CODE END StartActuatorTask */
 }
 
 /* USER CODE BEGIN Header_StartESPCommTask */
