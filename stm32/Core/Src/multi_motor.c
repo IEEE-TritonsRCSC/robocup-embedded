@@ -19,7 +19,7 @@
 
 extern FDCAN_HandleTypeDef hfdcan1;
 
-#define NUM_MOTORS 3
+#define NUM_MOTORS 5
 
 static moteus_motor_t* motors[NUM_MOTORS];
 
@@ -34,6 +34,8 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 
 /**
  * @brief Initialize all motors
+ * @retval true  All motors initialized successfully
+ * @retval false One or more motors failed to initialize
  */
 bool motors_init(void)
 {
@@ -151,7 +153,7 @@ void example_main(void)
     query_all();
 
     // Run control loop for 5 seconds
-    float targets[NUM_MOTORS] = {0.0f, 0.0f, 0.0f};
+    float targets[NUM_MOTORS] = {0.0f}; // init targets to 0.0f
     uint32_t start = HAL_GetTick();
 
     while (HAL_GetTick() - start < 5000) {
