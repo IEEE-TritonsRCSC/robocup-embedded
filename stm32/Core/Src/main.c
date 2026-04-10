@@ -57,10 +57,10 @@ UART_HandleTypeDef huart4;
 DMA_HandleTypeDef hdma_uart4_rx;
 DMA_HandleTypeDef hdma_uart4_tx;
 
-/* Definitions for defaultTask */
-osThreadId_t defaultTaskHandle;
-const osThreadAttr_t defaultTask_attributes = {
-  .name = "defaultTask",
+/* Definitions for IdleTask */
+osThreadId_t IdleTaskHandle;
+const osThreadAttr_t IdleTask_attributes = {
+  .name = "IdleTask",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
@@ -70,6 +70,27 @@ const osThreadAttr_t MotorControlTask_attributes = {
   .name = "MotorControlTask",
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityAboveNormal,
+};
+/* Definitions for SensorTask */
+osThreadId_t SensorTaskHandle;
+const osThreadAttr_t SensorTask_attributes = {
+  .name = "SensorTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityBelowNormal,
+};
+/* Definitions for ActuatorTask */
+osThreadId_t ActuatorTaskHandle;
+const osThreadAttr_t ActuatorTask_attributes = {
+  .name = "ActuatorTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
+};
+/* Definitions for ESPCommTask */
+osThreadId_t ESPCommTaskHandle;
+const osThreadAttr_t ESPCommTask_attributes = {
+  .name = "ESPCommTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* USER CODE BEGIN PV */
 
@@ -85,8 +106,11 @@ static void MX_UART4_Init(void);
 static void MX_I2C1_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_TIM1_Init(void);
-void StartDefaultTask(void *argument);
+void StartIdleTask(void *argument);
 void StartMotorControlTask(void *argument);
+void StartSensorTask(void *argument);
+void StartTask04(void *argument);
+void StartESPCommTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -159,11 +183,20 @@ int main(void)
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* creation of defaultTask */
-  defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+  /* creation of IdleTask */
+  IdleTaskHandle = osThreadNew(StartIdleTask, NULL, &IdleTask_attributes);
 
   /* creation of MotorControlTask */
   MotorControlTaskHandle = osThreadNew(StartMotorControlTask, NULL, &MotorControlTask_attributes);
+
+  /* creation of SensorTask */
+  SensorTaskHandle = osThreadNew(StartSensorTask, NULL, &SensorTask_attributes);
+
+  /* creation of ActuatorTask */
+  ActuatorTaskHandle = osThreadNew(StartTask04, NULL, &ActuatorTask_attributes);
+
+  /* creation of ESPCommTask */
+  ESPCommTaskHandle = osThreadNew(StartESPCommTask, NULL, &ESPCommTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -560,14 +593,14 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartDefaultTask */
+/* USER CODE BEGIN Header_StartIdleTask */
 /**
-  * @brief  Function implementing the defaultTask thread.
+  * @brief  Function implementing the IdleTask thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartDefaultTask */
-void StartDefaultTask(void *argument)
+/* USER CODE END Header_StartIdleTask */
+void StartIdleTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
@@ -594,6 +627,60 @@ void StartMotorControlTask(void *argument)
     osDelay(1);
   }
   /* USER CODE END StartMotorControlTask */
+}
+
+/* USER CODE BEGIN Header_StartSensorTask */
+/**
+* @brief Function implementing the SensorTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartSensorTask */
+void StartSensorTask(void *argument)
+{
+  /* USER CODE BEGIN StartSensorTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartSensorTask */
+}
+
+/* USER CODE BEGIN Header_StartTask04 */
+/**
+* @brief Function implementing the ActuatorTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartTask04 */
+void StartTask04(void *argument)
+{
+  /* USER CODE BEGIN StartTask04 */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartTask04 */
+}
+
+/* USER CODE BEGIN Header_StartESPCommTask */
+/**
+* @brief Function implementing the ESPCommTask thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartESPCommTask */
+void StartESPCommTask(void *argument)
+{
+  /* USER CODE BEGIN StartESPCommTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartESPCommTask */
 }
 
  /* MPU Configuration */
