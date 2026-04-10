@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "moteus.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -160,7 +160,8 @@ int main(void)
   MX_SPI2_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-  HAL_FDCAN_Start(&hfdcan1); // start FDCAN communication
+  moteus_can_init(&hfdcan1); // Initialize FDCAN peripheral for Moteus communication
+  moteus_motor_t* motor = moteus_init(&hfdcan1, 1);  // Create a motor instance for Motor ID 1
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -590,7 +591,11 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
+{
+    (void)RxFifo0ITs;
+    moteus_fdcan_rx_callback(hfdcan);
+}
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartIdleTask */
