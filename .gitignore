@@ -2,6 +2,7 @@
 .history
 
 # STM32CubeIDE auto-generated files
+*.mk
 *.s
 *.elf
 *.bin
