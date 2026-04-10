@@ -2,7 +2,6 @@
 .history
 
 # STM32CubeIDE auto-generated files
-*.cyclo
 *.mk
 *.s
 *.elf
