@@ -46,7 +46,10 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-
+#define MOTEUS_MAX_MOTORS 5       // Max motors (default: 8)
+#define MOTEUS_SOURCE_ID 0        // CAN source ID (default: 0)
+#define MOTEUS_DEFAULT_TIMEOUT_MS 100  // Blocking timeout (default: 100ms)
+#define MOTEUS_ENABLE_BRS 0       // Enable BRS for 5 Mbps data phase (default: 1)
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
