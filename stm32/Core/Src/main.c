@@ -64,6 +64,13 @@ const osThreadAttr_t defaultTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for MotorControlTask */
+osThreadId_t MotorControlTaskHandle;
+const osThreadAttr_t MotorControlTask_attributes = {
+  .name = "MotorControlTask",
+  .stack_size = 128 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal,
+};
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -79,6 +86,7 @@ static void MX_I2C1_Init(void);
 static void MX_SPI2_Init(void);
 static void MX_TIM1_Init(void);
 void StartDefaultTask(void *argument);
+void StartMotorControlTask(void *argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -128,7 +136,7 @@ int main(void)
   MX_SPI2_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_FDCAN_Start(&hfdcan1); // start FDCAN communication
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -153,6 +161,9 @@ int main(void)
   /* Create the thread(s) */
   /* creation of defaultTask */
   defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, &defaultTask_attributes);
+
+  /* creation of MotorControlTask */
+  MotorControlTaskHandle = osThreadNew(StartMotorControlTask, NULL, &MotorControlTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -565,6 +576,24 @@ void StartDefaultTask(void *argument)
     osDelay(1);
   }
   /* USER CODE END 5 */
+}
+
+/* USER CODE BEGIN Header_StartMotorControlTask */
+/**
+* @brief Function implementing the MotorControlTas thread.
+* @param argument: Not used
+* @retval None
+*/
+/* USER CODE END Header_StartMotorControlTask */
+void StartMotorControlTask(void *argument)
+{
+  /* USER CODE BEGIN StartMotorControlTask */
+  /* Infinite loop */
+  for(;;)
+  {
+    osDelay(1);
+  }
+  /* USER CODE END StartMotorControlTask */
 }
 
  /* MPU Configuration */
