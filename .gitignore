@@ -1,6 +1,8 @@
 .DS_Store
 .history
 
+# do not ignore .cyclo
+
 # STM32CubeIDE auto-generated files
 *.mk
 *.s
