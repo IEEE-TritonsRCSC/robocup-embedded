@@ -169,8 +169,6 @@ int main(void)
   MX_SPI2_Init();
   MX_TIM1_Init();
   /* USER CODE BEGIN 2 */
-  moteus_can_init(&hfdcan1); // Initialize FDCAN peripheral for Moteus communication
-  moteus_motor_t* motor = moteus_init(&hfdcan1, 1);  // Create a motor instance for Motor ID 1
   /* USER CODE END 2 */
 
   /* Init scheduler */
