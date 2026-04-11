@@ -8,7 +8,6 @@
  * @note `velocities` is 5 elements, so the motor target queue size is 20 bytes 
  * (4 byte float * 5 motors = 20 bytes)
  */
-struct MotorTarget {
+typedef struct MotorTarget {
    float velocities[NUM_MOTORS];
-};
-typedef struct MotorTarget MotorTarget_t;
+}; MotorTarget_t;
