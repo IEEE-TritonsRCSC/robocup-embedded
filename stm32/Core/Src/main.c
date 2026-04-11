@@ -102,6 +102,11 @@ osMessageQueueId_t MotorTargetQueueHandle;
 const osMessageQueueAttr_t MotorTargetQueue_attributes = {
   .name = "MotorTargetQueue"
 };
+/* Definitions for ActuatorQueue */
+osMessageQueueId_t ActuatorQueueHandle;
+const osMessageQueueAttr_t ActuatorQueue_attributes = {
+  .name = "ActuatorQueue"
+};
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -190,6 +195,9 @@ int main(void)
   /* Create the queue(s) */
   /* creation of MotorTargetQueue */
   MotorTargetQueueHandle = osMessageQueueNew (1, 20, &MotorTargetQueue_attributes);
+
+  /* creation of ActuatorQueue */
+  ActuatorQueueHandle = osMessageQueueNew (1, 3, &ActuatorQueue_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
