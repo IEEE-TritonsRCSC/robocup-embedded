@@ -3,7 +3,10 @@
 #define DRIBBLER_INDEX 1
 #define CHIPPER_INDEX 2
 
-struct ActuatorCommand {
+/**
+ * @brief stores activation status for the kicker, dribbler, and chipper
+ */
+typedef struct ActuatorCommand {
    bool actuatorStatus[NUM_ACTUATORS];
 };
 typedef struct ActuatorCommand_t;
