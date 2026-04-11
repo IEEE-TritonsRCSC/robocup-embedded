@@ -50,6 +50,8 @@ extern "C" {
 #define MOTEUS_SOURCE_ID 0        // CAN source ID (default: 0)
 #define MOTEUS_DEFAULT_TIMEOUT_MS 100  // Blocking timeout (default: 100ms)
 #define MOTEUS_ENABLE_BRS 0       // Enable BRS for 5 Mbps data phase (default: 1)
+
+#define QUEUE_TIMEOUT 0 // timeout in ms if queue is empty
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
