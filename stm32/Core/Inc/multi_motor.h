@@ -8,7 +8,7 @@
 
 extern FDCAN_HandleTypeDef hfdcan1;
 
-#define NUM_MOTORS 5
+#define NUM_MOTORS 5 // 4 wheel motors + 1 dribbler
 
 /**
  * @brief FDCAN RX callback - add to main.c
