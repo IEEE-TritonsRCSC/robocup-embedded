@@ -26,6 +26,8 @@
 #include "moteus.h"
 #include "multi_motor.h"
 #include "MotorTarget.h"
+#include "PID.h"
+#include "MotorInfo.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
