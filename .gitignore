@@ -1,6 +1,7 @@
 .DS_Store
 .history
 *.xml
+*.prefs
 
 # do not ignore .cyclo
 
