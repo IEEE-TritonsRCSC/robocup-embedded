@@ -14,12 +14,7 @@
  * - MOTEUS_MAX_MOTORS >= NUM_MOTORS
  */
 
-#include "moteus.h"
-#include "main.h"
-
-extern FDCAN_HandleTypeDef hfdcan1;
-
-#define NUM_MOTORS 5
+#include "multi_motor.h"
 
 static moteus_motor_t* motors[NUM_MOTORS];
 
