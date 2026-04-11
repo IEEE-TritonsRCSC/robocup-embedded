@@ -1,0 +1,1 @@
+#define MAX_TORQUE 1.5f // Maximum torque in Nm (NaN = use configured)
