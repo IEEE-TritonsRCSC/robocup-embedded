@@ -23,20 +23,12 @@ extern FDCAN_HandleTypeDef hfdcan1;
 
 static moteus_motor_t* motors[NUM_MOTORS];
 
-/**
- * @brief FDCAN RX callback - add to main.c
- */
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 {
     (void)RxFifo0ITs;
     moteus_fdcan_rx_callback(hfdcan);
 }
 
-/**
- * @brief Initialize all motors
- * @retval true  All motors initialized successfully
- * @retval false One or more motors failed to initialize
- */
 bool motors_init(void)
 {
     moteus_can_init(&hfdcan1);
@@ -51,9 +43,6 @@ bool motors_init(void)
     return true;
 }
 
-/**
- * @brief Poll all motors, returns number of new responses
- */
 int poll_all(void)
 {
     int received = 0;
@@ -65,9 +54,6 @@ int poll_all(void)
     return received;
 }
 
-/**
- * @brief Wait for all motors to respond with timeout
- */
 bool wait_all(uint32_t timeout_ms)
 {
     uint32_t start = HAL_GetTick();
@@ -82,9 +68,6 @@ bool wait_all(uint32_t timeout_ms)
     return true;
 }
 
-/**
- * @brief Example: Query all motors
- */
 void query_all(void)
 {
     // Send queries (non-blocking)
@@ -103,11 +86,6 @@ void query_all(void)
     }
 }
 
-/**
- * @brief Example: Control loop sending different torques to each motor
- *
- * Call from timer interrupt at your control rate (e.g., 1kHz).
- */
 void control_loop_tick(float* target_positions)
 {
     // Check for responses from previous cycle
@@ -130,9 +108,6 @@ void control_loop_tick(float* target_positions)
     }
 }
 
-/**
- * @brief Stop all motors
- */
 void stop_all(void)
 {
     for (int i = 0; i < NUM_MOTORS; i++) {
@@ -141,9 +116,6 @@ void stop_all(void)
     wait_all(50);
 }
 
-/**
- * @brief Example main
- */
 void example_main(void)
 {
     if (!motors_init()) {
