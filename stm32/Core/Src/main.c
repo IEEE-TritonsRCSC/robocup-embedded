@@ -94,6 +94,11 @@ const osThreadAttr_t ESPCommTask_attributes = {
   .stack_size = 128 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
+/* Definitions for MotorTargetQueue */
+osMessageQueueId_t MotorTargetQueueHandle;
+const osMessageQueueAttr_t MotorTargetQueue_attributes = {
+  .name = "MotorTargetQueue"
+};
 /* USER CODE BEGIN PV */
 
 /* USER CODE END PV */
@@ -180,6 +185,10 @@ int main(void)
   /* USER CODE BEGIN RTOS_TIMERS */
   /* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
+
+  /* Create the queue(s) */
+  /* creation of MotorTargetQueue */
+  MotorTargetQueueHandle = osMessageQueueNew (1, 20, &MotorTargetQueue_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
