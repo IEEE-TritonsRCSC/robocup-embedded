@@ -8,5 +8,4 @@
  */
 typedef struct ActuatorCommand {
    bool actuatorStatus[NUM_ACTUATORS];
-};
-typedef struct ActuatorCommand_t;
+} ActuatorCommand_t;
