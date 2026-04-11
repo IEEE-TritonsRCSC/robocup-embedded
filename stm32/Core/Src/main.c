@@ -24,6 +24,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "moteus.h"
+#include "multi_motor.h"
+#include "MotorTarget.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
