@@ -28,6 +28,7 @@
 #include "MotorTarget.h"
 #include "PID.h"
 #include "MotorInfo.h"
+#include "ActuatorCommand.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
