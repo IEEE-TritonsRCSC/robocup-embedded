@@ -137,8 +137,12 @@ void StartESPCommTask(void *argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint32_t last_esp_packet_tick;
+// time in ms since last esp packet receive
+volatile uint32_t last_esp_packet_tick;
+// UART receive buffer
 uint8_t rxBuffer[RX_BUFFER_SIZE];
+// updated with breakbeam ball detection
+volatile bool global_ball_detected = false;
 /* USER CODE END 0 */
 
 /**
