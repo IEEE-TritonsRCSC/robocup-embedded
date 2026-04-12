@@ -1,5 +1,7 @@
 #include "globals.h"
-#include "credentials.h" 
+#include "credentials.h"
+#include "helpers.h"
+#include <WebServer.h>
 
 IPAddress multicastIP(239, 42, 42, 42);
 HardwareSerial robotSerial(2);
