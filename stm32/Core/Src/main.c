@@ -23,6 +23,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <string.h>
+#include "task.h"
 #include "moteus.h"
 #include "multi_motor.h"
 #include "MotorTarget.h"
@@ -30,6 +32,7 @@
 #include "MotorInfo.h"
 #include "ActuatorCommand.h"
 #include "SolenoidTrigger.h"
+#include "RobotTelemetry.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
