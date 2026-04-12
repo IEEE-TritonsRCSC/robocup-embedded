@@ -16,6 +16,10 @@
 #define BALL_SENSOR_PIN 0
 #define BALL_DETECTION_DELAY 50 // delay in each ball detection poll in ms 50ms = 20Hz
 
+#define HEARTBEAT_LED_BLINK_DELAY 500 // Heartbeat LED: Toggle every 500ms (1Hz blink)
+#define HEARTBEAT_LED_GPIO_PORT 0
+#define HEARTBEAT_LED_PIN 0
+
 /**
  * @brief stores activation status for the kicker, dribbler, and chipper
  */

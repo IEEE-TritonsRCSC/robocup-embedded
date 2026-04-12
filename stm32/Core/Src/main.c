@@ -81,7 +81,7 @@ osThreadId_t SensorTaskHandle;
 const osThreadAttr_t SensorTask_attributes = {
   .name = "SensorTask",
   .stack_size = 128 * 4,
-  .priority = (osPriority_t) osPriorityBelowNormal,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for ActuatorTask */
 osThreadId_t ActuatorTaskHandle;
@@ -133,7 +133,10 @@ void StartESPCommTask(void *argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+uint32_t last_esp_packet_tick;
 
+// TODO: figure out esp uart rx buffer usage
+//uint8_t rxBuffer[RX_BUFFER_SIZE];
 /* USER CODE END 0 */
 
 /**
@@ -620,20 +623,43 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
 
 /* USER CODE BEGIN Header_StartIdleTask */
 /**
-  * @brief  Function implementing the IdleTask thread.
-  * @param  argument: Not used
-  * @retval None
-  */
+ * @brief  Function implementing the IdleTask thread.
+ * @param  argument: Not used
+ */
 /* USER CODE END Header_StartIdleTask */
 void StartIdleTask(void *argument)
 {
-  /* USER CODE BEGIN 5 */
+  /* USER CODE BEGIN StartIdleTask */
+  uint32_t led_tick = HAL_GetTick();
+
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    // 1. Heartbeat LED: Toggle every 500ms (1Hz blink)
+    // Provides visual confirmation that the FreeRTOS scheduler is running.
+    if ((HAL_GetTick() - led_tick) >= HEARTBEAT_LED_BLINK_DELAY)
+    {
+      // Replace with your actual LED Pin labels from CubeMX
+      HAL_GPIO_TogglePin(HEARTBEAT_LED_GPIO_PORT, HEARTBEAT_LED_PIN);
+      led_tick = HAL_GetTick();
+    }
+
+    // 2. ESP32 Communication Safety Watchdog
+    // If no UART packets have been received in 1 second, stop all motors.
+    // Assumption: last_esp_packet_tick is updated in StartESPCommTask.
+    if ((HAL_GetTick() - last_esp_packet_tick) > SAFETY_WATCHDOG_TIME)
+    {
+      // TODO: check if this multi_motor.c `motors` is the same in main.c
+      // Calls the helper from multi_motor.c source to stop all Moteus nodes
+      stop_all();
+    }
+
+    // 3. System Yield (Critical for SensorTask)
+    // By delaying for 50ms, this task enters a "Blocked" state, allowing
+    // the osPriorityBelowNormal SensorTask to use the CPU.
+    osDelay(IDLE_TASK_DELAY);
   }
-  /* USER CODE END 5 */
+  /* USER CODE END StartIdleTask */
 }
 
 /* USER CODE BEGIN Header_StartMotorControlTask */

@@ -52,6 +52,13 @@ extern "C" {
 #define MOTEUS_ENABLE_BRS 0       // Enable BRS for 5 Mbps data phase (default: 1)
 
 #define NO_TIMEOUT 0 // timeout in ms if queue is empty (0 is no timeout)
+
+#define SAFETY_WATCHDOG_TIME 2000 // 2s watchdog timer
+
+#define IDLE_TASK_DELAY 50 // in ms, allows other tasks to run
+
+// TODO: figure out esp uart rx buffer usage
+// #define RX_BUFFER_SIZE 100 // UART receiver buffer size
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
