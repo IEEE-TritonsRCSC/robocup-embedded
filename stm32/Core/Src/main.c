@@ -688,10 +688,31 @@ void StartIdleTask(void *argument)
 void StartMotorControlTask(void *argument)
 {
   /* USER CODE BEGIN StartMotorControlTask */
-  /* Infinite loop */
+  MotorTarget_t targets = {0};
+  moteus_motor_t* motors[NUM_MOTORS];
+
+  // Initialize 5 motor instances (IDs 1-5)
+  for (int i = 0; i < NUM_MOTORS; i++) {
+    motors[i] = moteus_get_motor_by_id(i + 1);
+  }
+
+  moteus_position_cmd_t cmd = MOTEUS_POSITION_CMD_DEFAULT;
+  cmd.position = MOTEUS_NAN; // Enable Velocity Mode
+  cmd.max_torque = 2.0f;     // Safety limit
+
   for(;;)
   {
-    osDelay(1);
+    // Retrieve newest targets; if empty, continue with last known
+    osMessageQueueGet(MotorTargetQueueHandle, &targets, NULL, 0);
+
+    for (int i = 0; i < NUM_MOTORS; i++) {
+      if (motors[i] != NULL) {
+        cmd.velocity = targets.velocities[i];
+        moteus_begin_position(motors[i], &cmd);
+      }
+    }
+
+    osDelay(1); // 1kHz loop for stability
   }
   /* USER CODE END StartMotorControlTask */
 }
@@ -761,18 +782,61 @@ void StartActuatorTask(void *argument)
 
 /* USER CODE BEGIN Header_StartESPCommTask */
 /**
-* @brief Function implementing the ESPCommTask thread.
-* @param argument: Not used
-* @retval None
-*/
+ * @brief Function implementing the ESPCommTask thread.
+ */
 /* USER CODE END Header_StartESPCommTask */
 void StartESPCommTask(void *argument)
 {
   /* USER CODE BEGIN StartESPCommTask */
-  /* Infinite loop */
+  MotorTarget_t motor_cmd = {0};
+  SolenoidTrigger_t solenoid_cmd = {0};
+  RobotTelemetry_t telemetry = {0};
+  moteus_motor_t* motors[5];
+
+  // Retrieve motor handles for IDs 1-5 to access their live "result" data [8, 9]
+  for (int i = 0; i < 5; i++) {
+    motors[i] = moteus_get_motor_by_id(i + 1);
+  }
+
+  HAL_UARTEx_ReceiveToIdle_DMA(&huart4, rxBuffer, RX_BUFFER_SIZE);
+  __HAL_DMA_DISABLE_IT(&hdma_uart4_rx, DMA_IT_HT);
+
   for(;;)
   {
-    osDelay(1);
+    // Block until UART IDLE interrupt triggers a task notification
+    if (ulTaskNotifyTake(pdTRUE, osWaitForever) > 0)
+    {
+      // --- 1. Process Incoming Commands ---
+      memcpy(motor_cmd.velocities, rxBuffer, 20);
+      solenoid_cmd.kick = (bool)rxBuffer[10];
+      solenoid_cmd.chip = (bool)rxBuffer[11];
+
+      last_esp_packet_tick = HAL_GetTick(); // Update watchdog
+      osMessageQueuePut(MotorTargetQueueHandle, &motor_cmd, 0, 0);
+      if (solenoid_cmd.kick || solenoid_cmd.chip) {
+        osMessageQueuePut(ActuatorQueueHandle, &solenoid_cmd, 0, 0);
+      }
+
+      // --- 2. Prepare Telemetry Data ---
+      float total_v = 0;
+      for (int i = 0; i < 5; i++) {
+        if (motors[i] != NULL) {
+          telemetry.velocities[i] = motors[i]->result.velocity; // [2]
+          telemetry.faults[i]     = motors[i]->result.fault;    // [2]
+          total_v += motors[i]->result.voltage;                 // [2, 7]
+        }
+      }
+      telemetry.battery_voltage = total_v / 5.0f;
+      telemetry.ball_sensed = global_ball_detected; // Updated by SensorTask
+
+      // --- 3. Transmit to ESP32 via DMA ---
+      // Sending raw binary ensures high-speed, low-overhead communication
+      HAL_UART_Transmit_DMA(&huart4, (uint8_t*)&telemetry, sizeof(telemetry));
+
+      // Restart DMA for next command
+      HAL_UARTEx_ReceiveToIdle_DMA(&huart4, rxBuffer, RX_BUFFER_SIZE);
+      __HAL_DMA_DISABLE_IT(&hdma_uart4_rx, DMA_IT_HT);
+    }
   }
   /* USER CODE END StartESPCommTask */
 }
