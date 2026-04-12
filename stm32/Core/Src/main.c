@@ -625,6 +625,16 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
     (void)RxFifo0ITs;
     moteus_fdcan_rx_callback(hfdcan);
 }
+void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size)
+{
+  if (huart->Instance == UART4)
+  {
+    // High-priority signal to wake up the ESPCommTask
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    vTaskNotifyGiveFromISR(ESPCommTaskHandle, &xHigherPriorityTaskWoken);
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
+  }
+}
 /* USER CODE END 4 */
 
 /* USER CODE BEGIN Header_StartIdleTask */
