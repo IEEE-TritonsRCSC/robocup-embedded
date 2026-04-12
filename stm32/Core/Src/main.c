@@ -736,42 +736,24 @@ void StartSensorTask(void *argument)
 void StartActuatorTask(void *argument)
 {
   /* USER CODE BEGIN StartActuatorTask */
-  // 1. Local variable to hold the incoming command struct
-  ActuatorCommand_t current_cmd;
+  SolenoidTrigger_t triggers;
 
-  // 2. Ensure Actuators are in a safe (LOW) state before starting
-  // Note: Replace with your actual GPIO Port and Pin names defined in CubeMX
-  HAL_GPIO_WritePin(KICKER_GPIO_PORT, KICK_PIN, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(CHIPPER_GPIO_PORT, CHIP_PIN, GPIO_PIN_RESET);
-
-  /* Infinite loop */
   for(;;)
   {
-    // 3. Wait indefinitely for a command to arrive in the queue.
-    // This puts the task in a "Blocked" state, saving CPU cycles until needed.
-    if (osMessageQueueGet(ActuatorQueueHandle, &current_cmd, NULL, osWaitForever) == osOK)
+    // Block indefinitely until the ESPCommTask sends a trigger
+    if (osMessageQueueGet(ActuatorQueueHandle, &triggers, NULL, osWaitForever) == osOK)
     {
-      // --- Kicker Logic ---
-      if (current_cmd.actuatorStatus[KICKER_INDEX] == ACTUATOR_ON)
-      {
-        // Pulse the kicker solenoid
+      if (triggers.kick) {
         HAL_GPIO_WritePin(KICKER_GPIO_PORT, KICK_PIN, GPIO_PIN_SET);
-        osDelay(KICKER_DELAY); // 50ms pulse duration for maximum mechanical impact
+        osDelay(KICKER_DELAY); // 100ms pulse duration
         HAL_GPIO_WritePin(KICKER_GPIO_PORT, KICK_PIN, GPIO_PIN_RESET);
       }
 
-      // --- Chipper Logic ---
-      if (current_cmd.actuatorStatus[CHIPPER_INDEX] == ACTUATOR_ON)
-      {
-        // Pulse the chipper solenoid
+      if (triggers.chip) {
         HAL_GPIO_WritePin(CHIPPER_GPIO_PORT, CHIP_PIN, GPIO_PIN_SET);
-        osDelay(CHIPPER_DELAY); // Standard strike duration
+        osDelay(CHIPPER_DELAY);
         HAL_GPIO_WritePin(CHIPPER_GPIO_PORT, CHIP_PIN, GPIO_PIN_RESET);
       }
-
-      /*
-       * Note: dribbler is ignored here because it's handled in MotorControlTask
-       */
     }
   }
   /* USER CODE END StartActuatorTask */
