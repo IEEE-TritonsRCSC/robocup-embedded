@@ -11,6 +11,9 @@ CommandPacket_t current_cmd = {0};
 void setup() {
   Serial.begin(115200);
   WiFi.begin(SSID, PASSWORD);
+  WiFi.setTxPower(WIFI_POWER_19_5dBm);
+  pinMode(2, OUTPUT);
+  
   while (WiFi.status() != WL_CONNECTED) { delay(500); }
   UDP.beginMulticast(multicastIP, 10000);
   robotSerial.begin(UART_BAUD, SERIAL_8N1, RX_PIN, TX_PIN);
