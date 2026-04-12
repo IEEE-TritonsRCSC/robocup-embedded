@@ -57,7 +57,7 @@ extern "C" {
 
 /** Maximum number of motors that can be registered */
 #ifndef MOTEUS_MAX_MOTORS
-#define MOTEUS_MAX_MOTORS 2
+#define MOTEUS_MAX_MOTORS 5
 #endif
 
 /** Source ID used in CAN frames (arbitrary, usually 0) */
@@ -75,7 +75,7 @@ extern "C" {
  *  Requires specific FDCAN timing configuration - see README.
  */
 #ifndef MOTEUS_ENABLE_BRS
-#define MOTEUS_ENABLE_BRS 1
+#define MOTEUS_ENABLE_BRS 0
 #endif
 
 /* ============================================================================
