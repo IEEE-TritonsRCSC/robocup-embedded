@@ -10,9 +10,9 @@ C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:
 C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:614:6:HAL_FDCAN_RxFifo0Callback	1
 C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:628:6:StartIdleTask	1
 C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:646:6:StartMotorControlTask	1
-C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:664:6:StartSensorTask	1
-C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:682:6:StartActuatorTask	4
-C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:733:6:StartESPCommTask	1
-C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:746:6:MPU_Config	1
-C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:781:6:HAL_TIM_PeriodElapsedCallback	2
-C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:799:6:Error_Handler	1
+C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:662:6:StartSensorTask	2
+C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:699:6:StartActuatorTask	4
+C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:750:6:StartESPCommTask	1
+C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:763:6:MPU_Config	1
+C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:798:6:HAL_TIM_PeriodElapsedCallback	2
+C:/Users/bjsek/OneDrive/Documents/GitHub/robocup-embedded/stm32/Core/Src/main.c:816:6:Error_Handler	1

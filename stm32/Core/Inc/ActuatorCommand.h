@@ -12,6 +12,10 @@
 #define CHIPPER_GPIO_PORT 0
 #define CHIP_PIN 0
 
+#define BALL_SENSOR_GPIO_PORT 0
+#define BALL_SENSOR_PIN 0
+#define BALL_DETECTION_DELAY 50 // delay in each ball detection poll in ms 50ms = 20Hz
+
 /**
  * @brief stores activation status for the kicker, dribbler, and chipper
  */

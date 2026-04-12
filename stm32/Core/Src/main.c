@@ -656,18 +656,35 @@ void StartMotorControlTask(void *argument)
 
 /* USER CODE BEGIN Header_StartSensorTask */
 /**
-* @brief Function implementing the SensorTask thread.
-* @param argument: Not used
-* @retval None
-*/
+ * @brief Function implementing the SensorTask thread.
+ */
 /* USER CODE END Header_StartSensorTask */
 void StartSensorTask(void *argument)
 {
   /* USER CODE BEGIN StartSensorTask */
+  // 1. Local variable to store ball status
+  bool ballDetected = false;
+
   /* Infinite loop */
   for(;;)
   {
-    osDelay(1);
+    // 2. Read the GPIO pin for the breakbeam
+    // Assumption: Pin is HIGH when beam is broken (ball present)
+    // Replace BALL_SENSOR_GPIO_Port and BALL_SENSOR_Pin with your CubeMX labels
+    if (HAL_GPIO_ReadPin(BALL_SENSOR_GPIO_PORT, BALL_SENSOR_PIN) == GPIO_PIN_SET)
+    {
+    	ballDetected = true;
+    }
+    else
+    {
+    	ballDetected = false;
+    }
+
+    // 3. TODO: Pass this status to the ESP32 Telemetry logic in ESPCommTask
+    // robot_state.ball_sensed = ball_detected;
+
+    // 4. Polling rate: 20Hz (50ms) is usually sufficient for ball detection
+    osDelay(BALL_DETECTION_DELAY);
   }
   /* USER CODE END StartSensorTask */
 }
