@@ -9,6 +9,8 @@
 #define rad_robot 0.086F	// robot radius (m) (from center to wheel contact point)
 #define rad_wheel 0.025F 	// wheel radius (m)
 
+
+void blink();
 // Parsers
 void handleNewChar(char c);
 void parseMsg(char *msg);
