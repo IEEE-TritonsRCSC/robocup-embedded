@@ -197,7 +197,7 @@ int main(void)
   MotorTargetQueueHandle = osMessageQueueNew (1, 20, &MotorTargetQueue_attributes);
 
   /* creation of ActuatorQueue */
-  ActuatorQueueHandle = osMessageQueueNew (1, 3, &ActuatorQueue_attributes);
+  ActuatorQueueHandle = osMessageQueueNew (1, 2, &ActuatorQueue_attributes);
 
   /* USER CODE BEGIN RTOS_QUEUES */
   /* add queues, ... */
