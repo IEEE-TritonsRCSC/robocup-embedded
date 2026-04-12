@@ -7,6 +7,12 @@ const float BACK_ANGLE = 45.0;
 const float rad_wheel = 0.03;   // Example radius
 const float rad_robot = 0.09;   
 
+void blink() {
+  digitalWrite(2, HIGH);
+  delay(10);
+  digitalWrite(2,LOW);
+}
+
 void parseMsg(char *msg) {
     char cmd_type[6];
     int n_read = 0;
