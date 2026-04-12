@@ -10,4 +10,4 @@
  */
 typedef struct MotorTarget {
    float velocities[NUM_MOTORS];
-}; MotorTarget_t;
+} MotorTarget_t;
