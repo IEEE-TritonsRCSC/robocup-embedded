@@ -1,68 +1,37 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
-#include <array>
-#include "Arduino.h"
+#include <Arduino.h>
+#include <WiFi.h>
+#include <WiFiUdp.h>
 
-#define DEBUG
+// Robot Identity (Matches your Source [1])
+#define ROBOT_ID "1"
+#define RELEVANT_FORMAT ROBOT_ID " %s %n"
 
-#ifdef DEBUG
-
-template<typename T>
-void PRINT(const T& value) {
-    Serial.print(value);
-}
-
-template<typename T, typename... Args>
-void PRINT(const T& first, const Args&... rest) {
-    Serial.print(first);
-    PRINT(rest...);
-}
-
-#else
-
-template<typename... Args>
-void PRINT(const Args&...) {}
-
-#endif
-
-// Receive Messages over multicast
-#define MULTICAST_PORT 10000
-#define MAX_PACKET_SIZE 512
-#define MAX_BUFFER_SIZE 64
-#define MAX_COMMAND_BUFFER 8
-#define ROBOT_NO "1"
-#define RELEVANT_FORMAT ROBOT_NO " %s %n"
-
-// Send Motor Command over UART
-#define MOTOR_CMD_HEADER_SIZE 2
-#define MOTOR_COMMAND_SIZE 11
-#define DRIBBLER_MOTOR_INDEX 10
-#define UART_HEADER_1 0xCA
-#define UART_HEADER_2_RUNTIME 0xFE
-#define UART_HEADER_2_PID 0xEE
-#define UART_PID_PAYLOAD_SIZE 7
-#define UART_PID_PACKET_SIZE (MOTOR_CMD_HEADER_SIZE + UART_PID_PAYLOAD_SIZE)
+// Hardware Mapping (Matches your Source [2])
+#define UART_BAUD 115200
 #define TX_PIN 17
 #define RX_PIN 16
 
-#define KICKER_PIN 5
-#define SOLENOID_PIN 18
-#define KICKER_CHARGING_TIME 100  // ms
-#define KICKING_TIME 100  // ms
-#define WAIT_BEFORE_CHARGE_AGAIN 5000  // 5 seconds
+// Protocol Sizes
+#define NUM_MOTORS 5 
+#define TEL_PACKET_SIZE 31
 
-extern unsigned long packet_time;
-extern int size;
-extern char buffer[MAX_BUFFER_SIZE];
-extern char cmd_buffer[MAX_COMMAND_BUFFER];
+// Packed Structure for STM32 Communication
+struct __attribute__((packed)) CommandPacket_t {
+  float velocities[NUM_MOTORS]; // 20 bytes
+  uint8_t kick;                 // 1 byte
+  uint8_t chip;                 // 1 byte
+};
 
-extern bool kicker_charged;
-extern bool charging_kicker;
-extern unsigned long start_charge_time;
-extern unsigned long last_kick_time;
-
-extern std::array<uint8_t, 11> motor_command;
+// Global Shared Variables
+extern CommandPacket_t current_cmd;
 extern HardwareSerial robotSerial;
+extern WiFiUDP UDP;
+
+// --- FUNCTION PROTOTYPES (Fixes 'not declared' errors) ---
+void parseMsg(char *msg);
+void calculateKinematics(float vx, float vy, float wz);
 
 #endif
