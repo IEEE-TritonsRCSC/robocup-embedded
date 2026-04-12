@@ -29,6 +29,7 @@
 #include "PID.h"
 #include "MotorInfo.h"
 #include "ActuatorCommand.h"
+#include "SolenoidTrigger.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -134,9 +135,7 @@ void StartESPCommTask(void *argument);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 uint32_t last_esp_packet_tick;
-
-// TODO: figure out esp uart rx buffer usage
-//uint8_t rxBuffer[RX_BUFFER_SIZE];
+uint8_t rxBuffer[RX_BUFFER_SIZE];
 /* USER CODE END 0 */
 
 /**

@@ -57,8 +57,9 @@ extern "C" {
 
 #define IDLE_TASK_DELAY 50 // in ms, allows other tasks to run
 
-// TODO: figure out esp uart rx buffer usage
-// #define RX_BUFFER_SIZE 100 // UART receiver buffer size
+// size for UART receiving (4 byte float * NUM_MOTORS + kicker bool + chipper bool = 22 bytes)
+#define RX_BUFFER_SIZE 22
+
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
