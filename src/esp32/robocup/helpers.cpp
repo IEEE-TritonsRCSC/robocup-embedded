@@ -14,7 +14,7 @@ void blink() {
 }
 
 void parseMsg(char *msg) {
-    char cmd_type[6];
+    char cmd_type[15];
     int n_read = 0;
     
     // Use your RELEVANT_FORMAT to detect commands for this robot ID
@@ -39,7 +39,7 @@ void parseMsg(char *msg) {
         else if (cmd_type[0] == 'd') { // Dribbler: d <power>
             float power;
             if (sscanf(params, " %f", &power) == 1) {
-                current_cmd.velocities[7] = power; // Dribbler is motor 5
+                current_cmd.velocities[4] = power; // Dribbler is motor 5
             }
         }
     }
