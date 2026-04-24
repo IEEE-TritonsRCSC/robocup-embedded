@@ -1,6 +1,7 @@
 #include "WiFi.h"
 #include "helpers.h"
 #include "credentials.h"
+#include "esp_wifi.h"
 
 #define BAUD_RATE 115200
 
@@ -17,6 +18,7 @@ std::array<uint8_t, 2> motor_cmd_headers = {UART_HEADER_1, UART_HEADER_2_RUNTIME
 void setup() {
   Serial.begin(BAUD_RATE);
   connect_wifi();
+  WiFi.setTxPower(WIFI_POWER_19_5dBm); // max power
   UDP.beginMulticast(multicastIP, MULTICAST_PORT);
   robotSerial.begin(BAUD_RATE, SERIAL_8N1, RX_PIN, TX_PIN);
   init_motor_command();
