@@ -590,7 +590,7 @@ int main(void) {
 	/* USER CODE BEGIN SysInit */
 
 	/* USER CODE END SysInit */
-	printf("Hello SWV!\r\n");
+	//printf("Hello SWV!\r\n");
 	/* Initialize all configured peripherals */
 	MX_GPIO_Init();
 	MX_DMA_Init();
