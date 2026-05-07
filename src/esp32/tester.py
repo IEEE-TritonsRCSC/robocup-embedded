@@ -3,9 +3,9 @@ import time
 import socket
 
 ROBOT_ID = 1
-COMMAND_IP = "239.42.42.42"
-COMMAND_PORT = 11000
-
+COMMAND_IP = "172.20.10.8"
+COMMAND_PORT = 10000
+incrementor = 1
 # Yellow team: 10000
 # Blue team: 11000
 
@@ -41,8 +41,8 @@ def get_params(command, n_params):
 try:
     while True:
         command = input("Enter command (or 'q' to quit): ")
-        if command.lower() == 'q':
-            raise KeyboardInterrupt
+        ##command = f"d {incrementor} {incrementor}"
+        ##incrementor += 1
         first_char = command[0] if command else ''
         if first_char == 't':
             params = get_params(command, 1)
@@ -54,18 +54,16 @@ try:
             if params is None:
                 continue
             params[1] = str(math.radians(float(params[1])))
-        elif first_char == 's':
-            params = get_params(command, 1)
-            if params is None:
-                continue
-        elif first_char in ['k', 'c']:
+        elif first_char in ['k', 'c', 's', 'o', 'h']:
             params = []
         else:
             print("Unknown command. Please try again.")
             continue
-        message = f"{ROBOT_ID} {short_to_long[first_char]} {' '.join(params)}\0"
+        message = f"{ROBOT_ID} {first_char} {' '.join(params)}\0"
+        print(message)
         sock.sendto(message.encode(), (COMMAND_IP, COMMAND_PORT))
-        time.sleep(0.5)
+
+        time.sleep(0.1)
 
 except KeyboardInterrupt:
     stop_command = b"stop\0"
