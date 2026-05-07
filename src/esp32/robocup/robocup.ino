@@ -121,7 +121,7 @@ CommandPacket_T commandPacket; // struct to hold data from incoming UDP commmand
 /* END VARIABLE DECLARATIONS */
 
 /* BEGIN FUNCTION DECLARATION */
-void initWiFi();
+constexpr void initWiFi();
 void connectAndStartWiFi(WiFiUDP &Udp, int &WiFiStatus);
 void connectSerialOrGiveUp();
 void connectWiFi(int &WiFiStatus);
@@ -162,34 +162,13 @@ void print(CommandPacket_T &commandPacket);
 /* END FUNCTION DECLARATION */
 
 void setup() {
-  //initWiFi();
-  WiFi.mode(WIFI_STA);         // initialize driver first
-  WiFi.disconnect(true, true); // now safe: clears credentials from NVS
-  pinMode(LED_BUILTIN,OUTPUT);
+  initWiFi();
 
   Serial.begin(BAUD_RATE);
 
-  //connectSerialOrGiveUp();
-  unsigned long startTime = millis();
-  while (!Serial && (millis() - startTime < SERIAL_TIMEOUT)) {
-    blink(SERIAL_CNCT_BLINK_DELAY);
-  }
+  connectSerialOrGiveUp();
   
-  //connectAndStartWiFi(Udp,WiFiStatus);
-  connectWiFi(WiFiStatus);
-  printWiFiStatus();
-  WiFi.setSleep(NO_WIFI_SLEEP); // prevent high latency and missed packets
-  WiFi.setTxPower(MAX_WIFI_PWR);
-
-  #if ENABLE_MULTICAST == 1
-    if (Udp.beginMulticast(MULTICAST_IP, PORT)) {
-      Serial.println("Joined Multicast Group");
-    } else {
-      Serial.println("Failed to join Multicast Group");
-    }
-  #else
-    Udp.begin(PORT);
-  #endif
+  connectAndStartWiFi(Udp,WiFiStatus);
 
   Serial.println("Setup Done!");
   ledOFF();
@@ -200,7 +179,7 @@ void loop() {
     clearCommandPacket(commandPacket); // TODO: should it clear or keep the same state?
     buildCommandPacket(commandPacket,packetBuffer);
     print(commandPacket);
-    //sendCommandPacket(commandPacket);
+    // sendCommandPacket(commandPacket);
     // TODO: handle a command packet with a kick. It should send another command packet right after to turn kick off
   }
 }
@@ -262,7 +241,7 @@ void connectSerialOrGiveUp() {
  * set the WiFi to station mode, disconnect wifi and erase WiFi Access Point
  * the disconnect is basically a wifi factory reset
  */
-void initWiFi() {
+constexpr void initWiFi() {
   WiFi.mode(WIFI_STA);         // initialize driver first
   WiFi.disconnect(true, true); // now safe: clears credentials from NVS
 }
