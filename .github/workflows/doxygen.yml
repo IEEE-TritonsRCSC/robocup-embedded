@@ -1,0 +1,19 @@
+name: Doxygen Action
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run Doxygen
+        uses: mattnotneil/doxygen-action@v1.9.4 # Or another marketplace action
+        with:
+          doxyfile-path: ./Doxyfile
+          
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: docs/html # The folder Doxygen generated
+          branch: gh-pages
