@@ -164,6 +164,8 @@ void print(CommandPacket_T &commandPacket);
 void setup() {
   initWiFi();
 
+  pinMode(LED_BUILTIN,OUTPUT);
+
   Serial.begin(BAUD_RATE);
 
   connectSerialOrGiveUp();
