@@ -156,6 +156,7 @@ void setKickCommandPacket(CommandPacket_T &commandPacket);
 void clearKickCommandPacket(CommandPacket_T &commandPacket);
 void setCatchCommandPacket(CommandPacket_T &commandPacket);
 void setStopCommandPacket(CommandPacket_T &commandPacket);
+void disableStopCommandPacket(CommandPacket_T &commandPacket);
 void setDropCommandPacket(CommandPacket_T &commandPacket);
 void print(CommandPacket_T &commandPacket);
 /* END STRUCT FUNCTION DECLARATION */
@@ -178,11 +179,13 @@ void setup() {
 
 void loop() {
   if (readPacket(Udp,packetBuffer,replyBuffer) && isValidAndMatchingCommandPacket(packetBuffer)) {
+    ledON();
     clearCommandPacket(commandPacket); // TODO: should it clear or keep the same state?
     buildCommandPacket(commandPacket,packetBuffer);
     print(commandPacket);
     // sendCommandPacket(commandPacket);
-    // TODO: handle a command packet with a kick. It should send another command packet right after to turn kick off
+    // TODO: handle a command packet with a kick. It should send another command packet right after to turn kick off or make the STM32/hardware handle that?
+    ledOFF();
   }
 }
 
@@ -573,31 +576,45 @@ void buildCommandPacket(CommandPacket_T &commandPacket, char packetBuffer[PACKET
     case CATCH_CMD_CHAR:
       setCatchCommandPacket(commandPacket);
       break;
+    // HOW TO ADD NEW COMMAND:
+    // add new command character define
+    // add new num of args define
+    // add to array of valid commands
+    // add case for new command character
+    // add new set command packet for the specified command
+    // break
     default:
       break;
   }
 }
 
 /**
- * sets the dash power and direction in command packet
+ * sets the dash power and direction in command packet and disable stop
  * @param commandPacket struct containing robot command data
  * @param power dash power
  * @param direction direction to dash in radians
  */
-void setDashCommandPacket(CommandPacket_T &commandPacket, const float power, const float direction) {
+void setDashCommandPacket(
+  CommandPacket_T &commandPacket, 
+  const float power, 
+  const float direction) 
+{
   commandPacket.dashPower = power;
   commandPacket.dashDirection = direction;
+  disableStopCommandPacket(commandPacket);
 }
 /**
- * sets the turn speed in command packet
+ * sets the turn speed in command packet and disable stop
  * @param commandPacket struct containing robot command data
  * @param speed speed to rotate in degrees per second
  */
 void setTurnCommandPacket(CommandPacket_T &commandPacket, const float speed) {
   commandPacket.turnSpeed = speed;
+  disableStopCommandPacket(commandPacket);
 }
 /**
  * sets the short kick power and set dribblerCatch to false in command packet
+ * disable stop
  * this should stop the dribbler's forward rotation and rotate it backwards at some `power`
  * @param commandPacket struct containing robot command data
  * @param power power or speed to spin the dribbler motor backwards
@@ -605,13 +622,15 @@ void setTurnCommandPacket(CommandPacket_T &commandPacket, const float speed) {
 void setShortKickCommandPacket(CommandPacket_T &commandPacket, const float power) {
   commandPacket.shortKickPower = power;
   commandPacket.dribblerCatch = false;
+  disableStopCommandPacket(commandPacket);
 }
 /**
- * set the kick true in command packet
+ * set the kick true in command packet and disable stop
  * @param commandPacket struct containing robot command data
  */
 void setKickCommandPacket(CommandPacket_T &commandPacket) {
   commandPacket.kick = true;
+  disableStopCommandPacket(commandPacket);
 }
 /**
  * set kick flag in the command packet to false
@@ -621,12 +640,13 @@ void clearKickCommandPacket(CommandPacket_T &commandPacket) {
   commandPacket.kick = false;
 }
 /**
- * set dribblerCatch true in command packet
+ * set dribblerCatch true in command packet and disable stop
  * note that you cannot name it "catch" because that is a reserved keyword
  * @param commandPacket struct containing robot command data
  */
 void setCatchCommandPacket(CommandPacket_T &commandPacket) {
   commandPacket.dribblerCatch = true;
+  disableStopCommandPacket(commandPacket);
 }
 /**
  * set stop true in command packet
@@ -634,6 +654,13 @@ void setCatchCommandPacket(CommandPacket_T &commandPacket) {
  */
 void setStopCommandPacket(CommandPacket_T &commandPacket) {
   commandPacket.stop = true;
+}
+/**
+ * set stop false in command packet
+ * @param commandPacket struct containing robot command data
+ */
+void disableStopCommandPacket(CommandPacket_T &commandPacket) {
+  commandPacket.stop = false;
 }
 /**
  * set dribblerCatch false in command packet
