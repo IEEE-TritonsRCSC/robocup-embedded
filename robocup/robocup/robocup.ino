@@ -10,6 +10,7 @@
 
 
 #include "WiFiControl.h"
+#include "LEDControl.h"
 
 
 
@@ -17,6 +18,7 @@ BridgeUDP<> udp(Bridge);
 char packetBuffer[BUFFER_SIZE];
 
 void setup() {
+  initLEDoff();
   Bridge.begin(); // start router bridge
   Monitor.begin(); // start serial monitor
   udp.begin(PORT); // start udp connection

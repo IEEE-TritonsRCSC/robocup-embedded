@@ -14,12 +14,31 @@ void parsePacket(
    BridgeMonitor<> &Monitor, 
    char packetBuffer[BUFFER_SIZE]) 
 {
-   int packetSize = udp.parsePacket();
-   if (packetSize) {
-      int len = udp.read(packetBuffer, READABLE_BUFFER_SIZE);
-      packetBuffer[len] = NULL_TERMINATOR;
-      Monitor.print("Received: ");
-      Monitor.println(packetBuffer);
+   if (hasPacket(udp)) {
+      int len = packetLength(udp,packetBuffer,READABLE_BUFFER_SIZE);
+      nullTerminatePacketBuffer(packetBuffer,len);
+      printPacket(Monitor, packetBuffer);
    }
+}
+
+bool hasPacket(BridgeUDP<> &udp) {
+   return packetSize(udp);
+}
+
+void nullTerminatePacketBuffer(char packetBuffer[BUFFER_SIZE], const int packetLength) {
+   packetBuffer[packetLength] = NULL_TERMINATOR;
+}
+
+int packetLength(BridgeUDP<> &udp, char packetBuffer[BUFFER_SIZE], const int readableBufferSize) {
+   return udp.read(packetBuffer, readableBufferSize);
+}
+
+int packetSize(BridgeUDP<> &udp) {
+   return udp.parsePacket();
+}
+
+void printPacket(BridgeMonitor<> &Monitor, char packetBuffer[BUFFER_SIZE]) {
+   Monitor.print("Received: ");
+   Monitor.println(packetBuffer);
 }
 // END FUNCTION DEFINITIONS

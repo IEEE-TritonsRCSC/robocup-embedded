@@ -319,4 +319,5 @@ C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_uno
  C:\Users\bjsek\AppData\Local\Arduino15\internal\Arduino_RouterBridge_0.4.1_d378119a47d2c8c4\Arduino_RouterBridge\src/tcp_server.h \
  C:\Users\bjsek\AppData\Local\Arduino15\internal\Arduino_RouterBridge_0.4.1_d378119a47d2c8c4\Arduino_RouterBridge\src/hci.h \
  C:\Users\bjsek\AppData\Local\Arduino15\internal\Arduino_RouterBridge_0.4.1_d378119a47d2c8c4\Arduino_RouterBridge\src/udp_bridge.h \
- C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.h
+ C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.h \
+ C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.h

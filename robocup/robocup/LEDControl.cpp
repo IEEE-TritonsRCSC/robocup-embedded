@@ -12,6 +12,16 @@ void initLED() {
    pinMode(LED_BUILTIN, OUTPUT);
 }
 
+void initLEDoff() {
+   initLED();
+   LEDoff();
+}
+
+void initLEDon() {
+   initLED();
+   LEDon();
+}
+
 void LEDon() {
    digitalWrite(LED_BUILTIN,LED_ON);
 }

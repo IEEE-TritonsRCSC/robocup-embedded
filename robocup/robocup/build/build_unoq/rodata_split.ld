@@ -6,6 +6,7 @@ SECTIONS
 {
     /* Read-only data WITH relocations - will be copied to RAM by LLEXT */
     .rodata : {
+        *(.rodata._ZL12arduino_pins)
         *(.rodata._ZTV13BridgeMonitorILj512EE)
         *(.rodata._ZTV15SerialTransport)
         *(.rodata._ZTV9BridgeUDPILj4096EE)
@@ -15,7 +16,7 @@ SECTIONS
 
     /* Read-only data WITHOUT relocations - kept in flash by LLEXT */
     .llext.rodata.noreloc : {
-        *(.rodata._Z11parsePacketR9BridgeUDPILj4096EER13BridgeMonitorILj512EEPc.str1.1)
+        *(.rodata._Z11printPacketR13BridgeMonitorILj512EEPc.str1.1)
         *(.rodata._ZN10RpcDecoderILj1024EE12get_responseIN7arduino7msgpack6object5nil_tEEEbjRT_R8RpcError.str1.1)
         *(.rodata._ZN10RpcDecoderILj1024EE12get_responseIbEEbjRT_R8RpcError.str1.1)
         *(.rodata._ZN11BridgeClass11update_safeEv.str1.1)

@@ -9,8 +9,8 @@
 // END INCLUDES
 
 // BEGIN DEFINES
-#define LED_ON HIGH
-#define LED_OFF LOW
+#define LED_ON LOW
+#define LED_OFF HIGH
 // END DEFINES
 
 // BEGIN FUNCTION DECLARATION
@@ -19,6 +19,16 @@
  * this initializes the LED to power it and make it blink
  */
 void initLED();
+
+/**
+ * @brief initializes the onboard LED to off
+ */
+void initLEDoff();
+
+/**
+ * @brief initializes the onboard LED to on
+ */
+void initLEDon();
 
 /**
  * @brief turn the onboard LED on
