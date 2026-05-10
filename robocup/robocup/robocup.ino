@@ -4,8 +4,8 @@
  * Please organize your code and write in the correct sections
  */
 // BEGIN INCLUDES
-#include "credentials.h"
 #include "LEDControl.h"
+#include "WiFiControl.h"
 // END INCLUDES
 
 // BEGIN DEFINE
