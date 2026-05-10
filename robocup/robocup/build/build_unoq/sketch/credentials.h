@@ -1,8 +1,8 @@
 #line 1 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\credentials.h"
 /**
- * This file contains info about the WiFi for the Arduino to connect to UDP
- * If you need to change the WiFi network, then edit the WIFI_SSID
- * If you need to change the WiFi password, then edit the WIFI_PASSWORD
+ * This file is just a helpful note because the Arduino Uno Q handles WiFi connection on its own
+ * To change the WiFi network on the Arduino Uno Q, go to Arduino App Lab > Settings > Select WiFi network and enter password
+ * 
  */
 #pragma once
 #define WIFI_SSID "wlan3" // name/SSID of the WiFi
