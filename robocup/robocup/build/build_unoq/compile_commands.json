@@ -50,11 +50,11 @@
    "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
    "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
    "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
-   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\sketch\\LEDControl.cpp",
+   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\sketch\\robocup.ino.cpp",
    "-o",
-   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\sketch\\LEDControl.cpp.o"
+   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\sketch\\robocup.ino.cpp.o"
   ],
-  "file": "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\sketch\\LEDControl.cpp"
+  "file": "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\sketch\\robocup.ino.cpp"
  },
  {
   "directory": "C:\\Users\\bjsek\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -107,11 +107,11 @@
    "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
    "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
    "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
-   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\sketch\\robocup.ino.cpp",
+   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\sketch\\LEDControl.cpp",
    "-o",
-   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\sketch\\robocup.ino.cpp.o"
+   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\sketch\\LEDControl.cpp.o"
   ],
-  "file": "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\sketch\\robocup.ino.cpp"
+  "file": "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\sketch\\LEDControl.cpp"
  },
  {
   "directory": "C:\\Users\\bjsek\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -323,11 +323,11 @@
    "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
    "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
    "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
-   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\abi.cpp",
+   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\Print.cpp",
    "-o",
-   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\abi.cpp.o"
+   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\api\\Print.cpp.o"
   ],
-  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\abi.cpp"
+  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\Print.cpp"
  },
  {
   "directory": "C:\\Users\\bjsek\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -425,62 +425,11 @@
    "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
    "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
    "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
-   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\Print.cpp",
+   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\abi.cpp",
    "-o",
-   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\api\\Print.cpp.o"
+   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\abi.cpp.o"
   ],
-  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\Print.cpp"
- },
- {
-  "directory": "C:\\Users\\bjsek\\AppData\\Local\\Programs\\Microsoft VS Code",
-  "arguments": [
-   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\zephyr_arm-zephyr-eabi_0.16.8_1e671266f3459ec3/bin/arm-zephyr-eabi-g++",
-   "-g",
-   "-Os",
-   "-std=gnu++17",
-   "-c",
-   "-D_PICOLIBC_CTYPE_SMALL=1",
-   "-w",
-   "-imacrosC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/llext-edk/include/zephyr/include/generated/zephyr/autoconf.h",
-   "-imacrosC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/llext-edk/include/zephyr/include/zephyr/toolchain/zephyr_stdint.h",
-   "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/cxxflags.txt",
-   "-fno-exceptions",
-   "-fno-rtti",
-   "-fno-threadsafe-statics",
-   "-fno-unwind-tables",
-   "-fno-use-cxa-atexit",
-   "-lstdc++",
-   "-lsupc++",
-   "-lnosys",
-   "-nostdlib",
-   "-lstdc++",
-   "-lsupc++",
-   "-lm",
-   "-fno-exceptions",
-   "-fno-rtti",
-   "-fdata-sections",
-   "-ffunction-sections",
-   "-fno-unwind-tables",
-   "-MMD",
-   "-mcpu=cortex-m33",
-   "-mfloat-abi=hard",
-   "-mfpu=fpv5-sp-d16",
-   "-DARDUINO=10607",
-   "-DARDUINO_UNO_Q",
-   "-DARDUINO_ARCH_ZEPHYR",
-   "-DARDUINO_ARCH_ZEPHYR",
-   "-DARDUINO_LIBRARY_DISCOVERY_PHASE=0",
-   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino",
-   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
-   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated",
-   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
-   "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
-   "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
-   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\CanMsgRingbuffer.cpp",
-   "-o",
-   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\api\\CanMsgRingbuffer.cpp.o"
-  ],
-  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\CanMsgRingbuffer.cpp"
+  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\abi.cpp"
  },
  {
   "directory": "C:\\Users\\bjsek\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -629,6 +578,57 @@
    "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
    "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
    "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
+   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\PluggableUSB.cpp",
+   "-o",
+   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\api\\PluggableUSB.cpp.o"
+  ],
+  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\PluggableUSB.cpp"
+ },
+ {
+  "directory": "C:\\Users\\bjsek\\AppData\\Local\\Programs\\Microsoft VS Code",
+  "arguments": [
+   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\zephyr_arm-zephyr-eabi_0.16.8_1e671266f3459ec3/bin/arm-zephyr-eabi-g++",
+   "-g",
+   "-Os",
+   "-std=gnu++17",
+   "-c",
+   "-D_PICOLIBC_CTYPE_SMALL=1",
+   "-w",
+   "-imacrosC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/llext-edk/include/zephyr/include/generated/zephyr/autoconf.h",
+   "-imacrosC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/llext-edk/include/zephyr/include/zephyr/toolchain/zephyr_stdint.h",
+   "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/cxxflags.txt",
+   "-fno-exceptions",
+   "-fno-rtti",
+   "-fno-threadsafe-statics",
+   "-fno-unwind-tables",
+   "-fno-use-cxa-atexit",
+   "-lstdc++",
+   "-lsupc++",
+   "-lnosys",
+   "-nostdlib",
+   "-lstdc++",
+   "-lsupc++",
+   "-lm",
+   "-fno-exceptions",
+   "-fno-rtti",
+   "-fdata-sections",
+   "-ffunction-sections",
+   "-fno-unwind-tables",
+   "-MMD",
+   "-mcpu=cortex-m33",
+   "-mfloat-abi=hard",
+   "-mfpu=fpv5-sp-d16",
+   "-DARDUINO=10607",
+   "-DARDUINO_UNO_Q",
+   "-DARDUINO_ARCH_ZEPHYR",
+   "-DARDUINO_ARCH_ZEPHYR",
+   "-DARDUINO_LIBRARY_DISCOVERY_PHASE=0",
+   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino",
+   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
+   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated",
+   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
+   "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
+   "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
    "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\CanMsg.cpp",
    "-o",
    "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\api\\CanMsg.cpp.o"
@@ -680,11 +680,11 @@
    "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
    "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
    "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
-   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\PluggableUSB.cpp",
+   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\CanMsgRingbuffer.cpp",
    "-o",
-   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\api\\PluggableUSB.cpp.o"
+   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\api\\CanMsgRingbuffer.cpp.o"
   ],
-  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\PluggableUSB.cpp"
+  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\CanMsgRingbuffer.cpp"
  },
  {
   "directory": "C:\\Users\\bjsek\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -782,57 +782,6 @@
    "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
    "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
    "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
-   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\String.cpp",
-   "-o",
-   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\api\\String.cpp.o"
-  ],
-  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\String.cpp"
- },
- {
-  "directory": "C:\\Users\\bjsek\\AppData\\Local\\Programs\\Microsoft VS Code",
-  "arguments": [
-   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\zephyr_arm-zephyr-eabi_0.16.8_1e671266f3459ec3/bin/arm-zephyr-eabi-g++",
-   "-g",
-   "-Os",
-   "-std=gnu++17",
-   "-c",
-   "-D_PICOLIBC_CTYPE_SMALL=1",
-   "-w",
-   "-imacrosC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/llext-edk/include/zephyr/include/generated/zephyr/autoconf.h",
-   "-imacrosC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/llext-edk/include/zephyr/include/zephyr/toolchain/zephyr_stdint.h",
-   "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/cxxflags.txt",
-   "-fno-exceptions",
-   "-fno-rtti",
-   "-fno-threadsafe-statics",
-   "-fno-unwind-tables",
-   "-fno-use-cxa-atexit",
-   "-lstdc++",
-   "-lsupc++",
-   "-lnosys",
-   "-nostdlib",
-   "-lstdc++",
-   "-lsupc++",
-   "-lm",
-   "-fno-exceptions",
-   "-fno-rtti",
-   "-fdata-sections",
-   "-ffunction-sections",
-   "-fno-unwind-tables",
-   "-MMD",
-   "-mcpu=cortex-m33",
-   "-mfloat-abi=hard",
-   "-mfpu=fpv5-sp-d16",
-   "-DARDUINO=10607",
-   "-DARDUINO_UNO_Q",
-   "-DARDUINO_ARCH_ZEPHYR",
-   "-DARDUINO_ARCH_ZEPHYR",
-   "-DARDUINO_LIBRARY_DISCOVERY_PHASE=0",
-   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino",
-   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
-   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated",
-   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
-   "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
-   "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
    "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\itoa.cpp",
    "-o",
    "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\itoa.cpp.o"
@@ -884,11 +833,11 @@
    "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
    "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
    "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
-   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\main.cpp",
+   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\String.cpp",
    "-o",
-   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\main.cpp.o"
+   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\api\\String.cpp.o"
   ],
-  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\main.cpp"
+  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\api\\String.cpp"
  },
  {
   "directory": "C:\\Users\\bjsek\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -970,11 +919,11 @@
    "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
    "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
    "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
-   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\new.cpp",
+   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\main.cpp",
    "-o",
-   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\new.cpp.o"
+   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\main.cpp.o"
   ],
-  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\new.cpp"
+  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\main.cpp"
  },
  {
   "directory": "C:\\Users\\bjsek\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1021,11 +970,11 @@
    "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
    "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
    "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
-   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\threads.cpp",
+   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\new.cpp",
    "-o",
-   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\threads.cpp.o"
+   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\new.cpp.o"
   ],
-  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\threads.cpp"
+  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\new.cpp"
  },
  {
   "directory": "C:\\Users\\bjsek\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1158,11 +1107,11 @@
    "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
    "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
    "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
-   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\zephyrCommon.cpp",
+   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\zephyrSerial.cpp",
    "-o",
-   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\zephyrCommon.cpp.o"
+   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\zephyrSerial.cpp.o"
   ],
-  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\zephyrCommon.cpp"
+  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\zephyrSerial.cpp"
  },
  {
   "directory": "C:\\Users\\bjsek\\AppData\\Local\\Programs\\Microsoft VS Code",
@@ -1209,10 +1158,61 @@
    "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
    "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
    "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
-   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\zephyrSerial.cpp",
+   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\threads.cpp",
    "-o",
-   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\zephyrSerial.cpp.o"
+   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\threads.cpp.o"
   ],
-  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\zephyrSerial.cpp"
+  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\threads.cpp"
+ },
+ {
+  "directory": "C:\\Users\\bjsek\\AppData\\Local\\Programs\\Microsoft VS Code",
+  "arguments": [
+   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\zephyr_arm-zephyr-eabi_0.16.8_1e671266f3459ec3/bin/arm-zephyr-eabi-g++",
+   "-g",
+   "-Os",
+   "-std=gnu++17",
+   "-c",
+   "-D_PICOLIBC_CTYPE_SMALL=1",
+   "-w",
+   "-imacrosC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/llext-edk/include/zephyr/include/generated/zephyr/autoconf.h",
+   "-imacrosC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/llext-edk/include/zephyr/include/zephyr/toolchain/zephyr_stdint.h",
+   "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/cxxflags.txt",
+   "-fno-exceptions",
+   "-fno-rtti",
+   "-fno-threadsafe-statics",
+   "-fno-unwind-tables",
+   "-fno-use-cxa-atexit",
+   "-lstdc++",
+   "-lsupc++",
+   "-lnosys",
+   "-nostdlib",
+   "-lstdc++",
+   "-lsupc++",
+   "-lm",
+   "-fno-exceptions",
+   "-fno-rtti",
+   "-fdata-sections",
+   "-ffunction-sections",
+   "-fno-unwind-tables",
+   "-MMD",
+   "-mcpu=cortex-m33",
+   "-mfloat-abi=hard",
+   "-mfpu=fpv5-sp-d16",
+   "-DARDUINO=10607",
+   "-DARDUINO_UNO_Q",
+   "-DARDUINO_ARCH_ZEPHYR",
+   "-DARDUINO_ARCH_ZEPHYR",
+   "-DARDUINO_LIBRARY_DISCOVERY_PHASE=0",
+   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino",
+   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
+   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated",
+   "-IC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino/api/deprecated-avr-comp",
+   "-iprefixC:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx",
+   "@C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\variants\\arduino_uno_q_stm32u585xx/includes.txt",
+   "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\zephyrCommon.cpp",
+   "-o",
+   "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\build\\build_unoq\\core\\zephyrCommon.cpp.o"
+  ],
+  "file": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\internal\\arduino_zephyr_0.55.0_421e2af313068b3b\\cores\\arduino\\zephyrCommon.cpp"
  }
 ]

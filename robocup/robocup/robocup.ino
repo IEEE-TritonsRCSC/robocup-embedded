@@ -10,22 +10,26 @@
 
 #include <Arduino_RouterBridge.h>
 
-const int UDP_PORT = 4210;
+#define PORT 4210
+#define BUFFER_SIZE 256
+#define READABLE_BUFFER_SIZE BUFFER_SIZE - 1
+#define NULL_TERMINATOR '\0'
+
 BridgeUDP<> udp(Bridge);
-char packetBuffer[256];
+char packetBuffer[BUFFER_SIZE];
 
 void setup() {
   Bridge.begin();
   Monitor.begin();
-  udp.begin(UDP_PORT);
+  udp.begin(PORT);
   Monitor.println("Ready");
 }
 
 void loop() {
   int packetSize = udp.parsePacket();
   if (packetSize) {
-    int len = udp.read(packetBuffer, sizeof(packetBuffer) - 1);
-    packetBuffer[len] = '\0';
+    int len = udp.read(packetBuffer, READABLE_BUFFER_SIZE);
+    packetBuffer[len] = NULL_TERMINATOR;
     Monitor.print("Received: ");
     Monitor.println(packetBuffer);
   }
