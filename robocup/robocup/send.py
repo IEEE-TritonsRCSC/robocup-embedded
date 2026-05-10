@@ -1,5 +1,5 @@
 import socket
-
+import time
 ARDUINO_IP = "100.105.19.66"
 UDP_PORT   = 4210
 MESSAGE    = "Hello Arduino!"

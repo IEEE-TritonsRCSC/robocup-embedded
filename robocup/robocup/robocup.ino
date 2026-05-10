@@ -1,3 +1,13 @@
+/**
+ * upload code
+ * unplug board completely
+ * wait like 10 seconds
+ * plug board in
+ * wait until serial port is available
+ * run the send.py file
+ * the serial monitor should print the message
+ */
+
 #include <Arduino_RouterBridge.h>
 
 const int UDP_PORT = 4210;
