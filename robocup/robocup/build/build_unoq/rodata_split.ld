@@ -8,19 +8,27 @@ SECTIONS
     .rodata : {
         *(.rodata._ZL12arduino_pins)
         *(.rodata._ZTV13BridgeMonitorILj512EE)
+        *(.rodata._ZTV15SerialTransport)
         *(.rodata._ZTVN7arduino12ZephyrSerialE)
     }
 
     /* Read-only data WITHOUT relocations - kept in flash by LLEXT */
     .llext.rodata.noreloc : {
         *(.rodata._ZN10RpcDecoderILj1024EE12get_responseIN7arduino7msgpack6object5nil_tEEEbjRT_R8RpcError.str1.1)
+        *(.rodata._ZN10RpcDecoderILj1024EE12get_responseIbEEbjRT_R8RpcError.str1.1)
         *(.rodata._ZN11BridgeClass11update_safeEv.str1.1)
+        *(.rodata._ZN11BridgeClass5beginEm.str1.1)
         *(.rodata._ZN13BridgeMonitorILj512EE5_readEj.str1.1)
         *(.rodata._ZN13BridgeMonitorILj512EE5writeEPKhj.str1.1)
+        *(.rodata._ZN7RpcCallIJEE6resultIbEEbRT_.part.0.str1.1)
+        *(.rodata._ZN7RpcCallIJEEC2ERKN7arduino6StringEP9RPCClientP7k_mutexS8_.str1.1)
+        *(.rodata._ZN7arduino5Print7printlnEv.str1.1)
         *(.rodata._ZN7arduino7msgpack6object3extC2EaPKhj.str1.1)
         *(.rodata._ZN7arduino7msgpack8Unpacker11deserializeINS_6StringEJEEEbRT_DpOT0_.str1.1)
         *(.rodata._ZN8RpcErrorC2Ev.str1.1)
         *(.rodata._ZNSt6vectorIjSaIjEE17_M_realloc_insertIJRjEEEvN9__gnu_cxx17__normal_iteratorIPjS1_EEDpOT_.str1.1)
+        *(.rodata.loop.str1.1)
+        *(.rodata.setup.str1.1)
         *(.rodata.str1.1)
     }
 

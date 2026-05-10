@@ -1,5 +1,5 @@
-c:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o: \
- c:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp \
+C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o: \
+ C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp \
  C:\Users\bjsek\AppData\Local\Arduino15\internal\arduino_zephyr_0.55.0_421e2af313068b3b\variants\arduino_uno_q_stm32u585xx/llext-edk/include/zephyr/include/generated/zephyr/autoconf.h \
  C:\Users\bjsek\AppData\Local\Arduino15\internal\arduino_zephyr_0.55.0_421e2af313068b3b\variants\arduino_uno_q_stm32u585xx/llext-edk/include/zephyr/include/zephyr/toolchain/zephyr_stdint.h \
  C:\Users\bjsek\AppData\Local\Arduino15\internal\arduino_zephyr_0.55.0_421e2af313068b3b\cores\arduino/Arduino.h \
@@ -318,4 +318,6 @@ c:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_uno
  C:\Users\bjsek\AppData\Local\Arduino15\internal\arduino_zephyr_0.55.0_421e2af313068b3b\cores\arduino/api/Client.h \
  C:\Users\bjsek\AppData\Local\Arduino15\internal\Arduino_RouterBridge_0.4.1_d378119a47d2c8c4\Arduino_RouterBridge\src/tcp_server.h \
  C:\Users\bjsek\AppData\Local\Arduino15\internal\Arduino_RouterBridge_0.4.1_d378119a47d2c8c4\Arduino_RouterBridge\src/hci.h \
- C:\Users\bjsek\AppData\Local\Arduino15\internal\Arduino_RouterBridge_0.4.1_d378119a47d2c8c4\Arduino_RouterBridge\src/udp_bridge.h
+ C:\Users\bjsek\AppData\Local\Arduino15\internal\Arduino_RouterBridge_0.4.1_d378119a47d2c8c4\Arduino_RouterBridge\src/udp_bridge.h \
+ C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\credentials.h \
+ C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.h
