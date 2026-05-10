@@ -1,0 +1,22 @@
+{
+  "port": "COM5",
+  "configuration": "",
+  "output": "build",
+  "board": "arduino:zephyr:unoq",
+  "programmer": "jlink",
+  "useProgrammer": false,
+  "optimize_for_debug": true,
+  "configurationRequired": true,
+  "compile_profile": "",
+  "monitorPortSettings": {
+    "settings": {
+      "port": "COM5",
+      "baudRate": 115200,
+      "lineEnding": "\r\n",
+      "dataBits": 8,
+      "parity": "none",
+      "stopBits": "one"
+    },
+    "profile_name": ""
+  }
+}
