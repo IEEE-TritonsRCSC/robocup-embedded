@@ -22,6 +22,16 @@
 void initLED();
 
 /**
+ * @brief initializes the onboard LED to off
+ */
+void initLEDoff();
+
+/**
+ * @brief initializes the onboard LED to on
+ */
+void initLEDon();
+
+/**
  * @brief turn the onboard LED on
  */
 void LEDon();

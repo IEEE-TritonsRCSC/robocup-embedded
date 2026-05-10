@@ -21,17 +21,15 @@ char packetBuffer[BUFFER_SIZE];
 
 #line 20 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
 void setup();
-#line 31 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
+#line 29 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
 void loop();
 #line 20 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
 void setup() {
-  initLED();
-  LEDoff();
+  initLEDoff();
   Bridge.begin(); // start router bridge
   Monitor.begin(); // start serial monitor
   udp.begin(PORT); // start udp connection
 
-  blocking_blink(250,8);
   Monitor.println("Ready");
 }
 
