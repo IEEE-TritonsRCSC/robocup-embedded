@@ -9,8 +9,4 @@
 // END INCLUDES
 
 // BEGIN FUNCTION DEFINITIONS
-void connectWiFi() {
-   WiFi.begin(WIFI_SSID, WIFI_PASSWORD); // attempt WiFi connection
-
-}
 // END FUNCTION DEFINITIONS
