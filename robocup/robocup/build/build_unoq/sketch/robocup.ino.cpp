@@ -1,16 +1,26 @@
 #include <Arduino.h>
 #line 1 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
+/**
+ * upload code
+ * unplug board completely
+ * wait like 10 seconds
+ * plug board in
+ * wait until serial port is available
+ * run the send.py file
+ * the serial monitor should print the message
+ */
+
 #include <Arduino_RouterBridge.h>
 
 const int UDP_PORT = 4210;
 BridgeUDP<> udp(Bridge);
 char packetBuffer[256];
 
-#line 7 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
+#line 17 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
 void setup();
-#line 14 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
+#line 24 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
 void loop();
-#line 7 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
+#line 17 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
 void setup() {
   Bridge.begin();
   Monitor.begin();

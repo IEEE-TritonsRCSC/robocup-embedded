@@ -78,7 +78,6 @@
         "ARDUINO=10607",
         "ARDUINO_UNO_Q",
         "ARDUINO_ARCH_ZEPHYR",
-        "ARDUINO_LIBRARY_DISCOVERY_PHASE=1",
         "ARDUINO_LIBRARY_DISCOVERY_PHASE=0",
         "USBCON"
       ],

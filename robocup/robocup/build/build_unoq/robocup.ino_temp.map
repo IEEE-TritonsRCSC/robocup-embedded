@@ -3158,21 +3158,21 @@ LOAD linker stubs
  .debug_rnglists
                 0x0000000000005d6a      0x1c8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
 
-.debug_line     0x0000000000000000    0x26a14
+.debug_line     0x0000000000000000    0x26a16
  .debug_line    0x0000000000000000     0x5df5 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
  .debug_line    0x0000000000005df5     0x5c40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
- .debug_line    0x000000000000ba35     0xaa66 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
- .debug_line    0x000000000001649b     0x7499 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
- .debug_line    0x000000000001d934      0xc65 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
- .debug_line    0x000000000001e599      0xcd4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
- .debug_line    0x000000000001f26d      0x94e C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
- .debug_line    0x000000000001fbbb     0x1aa2 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
- .debug_line    0x000000000002165d      0x7aa C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
- .debug_line    0x0000000000021e07      0x953 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
- .debug_line    0x000000000002275a      0x3b3 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
- .debug_line    0x0000000000022b0d      0x981 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
- .debug_line    0x000000000002348e     0x24d3 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
- .debug_line    0x0000000000025961     0x10b3 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+ .debug_line    0x000000000000ba35     0xaa68 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+ .debug_line    0x000000000001649d     0x7499 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+ .debug_line    0x000000000001d936      0xc65 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+ .debug_line    0x000000000001e59b      0xcd4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+ .debug_line    0x000000000001f26f      0x94e C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
+ .debug_line    0x000000000001fbbd     0x1aa2 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+ .debug_line    0x000000000002165f      0x7aa C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+ .debug_line    0x0000000000021e09      0x953 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
+ .debug_line    0x000000000002275c      0x3b3 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
+ .debug_line    0x0000000000022b0f      0x981 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
+ .debug_line    0x0000000000023490     0x24d3 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+ .debug_line    0x0000000000025963     0x10b3 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
 
 .debug_str      0x0000000000000000    0x8b408
  .debug_str     0x0000000000000000    0x19de3 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
