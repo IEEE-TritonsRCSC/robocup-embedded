@@ -15,12 +15,12 @@ PORT   = 4210
 
 x = 0
 
-while x < 100:
-   MESSAGE = f"Hello Arduino! {x}"
+while x < 5:
+   MESSAGE = f"2 d 100 100"
    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
    sock.sendto(MESSAGE.encode(), (ARDUINO_IP, PORT))
    sock.close()
 
    print(f"Sent '{MESSAGE}' to {ARDUINO_IP}:{PORT} {x}")
    x += 1
-   time.sleep(0.001)
+   time.sleep(1)

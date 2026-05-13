@@ -61,5 +61,16 @@ constexpr unsigned int STOP_NUM_ARGS = 0;
 
 
 // BEGIN FUNCTION DECLARATION
+/**
+ * @brief check if robot ID in packet buffer is valid and matches this robot's ID
+ * @param packetBuffer holds a UDP packet with a command string
+ */
+bool isMatchingRobotID(char packetBuffer[BUFFER_SIZE]);
+
+/**
+ * @brief check if robot ID in packet buffer is between 1 and maximum robot ID
+ * @param packetBuffer holds a UDP packet with a command string
+ */
+bool isValidRobotID(char packetBuffer[BUFFER_SIZE]);
 
 // END FUNCTION DECLARATION
