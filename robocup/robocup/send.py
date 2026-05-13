@@ -16,7 +16,7 @@ PORT   = 4210
 x = 0
 
 while x < 5:
-   MESSAGE = f"2 d 100 100"
+   MESSAGE = f"1 d 100 100"
    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
    sock.sendto(MESSAGE.encode(), (ARDUINO_IP, PORT))
    sock.close()

@@ -3,6 +3,8 @@
  * this is for functions for parsing commands from the packet buffer
  */
 
+#pragma once
+
 // BEGIN INCLUDES
 #include "WiFiControl.h"
 #include "Robot.h"
@@ -14,8 +16,8 @@
 #define ONE_ARG "%f"
 
 #define CMD_PREFIX "%d %c"
-#define TWO_ARGS_FORMAT CMD_PREFIX + TWO_ARGS
-#define ONE_ARGS_FORMAT CMD_PREFIX + ONE_ARG
+#define TWO_ARGS_FORMAT "%d %c %f %f" 
+#define ONE_ARGS_FORMAT "%d %c %f"
 #define NO_ARG_FORMAT CMD_PREFIX
 // END DEFINES
 
@@ -34,6 +36,7 @@ constexpr char SHORTKICK_CMD = 's';
 constexpr char KICK_CMD = 'k';
 constexpr char CATCH_CMD = 'c';
 constexpr char STOP_CMD = 'q';
+constexpr int NUM_CMDS = 6;
 
 /**
  * @brief list of possible command characters
@@ -61,16 +64,26 @@ constexpr unsigned int STOP_NUM_ARGS = 0;
 
 
 // BEGIN FUNCTION DECLARATION
+
+/**
+ * @brief check if the command in the packet buffer is one of the possible commands
+ * @param packetBuffer holds the UDP command string
+ * @return is the command one of the commands in `validCommands`?
+ */
+bool isValidCommand(const char packetBuffer[BUFFER_SIZE]);
+
+void parsePacket(char packetBuffer[BUFFER_SIZE]);
+
 /**
  * @brief check if robot ID in packet buffer is valid and matches this robot's ID
  * @param packetBuffer holds a UDP packet with a command string
  */
-bool isMatchingRobotID(char packetBuffer[BUFFER_SIZE]);
+bool isMatchingRobotID(const char packetBuffer[BUFFER_SIZE]);
 
 /**
  * @brief check if robot ID in packet buffer is between 1 and maximum robot ID
  * @param packetBuffer holds a UDP packet with a command string
  */
-bool isValidRobotID(char packetBuffer[BUFFER_SIZE]);
+bool isValidRobotID(const char packetBuffer[BUFFER_SIZE]);
 
 // END FUNCTION DECLARATION

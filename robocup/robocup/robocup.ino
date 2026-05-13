@@ -8,7 +8,7 @@
  * the serial monitor should print the message
  */
 
-
+#include "Robot.h"
 #include "LEDControl.h"
 #include "Command.h"
 
@@ -18,6 +18,7 @@ constexpr unsigned int LINUX_BOOT_TIME = 30000; // it takes the linux on the UNO
 
 BridgeUDP<> udp(Bridge);
 char packetBuffer[BUFFER_SIZE];
+CommandData_T commandData;
 
 void setup() {
   delay(LINUX_BOOT_TIME);
@@ -34,6 +35,8 @@ void setup() {
 
   udp.begin(PORT); // start udp connection
 
+  clearCommandData(commandData);
+
   Monitor.println("Ready");
   LEDoff();
 }
@@ -43,6 +46,7 @@ void loop() {
     readPacketIntoBuffer(udp, Monitor,packetBuffer);
     if (isMatchingRobotID(packetBuffer)) {
       printPacket(Monitor,packetBuffer);
+      printData(commandData);
     }
   }
 }
