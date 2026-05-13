@@ -5,5 +5,5 @@
  * 
  */
 #pragma once
-#define WIFI_SSID "wlan3" // name/SSID of the WiFi
-#define WIFI_PASSWORD "a1b2c3d4" // password for the WiFi
+constexpr char* WIFI_SSID = "wlan3"; // name/SSID of the WiFi
+constexpr char* WIFI_PASSWORD = "a1b2c3d4"; // password for the WiFi
