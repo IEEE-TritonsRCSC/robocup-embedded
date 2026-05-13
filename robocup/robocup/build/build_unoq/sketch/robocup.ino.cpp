@@ -20,7 +20,7 @@ constexpr unsigned int LINUX_BOOT_TIME = 30000; // it takes the linux on the UNO
 
 BridgeUDP<> udp(Bridge);
 char packetBuffer[BUFFER_SIZE];
-CommandData_T commandData;
+CommandData commandData;
 
 #line 23 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
 void setup();
@@ -42,7 +42,7 @@ void setup() {
 
   udp.begin(PORT); // start udp connection
 
-  clearCommandData(commandData);
+  commandData.clearCommandData();
 
   Monitor.println("Ready");
   LEDoff();
@@ -53,7 +53,9 @@ void loop() {
     readPacketIntoBuffer(udp, Monitor,packetBuffer);
     if (isMatchingRobotID(packetBuffer)) {
       printPacket(Monitor,packetBuffer);
-      printData(commandData);
+      parsePacketIntoCommandData(packetBuffer,commandData);
+      commandData.printData();
     }
   }
 }
+

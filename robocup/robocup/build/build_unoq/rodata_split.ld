@@ -17,11 +17,12 @@ SECTIONS
     /* Read-only data WITHOUT relocations - kept in flash by LLEXT */
     .llext.rodata.noreloc : {
         *(.rodata._Z11printPacketR13BridgeMonitorILj512EEPc.str1.1)
-        *(.rodata._Z9printDataRK13CommandData_T.str1.1)
+        *(.rodata._Z26parsePacketIntoCommandDataPcR11CommandData.str1.1)
         *(.rodata._ZN10RpcDecoderILj1024EE12get_responseIN7arduino7msgpack6object5nil_tEEEbjRT_R8RpcError.str1.1)
         *(.rodata._ZN10RpcDecoderILj1024EE12get_responseIbEEbjRT_R8RpcError.str1.1)
         *(.rodata._ZN11BridgeClass11update_safeEv.str1.1)
         *(.rodata._ZN11BridgeClass5beginEm.str1.1)
+        *(.rodata._ZN11CommandData9printDataEv.str1.1)
         *(.rodata._ZN13BridgeMonitorILj512EE5_readEj.str1.1)
         *(.rodata._ZN13BridgeMonitorILj512EE5writeEPKhj.str1.1)
         *(.rodata._ZN7RpcCallIJEE6resultIN7arduino7msgpack6object5nil_tEEEbRT_.part.0.str1.1)

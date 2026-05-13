@@ -1,73 +1,83 @@
 /**
  * Robot.cpp
- * implements the methods of the CommandData_T typedef struct
+ * implements the methods of the CommandData class
  */
 
 // BEGIN INCLUDES
 #include "Robot.h"
 // END INCLUDES
 
-// BEGIN STRUCT FUNCTION DEFINITIONS
-void clearCommandData(CommandData_T &commandData) {
-   commandData.dashPower = 0;
-   commandData.dashDirection = 0;
-   commandData.shortKickPower = 0;
-   commandData.turnSpeed = 0;
-   commandData.dribble = false;
-   commandData.kick = false;
-   commandData.stop = false;
+CommandData::CommandData() {
+   this->dashPower = 0;
+   this->dashDirection = 0;
+   this->shortKickPower = 0;
+   this->turnSpeed = 0;
+   this->dribble = false;
+   this->kick = false;
+   this->stop = false;
 }
 
-void setStop(CommandData_T &commandData) {
-   clearCommandData(commandData);
-   commandData.stop = true;
+// BEGIN CLASS FUNCTION DEFINITIONS
+void CommandData::clearCommandData() {
+   this->dashPower = 0;
+   this->dashDirection = 0;
+   this->shortKickPower = 0;
+   this->turnSpeed = 0;
+   this->dribble = false;
+   this->kick = false;
+   this->stop = false;
 }
 
-void setKick(CommandData_T &commandData) {
+void CommandData::setStop(const bool isStopped) {
+   clearCommandData();
+   this->stop = isStopped;
+}
+
+void CommandData::setKick(const bool doKick) {
    // TODO: check with mechanical whether kick is possible while dribbling
-   commandData.kick = true;
+   this->kick = doKick;
 }
 
-void setCatch(CommandData_T &commandData) {
-   commandData.dribble = true;
+void CommandData::setCatch(const bool doCatch) {
+   this->dribble = doCatch;
 }
 
-void setDash(CommandData_T &commandData, const float power, const float direction) {
+void CommandData::setDash(const float power, const float direction) {
    // TODO: make sure to check how to implement dashing while turning
-   commandData.dashPower = power;
-   commandData.dashDirection = direction;
+   this->dashPower = power;
+   this->dashDirection = direction;
 }
 
-void setTurn(CommandData_T &commandData, const float speed) {
-   commandData.turnSpeed = speed;
+void CommandData::setTurn(const float speed) {
+   this->turnSpeed = speed;
 }
 
-void setShortKick(CommandData_T &commandData, const float power) {
-   commandData.shortKickPower = power;
+void CommandData::setShortKick(const float power) {
+   this->shortKickPower = power;
 }
 
-void executeStop(const CommandData_T &commandData);
-void executeKick(const CommandData_T &commandData);
-void executeCatch(const CommandData_T &commandData);
-void executeDash(const CommandData_T &commandData);
-void executeTurn(const CommandData_T &commandData);
-void executeShortKick(const CommandData_T &commandData);
+// void executeStop(); TODO: implement executors
+// void executeKick();
+// void executeCatch();
+// void executeDash();
+// void executeTurn();
+// void executeShortKick();
 
-void printData(const CommandData_T &commandData) {
+void CommandData::printData() {
    Monitor.println("Command Data:");
    Monitor.print("Dash Power: ");
-   Monitor.println(commandData.dashPower);
+   Monitor.println(this->dashPower);
    Monitor.print("Dash Direction: ");
-   Monitor.println(commandData.dashDirection);
+   Monitor.println(this->dashDirection);
    Monitor.print("Turn Speed: ");
-   Monitor.println(commandData.turnSpeed);
+   Monitor.println(this->turnSpeed);
    Monitor.print("Short Kick Power: ");
-   Monitor.println(commandData.shortKickPower);
+   Monitor.println(this->shortKickPower);
    Monitor.print("Catch: ");
-   Monitor.println(commandData.dribble);
+   Monitor.println(this->dribble);
    Monitor.print("Kick: ");
-   Monitor.println(commandData.kick);
+   Monitor.println(this->kick);
    Monitor.print("Stop: ");
-   Monitor.println(commandData.stop);
+   Monitor.println(this->stop);
 }
 // END STRUCT FUNCTION DEFINITIONS

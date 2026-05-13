@@ -18,7 +18,7 @@ constexpr unsigned int LINUX_BOOT_TIME = 30000; // it takes the linux on the UNO
 
 BridgeUDP<> udp(Bridge);
 char packetBuffer[BUFFER_SIZE];
-CommandData_T commandData;
+CommandData commandData;
 
 void setup() {
   delay(LINUX_BOOT_TIME);
@@ -35,7 +35,7 @@ void setup() {
 
   udp.begin(PORT); // start udp connection
 
-  clearCommandData(commandData);
+  commandData.clearCommandData();
 
   Monitor.println("Ready");
   LEDoff();
@@ -46,7 +46,8 @@ void loop() {
     readPacketIntoBuffer(udp, Monitor,packetBuffer);
     if (isMatchingRobotID(packetBuffer)) {
       printPacket(Monitor,packetBuffer);
-      printData(commandData);
+      parsePacketIntoCommandData(packetBuffer,commandData);
+      commandData.printData();
     }
   }
 }

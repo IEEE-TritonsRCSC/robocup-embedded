@@ -72,7 +72,12 @@ constexpr unsigned int STOP_NUM_ARGS = 0;
  */
 bool isValidCommand(const char packetBuffer[BUFFER_SIZE]);
 
-void parsePacket(char packetBuffer[BUFFER_SIZE]);
+/**
+ * @brief parse command string in packet buffer and set command data accordingly
+ * @param packetBuffer holds UDP command string
+ * @param commandData holds state of robot and updates from commands
+ */
+void parsePacketIntoCommandData(char packetBuffer[BUFFER_SIZE], CommandData &commandData);
 
 /**
  * @brief check if robot ID in packet buffer is valid and matches this robot's ID

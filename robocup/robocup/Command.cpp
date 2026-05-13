@@ -6,44 +6,106 @@
 
 // BEGIN INCLUDES
 #include "Command.h"
+#include <string.h>
 // END INCLUDES
 
 // BEGIN FUNCTION DEFINITIONS
 
+static float parseFloatToken(const char *token) {
+   if (token == nullptr) {
+      return 0.0f;
+   }
 
-void parsePacket(char packetBuffer[BUFFER_SIZE], CommandData_T &commandData) {
-   int robotID;
-   char command;
-   float arg1, arg2;
+   bool isNegative = false;
+   if (*token == '-') {
+      isNegative = true;
+      token++;
+   } else if (*token == '+') {
+      token++;
+   }
 
+   float value = 0.0f;
+   while (*token >= '0' && *token <= '9') {
+      value = (value * 10.0f) + static_cast<float>(*token - '0');
+      token++;
+   }
+
+   if (*token == '.') {
+      token++;
+      float placeValue = 0.1f;
+      while (*token >= '0' && *token <= '9') {
+         value += static_cast<float>(*token - '0') * placeValue;
+         placeValue *= 0.1f;
+         token++;
+      }
+   }
+
+   if (isNegative) {
+      value = -value;
+   }
+
+   return value;
+}
+
+// TODO: integrate this function into CommandData
+void parsePacketIntoCommandData(char packetBuffer[BUFFER_SIZE], CommandData &commandData) {
    if (!isMatchingRobotID(packetBuffer) || !isValidCommand(packetBuffer)) {
       return;
    }
 
-   sscanf(packetBuffer,TWO_ARGS_FORMAT,&robotID, &command, &arg1, &arg2);
+   char parseBuffer[BUFFER_SIZE];
+   strncpy(parseBuffer, packetBuffer, BUFFER_SIZE - 1);
+   parseBuffer[BUFFER_SIZE - 1] = '\0';
 
+   char *robotIDToken = strtok(parseBuffer, " \t\r\n");
+   char *commandToken = strtok(nullptr, " \t\r\n");
+   char *arg1Token = strtok(nullptr, " \t\r\n");
+   char *arg2Token = strtok(nullptr, " \t\r\n");
+
+   if (robotIDToken == nullptr || commandToken == nullptr) {
+      return;
+   }
+
+   char command = commandToken[0];
+   float arg1 = 0;
+   float arg2 = 0;
+
+   // keep order of switch statement the same as `validCommands`
    switch (command) {
-      STOP_CMD:
-         
-         break;
-      KICK_CMD:
-         // TODO implement function for kick command
-         break;
-      CATCH_CMD:
-         // TODO implement function for catch command
-         break;
-      SHORTKICK_CMD:
-         // TODO implement function for short kick command
-         break;
-      DASH_CMD:
-         // TODO implement function for dash command
-         break;
-      TURN_CMD:
-         // TODO implement function for turn command
-         break;
+      case STOP_CMD:
+         commandData.setStop(true); // TODO: replace with a const or arg
+         return;
+      case KICK_CMD:
+         commandData.setKick(true); // TODO: replace with a const or arg
+         return;
+      case CATCH_CMD:
+         commandData.setCatch(true);
+         return;
+      case SHORTKICK_CMD:
+         if (arg1Token == nullptr) {
+            return;
+         }
+         arg1 = parseFloatToken(arg1Token);
+         commandData.setShortKick(arg1);
+         return;
+      case DASH_CMD:
+         if (arg1Token == nullptr || arg2Token == nullptr) {
+            return;
+         }
+         arg1 = parseFloatToken(arg1Token);
+         arg2 = parseFloatToken(arg2Token);
+         commandData.setDash(arg1,arg2);
+         return;
+      case TURN_CMD:
+         if (arg1Token == nullptr) {
+            return;
+         }
+         arg1 = parseFloatToken(arg1Token);
+         commandData.setTurn(arg1);
+         return;
       default:
          // unknown command
-         break;
+         return;
    }
 }
 

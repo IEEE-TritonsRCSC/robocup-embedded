@@ -13,10 +13,10 @@ import time
 ARDUINO_IP = "100.110.254.74"
 PORT   = 4210
 
-x = 0
+x = 1
 
-while x < 5:
-   MESSAGE = f"1 d 100 100"
+while x <= 1:
+   MESSAGE = f"1 s 100.0f"
    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
    sock.sendto(MESSAGE.encode(), (ARDUINO_IP, PORT))
    sock.close()
