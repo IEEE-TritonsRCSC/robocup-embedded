@@ -32,12 +32,7 @@ void setup() {
     delay(1000);
   }
 
-  Monitor.print("Connecting UDP...");
-  while (!udp.begin(PORT)) { // start udp connection
-    Monitor.print(".");
-    delay(1000);
-  }
-  Monitor.println("");
+  udp.begin(PORT); // start udp connection
 
   Monitor.println("Ready");
   LEDoff();
