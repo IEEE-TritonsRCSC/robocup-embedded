@@ -9,7 +9,7 @@
 // END INCLUDES
 
 // BEGIN FUNCTION DEFINITIONS
-void parsePacket(
+void readPacketIntoBuffer(
    BridgeUDP<> &udp, 
    BridgeMonitor<> &Monitor, 
    char packetBuffer[BUFFER_SIZE]) 
@@ -18,11 +18,7 @@ void parsePacket(
    nullTerminatePacketBuffer(packetBuffer,len);
 }
 
-bool hasPacket(BridgeUDP<> &udp) {
-   return packetSize(udp);
-}
-
-int packetSize(BridgeUDP<> &udp) {
+int hasPacket(BridgeUDP<> &udp) {
    return udp.parsePacket();
 }
 

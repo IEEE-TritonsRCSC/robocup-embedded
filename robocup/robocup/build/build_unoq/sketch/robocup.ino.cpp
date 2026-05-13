@@ -11,8 +11,8 @@
  */
 
 
-#include "WiFiControl.h"
 #include "LEDControl.h"
+#include "Command.h"
 
 // BEGIN CONSTEXPR
 constexpr unsigned int LINUX_BOOT_TIME = 30000; // it takes the linux on the UNO Q 30 seconds to boot up
@@ -47,7 +47,9 @@ void setup() {
 
 void loop() {
   if (hasPacket(udp)) {
-    parsePacket(udp, Monitor,packetBuffer); 
-    printPacket(Monitor,packetBuffer);
+    readPacketIntoBuffer(udp, Monitor,packetBuffer);
+    if (isMatchingRobotID(packetBuffer)) {
+      printPacket(Monitor,packetBuffer);
+    }
   }
 }

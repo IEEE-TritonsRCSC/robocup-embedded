@@ -25,10 +25,10 @@ The wifi port numbers can be anything but choose something between 4000 and 2000
 - Open the sketch folder `robocup`
 - Go to sketch.yaml and change port: COMX your USB COM port. You can check "device manager" on windows to find the COM number
 - Upload code in the Arduino Workshop left panel
+- Unplug board, wait 10 seconds, replug board
 - SSH into the UNO Q, which can be done by opening the Arduino App Lab and clicking the terminal button in the bottom left
 - run `sudo tailscale up`
 - Check the tailscale console to confirm the device is online
-- Unplug board, wait 10 seconds, replug board
 - Wait 30 seconds for the Linux Bridge to boot up
 - Check Serial Monitor for setup confirmation message
 - Run `send.py` and check Serial Monitor for receive confirmation from the UNO Q
