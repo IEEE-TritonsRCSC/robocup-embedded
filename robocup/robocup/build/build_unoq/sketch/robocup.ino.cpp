@@ -10,7 +10,7 @@
  * the serial monitor should print the message
  */
 
-
+#include "Robot.h"
 #include "LEDControl.h"
 #include "Command.h"
 
@@ -20,12 +20,13 @@ constexpr unsigned int LINUX_BOOT_TIME = 30000; // it takes the linux on the UNO
 
 BridgeUDP<> udp(Bridge);
 char packetBuffer[BUFFER_SIZE];
+CommandData_T commandData;
 
-#line 22 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
+#line 23 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
 void setup();
-#line 41 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
+#line 44 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
 void loop();
-#line 22 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
+#line 23 "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup\\robocup.ino"
 void setup() {
   delay(LINUX_BOOT_TIME);
 
@@ -41,6 +42,8 @@ void setup() {
 
   udp.begin(PORT); // start udp connection
 
+  clearCommandData(commandData);
+
   Monitor.println("Ready");
   LEDoff();
 }
@@ -50,6 +53,7 @@ void loop() {
     readPacketIntoBuffer(udp, Monitor,packetBuffer);
     if (isMatchingRobotID(packetBuffer)) {
       printPacket(Monitor,packetBuffer);
+      printData(commandData);
     }
   }
 }
