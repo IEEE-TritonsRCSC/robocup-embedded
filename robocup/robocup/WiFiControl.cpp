@@ -8,7 +8,7 @@
 // END INCLUDES
 
 // BEGIN FUNCTION DEFINITIONS
-void parsePacket(
+void readPacketIntoBuffer(
    BridgeUDP<> &udp, 
    BridgeMonitor<> &Monitor, 
    char packetBuffer[BUFFER_SIZE]) 

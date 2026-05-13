@@ -19,12 +19,12 @@ constexpr char NULL_TERMINATOR = '\0';
 
 // BEGIN FUNCTION DECLARATION
 /**
- * @brief read an incoming UDP packet and print its contents to the Serial Monitor
+ * @brief read an incoming UDP packet into a buffer
  * @param udp the WiFi UDP object for the Router Bridge
  * @param Monitor the serial monitor which is the same as using `Serial` on a normal Arduino Uno
  * @param packetBuffer holds the characters of the UDP packet's contents
  */
-void parsePacket(
+void readPacketIntoBuffer(
    BridgeUDP<> &udp, 
    BridgeMonitor<> &Monitor, 
    char packetBuffer[BUFFER_SIZE]

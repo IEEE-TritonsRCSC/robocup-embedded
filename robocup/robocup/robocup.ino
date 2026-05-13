@@ -40,7 +40,7 @@ void setup() {
 
 void loop() {
   if (hasPacket(udp)) {
-    parsePacket(udp, Monitor,packetBuffer); 
+    readPacketIntoBuffer(udp, Monitor,packetBuffer); 
     printPacket(Monitor,packetBuffer);
   }
 }
