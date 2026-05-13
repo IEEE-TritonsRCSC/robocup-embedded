@@ -47,11 +47,11 @@ int packetLength(
 /**
  * @brief check if there is an available UDP packet to read
  * @param udp WiFi UDP object
- * @return is udp.parsePacket() a non-zero int?
+ * @return packet size
  * @retval true udp.parsePacket() returned a non-zero int. there is data in the UDP packet
  * @retval false udp.parsePacket() returned zero. The UDP packet is empty
  */
-bool hasPacket(BridgeUDP<> &udp);
+int hasPacket(BridgeUDP<> &udp);
 
 /**
  * @brief put a null terminator character at the end of the UDP packet's data inside of the packet buffer
@@ -62,14 +62,6 @@ void nullTerminatePacketBuffer(
    char packetBuffer[BUFFER_SIZE], 
    const int packetLength
 );
-
-/**
- * @brief Checks for the presence of a UDP packet, and returns the size
- * @param udp WiFi UDP object for the Router Bridge
- * @return the size of the UDP packet
- * @note the end of the packet does not have a null terminator char like a normal string
- */
-int packetSize(BridgeUDP<> &udp);
 
 /**
  * @brief print a packet buffer to the Serial Monitor

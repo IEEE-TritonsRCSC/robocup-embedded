@@ -17,11 +17,7 @@ void parsePacket(
    nullTerminatePacketBuffer(packetBuffer,len);
 }
 
-bool hasPacket(BridgeUDP<> &udp) {
-   return packetSize(udp);
-}
-
-int packetSize(BridgeUDP<> &udp) {
+int hasPacket(BridgeUDP<> &udp) {
    return udp.parsePacket();
 }
 
