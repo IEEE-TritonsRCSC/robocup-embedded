@@ -14,8 +14,12 @@ ARDUINO_IP = "100.110.254.74"
 PORT   = 4210
 MESSAGE    = "Hello Arduino!"
 
-sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-sock.sendto(MESSAGE.encode(), (ARDUINO_IP, PORT))
-sock.close()
+x = 0
+while x < 100:
+   sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+   sock.sendto(MESSAGE.encode(), (ARDUINO_IP, PORT))
+   sock.close()
 
-print(f"Sent '{MESSAGE}' to {ARDUINO_IP}:{PORT}")
+   print(f"Sent '{MESSAGE}' to {ARDUINO_IP}:{PORT} {x}")
+   x += 1
+   time.sleep(0.05)
