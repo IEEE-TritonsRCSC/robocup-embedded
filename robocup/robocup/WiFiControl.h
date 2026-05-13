@@ -10,12 +10,12 @@
 #include <Arduino_RouterBridge.h>
 // END INCLUDES
 
-// BEGIN DEFINES
-#define PORT 4210
-#define BUFFER_SIZE 256
-#define READABLE_BUFFER_SIZE BUFFER_SIZE - 1
-#define NULL_TERMINATOR '\0'
-// END DEFINES
+// BEGIN CONSTEXPR
+constexpr unsigned int PORT = 4210;
+constexpr unsigned int BUFFER_SIZE = 256;
+constexpr unsigned int READABLE_BUFFER_SIZE = BUFFER_SIZE - 1;
+constexpr char NULL_TERMINATOR = '\0';
+// END CONSTEXPR
 
 // BEGIN FUNCTION DECLARATION
 /**

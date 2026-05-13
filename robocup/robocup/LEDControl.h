@@ -8,10 +8,10 @@
 #include "Arduino.h"
 // END INCLUDES
 
-// BEGIN DEFINES
-#define LED_ON LOW
-#define LED_OFF HIGH
-// END DEFINES
+// BEGIN CONSTEXPR
+constexpr int LED_ON = LOW; // the UNO Q onboard LED is active-low
+constexpr int LED_OFF = HIGH;
+// END CONSTEXPR
 
 // BEGIN FUNCTION DECLARATION
 /**
