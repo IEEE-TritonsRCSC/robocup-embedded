@@ -11,7 +11,7 @@ profiles:
       - ArxTypeTraits (0.3.2)
       - ArxContainer (0.7.0)
     programmer: ""
-    port: COM8
+    port: COM9
     port_config:
       baudrate: "115200"
       lineEnding: "\r\n"

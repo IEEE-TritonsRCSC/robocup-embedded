@@ -27,5 +27,9 @@ void setup() {
 }
 
 void loop() {
-  parsePacket(udp, Monitor,packetBuffer); 
+  if (hasPacket(udp)) {
+    parsePacket(udp, Monitor,packetBuffer); 
+    printPacket(Monitor,packetBuffer);
+  }
+  delay(1000);
 }

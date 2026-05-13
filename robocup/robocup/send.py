@@ -10,7 +10,7 @@ Troubleshooting:
 
 import socket
 import time
-ARDUINO_IP = "100.105.19.66"
+ARDUINO_IP = "100.110.254.74"
 PORT   = 4210
 MESSAGE    = "Hello Arduino!"
 

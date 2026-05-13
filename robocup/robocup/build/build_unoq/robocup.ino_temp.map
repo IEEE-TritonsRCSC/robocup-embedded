@@ -1900,7 +1900,7 @@ END GROUP
  *cow-stdexcept.o()
  *cow-string-inst.o()
 
-.text           0x0000000000000000     0x8c5c
+.text           0x0000000000000000     0x8c68
  *(.text)
  *(.stub)
  *(.text*)
@@ -2286,595 +2286,595 @@ END GROUP
  .text._ZN9BridgeUDPILj4096EE4readEPcj
                 0x0000000000003da8       0xb8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
                 0x0000000000003da8                BridgeUDP<4096u>::read(char*, unsigned int)
- .text._ZN7RpcCallIJRjEED2Ev
-                0x0000000000003e60      0x118 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
-                0x0000000000003e60                RpcCall<unsigned int&>::~RpcCall()
-                0x0000000000003e60                RpcCall<unsigned int&>::~RpcCall()
- .text._ZN7RpcCallIJRjEE6resultIbEEbRT_
-                0x0000000000003f78      0x134 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
-                0x0000000000003f78                bool RpcCall<unsigned int&>::result<bool>(bool&)
- .text._ZN7RpcCallIJRjS0_EE6resultI13BridgeUdpMetaEEbRT_
-                0x00000000000040ac      0x138 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
-                0x00000000000040ac                bool RpcCall<unsigned int&, unsigned int&>::result<BridgeUdpMeta>(BridgeUdpMeta&)
- .text._ZN9BridgeUDPILj4096EE11parsePacketEv
-                0x00000000000041e4      0x2d0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
-                0x00000000000041e4                BridgeUDP<4096u>::parsePacket()
- .text._Z9hasPacketR9BridgeUDPILj4096EE
-                0x00000000000044b4       0x14 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
-                0x00000000000044b4                hasPacket(BridgeUDP<4096u>&)
  .text._Z11parsePacketR9BridgeUDPILj4096EER13BridgeMonitorILj512EEPc
-                0x00000000000044c8       0x38 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
-                0x00000000000044c8                parsePacket(BridgeUDP<4096u>&, BridgeMonitor<512u>&, char*)
+                0x0000000000003e60       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+                0x0000000000003e60                parsePacket(BridgeUDP<4096u>&, BridgeMonitor<512u>&, char*)
+ .text._ZN7RpcCallIJRjEED2Ev
+                0x0000000000003e78      0x118 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+                0x0000000000003e78                RpcCall<unsigned int&>::~RpcCall()
+                0x0000000000003e78                RpcCall<unsigned int&>::~RpcCall()
+ .text._ZN7RpcCallIJRjEE6resultIbEEbRT_
+                0x0000000000003f90      0x134 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+                0x0000000000003f90                bool RpcCall<unsigned int&>::result<bool>(bool&)
+ .text._ZN7RpcCallIJRjS0_EE6resultI13BridgeUdpMetaEEbRT_
+                0x00000000000040c4      0x138 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+                0x00000000000040c4                bool RpcCall<unsigned int&, unsigned int&>::result<BridgeUdpMeta>(BridgeUdpMeta&)
+ .text._ZN9BridgeUDPILj4096EE11parsePacketEv
+                0x00000000000041fc      0x2d0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+                0x00000000000041fc                BridgeUDP<4096u>::parsePacket()
+ .text._Z9hasPacketR9BridgeUDPILj4096EE
+                0x00000000000044cc       0x14 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+                0x00000000000044cc                hasPacket(BridgeUDP<4096u>&)
  .text._GLOBAL__sub_I__Z11parsePacketR9BridgeUDPILj4096EER13BridgeMonitorILj512EEPc
-                0x0000000000004500       0x64 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+                0x00000000000044e0       0x64 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
  .text._GLOBAL__sub_D__Z11parsePacketR9BridgeUDPILj4096EER13BridgeMonitorILj512EEPc
-                0x0000000000004564       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+                0x0000000000004544       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
  .text._ZN7arduino5Print17availableForWriteEv
-                0x0000000000004590        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000004590                arduino::Print::availableForWrite()
+                0x0000000000004570        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004570                arduino::Print::availableForWrite()
  .text._ZN15SerialTransport9availableEv
-                0x0000000000004594       0x12 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000004594                SerialTransport::available()
+                0x0000000000004574       0x12 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004574                SerialTransport::available()
  .text._ZN15SerialTransport5writeEPKhj
-                0x00000000000045a6       0x10 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000045a6                SerialTransport::write(unsigned char const*, unsigned int)
+                0x0000000000004586       0x10 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004586                SerialTransport::write(unsigned char const*, unsigned int)
  .text._ZN15SerialTransportD2Ev
-                0x00000000000045b6        0x2 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000045b6                SerialTransport::~SerialTransport()
-                0x00000000000045b6                SerialTransport::~SerialTransport()
+                0x0000000000004596        0x2 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004596                SerialTransport::~SerialTransport()
+                0x0000000000004596                SerialTransport::~SerialTransport()
  .text._ZN9BridgeUDPILj4096EE5flushEv
-                0x00000000000045b8        0x2 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000045b8                BridgeUDP<4096u>::flush()
- *fill*         0x00000000000045ba        0x2 
- .text.k_yield  0x00000000000045bc        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004598        0x2 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004598                BridgeUDP<4096u>::flush()
+ *fill*         0x000000000000459a        0x2 
+ .text.k_yield  0x000000000000459c        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text.k_mutex_lock
-                0x00000000000045c4        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000045a4        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN15SerialTransportD0Ev
-                0x00000000000045cc       0x14 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000045cc                SerialTransport::~SerialTransport()
+                0x00000000000045ac       0x14 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000045ac                SerialTransport::~SerialTransport()
  .text._ZN15SerialTransport4readEPhj
-                0x00000000000045e0       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000045e0                SerialTransport::read(unsigned char*, unsigned int)
+                0x00000000000045c0       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000045c0                SerialTransport::read(unsigned char*, unsigned int)
  .text._ZN15SerialTransport9read_byteERh
+                0x00000000000045e8       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000045e8                SerialTransport::read_byte(unsigned char&)
+ .text._ZSt14__relocate_a_1IhhENSt9enable_ifIXsrSt24__is_bitwise_relocatableIT_vE5valueEPS2_E4typeES4_S4_S4_RSaIT0_E.isra.0
                 0x0000000000004608       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000004608                SerialTransport::read_byte(unsigned char&)
- .text._ZSt14__relocate_a_1IhhENSt9enable_ifIXsrSt24__is_bitwise_relocatableIT_vE5valueEPS2_E4typeES4_S4_S4_RSaIT0_E.isra.0
+ .text._ZNSt12_Vector_baseIhSaIhEE11_M_allocateEj.isra.0
                 0x0000000000004628       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
- .text._ZNSt12_Vector_baseIhSaIhEE11_M_allocateEj.isra.0
-                0x0000000000004648       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text.k_mutex_unlock.isra.0
-                0x0000000000004668        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004648        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN9BridgeUDPILj4096EE4peekEv
-                0x0000000000004670       0x48 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000004670                BridgeUDP<4096u>::peek()
+                0x0000000000004650       0x48 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004650                BridgeUDP<4096u>::peek()
  .text._ZN9BridgeUDPILj4096EE8remoteIPEv
-                0x00000000000046b8       0x4c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000046b8                BridgeUDP<4096u>::remoteIP()
+                0x0000000000004698       0x4c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004698                BridgeUDP<4096u>::remoteIP()
  .text._ZN9BridgeUDPILj4096EE10remotePortEv
-                0x0000000000004704       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000004704                BridgeUDP<4096u>::remotePort()
+                0x00000000000046e4       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000046e4                BridgeUDP<4096u>::remotePort()
  .text.k_mutex_init.isra.0
-                0x0000000000004738        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004718        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text.k_msleep.constprop.0.isra.0
-                0x0000000000004740        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004720        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN8RpcError4copyERKS_
-                0x000000000000474c       0x10 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x000000000000474c                RpcError::copy(RpcError const&)
+                0x000000000000472c       0x10 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x000000000000472c                RpcError::copy(RpcError const&)
  .text._ZN10RPCRequestILj256EEC2Ev
-                0x000000000000475c       0x4c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x000000000000475c                RPCRequest<256u>::RPCRequest()
-                0x000000000000475c                RPCRequest<256u>::RPCRequest()
+                0x000000000000473c       0x4c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x000000000000473c                RPCRequest<256u>::RPCRequest()
+                0x000000000000473c                RPCRequest<256u>::RPCRequest()
  .text._ZN11BridgeClass10is_startedEv
-                0x00000000000047a8       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000047a8                BridgeClass::is_started()
- .text.loop     0x00000000000047d4       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000047d4                loop
+                0x0000000000004788       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004788                BridgeClass::is_started()
+ .text.loop     0x00000000000047b4       0x48 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000047b4                loop
  .text._ZNK7arduino7msgpack8Unpacker5isNilEv
-                0x00000000000047f0       0x14 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000047f0                arduino::msgpack::Unpacker::isNil() const
+                0x00000000000047fc       0x14 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000047fc                arduino::msgpack::Unpacker::isNil() const
  .text._ZN17RpcDecoderManagerILj3EE10getDecoderER10ITransport
-                0x0000000000004804       0x7c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000004804                RpcDecoderManager<3u>::getDecoder(ITransport&)
+                0x0000000000004810       0x7c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004810                RpcDecoderManager<3u>::getDecoder(ITransport&)
  .text._ZN7RpcCallIJEE8setErrorEiN7arduino6StringE
-                0x0000000000004880       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000004880                RpcCall<>::setError(int, arduino::String)
+                0x000000000000488c       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x000000000000488c                RpcCall<>::setError(int, arduino::String)
  .text._ZN7RpcCallIJEEC2ERKN7arduino6StringEP9RPCClientP7k_mutexS8_
-                0x00000000000048c0       0x7c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000048c0                RpcCall<>::RpcCall(arduino::String const&, RPCClient*, k_mutex*, k_mutex*)
-                0x00000000000048c0                RpcCall<>::RpcCall(arduino::String const&, RPCClient*, k_mutex*, k_mutex*)
+                0x00000000000048cc       0x7c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000048cc                RpcCall<>::RpcCall(arduino::String const&, RPCClient*, k_mutex*, k_mutex*)
+                0x00000000000048cc                RpcCall<>::RpcCall(arduino::String const&, RPCClient*, k_mutex*, k_mutex*)
  .text._ZN7RpcCallIJEE6resultIN7arduino7msgpack6object5nil_tEEEbRT_.part.0
-                0x000000000000493c       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004948       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN7RpcCallIJEE7isErrorEv
-                0x0000000000004970       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000004970                RpcCall<>::isError()
+                0x000000000000497c       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x000000000000497c                RpcCall<>::isError()
  .text._ZNSt6vectorIhSaIhEE17_M_realloc_insertIJRKhEEEvN9__gnu_cxx17__normal_iteratorIPhS1_EEDpOT_
-                0x00000000000049a4       0x74 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000049a4                void std::vector<unsigned char, std::allocator<unsigned char> >::_M_realloc_insert<unsigned char const&>(__gnu_cxx::__normal_iterator<unsigned char*, std::vector<unsigned char, std::allocator<unsigned char> > >, unsigned char const&)
+                0x00000000000049b0       0x74 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000049b0                void std::vector<unsigned char, std::allocator<unsigned char> >::_M_realloc_insert<unsigned char const&>(__gnu_cxx::__normal_iterator<unsigned char*, std::vector<unsigned char, std::allocator<unsigned char> > >, unsigned char const&)
  .text._ZNSt6vectorIhSaIhEE12emplace_backIJRKhEEERhDpOT_.isra.0
-                0x0000000000004a18       0x30 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004a24       0x30 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN7arduino7msgpack6Packer12packRawBytesEPKhj
-                0x0000000000004a48       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000004a48                arduino::msgpack::Packer::packRawBytes(unsigned char const*, unsigned int)
+                0x0000000000004a54       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004a54                arduino::msgpack::Packer::packRawBytes(unsigned char const*, unsigned int)
  .text._ZN7arduino7msgpack6Packer9packUInt7Eh
-                0x0000000000004a68       0x24 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000004a68                arduino::msgpack::Packer::packUInt7(unsigned char)
+                0x0000000000004a74       0x24 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004a74                arduino::msgpack::Packer::packUInt7(unsigned char)
  .text._ZNSt6vectorIhSaIhEE12emplace_backIJhEEERhDpOT_.isra.0
-                0x0000000000004a8c       0x90 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004a98       0x90 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN7arduino7msgpack6Packer11packRawByteERKNS0_4TypeE.isra.0
-                0x0000000000004b1c       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004b28       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZNSt6vectorIhSaIhEE12emplace_backIJRhEEES3_DpOT_.isra.0
-                0x0000000000004b34       0x90 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004b40       0x90 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN7arduino7msgpack6Packer11packIntegerIjEENSt9enable_ifIXaaaaaasrSt13is_arithmeticIT_E5valuesrSt11is_integralIS5_E5valuentsrSt7is_sameIS5_bE5valuentsrS9_INSt9remove_cvIS5_E4typeEPcE5valueEvE4typeERKS5_.isra.0
-                0x0000000000004bc4       0x3c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004bd0       0x3c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN7arduino7msgpack6Packer11packIntegerIiEENSt9enable_ifIXaaaaaasrSt13is_arithmeticIT_E5valuesrSt11is_integralIS5_E5valuentsrSt7is_sameIS5_bE5valuentsrS9_INSt9remove_cvIS5_E4typeEPcE5valueEvE4typeERKS5_.isra.0
-                0x0000000000004c00       0xc0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004c0c       0xc0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN7arduino7msgpack6Packer9serializeIJRKiRjRKNS_6StringEEEEvRKNS0_4type9ArraySizeEDpOT_.isra.0
-                0x0000000000004cc0       0x38 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004ccc       0x38 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN9RPCClient8send_rpcIJEEEbRKN7arduino6StringERjDpOT_.isra.0
-                0x0000000000004cf8       0x74 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004d04       0x74 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN9RPCClient8send_rpcIJRKjEEEbRKN7arduino6StringERjDpOT_.isra.0
-                0x0000000000004d6c       0x84 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004d78       0x84 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN9RPCClient8send_rpcIJRKjRKSt6vectorIhSaIhEEEEEbRKN7arduino6StringERjDpOT_.isra.0
-                0x0000000000004df0       0xf8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004dfc       0xf8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN11BridgeClass6notifyIJiEEEvN7arduino6StringEDpOT_
-                0x0000000000004ee8       0xac C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000004ee8                void BridgeClass::notify<int>(arduino::String, int&&)
+                0x0000000000004ef4       0xac C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004ef4                void BridgeClass::notify<int>(arduino::String, int&&)
  .text._ZNK9RPCServer13send_responseILj256EEEbRK10RPCRequestIXT_EE.isra.0
-                0x0000000000004f94       0x24 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004fa0       0x24 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN7RpcCallIJRN7arduino6StringERtEE8setErrorEiS1_
-                0x0000000000004fb8       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000004fb8                RpcCall<arduino::String&, unsigned short&>::setError(int, arduino::String)
+                0x0000000000004fc4       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000004fc4                RpcCall<arduino::String&, unsigned short&>::setError(int, arduino::String)
  .text._ZN7RpcCallIJRN7arduino6StringERtEEC2ERKS1_P9RPCClientP7k_mutexSA_S2_S3_
-                0x0000000000004ff8       0x84 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000004ff8                RpcCall<arduino::String&, unsigned short&>::RpcCall(arduino::String const&, RPCClient*, k_mutex*, k_mutex*, arduino::String&, unsigned short&)
-                0x0000000000004ff8                RpcCall<arduino::String&, unsigned short&>::RpcCall(arduino::String const&, RPCClient*, k_mutex*, k_mutex*, arduino::String&, unsigned short&)
+                0x0000000000005004       0x84 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005004                RpcCall<arduino::String&, unsigned short&>::RpcCall(arduino::String const&, RPCClient*, k_mutex*, k_mutex*, arduino::String&, unsigned short&)
+                0x0000000000005004                RpcCall<arduino::String&, unsigned short&>::RpcCall(arduino::String const&, RPCClient*, k_mutex*, k_mutex*, arduino::String&, unsigned short&)
  .text._ZN7RpcCallIJRN7arduino6StringERtEE7isErrorEv
-                0x000000000000507c       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x000000000000507c                RpcCall<arduino::String&, unsigned short&>::isError()
+                0x0000000000005088       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005088                RpcCall<arduino::String&, unsigned short&>::isError()
  .text._ZN7arduino7msgpack6Packer9serializeINS_6StringEJRKtEEENSt9enable_ifIXoooontsrSt10is_pointerIT_E5valuesrSt7is_sameIS8_PKcE5valuesrSA_IS8_PKNS_19__FlashStringHelperEE5valueEvE4typeERKS8_DpOT0_
-                0x00000000000050b0       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000050b0                std::enable_if<((!std::is_pointer<arduino::String>::value)||std::is_same<arduino::String, char const*>::value)||std::is_same<arduino::String, arduino::__FlashStringHelper const*>::value, void>::type arduino::msgpack::Packer::serialize<arduino::String, unsigned short const&>(arduino::String const&, unsigned short const&)
+                0x00000000000050bc       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000050bc                std::enable_if<((!std::is_pointer<arduino::String>::value)||std::is_same<arduino::String, char const*>::value)||std::is_same<arduino::String, arduino::__FlashStringHelper const*>::value, void>::type arduino::msgpack::Packer::serialize<arduino::String, unsigned short const&>(arduino::String const&, unsigned short const&)
  .text._ZN9RPCClient8send_rpcIJRKjRKN7arduino6StringERKtEEEbS6_RjDpOT_.isra.0
-                0x00000000000050f0       0x90 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000050fc       0x90 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN9RPCClient8send_rpcIJRKN7arduino6StringERKtEEEbS4_RjDpOT_.isra.0
-                0x0000000000005180       0x84 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x000000000000518c       0x84 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN7arduino7msgpack8Unpacker11deserializeIjJEEEbRT_DpOT0_
-                0x0000000000005204       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000005204                bool arduino::msgpack::Unpacker::deserialize<unsigned int>(unsigned int&)
+                0x0000000000005210       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005210                bool arduino::msgpack::Unpacker::deserialize<unsigned int>(unsigned int&)
  .text._ZN10RpcDecoderILj1024EE12get_responseIN7arduino6StringEEEbjRT_R8RpcError
-                0x0000000000005244      0x17c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000005244                bool RpcDecoder<1024u>::get_response<arduino::String>(unsigned int, arduino::String&, RpcError&)
+                0x0000000000005250      0x17c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005250                bool RpcDecoder<1024u>::get_response<arduino::String>(unsigned int, arduino::String&, RpcError&)
  .text._ZN10RpcDecoderILj1024EE12get_responseIjEEbjRT_R8RpcError
-                0x00000000000053c0      0x17c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000053c0                bool RpcDecoder<1024u>::get_response<unsigned int>(unsigned int, unsigned int&, RpcError&)
+                0x00000000000053cc      0x17c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000053cc                bool RpcDecoder<1024u>::get_response<unsigned int>(unsigned int, unsigned int&, RpcError&)
  .text._ZN11BridgeClass6updateEv
-                0x000000000000553c       0xb0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x000000000000553c                BridgeClass::update()
+                0x0000000000005548       0xb0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005548                BridgeClass::update()
  .text._Z16updateEntryPointPvS_S_
-                0x00000000000055ec       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000055ec                updateEntryPoint(void*, void*, void*)
+                0x00000000000055f8       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000055f8                updateEntryPoint(void*, void*, void*)
  .text._ZN9RPCClient12get_responseIjEEbjRT_R8RpcError
-                0x0000000000005614       0x38 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000005614                bool RPCClient::get_response<unsigned int>(unsigned int, unsigned int&, RpcError&)
+                0x0000000000005620       0x38 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005620                bool RPCClient::get_response<unsigned int>(unsigned int, unsigned int&, RpcError&)
  .text._ZN7RpcCallIJRN7arduino6StringERtEE6resultIjEEbRT_
-                0x000000000000564c      0x11c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x000000000000564c                bool RpcCall<arduino::String&, unsigned short&>::result<unsigned int>(unsigned int&)
+                0x0000000000005658      0x11c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005658                bool RpcCall<arduino::String&, unsigned short&>::result<unsigned int>(unsigned int&)
  .text._ZN7RpcCallIJRN7arduino6StringERtEED2Ev
-                0x0000000000005768      0x11c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000005768                RpcCall<arduino::String&, unsigned short&>::~RpcCall()
-                0x0000000000005768                RpcCall<arduino::String&, unsigned short&>::~RpcCall()
+                0x0000000000005774      0x11c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005774                RpcCall<arduino::String&, unsigned short&>::~RpcCall()
+                0x0000000000005774                RpcCall<arduino::String&, unsigned short&>::~RpcCall()
  .text._ZN7RpcCallIJEED2Ev
-                0x0000000000005884       0xfc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000005884                RpcCall<>::~RpcCall()
-                0x0000000000005884                RpcCall<>::~RpcCall()
+                0x0000000000005890       0xfc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005890                RpcCall<>::~RpcCall()
+                0x0000000000005890                RpcCall<>::~RpcCall()
  .text._ZN9RPCClient12get_responseIbEEbjRT_R8RpcError
-                0x0000000000005980       0x38 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000005980                bool RPCClient::get_response<bool>(unsigned int, bool&, RpcError&)
+                0x000000000000598c       0x38 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x000000000000598c                bool RPCClient::get_response<bool>(unsigned int, bool&, RpcError&)
  .text._ZN7RpcCallIJEE6resultIbEEbRT_
-                0x00000000000059b8       0xf4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000059b8                bool RpcCall<>::result<bool>(bool&)
+                0x00000000000059c4       0xf4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000059c4                bool RpcCall<>::result<bool>(bool&)
  .text._ZN11BridgeClass5beginEm
-                0x0000000000005aac      0x1e0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000005aac                BridgeClass::begin(unsigned long)
+                0x0000000000005ab8      0x1e0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005ab8                BridgeClass::begin(unsigned long)
  .text._ZN9BridgeUDPILj4096EE4initEv
-                0x0000000000005c8c       0x30 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000005c8c                BridgeUDP<4096u>::init()
+                0x0000000000005c98       0x30 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005c98                BridgeUDP<4096u>::init()
  .text._ZN9BridgeUDPILj4096EE5beginEt
-                0x0000000000005cbc       0xd8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000005cbc                BridgeUDP<4096u>::begin(unsigned short)
+                0x0000000000005cc8       0xd8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005cc8                BridgeUDP<4096u>::begin(unsigned short)
  .text._ZN9BridgeUDPILj4096EE14beginMulticastEN7arduino9IPAddressEt
-                0x0000000000005d94       0xd8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000005d94                BridgeUDP<4096u>::beginMulticast(arduino::IPAddress, unsigned short)
+                0x0000000000005da0       0xd8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005da0                BridgeUDP<4096u>::beginMulticast(arduino::IPAddress, unsigned short)
  .text._ZN9RPCClient12get_responseIN7arduino6StringEEEbjRT_R8RpcError
-                0x0000000000005e6c       0x38 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000005e6c                bool RPCClient::get_response<arduino::String>(unsigned int, arduino::String&, RpcError&)
+                0x0000000000005e78       0x38 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005e78                bool RPCClient::get_response<arduino::String>(unsigned int, arduino::String&, RpcError&)
  .text._ZN7RpcCallIJEE6resultIN7arduino6StringEEEbRT_
-                0x0000000000005ea4       0xf4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000005ea4                bool RpcCall<>::result<arduino::String>(arduino::String&)
- .text.setup    0x0000000000005f98      0x168 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000005f98                setup
+                0x0000000000005eb0       0xf4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005eb0                bool RpcCall<>::result<arduino::String>(arduino::String&)
+ .text.setup    0x0000000000005fa4      0x168 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000005fa4                setup
  .text._ZN9BridgeUDPILj4096EE9connectedEv
-                0x0000000000006100       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000006100                BridgeUDP<4096u>::connected()
+                0x000000000000610c       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x000000000000610c                BridgeUDP<4096u>::connected()
  .text._ZN7arduino11RingBufferNILi4096EE9read_charEv
-                0x0000000000006134       0x24 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000006134                arduino::RingBufferN<4096>::read_char()
+                0x0000000000006140       0x24 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000006140                arduino::RingBufferN<4096>::read_char()
  .text._ZN7RpcCallIJRjRSt6vectorIhSaIhEEEE8setErrorEiN7arduino6StringE
-                0x0000000000006158       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000006158                RpcCall<unsigned int&, std::vector<unsigned char, std::allocator<unsigned char> >&>::setError(int, arduino::String)
+                0x0000000000006164       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000006164                RpcCall<unsigned int&, std::vector<unsigned char, std::allocator<unsigned char> >&>::setError(int, arduino::String)
  .text._ZN7RpcCallIJRjRSt6vectorIhSaIhEEEE7isErrorEv
-                0x0000000000006198       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000006198                RpcCall<unsigned int&, std::vector<unsigned char, std::allocator<unsigned char> >&>::isError()
+                0x00000000000061a4       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000061a4                RpcCall<unsigned int&, std::vector<unsigned char, std::allocator<unsigned char> >&>::isError()
  .text._ZN7RpcCallIJRjRSt6vectorIhSaIhEEEE6resultIjEEbRT_
-                0x00000000000061cc      0x11c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000061cc                bool RpcCall<unsigned int&, std::vector<unsigned char, std::allocator<unsigned char> >&>::result<unsigned int>(unsigned int&)
+                0x00000000000061d8      0x11c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000061d8                bool RpcCall<unsigned int&, std::vector<unsigned char, std::allocator<unsigned char> >&>::result<unsigned int>(unsigned int&)
  .text._ZN9BridgeUDPILj4096EE5writeEPKhj
-                0x00000000000062e8      0x218 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000062e8                BridgeUDP<4096u>::write(unsigned char const*, unsigned int)
+                0x00000000000062f4      0x218 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000062f4                BridgeUDP<4096u>::write(unsigned char const*, unsigned int)
  .text._ZN9BridgeUDPILj4096EE5writeEh
-                0x0000000000006500       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000006500                BridgeUDP<4096u>::write(unsigned char)
+                0x000000000000650c       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x000000000000650c                BridgeUDP<4096u>::write(unsigned char)
  .text._ZN7RpcCallIJRjEE6resultIbEEbRT_.part.0
-                0x000000000000651c       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000006528       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN7RpcCallIJRjEEC2ERKN7arduino6StringEP9RPCClientP7k_mutexS9_S0_
-                0x0000000000006550       0x80 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000006550                RpcCall<unsigned int&>::RpcCall(arduino::String const&, RPCClient*, k_mutex*, k_mutex*, unsigned int&)
-                0x0000000000006550                RpcCall<unsigned int&>::RpcCall(arduino::String const&, RPCClient*, k_mutex*, k_mutex*, unsigned int&)
+                0x000000000000655c       0x80 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x000000000000655c                RpcCall<unsigned int&>::RpcCall(arduino::String const&, RPCClient*, k_mutex*, k_mutex*, unsigned int&)
+                0x000000000000655c                RpcCall<unsigned int&>::RpcCall(arduino::String const&, RPCClient*, k_mutex*, k_mutex*, unsigned int&)
  .text._ZN7RpcCallIJRjEE6resultIN7arduino6StringEEEbRT_
-                0x00000000000065d0       0xf8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000065d0                bool RpcCall<unsigned int&>::result<arduino::String>(arduino::String&)
+                0x00000000000065dc       0xf8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000065dc                bool RpcCall<unsigned int&>::result<arduino::String>(arduino::String&)
  .text._ZN9BridgeUDPILj4096EE4stopEv
-                0x00000000000066c8       0xa0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000066c8                BridgeUDP<4096u>::stop()
+                0x00000000000066d4       0xa0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000066d4                BridgeUDP<4096u>::stop()
  .text._ZN7RpcCallIJRjRN7arduino6StringERtEE8setErrorEiS2_
-                0x0000000000006768       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000006768                RpcCall<unsigned int&, arduino::String&, unsigned short&>::setError(int, arduino::String)
+                0x0000000000006774       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000006774                RpcCall<unsigned int&, arduino::String&, unsigned short&>::setError(int, arduino::String)
  .text._ZN7RpcCallIJRjRN7arduino6StringERtEE7isErrorEv
-                0x00000000000067a8       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000067a8                RpcCall<unsigned int&, arduino::String&, unsigned short&>::isError()
+                0x00000000000067b4       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000067b4                RpcCall<unsigned int&, arduino::String&, unsigned short&>::isError()
  .text._ZN7RpcCallIJRjRN7arduino6StringERtEE6resultIbEEbRT_
-                0x00000000000067dc      0x120 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000067dc                bool RpcCall<unsigned int&, arduino::String&, unsigned short&>::result<bool>(bool&)
+                0x00000000000067e8      0x120 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x00000000000067e8                bool RpcCall<unsigned int&, arduino::String&, unsigned short&>::result<bool>(bool&)
  .text._ZN9BridgeUDPILj4096EE11beginPacketEPKct
-                0x00000000000068fc      0x1f0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x00000000000068fc                BridgeUDP<4096u>::beginPacket(char const*, unsigned short)
+                0x0000000000006908      0x1f0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000006908                BridgeUDP<4096u>::beginPacket(char const*, unsigned short)
  .text._ZN9BridgeUDPILj4096EE11beginPacketEN7arduino9IPAddressEt
-                0x0000000000006aec       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000006aec                BridgeUDP<4096u>::beginPacket(arduino::IPAddress, unsigned short)
+                0x0000000000006af8       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000006af8                BridgeUDP<4096u>::beginPacket(arduino::IPAddress, unsigned short)
  .text._ZN10RpcDecoderILj1024EE12get_responseIiEEbjRT_R8RpcError
-                0x0000000000006b20      0x17c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000006b20                bool RpcDecoder<1024u>::get_response<int>(unsigned int, int&, RpcError&)
+                0x0000000000006b2c      0x17c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000006b2c                bool RpcDecoder<1024u>::get_response<int>(unsigned int, int&, RpcError&)
  .text._ZN7RpcCallIJRjEE6resultIiEEbRT_
-                0x0000000000006c9c      0x110 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000006c9c                bool RpcCall<unsigned int&>::result<int>(int&)
+                0x0000000000006ca8      0x110 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000006ca8                bool RpcCall<unsigned int&>::result<int>(int&)
  .text._ZN9BridgeUDPILj4096EE9endPacketEv
-                0x0000000000006dac       0xbc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000006dac                BridgeUDP<4096u>::endPacket()
+                0x0000000000006db8       0xbc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000006db8                BridgeUDP<4096u>::endPacket()
  .text._ZN9BridgeUDPILj4096EE9availableEv
-                0x0000000000006e68       0x44 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000006e68                BridgeUDP<4096u>::available()
+                0x0000000000006e74       0x44 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000006e74                BridgeUDP<4096u>::available()
  .text._ZN9BridgeUDPILj4096EE4readEPhj
-                0x0000000000006eac       0x7c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000006eac                BridgeUDP<4096u>::read(unsigned char*, unsigned int)
+                0x0000000000006eb8       0x7c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000006eb8                BridgeUDP<4096u>::read(unsigned char*, unsigned int)
  .text._ZN9BridgeUDPILj4096EE4readEv
-                0x0000000000006f28       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000006f28                BridgeUDP<4096u>::read()
+                0x0000000000006f34       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000006f34                BridgeUDP<4096u>::read()
  .text._GLOBAL__sub_I_udp
-                0x0000000000006f44       0xe4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000006f50       0xe4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._GLOBAL__sub_D_udp
-                0x0000000000007028       0x50 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000007034       0x50 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .text._ZN7arduino5Print5flushEv
-                0x0000000000007078        0x2 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
-                0x0000000000007078                arduino::Print::flush()
+                0x0000000000007084        0x2 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x0000000000007084                arduino::Print::flush()
  .text._ZN13BridgeMonitorILj512EE5writeEh
-                0x000000000000707a       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
-                0x000000000000707a                BridgeMonitor<512u>::write(unsigned char)
- *fill*         0x0000000000007092        0x2 
- .text.k_yield  0x0000000000007094        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x0000000000007086       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x0000000000007086                BridgeMonitor<512u>::write(unsigned char)
+ *fill*         0x000000000000709e        0x2 
+ .text.k_yield  0x00000000000070a0        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text.k_mutex_lock
-                0x000000000000709c        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x00000000000070a8        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._ZSt14__relocate_a_1IhhENSt9enable_ifIXsrSt24__is_bitwise_relocatableIT_vE5valueEPS2_E4typeES4_S4_S4_RSaIT0_E.isra.0
-                0x00000000000070a4       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x00000000000070b0       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._ZNSt12_Vector_baseIhSaIhEE11_M_allocateEj.isra.0
-                0x00000000000070c4       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x00000000000070d0       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text.k_mutex_unlock.isra.0
-                0x00000000000070e4        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x00000000000070f0        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._ZN7RpcCallIJRN7arduino6StringEEE7isErrorEv.isra.0
-                0x00000000000070ec       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x00000000000070f8       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._ZN13BridgeMonitorILj512EE4readEv
-                0x0000000000007114       0x68 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
-                0x0000000000007114                BridgeMonitor<512u>::read()
+                0x0000000000007120       0x68 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x0000000000007120                BridgeMonitor<512u>::read()
  .text._ZN13BridgeMonitorILj512EE4peekEv
-                0x000000000000717c       0x44 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
-                0x000000000000717c                BridgeMonitor<512u>::peek()
+                0x0000000000007188       0x44 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x0000000000007188                BridgeMonitor<512u>::peek()
  .text.k_msleep.constprop.0.isra.0
-                0x00000000000071c0        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x00000000000071cc        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._ZNSt6vectorIhSaIhEE12emplace_backIJRKhEEERhDpOT_.isra.0
-                0x00000000000071cc       0x90 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x00000000000071d8       0x90 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._ZNSt6vectorIhSaIhEE12emplace_backIJhEEERhDpOT_.isra.0
-                0x000000000000725c       0x90 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x0000000000007268       0x90 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._ZN7arduino7msgpack6Packer11packRawByteERKNS0_4TypeE.isra.0
-                0x00000000000072ec       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x00000000000072f8       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._ZNSt6vectorIhSaIhEE12emplace_backIJRhEEES3_DpOT_.isra.0
-                0x0000000000007304       0x90 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x0000000000007310       0x90 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._ZN7arduino7msgpack6Packer11packIntegerIjEENSt9enable_ifIXaaaaaasrSt13is_arithmeticIT_E5valuesrSt11is_integralIS5_E5valuentsrSt7is_sameIS5_bE5valuentsrS9_INSt9remove_cvIS5_E4typeEPcE5valueEvE4typeERKS5_.isra.0
-                0x0000000000007394       0x50 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x00000000000073a0       0x50 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._ZN7arduino7msgpack6Packer11packIntegerIiEENSt9enable_ifIXaaaaaasrSt13is_arithmeticIT_E5valuesrSt11is_integralIS5_E5valuentsrSt7is_sameIS5_bE5valuentsrS9_INSt9remove_cvIS5_E4typeEPcE5valueEvE4typeERKS5_.isra.0
-                0x00000000000073e4       0xb8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x00000000000073f0       0xb8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._ZN9RPCClient8send_rpcIJRKN7arduino6StringEEEEbS4_RjDpOT_.isra.0
-                0x000000000000749c       0x90 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x00000000000074a8       0x90 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._ZN9RPCClient8send_rpcIJRKjEEEbRKN7arduino6StringERjDpOT_.isra.0
-                0x000000000000752c       0x94 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x0000000000007538       0x94 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._ZN11BridgeClass6notifyIJRN7arduino6StringEEEEvS2_DpOT_
-                0x00000000000075c0       0xac C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
-                0x00000000000075c0                void BridgeClass::notify<arduino::String&>(arduino::String, arduino::String&)
+                0x00000000000075cc       0xac C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x00000000000075cc                void BridgeClass::notify<arduino::String&>(arduino::String, arduino::String&)
  .text._ZN7RpcCallIJRN7arduino6StringEEE8setErrorEiS1_
-                0x000000000000766c       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
-                0x000000000000766c                RpcCall<arduino::String&>::setError(int, arduino::String)
+                0x0000000000007678       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x0000000000007678                RpcCall<arduino::String&>::setError(int, arduino::String)
  .text._ZN13BridgeMonitorILj512EE5writeEPKhj
-                0x00000000000076ac      0x2b4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
-                0x00000000000076ac                BridgeMonitor<512u>::write(unsigned char const*, unsigned int)
+                0x00000000000076b8      0x2b4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x00000000000076b8                BridgeMonitor<512u>::write(unsigned char const*, unsigned int)
  .text._ZN7RpcCallIJRjEE6resultISt6vectorIhSaIhEEEEbRT_
-                0x0000000000007960      0x134 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
-                0x0000000000007960                bool RpcCall<unsigned int&>::result<std::vector<unsigned char, std::allocator<unsigned char> > >(std::vector<unsigned char, std::allocator<unsigned char> >&)
+                0x000000000000796c      0x134 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x000000000000796c                bool RpcCall<unsigned int&>::result<std::vector<unsigned char, std::allocator<unsigned char> > >(std::vector<unsigned char, std::allocator<unsigned char> >&)
  .text._ZN13BridgeMonitorILj512EE5_readEj
-                0x0000000000007a94      0x1f8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
-                0x0000000000007a94                BridgeMonitor<512u>::_read(unsigned int)
+                0x0000000000007aa0      0x1f8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x0000000000007aa0                BridgeMonitor<512u>::_read(unsigned int)
  .text._ZN13BridgeMonitorILj512EE9availableEv
-                0x0000000000007c8c       0x44 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
-                0x0000000000007c8c                BridgeMonitor<512u>::available()
+                0x0000000000007c98       0x44 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x0000000000007c98                BridgeMonitor<512u>::available()
  .text._GLOBAL__sub_I_Bridge
-                0x0000000000007cd0       0xf0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x0000000000007cdc       0xf0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._GLOBAL__sub_D_Bridge
-                0x0000000000007dc0       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x0000000000007dcc       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .text._ZNK7arduino9IPAddress7printToERNS_5PrintE
-                0x0000000000007dec      0x170 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
-                0x0000000000007dec                arduino::IPAddress::printTo(arduino::Print&) const
+                0x0000000000007df8      0x170 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x0000000000007df8                arduino::IPAddress::printTo(arduino::Print&) const
  .text._ZN7arduino9IPAddressC2ENS_6IPTypeE
-                0x0000000000007f5c       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
-                0x0000000000007f5c                arduino::IPAddress::IPAddress(arduino::IPType)
-                0x0000000000007f5c                arduino::IPAddress::IPAddress(arduino::IPType)
+                0x0000000000007f68       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x0000000000007f68                arduino::IPAddress::IPAddress(arduino::IPType)
+                0x0000000000007f68                arduino::IPAddress::IPAddress(arduino::IPType)
  .text._ZN7arduino9IPAddressC2Ev
-                0x0000000000007f7c       0x14 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
-                0x0000000000007f7c                arduino::IPAddress::IPAddress()
-                0x0000000000007f7c                arduino::IPAddress::IPAddress()
+                0x0000000000007f88       0x14 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x0000000000007f88                arduino::IPAddress::IPAddress()
+                0x0000000000007f88                arduino::IPAddress::IPAddress()
  .text._ZN7arduino9IPAddressC2Ehhhh
-                0x0000000000007f90       0x24 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
-                0x0000000000007f90                arduino::IPAddress::IPAddress(unsigned char, unsigned char, unsigned char, unsigned char)
-                0x0000000000007f90                arduino::IPAddress::IPAddress(unsigned char, unsigned char, unsigned char, unsigned char)
+                0x0000000000007f9c       0x24 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x0000000000007f9c                arduino::IPAddress::IPAddress(unsigned char, unsigned char, unsigned char, unsigned char)
+                0x0000000000007f9c                arduino::IPAddress::IPAddress(unsigned char, unsigned char, unsigned char, unsigned char)
  .text._ZNK7arduino9IPAddress9toString4Ev
-                0x0000000000007fb4       0x3c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
-                0x0000000000007fb4                arduino::IPAddress::toString4() const
+                0x0000000000007fc0       0x3c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x0000000000007fc0                arduino::IPAddress::toString4() const
  .text._ZNK7arduino9IPAddress9toString6Ev
-                0x0000000000007ff0       0x68 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
-                0x0000000000007ff0                arduino::IPAddress::toString6() const
+                0x0000000000007ffc       0x68 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x0000000000007ffc                arduino::IPAddress::toString6() const
  .text._ZNK7arduino9IPAddress8toStringEv
-                0x0000000000008058       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
-                0x0000000000008058                arduino::IPAddress::toString() const
+                0x0000000000008064       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x0000000000008064                arduino::IPAddress::toString() const
  .text._ZN7arduino9IPAddress11fromString4EPKc
-                0x0000000000008074       0x70 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
-                0x0000000000008074                arduino::IPAddress::fromString4(char const*)
+                0x0000000000008080       0x70 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x0000000000008080                arduino::IPAddress::fromString4(char const*)
  .text._ZN7arduino9IPAddress11fromString6EPKc
-                0x00000000000080e4      0x108 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
-                0x00000000000080e4                arduino::IPAddress::fromString6(char const*)
+                0x00000000000080f0      0x108 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x00000000000080f0                arduino::IPAddress::fromString6(char const*)
  .text._ZN7arduino9IPAddress10fromStringEPKc
-                0x00000000000081ec       0x24 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
-                0x00000000000081ec                arduino::IPAddress::fromString(char const*)
+                0x00000000000081f8       0x24 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x00000000000081f8                arduino::IPAddress::fromString(char const*)
  .text._GLOBAL__sub_I__ZN7arduino9IPAddressC2Ev
-                0x0000000000008210       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x000000000000821c       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
  .text._ZN7arduino5Print5writeEPKc
-                0x000000000000823c       0x24 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
-                0x000000000000823c                arduino::Print::write(char const*)
+                0x0000000000008248       0x24 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+                0x0000000000008248                arduino::Print::write(char const*)
  .text._ZN7arduino5Print5printEPKc
-                0x0000000000008260        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
-                0x0000000000008260                arduino::Print::print(char const*)
+                0x000000000000826c        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+                0x000000000000826c                arduino::Print::print(char const*)
  .text._ZN7arduino5Print5printEc
-                0x000000000000826c        0x6 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
-                0x000000000000826c                arduino::Print::print(char)
- *fill*         0x0000000000008272        0x2 
+                0x0000000000008278        0x6 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+                0x0000000000008278                arduino::Print::print(char)
+ *fill*         0x000000000000827e        0x2 
  .text._ZN7arduino5Print7printlnEv
-                0x0000000000008274       0x14 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
-                0x0000000000008274                arduino::Print::println()
+                0x0000000000008280       0x14 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+                0x0000000000008280                arduino::Print::println()
  .text._ZN7arduino5Print7printlnEPKNS_19__FlashStringHelperE
-                0x0000000000008288       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
-                0x0000000000008288                arduino::Print::println(arduino::__FlashStringHelper const*)
+                0x0000000000008294       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+                0x0000000000008294                arduino::Print::println(arduino::__FlashStringHelper const*)
  .text._ZN7arduino5Print7printlnEPKc
-                0x00000000000082a4        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
-                0x00000000000082a4                arduino::Print::println(char const*)
+                0x00000000000082b0        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+                0x00000000000082b0                arduino::Print::println(char const*)
  .text._ZN7arduino5Print11printNumberEmh
-                0x00000000000082ac       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
-                0x00000000000082ac                arduino::Print::printNumber(unsigned long, unsigned char)
+                0x00000000000082b8       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+                0x00000000000082b8                arduino::Print::printNumber(unsigned long, unsigned char)
  .text._ZN7arduino5Print5printEmi
-                0x00000000000082ec       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
-                0x00000000000082ec                arduino::Print::print(unsigned long, int)
+                0x00000000000082f8       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+                0x00000000000082f8                arduino::Print::print(unsigned long, int)
  .text._ZN7arduino5Print5printEhi
-                0x000000000000830c        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
-                0x000000000000830c                arduino::Print::print(unsigned char, int)
+                0x0000000000008318        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+                0x0000000000008318                arduino::Print::print(unsigned char, int)
  .text._ZN7arduino6Stream9timedReadEv
-                0x0000000000008314       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
-                0x0000000000008314                arduino::Stream::timedRead()
+                0x0000000000008320       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
+                0x0000000000008320                arduino::Stream::timedRead()
  .text._ZN7arduino6Stream10setTimeoutEm
-                0x0000000000008340        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
-                0x0000000000008340                arduino::Stream::setTimeout(unsigned long)
+                0x000000000000834c        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
+                0x000000000000834c                arduino::Stream::setTimeout(unsigned long)
  .text._ZN7arduino6Stream9readBytesEPcj
-                0x0000000000008344       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
-                0x0000000000008344                arduino::Stream::readBytes(char*, unsigned int)
+                0x0000000000008350       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
+                0x0000000000008350                arduino::Stream::readBytes(char*, unsigned int)
  .text._ZN7arduino6StringC2EOS0_
-                0x0000000000008370       0x16 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x0000000000008370                arduino::String::String(arduino::String&&)
-                0x0000000000008370                arduino::String::String(arduino::String&&)
- *fill*         0x0000000000008386        0x2 
+                0x000000000000837c       0x16 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x000000000000837c                arduino::String::String(arduino::String&&)
+                0x000000000000837c                arduino::String::String(arduino::String&&)
+ *fill*         0x0000000000008392        0x2 
  .text._ZN7arduino6StringD2Ev
-                0x0000000000008388       0x14 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x0000000000008388                arduino::String::~String()
-                0x0000000000008388                arduino::String::~String()
+                0x0000000000008394       0x14 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x0000000000008394                arduino::String::~String()
+                0x0000000000008394                arduino::String::~String()
  .text._ZN7arduino6String10invalidateEv
-                0x000000000000839c       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x000000000000839c                arduino::String::invalidate()
+                0x00000000000083a8       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x00000000000083a8                arduino::String::invalidate()
  .text._ZN7arduino6String12changeBufferEj
-                0x00000000000083b8       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x00000000000083b8                arduino::String::changeBuffer(unsigned int)
+                0x00000000000083c4       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x00000000000083c4                arduino::String::changeBuffer(unsigned int)
  .text._ZN7arduino6String7reserveEj
-                0x00000000000083d4       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x00000000000083d4                arduino::String::reserve(unsigned int)
+                0x00000000000083e0       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x00000000000083e0                arduino::String::reserve(unsigned int)
  .text._ZN7arduino6String4copyEPKcj
-                0x00000000000083fc       0x3c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x00000000000083fc                arduino::String::copy(char const*, unsigned int)
+                0x0000000000008408       0x3c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x0000000000008408                arduino::String::copy(char const*, unsigned int)
  .text._ZN7arduino6StringC2EPKc
-                0x0000000000008438       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x0000000000008438                arduino::String::String(char const*)
-                0x0000000000008438                arduino::String::String(char const*)
+                0x0000000000008444       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x0000000000008444                arduino::String::String(char const*)
+                0x0000000000008444                arduino::String::String(char const*)
  .text._ZN7arduino6String4moveERS0_
-                0x0000000000008464       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x0000000000008464                arduino::String::move(arduino::String&)
+                0x0000000000008470       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x0000000000008470                arduino::String::move(arduino::String&)
  .text._ZN7arduino6StringaSERKS0_
-                0x0000000000008490       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x0000000000008490                arduino::String::operator=(arduino::String const&)
+                0x000000000000849c       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x000000000000849c                arduino::String::operator=(arduino::String const&)
  .text._ZN7arduino6StringC2ERKS0_
-                0x00000000000084b8       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x00000000000084b8                arduino::String::String(arduino::String const&)
-                0x00000000000084b8                arduino::String::String(arduino::String const&)
+                0x00000000000084c4       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x00000000000084c4                arduino::String::String(arduino::String const&)
+                0x00000000000084c4                arduino::String::String(arduino::String const&)
  .text._ZN7arduino6StringaSEOS0_
-                0x00000000000084d0       0x10 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x00000000000084d0                arduino::String::operator=(arduino::String&&)
+                0x00000000000084dc       0x10 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x00000000000084dc                arduino::String::operator=(arduino::String&&)
  .text._ZN7arduino6StringaSEPKc
-                0x00000000000084e0       0x30 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x00000000000084e0                arduino::String::operator=(char const*)
+                0x00000000000084ec       0x30 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x00000000000084ec                arduino::String::operator=(char const*)
  .text._ZN7arduino6String6concatEPKcj
-                0x0000000000008510       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x0000000000008510                arduino::String::concat(char const*, unsigned int)
+                0x000000000000851c       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x000000000000851c                arduino::String::concat(char const*, unsigned int)
  .text._ZN7arduino6String6concatEc
-                0x0000000000008550       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x0000000000008550                arduino::String::concat(char)
+                0x000000000000855c       0x1c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x000000000000855c                arduino::String::concat(char)
  .text._ZNK7arduino6String9compareToERKS0_
-                0x000000000000856c       0x30 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x000000000000856c                arduino::String::compareTo(arduino::String const&) const
+                0x0000000000008578       0x30 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x0000000000008578                arduino::String::compareTo(arduino::String const&) const
  .text._ZNK7arduino6String6equalsERKS0_
-                0x000000000000859c       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x000000000000859c                arduino::String::equals(arduino::String const&) const
+                0x00000000000085a8       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x00000000000085a8                arduino::String::equals(arduino::String const&) const
  .text._ZNK7arduino6String6equalsEPKc
-                0x00000000000085bc       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
-                0x00000000000085bc                arduino::String::equals(char const*) const
- .text.memcpy   0x00000000000085e4        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
-                0x00000000000085e4                memcpy
- .text.memmove  0x00000000000085ec        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
-                0x00000000000085ec                memmove
- .text.strlen   0x00000000000085f4        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
-                0x00000000000085f4                strlen
- .text.strcmp   0x00000000000085fc        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
-                0x00000000000085fc                strcmp
- .text.memset   0x0000000000008604        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
-                0x0000000000008604                memset
- .text.malloc   0x000000000000860c        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
-                0x000000000000860c                malloc
- .text.realloc  0x0000000000008614        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
-                0x0000000000008614                realloc
- .text.free     0x000000000000861c        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
-                0x000000000000861c                free
- .text.isalnum  0x0000000000008624        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
-                0x0000000000008624                isalnum
- .text.tolower  0x000000000000862c        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
-                0x000000000000862c                tolower
- .text.atexit   0x0000000000008634        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
-                0x0000000000008634                atexit
- .text.abort    0x000000000000863c        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
-                0x000000000000863c                abort
+                0x00000000000085c8       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x00000000000085c8                arduino::String::equals(char const*) const
+ .text.memcpy   0x00000000000085f0        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+                0x00000000000085f0                memcpy
+ .text.memmove  0x00000000000085f8        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+                0x00000000000085f8                memmove
+ .text.strlen   0x0000000000008600        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+                0x0000000000008600                strlen
+ .text.strcmp   0x0000000000008608        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+                0x0000000000008608                strcmp
+ .text.memset   0x0000000000008610        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+                0x0000000000008610                memset
+ .text.malloc   0x0000000000008618        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+                0x0000000000008618                malloc
+ .text.realloc  0x0000000000008620        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+                0x0000000000008620                realloc
+ .text.free     0x0000000000008628        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+                0x0000000000008628                free
+ .text.isalnum  0x0000000000008630        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+                0x0000000000008630                isalnum
+ .text.tolower  0x0000000000008638        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+                0x0000000000008638                tolower
+ .text.atexit   0x0000000000008640        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+                0x0000000000008640                atexit
+ .text.abort    0x0000000000008648        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+                0x0000000000008648                abort
  .text.initVariant
-                0x0000000000008648        0x2 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
-                0x0000000000008648                initVariant
- *fill*         0x000000000000864a        0x2 
- .text.main     0x000000000000864c       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
-                0x000000000000864c                main
+                0x0000000000008654        0x2 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
+                0x0000000000008654                initVariant
+ *fill*         0x0000000000008656        0x2 
+ .text.main     0x0000000000008658       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
+                0x0000000000008658                main
  .text._ZL10new_helperj
-                0x0000000000008678       0x10 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
- .text._Znwj    0x0000000000008688        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
-                0x0000000000008688                operator new(unsigned int)
- .text._ZnwjPv  0x0000000000008690        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
-                0x0000000000008690                operator new(unsigned int, void*)
- .text._ZdlPvj  0x0000000000008694        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
-                0x0000000000008694                operator delete(void*, unsigned int)
+                0x0000000000008684       0x10 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
+ .text._Znwj    0x0000000000008694        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
+                0x0000000000008694                operator new(unsigned int)
+ .text._ZnwjPv  0x000000000000869c        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
+                0x000000000000869c                operator new(unsigned int, void*)
+ .text._ZdlPvj  0x00000000000086a0        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
+                0x00000000000086a0                operator delete(void*, unsigned int)
  .text._Z20start_static_threadsv
-                0x000000000000869c       0x6c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
-                0x000000000000869c                start_static_threads()
+                0x00000000000086a8       0x6c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
+                0x00000000000086a8                start_static_threads()
  .text.gpio_pin_set_dt.isra.0
-                0x0000000000008708       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+                0x0000000000008714       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
  .text.gpio_pin_configure_dt.isra.0
-                0x0000000000008730       0x2a C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
- *fill*         0x000000000000875a        0x2 
+                0x000000000000873c       0x2a C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+ *fill*         0x0000000000008766        0x2 
  .text._reinit_peripheral_if_needed
-                0x000000000000875c       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
-                0x000000000000875c                _reinit_peripheral_if_needed
- .text.yield    0x000000000000877c        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
-                0x000000000000877c                yield
- .text.pinMode  0x0000000000008784       0x54 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
-                0x0000000000008784                pinMode
+                0x0000000000008768       0x20 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+                0x0000000000008768                _reinit_peripheral_if_needed
+ .text.yield    0x0000000000008788        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+                0x0000000000008788                yield
+ .text.pinMode  0x0000000000008790       0x54 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+                0x0000000000008790                pinMode
  .text.digitalWrite
-                0x00000000000087d8       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
-                0x00000000000087d8                digitalWrite
- .text.millis   0x00000000000087f0       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
-                0x00000000000087f0                millis
+                0x00000000000087e4       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+                0x00000000000087e4                digitalWrite
+ .text.millis   0x00000000000087fc       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+                0x00000000000087fc                millis
  .text._GLOBAL__sub_I__reinit_peripheral_if_needed
-                0x0000000000008808       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+                0x0000000000008814       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
  .text.z_impl_uart_irq_tx_enable
-                0x0000000000008830        0xa C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x000000000000883c        0xa C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
  .text._ZN7arduino12ZephyrSerial5beginEm
-                0x000000000000883a        0xa C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x000000000000883a                arduino::ZephyrSerial::begin(unsigned long)
+                0x0000000000008846        0xa C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x0000000000008846                arduino::ZephyrSerial::begin(unsigned long)
  .text._ZN7arduino12ZephyrSerial3endEv
-                0x0000000000008844        0xa C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x0000000000008844                arduino::ZephyrSerial::end()
+                0x0000000000008850        0xa C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x0000000000008850                arduino::ZephyrSerial::end()
  .text._ZN7arduino12ZephyrSerial5writeEh
-                0x000000000000884e       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x000000000000884e                arduino::ZephyrSerial::write(unsigned char)
+                0x000000000000885a       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x000000000000885a                arduino::ZephyrSerial::write(unsigned char)
  .text._ZN7arduino12ZephyrSerialcvbEv
-                0x0000000000008866        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x0000000000008866                arduino::ZephyrSerial::operator bool()
+                0x0000000000008872        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x0000000000008872                arduino::ZephyrSerial::operator bool()
  .text._ZN7arduino12ZephyrSerial17_reinit_if_neededEv
-                0x000000000000886a        0x6 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x000000000000886a                arduino::ZephyrSerial::_reinit_if_needed()
+                0x0000000000008876        0x6 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x0000000000008876                arduino::ZephyrSerial::_reinit_if_needed()
  .text.k_sem_give
-                0x0000000000008870        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x000000000000887c        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
  .text.k_sem_take.isra.0
-                0x0000000000008878        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x0000000000008884        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
  .text._ZN7arduino12ZephyrSerial4readEv
-                0x0000000000008880       0x48 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x0000000000008880                arduino::ZephyrSerial::read()
+                0x000000000000888c       0x48 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x000000000000888c                arduino::ZephyrSerial::read()
  .text._ZN7arduino12ZephyrSerial4peekEv
-                0x00000000000088c8       0x48 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x00000000000088c8                arduino::ZephyrSerial::peek()
+                0x00000000000088d4       0x48 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x00000000000088d4                arduino::ZephyrSerial::peek()
  .text._ZN7arduino12ZephyrSerial17availableForWriteEv
-                0x0000000000008910       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x0000000000008910                arduino::ZephyrSerial::availableForWrite()
+                0x000000000000891c       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x000000000000891c                arduino::ZephyrSerial::availableForWrite()
  .text._ZN7arduino12ZephyrSerial9availableEv
-                0x0000000000008944       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x0000000000008944                arduino::ZephyrSerial::available()
+                0x0000000000008950       0x34 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x0000000000008950                arduino::ZephyrSerial::available()
  .text._ZN7arduino12ZephyrSerial5beginEmt
-                0x0000000000008978       0xc0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x0000000000008978                arduino::ZephyrSerial::begin(unsigned long, unsigned short)
+                0x0000000000008984       0xc0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x0000000000008984                arduino::ZephyrSerial::begin(unsigned long, unsigned short)
  .text._ZN7arduino12ZephyrSerial5flushEv
-                0x0000000000008a38       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x0000000000008a38                arduino::ZephyrSerial::flush()
+                0x0000000000008a44       0x2c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x0000000000008a44                arduino::ZephyrSerial::flush()
  .text._ZN7arduino12ZephyrSerial5writeEPKhj
-                0x0000000000008a64       0x70 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x0000000000008a64                arduino::ZephyrSerial::write(unsigned char const*, unsigned int)
+                0x0000000000008a70       0x70 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x0000000000008a70                arduino::ZephyrSerial::write(unsigned char const*, unsigned int)
  .text._ZN7arduino12ZephyrSerial10IrqHandlerEv
-                0x0000000000008ad4       0xec C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x0000000000008ad4                arduino::ZephyrSerial::IrqHandler()
+                0x0000000000008ae0       0xec C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x0000000000008ae0                arduino::ZephyrSerial::IrqHandler()
  .text._ZN7arduino12ZephyrSerial11IrqDispatchEPK6devicePv
-                0x0000000000008bc0        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x0000000000008bc0                arduino::ZephyrSerial::IrqDispatch(device const*, void*)
+                0x0000000000008bcc        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x0000000000008bcc                arduino::ZephyrSerial::IrqDispatch(device const*, void*)
  .text._ZN7arduino12ZephyrSerial18ZephyrSerialBufferILi64EEC2Ev
-                0x0000000000008bcc       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x0000000000008bcc                arduino::ZephyrSerial::ZephyrSerialBuffer<64>::ZephyrSerialBuffer()
-                0x0000000000008bcc                arduino::ZephyrSerial::ZephyrSerialBuffer<64>::ZephyrSerialBuffer()
+                0x0000000000008bd8       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x0000000000008bd8                arduino::ZephyrSerial::ZephyrSerialBuffer<64>::ZephyrSerialBuffer()
+                0x0000000000008bd8                arduino::ZephyrSerial::ZephyrSerialBuffer<64>::ZephyrSerialBuffer()
  .text._GLOBAL__sub_I__ZN7arduino12ZephyrSerial5beginEmt
-                0x0000000000008bf4       0x5c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x0000000000008c00       0x5c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
  .text.unlikely._ZSt17__throw_bad_allocv
-                0x0000000000008c50        0x6 c:/users/bjsek/appdata/local/arduino15/internal/zephyr_arm-zephyr-eabi_0.16.8_1e671266f3459ec3/bin/../lib/gcc/arm-zephyr-eabi/12.2.0/../../../../arm-zephyr-eabi/lib/thumb/v8-m.main+fp/hard\libstdc++_nano.a(functexcept.o)
-                0x0000000000008c50                std::__throw_bad_alloc()
+                0x0000000000008c5c        0x6 c:/users/bjsek/appdata/local/arduino15/internal/zephyr_arm-zephyr-eabi_0.16.8_1e671266f3459ec3/bin/../lib/gcc/arm-zephyr-eabi/12.2.0/../../../../arm-zephyr-eabi/lib/thumb/v8-m.main+fp/hard\libstdc++_nano.a(functexcept.o)
+                0x0000000000008c5c                std::__throw_bad_alloc()
  .text.unlikely._ZSt20__throw_length_errorPKc
-                0x0000000000008c56        0x6 c:/users/bjsek/appdata/local/arduino15/internal/zephyr_arm-zephyr-eabi_0.16.8_1e671266f3459ec3/bin/../lib/gcc/arm-zephyr-eabi/12.2.0/../../../../arm-zephyr-eabi/lib/thumb/v8-m.main+fp/hard\libstdc++_nano.a(functexcept.o)
-                0x0000000000008c56                std::__throw_length_error(char const*)
+                0x0000000000008c62        0x6 c:/users/bjsek/appdata/local/arduino15/internal/zephyr_arm-zephyr-eabi_0.16.8_1e671266f3459ec3/bin/../lib/gcc/arm-zephyr-eabi/12.2.0/../../../../arm-zephyr-eabi/lib/thumb/v8-m.main+fp/hard\libstdc++_nano.a(functexcept.o)
+                0x0000000000008c62                std::__throw_length_error(char const*)
  *(.text.*)
  *(.text._*)
  *(.init)
@@ -2883,116 +2883,116 @@ END GROUP
  *(.fini)
 
 .static_thread_data_area
-                0x0000000000008c5c        0x0
-                0x0000000000008c5c                __static_thread_data_list_start = .
+                0x0000000000008c68        0x0
+                0x0000000000008c68                __static_thread_data_list_start = .
  *(.static_thread_data_area SORT_BY_NAME(.__static_thread_data.*))
-                0x0000000000008c5c                __static_thread_data_list_end = .
+                0x0000000000008c68                __static_thread_data_list_end = .
 
 .data
  *(.data .data.*)
 
-.bss            0x0000000000008c60     0x36d8
+.bss            0x0000000000008c68     0x36d8
  *(.bss .bss.* COMMON)
  .bss._ZGVN17RpcDecoderManagerILj3EE9decoders_E
-                0x0000000000008c60        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x0000000000008c60                guard variable for RpcDecoderManager<3u>::decoders_
+                0x0000000000008c68        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x0000000000008c68                guard variable for RpcDecoderManager<3u>::decoders_
  .bss._ZGVN12RouterBridge3HCIE
-                0x0000000000008c64        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x0000000000008c64                guard variable for RouterBridge::HCI
+                0x0000000000008c6c        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x0000000000008c6c                guard variable for RouterBridge::HCI
  .bss._ZN17RpcDecoderManagerILj3EE9decoders_E
-                0x0000000000008c68      0xc78 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x0000000000008c68                RpcDecoderManager<3u>::decoders_
+                0x0000000000008c70      0xc78 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x0000000000008c70                RpcDecoderManager<3u>::decoders_
  .bss._ZN12RouterBridge3HCIE
-                0x00000000000098e0       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x00000000000098e0                RouterBridge::HCI
+                0x00000000000098e8       0x28 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x00000000000098e8                RouterBridge::HCI
  .bss._ZZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE1t
-                0x0000000000009908       0x10 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x0000000000009908                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::t
+                0x0000000000009910       0x10 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x0000000000009910                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::t
  .bss._ZGVZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE1e
-                0x0000000000009918        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x0000000000009918                guard variable for RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::e
+                0x0000000000009920        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x0000000000009920                guard variable for RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::e
  .bss._ZZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE1e
-                0x000000000000991c        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x000000000000991c                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::e
+                0x0000000000009924        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x0000000000009924                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::e
  .bss._ZZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE6map_sz
-                0x0000000000009928        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x0000000000009928                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::map_sz
- .bss._ZZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE6arr_sz
-                0x000000000000992c        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x000000000000992c                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::arr_sz
- .bss._ZGVZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE5bytes
                 0x0000000000009930        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x0000000000009930                guard variable for RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::bytes
+                0x0000000000009930                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::map_sz
+ .bss._ZZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE6arr_sz
+                0x0000000000009934        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x0000000000009934                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::arr_sz
+ .bss._ZGVZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE5bytes
+                0x0000000000009938        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x0000000000009938                guard variable for RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::bytes
  .bss._ZZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE5bytes
-                0x0000000000009934        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x0000000000009934                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::bytes
+                0x000000000000993c        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x000000000000993c                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::bytes
  .bss._ZGVZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE6string
-                0x0000000000009940        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x0000000000009940                guard variable for RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::string
+                0x0000000000009948        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x0000000000009948                guard variable for RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::string
  .bss._ZZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE6string
-                0x0000000000009944        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x0000000000009944                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::string
+                0x000000000000994c        0xc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x000000000000994c                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::string
  .bss._ZZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE5num64
-                0x0000000000009950        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x0000000000009950                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::num64
+                0x0000000000009958        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x0000000000009958                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::num64
  .bss._ZZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE5num32
-                0x0000000000009958        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x0000000000009958                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::num32
+                0x0000000000009960        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x0000000000009960                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::num32
  .bss._ZZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE7integer
-                0x000000000000995c        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x000000000000995c                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::integer
+                0x0000000000009964        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x0000000000009964                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::integer
  .bss._ZZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE1b
-                0x0000000000009960        0x1 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x0000000000009960                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::b
+                0x0000000000009968        0x1 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x0000000000009968                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::b
  .bss._ZZN8RpcUtils6detail12unpackObjectERN7arduino7msgpack8UnpackerEE3nil
-                0x0000000000009961        0x1 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
-                0x0000000000009961                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::nil
- *fill*         0x0000000000009962        0x2 
+                0x0000000000009969        0x1 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
+                0x0000000000009969                RpcUtils::detail::unpackObject(arduino::msgpack::Unpacker&)::nil
+ *fill*         0x000000000000996a        0x2 
  .bss._ZGVZN7arduino7msgpack8Unpacker10from_arrayIJRtRNS_6StringES3_EEEbDpOT_E2sz
-                0x0000000000009964        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
-                0x0000000000009964                guard variable for arduino::msgpack::Unpacker::from_array<unsigned short&, arduino::String&, unsigned short&>(unsigned short&, arduino::String&, unsigned short&)::sz
- .bss._ZZN7arduino7msgpack8Unpacker10from_arrayIJRtRNS_6StringES3_EEEbDpOT_E2sz
-                0x0000000000009968        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
-                0x0000000000009968                arduino::msgpack::Unpacker::from_array<unsigned short&, arduino::String&, unsigned short&>(unsigned short&, arduino::String&, unsigned short&)::sz
- .bss._ZGVZN7arduino7msgpack8Unpacker10from_arrayIJRiRNS_6StringEEEEbDpOT_E2sz
                 0x000000000000996c        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
-                0x000000000000996c                guard variable for arduino::msgpack::Unpacker::from_array<int&, arduino::String&>(int&, arduino::String&)::sz
- .bss._ZZN7arduino7msgpack8Unpacker10from_arrayIJRiRNS_6StringEEEEbDpOT_E2sz
+                0x000000000000996c                guard variable for arduino::msgpack::Unpacker::from_array<unsigned short&, arduino::String&, unsigned short&>(unsigned short&, arduino::String&, unsigned short&)::sz
+ .bss._ZZN7arduino7msgpack8Unpacker10from_arrayIJRtRNS_6StringES3_EEEbDpOT_E2sz
                 0x0000000000009970        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
-                0x0000000000009970                arduino::msgpack::Unpacker::from_array<int&, arduino::String&>(int&, arduino::String&)::sz
+                0x0000000000009970                arduino::msgpack::Unpacker::from_array<unsigned short&, arduino::String&, unsigned short&>(unsigned short&, arduino::String&, unsigned short&)::sz
+ .bss._ZGVZN7arduino7msgpack8Unpacker10from_arrayIJRiRNS_6StringEEEEbDpOT_E2sz
+                0x0000000000009974        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+                0x0000000000009974                guard variable for arduino::msgpack::Unpacker::from_array<int&, arduino::String&>(int&, arduino::String&)::sz
+ .bss._ZZN7arduino7msgpack8Unpacker10from_arrayIJRiRNS_6StringEEEEbDpOT_E2sz
+                0x0000000000009978        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+                0x0000000000009978                arduino::msgpack::Unpacker::from_array<int&, arduino::String&>(int&, arduino::String&)::sz
  .bss._ZN17RpcDecoderManagerILj3EE14decoders_countE
-                0x0000000000009974        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000009974                RpcDecoderManager<3u>::decoders_count
+                0x000000000000997c        0x4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x000000000000997c                RpcDecoderManager<3u>::decoders_count
  .bss.packetBuffer
-                0x0000000000009978      0x100 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000009978                packetBuffer
- .bss.udp       0x0000000000009a78     0x107c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
-                0x0000000000009a78                udp
- .bss.Monitor   0x000000000000aaf4      0x238 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
-                0x000000000000aaf4                Monitor
-                0x000000000000aaf4                Serial
- *fill*         0x000000000000ad2c        0x4 
- .bss.Bridge    0x000000000000ad30      0x168 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
-                0x000000000000ad30                Bridge
+                0x0000000000009980      0x100 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000009980                packetBuffer
+ .bss.udp       0x0000000000009a80     0x107c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000009a80                udp
+ .bss.Monitor   0x000000000000aafc      0x238 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x000000000000aafc                Monitor
+                0x000000000000aafc                Serial
+ *fill*         0x000000000000ad34        0x4 
+ .bss.Bridge    0x000000000000ad38      0x168 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x000000000000ad38                Bridge
  .bss._ZN7arduino11INADDR_NONEE
-                0x000000000000ae98       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
-                0x000000000000ae98                arduino::INADDR_NONE
+                0x000000000000aea0       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x000000000000aea0                arduino::INADDR_NONE
  .bss._ZN7arduino11IN6ADDR_ANYE
-                0x000000000000aeb0       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
-                0x000000000000aeb0                arduino::IN6ADDR_ANY
+                0x000000000000aeb8       0x18 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x000000000000aeb8                arduino::IN6ADDR_ANY
  .bss._ZL18arduino_pin_timers
-                0x000000000000aec8     0x1180 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+                0x000000000000aed0     0x1180 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
  .bss._ZL12pinmux_array
-                0x000000000000c048      0x118 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
- .bss.Serial2   0x000000000000c160       0xec C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x000000000000c160                Serial2
- .bss.Serial1   0x000000000000c24c       0xec C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
-                0x000000000000c24c                Serial1
+                0x000000000000c050      0x118 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+ .bss.Serial2   0x000000000000c168       0xec C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x000000000000c168                Serial2
+ .bss.Serial1   0x000000000000c254       0xec C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x000000000000c254                Serial1
  *(.noinit .noinit.*)
 
-.exported_sym   0x000000000000c338        0x8
+.exported_sym   0x000000000000c340        0x8
  *(.exported_sym)
- .exported_sym  0x000000000000c338        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
+ .exported_sym  0x000000000000c340        0x8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
  *(.exported_sym.*)
 
 .rodata._ZN7arduino7msgpack8Unpacker11deserializeINS_6StringEJEEEbRT_DpOT0_.str1.1
@@ -3200,68 +3200,68 @@ END GROUP
 OUTPUT(C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/robocup.ino_temp.elf elf32-littlearm)
 LOAD linker stubs
 
-.debug_info     0x0000000000000000    0xd5179
+.debug_info     0x0000000000000000    0xd5200
  .debug_info    0x0000000000000000    0x22d5d C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
- .debug_info    0x0000000000022d5d    0x2e81e C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
- .debug_info    0x000000000005157b    0x3dcb4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
- .debug_info    0x000000000008f22f    0x2ad97 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
- .debug_info    0x00000000000b9fc6     0x2590 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
- .debug_info    0x00000000000bc556     0x2d15 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
- .debug_info    0x00000000000bf26b     0x1f76 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
- .debug_info    0x00000000000c11e1     0x3e0e C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
- .debug_info    0x00000000000c4fef     0x1d6d C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
- .debug_info    0x00000000000c6d5c     0x1e2d C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
- .debug_info    0x00000000000c8b89      0x7b1 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
- .debug_info    0x00000000000c933a     0x1f7c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
- .debug_info    0x00000000000cb2b6     0x651e C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
- .debug_info    0x00000000000d17d4     0x39a5 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+ .debug_info    0x0000000000022d5d    0x2e7e9 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+ .debug_info    0x0000000000051546    0x3dd70 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+ .debug_info    0x000000000008f2b6    0x2ad97 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+ .debug_info    0x00000000000ba04d     0x2590 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+ .debug_info    0x00000000000bc5dd     0x2d15 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+ .debug_info    0x00000000000bf2f2     0x1f76 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
+ .debug_info    0x00000000000c1268     0x3e0e C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+ .debug_info    0x00000000000c5076     0x1d6d C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+ .debug_info    0x00000000000c6de3     0x1e2d C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
+ .debug_info    0x00000000000c8c10      0x7b1 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
+ .debug_info    0x00000000000c93c1     0x1f7c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
+ .debug_info    0x00000000000cb33d     0x651e C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+ .debug_info    0x00000000000d185b     0x39a5 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
 
-.debug_abbrev   0x0000000000000000     0x888a
+.debug_abbrev   0x0000000000000000     0x889e
  .debug_abbrev  0x0000000000000000     0x124f C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
  .debug_abbrev  0x000000000000124f     0x1403 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
- .debug_abbrev  0x0000000000002652     0x14ff C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
- .debug_abbrev  0x0000000000003b51     0x13a5 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
- .debug_abbrev  0x0000000000004ef6      0x614 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
- .debug_abbrev  0x000000000000550a      0x594 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
- .debug_abbrev  0x0000000000005a9e      0x500 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
- .debug_abbrev  0x0000000000005f9e      0x5d4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
- .debug_abbrev  0x0000000000006572      0x1e9 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
- .debug_abbrev  0x000000000000675b      0x538 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
- .debug_abbrev  0x0000000000006c93      0x234 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
- .debug_abbrev  0x0000000000006ec7      0x4d6 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
- .debug_abbrev  0x000000000000739d      0xba6 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
- .debug_abbrev  0x0000000000007f43      0x947 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+ .debug_abbrev  0x0000000000002652     0x1513 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+ .debug_abbrev  0x0000000000003b65     0x13a5 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+ .debug_abbrev  0x0000000000004f0a      0x614 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+ .debug_abbrev  0x000000000000551e      0x594 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+ .debug_abbrev  0x0000000000005ab2      0x500 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
+ .debug_abbrev  0x0000000000005fb2      0x5d4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+ .debug_abbrev  0x0000000000006586      0x1e9 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+ .debug_abbrev  0x000000000000676f      0x538 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
+ .debug_abbrev  0x0000000000006ca7      0x234 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
+ .debug_abbrev  0x0000000000006edb      0x4d6 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
+ .debug_abbrev  0x00000000000073b1      0xba6 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+ .debug_abbrev  0x0000000000007f57      0x947 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
 
 .debug_loclists
-                0x0000000000000000    0x2e064
+                0x0000000000000000    0x2e02a
  .debug_loclists
                 0x0000000000000000     0x657f C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
  .debug_loclists
-                0x000000000000657f     0x9d33 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+                0x000000000000657f     0x9cf9 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
  .debug_loclists
-                0x00000000000102b2     0xe4ab C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x0000000000010278     0xe4ab C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .debug_loclists
-                0x000000000001e75d     0x8e10 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x000000000001e723     0x8e10 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .debug_loclists
-                0x000000000002756d      0x9df C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x0000000000027533      0x9df C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
  .debug_loclists
-                0x0000000000027f4c     0x12da C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+                0x0000000000027f12     0x12da C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
  .debug_loclists
-                0x0000000000029226      0x883 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
+                0x00000000000291ec      0x883 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
  .debug_loclists
-                0x0000000000029aa9     0x1943 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x0000000000029a6f     0x1943 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
  .debug_loclists
-                0x000000000002b3ec      0xb87 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+                0x000000000002b3b2      0xb87 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
  .debug_loclists
-                0x000000000002bf73       0x72 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
+                0x000000000002bf39       0x72 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
  .debug_loclists
-                0x000000000002bfe5      0x2bc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
+                0x000000000002bfab      0x2bc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
  .debug_loclists
-                0x000000000002c2a1       0xd1 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
+                0x000000000002c267       0xd1 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
  .debug_loclists
-                0x000000000002c372     0x153b C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+                0x000000000002c338     0x153b C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
  .debug_loclists
-                0x000000000002d8ad      0x7b7 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x000000000002d873      0x7b7 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
 
 .debug_aranges  0x0000000000000000     0x1c18
  .debug_aranges
@@ -3294,81 +3294,81 @@ LOAD linker stubs
                 0x0000000000001b50       0xc8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
 
 .debug_rnglists
-                0x0000000000000000     0x64e0
+                0x0000000000000000     0x64ec
  .debug_rnglists
                 0x0000000000000000      0xf8f C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
  .debug_rnglists
-                0x0000000000000f8f     0x14ec C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+                0x0000000000000f8f     0x14e0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
  .debug_rnglists
-                0x000000000000247b     0x1dc6 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+                0x000000000000246f     0x1dde C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
  .debug_rnglists
-                0x0000000000004241     0x1398 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+                0x000000000000424d     0x1398 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
  .debug_rnglists
-                0x00000000000055d9      0x135 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+                0x00000000000055e5      0x135 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
  .debug_rnglists
-                0x000000000000570e      0x1c1 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+                0x000000000000571a      0x1c1 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
  .debug_rnglists
-                0x00000000000058cf      0x103 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
+                0x00000000000058db      0x103 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
  .debug_rnglists
-                0x00000000000059d2      0x375 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+                0x00000000000059de      0x375 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
  .debug_rnglists
-                0x0000000000005d47      0x1db C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+                0x0000000000005d53      0x1db C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
  .debug_rnglists
-                0x0000000000005f22       0x33 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
+                0x0000000000005f2e       0x33 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
  .debug_rnglists
-                0x0000000000005f55       0x7f C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
+                0x0000000000005f61       0x7f C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
  .debug_rnglists
-                0x0000000000005fd4       0x46 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
+                0x0000000000005fe0       0x46 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
  .debug_rnglists
-                0x000000000000601a      0x2fe C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+                0x0000000000006026      0x2fe C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
  .debug_rnglists
-                0x0000000000006318      0x1c8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+                0x0000000000006324      0x1c8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
 
-.debug_line     0x0000000000000000    0x28ec3
+.debug_line     0x0000000000000000    0x28eee
  .debug_line    0x0000000000000000     0x5e48 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
- .debug_line    0x0000000000005e48     0x80a8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
- .debug_line    0x000000000000def0     0xaa5a C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
- .debug_line    0x000000000001894a     0x7499 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
- .debug_line    0x000000000001fde3      0xc65 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
- .debug_line    0x0000000000020a48      0xcd4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
- .debug_line    0x000000000002171c      0x94e C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
- .debug_line    0x000000000002206a     0x1aa2 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
- .debug_line    0x0000000000023b0c      0x7aa C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
- .debug_line    0x00000000000242b6      0x953 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
- .debug_line    0x0000000000024c09      0x3b3 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
- .debug_line    0x0000000000024fbc      0x981 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
- .debug_line    0x000000000002593d     0x24d3 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
- .debug_line    0x0000000000027e10     0x10b3 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+ .debug_line    0x0000000000005e48     0x8084 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+ .debug_line    0x000000000000decc     0xaaa9 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+ .debug_line    0x0000000000018975     0x7499 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+ .debug_line    0x000000000001fe0e      0xc65 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+ .debug_line    0x0000000000020a73      0xcd4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+ .debug_line    0x0000000000021747      0x94e C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
+ .debug_line    0x0000000000022095     0x1aa2 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+ .debug_line    0x0000000000023b37      0x7aa C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+ .debug_line    0x00000000000242e1      0x953 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
+ .debug_line    0x0000000000024c34      0x3b3 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
+ .debug_line    0x0000000000024fe7      0x981 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
+ .debug_line    0x0000000000025968     0x24d3 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+ .debug_line    0x0000000000027e3b     0x10b3 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
 
-.debug_str      0x0000000000000000    0x91ac8
+.debug_str      0x0000000000000000    0x91b29
  .debug_str     0x0000000000000000    0x19e16 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
  .debug_str     0x0000000000019e16    0x20348 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
- .debug_str     0x000000000003a15e    0x2929f C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
- .debug_str     0x00000000000633fd    0x1dbad C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
- .debug_str     0x0000000000080faa     0x1a47 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
- .debug_str     0x00000000000829f1     0x171e C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
- .debug_str     0x000000000008410f     0x16cc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
- .debug_str     0x00000000000857db     0x1876 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
- .debug_str     0x0000000000087051      0x8d4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
- .debug_str     0x0000000000087925     0x202d C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
- .debug_str     0x0000000000089952      0x525 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
- .debug_str     0x0000000000089e77     0x1c65 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
- .debug_str     0x000000000008badc     0x34d2 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
- .debug_str     0x000000000008efae     0x2b1a C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+ .debug_str     0x000000000003a15e    0x29300 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+ .debug_str     0x000000000006345e    0x1dbad C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+ .debug_str     0x000000000008100b     0x1a47 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+ .debug_str     0x0000000000082a52     0x171e C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+ .debug_str     0x0000000000084170     0x16cc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
+ .debug_str     0x000000000008583c     0x1876 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+ .debug_str     0x00000000000870b2      0x8d4 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+ .debug_str     0x0000000000087986     0x202d C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
+ .debug_str     0x00000000000899b3      0x525 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
+ .debug_str     0x0000000000089ed8     0x1c65 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
+ .debug_str     0x000000000008bb3d     0x34d2 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+ .debug_str     0x000000000008f00f     0x2b1a C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
 
-.debug_frame    0x0000000000000000     0x6248
+.debug_frame    0x0000000000000000     0x6244
  .debug_frame   0x0000000000000000      0xaac C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\LEDControl.cpp.o
- .debug_frame   0x0000000000000aac     0x1024 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
- .debug_frame   0x0000000000001ad0     0x19cc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
- .debug_frame   0x000000000000349c      0xe84 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
- .debug_frame   0x0000000000004320      0x27c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
- .debug_frame   0x000000000000459c      0x3d0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
- .debug_frame   0x000000000000496c      0x1fc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
- .debug_frame   0x0000000000004b68      0x7e8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
- .debug_frame   0x0000000000005350      0x510 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
- .debug_frame   0x0000000000005860       0x68 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
- .debug_frame   0x00000000000058c8      0x140 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
- .debug_frame   0x0000000000005a08       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
- .debug_frame   0x0000000000005a48      0x45c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
- .debug_frame   0x0000000000005ea4      0x220 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
- .debug_frame   0x00000000000060c4      0x184 c:/users/bjsek/appdata/local/arduino15/internal/zephyr_arm-zephyr-eabi_0.16.8_1e671266f3459ec3/bin/../lib/gcc/arm-zephyr-eabi/12.2.0/../../../../arm-zephyr-eabi/lib/thumb/v8-m.main+fp/hard\libstdc++_nano.a(functexcept.o)
+ .debug_frame   0x0000000000000aac     0x1014 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\WiFiControl.cpp.o
+ .debug_frame   0x0000000000001ac0     0x19d8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\sketch\robocup.ino.cpp.o
+ .debug_frame   0x0000000000003498      0xe84 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq\libraries\Arduino_RouterBridge\singletons.cpp.o
+ .debug_frame   0x000000000000431c      0x27c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(IPAddress.cpp.o)
+ .debug_frame   0x0000000000004598      0x3d0 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Print.cpp.o)
+ .debug_frame   0x0000000000004968      0x1fc C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(Stream.cpp.o)
+ .debug_frame   0x0000000000004b64      0x7e8 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(String.cpp.o)
+ .debug_frame   0x000000000000534c      0x510 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(llext_wrappers.c.o)
+ .debug_frame   0x000000000000585c       0x68 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(main.cpp.o)
+ .debug_frame   0x00000000000058c4      0x140 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(new.cpp.o)
+ .debug_frame   0x0000000000005a04       0x40 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(threads.cpp.o)
+ .debug_frame   0x0000000000005a44      0x45c C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrCommon.cpp.o)
+ .debug_frame   0x0000000000005ea0      0x220 C:\Users\bjsek\Documents\GitHub\robocup-embedded\robocup\robocup\build\build_unoq/core\core.a(zephyrSerial.cpp.o)
+ .debug_frame   0x00000000000060c0      0x184 c:/users/bjsek/appdata/local/arduino15/internal/zephyr_arm-zephyr-eabi_0.16.8_1e671266f3459ec3/bin/../lib/gcc/arm-zephyr-eabi/12.2.0/../../../../arm-zephyr-eabi/lib/thumb/v8-m.main+fp/hard\libstdc++_nano.a(functexcept.o)
