@@ -64,20 +64,26 @@ void CommandData::setShortKick(const float power) {
 // void executeShortKick();
 
 void CommandData::printData() {
-   Monitor.println("Command Data:");
-   Monitor.print("Dash Power: ");
-   Monitor.println(this->dashPower);
-   Monitor.print("Dash Direction: ");
-   Monitor.println(this->dashDirection);
-   Monitor.print("Turn Speed: ");
-   Monitor.println(this->turnSpeed);
-   Monitor.print("Short Kick Power: ");
-   Monitor.println(this->shortKickPower);
-   Monitor.print("Catch: ");
-   Monitor.println(this->dribble);
-   Monitor.print("Kick: ");
-   Monitor.println(this->kick);
-   Monitor.print("Stop: ");
-   Monitor.println(this->stop);
+   char buffer[192];
+   snprintf(
+      buffer,
+      sizeof(buffer),
+      "Command Data:\n"
+      "Dash Power: %.2f\n"
+      "Dash Direction: %.2f\n"
+      "Turn Speed: %.2f\n"
+      "Short Kick Power: %.2f\n"
+      "Catch: %d\n"
+      "Kick: %d\n"
+      "Stop: %d\n",
+      this->dashPower,
+      this->dashDirection,
+      this->turnSpeed,
+      this->shortKickPower,
+      this->dribble,
+      this->kick,
+      this->stop
+   );
+   Monitor.print(buffer);
 }
 // END STRUCT FUNCTION DEFINITIONS
