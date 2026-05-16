@@ -1,9 +1,0 @@
-{
-  "additionalFiles": "..\\..\\..,..\\..\\..",
-  "compiler.optimization_flags": "",
-  "customBuildProperties": "",
-  "fqbn": "arduino:zephyr:unoq:link_mode=dynamic,wait_linux_boot=yes",
-  "hardwareFolders": "C:\\Users\\bjsek\\AppData\\Local\\Arduino15\\packages",
-  "otherLibrariesFolders": "C:\\Users\\bjsek\\OneDrive\\Documents\\Arduino\\libraries",
-  "sketchLocation": "C:\\Users\\bjsek\\Documents\\GitHub\\robocup-embedded\\robocup\\robocup"
-}
