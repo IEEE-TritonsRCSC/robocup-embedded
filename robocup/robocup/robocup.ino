@@ -13,7 +13,9 @@
 #include "Command.h"
 
 // BEGIN CONSTEXPR
-constexpr unsigned int LINUX_BOOT_TIME = 30000; // it takes the linux on the UNO Q 30 seconds to boot up
+
+// it takes the linux on the UNO Q 30 seconds to boot up
+constexpr unsigned int LINUX_BOOT_TIME = 30000;
 // END CONSTEXPR
 
 BridgeUDP<> udp(Bridge);
@@ -42,12 +44,13 @@ void setup() {
 }
 
 void loop() {
-  if (hasPacket(udp)) {
-    readPacketIntoBuffer(udp, Monitor,packetBuffer);
-    if (isMatchingRobotID(packetBuffer)) {
-      printPacket(Monitor,packetBuffer);
+  if (hasPacket(udp)) { // if a udp packet is available
+    readPacketIntoBuffer(udp, Monitor,packetBuffer); // put the packet contents in the buffer
+    if (isMatchingRobotID(packetBuffer)) { // if the packet matches this robot
+      printPacket(Monitor,packetBuffer); // print packet contents
+      // parse data from packet into command data
       parsePacketIntoCommandData(packetBuffer,commandData);
-      commandData.printData();
+      commandData.printData(); // print the parsed command data values
     }
   }
 }
