@@ -1,0 +1,1290 @@
+// Copyright 2023 mjbots Robotic Systems, LLC.  info@mjbots.com
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/// @file
+///
+/// Primary controller API for commanding and monitoring a moteus servo.
+///
+/// This header pulls together the protocol layer and the transport
+/// interface, then exposes `MoteusController<CanBus>` plus the common
+/// command helpers.
+#pragma once
+
+#include "moteus_protocol.h"
+#include "moteus_can.h"
+
+// Platform timing abstraction. On Arduino, these are provided
+// automatically. On bare-metal platforms, the user must implement
+// `moteus_micros()` and `moteus_delay_ms()` and link them into the
+// project. See `examples/Stm32BareMetal/` for a complete example.
+#ifdef ARDUINO
+#include <Arduino.h>
+inline uint32_t moteus_micros() { return ::micros(); }
+inline void moteus_delay_ms(uint32_t ms) { ::delay(ms); }
+#else
+extern uint32_t moteus_micros();
+extern void moteus_delay_ms(uint32_t ms);
+#endif
+
+namespace mm = mjbots::moteus;
+
+/// Primary interface to a moteus controller.
+///
+/// One instance of this class is used per controller that is commanded
+/// or monitored.
+///
+/// The primary control functions each have 3 possible forms:
+///
+///  1. A `Make` variant which constructs a `CanFdFrame` for later use.
+///
+///  2. A `Set` variant which sends a command and waits for a response
+///     in a blocking manner.
+///
+///  3. A `Begin` variant which sends a command and requires that
+///     `Poll()` be called regularly before reading `last_result()`.
+template <typename CanBus>
+class MoteusController {
+ public:
+  using CanFdFrame = mm::CanFdFrame;
+  static constexpr int kDiagnosticTimeoutUs = 4000;
+
+  using Query = mm::Query;
+  using PositionMode = mm::PositionMode;
+  using VFOCMode = mm::VFOCMode;
+  using CurrentMode = mm::CurrentMode;
+  using StayWithinMode = mm::StayWithinMode;
+  using ZeroVelocityMode = mm::ZeroVelocityMode;
+  using GpioRead = mm::GpioRead;
+  using AuxPwmWrite = mm::AuxPwmWrite;
+
+  static constexpr mm::Resolution kInt8 = mm::Resolution::kInt8;
+  static constexpr mm::Resolution kInt16 = mm::Resolution::kInt16;
+  static constexpr mm::Resolution kInt32 = mm::Resolution::kInt32;
+  static constexpr mm::Resolution kFloat = mm::Resolution::kFloat;
+
+  struct Options {
+    /// Servo ID to communicate with.
+    int8_t id = 1;
+
+    /// Source ID used for the commanding node.
+    int8_t source = 0;
+
+    mm::Query::Format query_format;
+
+    /// CAN prefix applied to all arbitration IDs.
+    uint16_t can_prefix = 0x0000;
+
+    /// Disables bit-rate switching on outgoing frames.
+    bool disable_brs = true;
+
+    /// Requests the configured register set with every command.
+    bool default_query = true;
+
+    /// Minimum wait time for a response, in microseconds.
+    uint16_t min_rcv_wait_us = 2000;
+
+    /// Maximum retries for diagnostic reads when no response is received.
+    int diagnostic_retry_count = 0;
+
+    Options() {}
+  };
+
+  /**
+   * @brief Constructs a controller bound to a CAN bus.
+   *
+   * The `query_format` from `options` is serialized once and reused when
+   * `default_query` is enabled.
+   *
+   * @param can_bus CAN transport used for all traffic.
+   * @param options Controller configuration.
+   */
+  MoteusController(CanBus& can_bus,
+                   const Options& options = {})
+      : can_bus_(can_bus),
+        options_(options) {
+    mm::CanData can_data;
+    mm::WriteCanData query_write(&can_data);
+    mm::Query::Make(&query_write, options_.query_format);
+
+    query_size_ = can_data.size;
+    query_data_ = reinterpret_cast<char*>(realloc(query_data_, query_size_));
+    ::memcpy(query_data_, &can_data.data[0], query_size_);
+  }
+
+  struct Result {
+    /// Timestamp in microseconds when this result was received.
+    unsigned long timestamp = 0;
+    /// Raw frame received from the transport.
+    CanFdFrame frame;
+    /// Parsed query values from `frame`.
+    mm::Query::Result values;
+  };
+
+  /**
+   * @brief Returns the most recent command result.
+   *
+   * @return The last parsed response received by this controller.
+   */
+  const Result& last_result() const { return last_result_; }
+
+
+  /////////////////////////////////////////
+  // Query
+
+  /**
+   * @brief Builds a query-only frame.
+   *
+   * @param format_override Optional query format override.
+   * @return A CAN-FD frame containing only a query payload.
+   */
+  CanFdFrame MakeQuery(const mm::Query::Format* format_override = nullptr) {
+    return MakeFrame(mm::EmptyMode(), {}, {},
+                     format_override == nullptr ?
+                     &options_.query_format : format_override);
+  }
+
+  /**
+   * @brief Sends a query and waits for the response.
+   *
+   * @param query_override Optional query format override.
+   * @return True if a response was received before timeout.
+   */
+  bool SetQuery(const mm::Query::Format* query_override = nullptr) {
+    return ExecuteSingleCommand(MakeQuery(query_override));
+  }
+
+
+  /////////////////////////////////////////
+  // StopMode
+
+  /**
+   * @brief Builds a stop command frame.
+   *
+   * @param query_override Optional query format override.
+   * @return A CAN-FD frame containing a stop command.
+   */
+  CanFdFrame MakeStop(const mm::Query::Format* query_override = nullptr) {
+    return MakeFrame(mm::StopMode(), {}, {}, query_override);
+  }
+
+  /**
+   * @brief Sends a stop command and waits for the response.
+   *
+   * @param query_override Optional query format override.
+   * @return True if a response was received before timeout.
+   */
+  bool SetStop(const mm::Query::Format* query_override = nullptr) {
+    return ExecuteSingleCommand(MakeStop(query_override));
+  }
+
+  /**
+   * @brief Sends a stop command without waiting for a response.
+   *
+   * @param query_override Optional query format override.
+   */
+  void BeginStop(const mm::Query::Format* query_override = nullptr) {
+    BeginSingleCommand(MakeStop(query_override));
+  }
+
+
+  /////////////////////////////////////////
+  // BrakeMode
+
+
+  /**
+   * @brief Builds a brake command frame.
+   *
+   * @param query_override Optional query format override.
+   * @return A CAN-FD frame containing a brake command.
+   */
+  CanFdFrame MakeBrake(const mm::Query::Format* query_override = nullptr) {
+    return MakeFrame(mm::BrakeMode(), {}, {}, query_override);
+  }
+
+  /**
+   * @brief Sends a brake command and waits for the response.
+   *
+   * @param query_override Optional query format override.
+   * @return True if a response was received before timeout.
+   */
+  bool SetBrake(const mm::Query::Format* query_override = nullptr) {
+    return ExecuteSingleCommand(MakeBrake(query_override));
+  }
+
+  /**
+   * @brief Sends a brake command without waiting for a response.
+   *
+   * @param query_override Optional query format override.
+   */
+  void BeginBrake(const mm::Query::Format* query_override = nullptr) {
+    BeginSingleCommand(MakeBrake(query_override));
+  }
+
+
+  /////////////////////////////////////////
+  // PositionMode
+
+  /**
+   * @brief Builds a position-mode command frame.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return A CAN-FD frame containing a position-mode command.
+   */
+  CanFdFrame MakePosition(const mm::PositionMode::Command& cmd,
+                          const mm::PositionMode::Format* command_override = nullptr,
+                          const mm::Query::Format* query_override = nullptr) {
+    return MakeFrame(mm::PositionMode(),
+                     cmd,
+                     (command_override == nullptr ?
+                      mm::PositionMode::Format() : *command_override),
+                     query_override);
+  }
+
+  /**
+   * @brief Sends a position-mode command and waits for the response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return True if a response was received before timeout.
+   */
+  bool SetPosition(const mm::PositionMode::Command& cmd,
+                   const mm::PositionMode::Format* command_override = nullptr,
+                   const mm::Query::Format* query_override = nullptr) {
+    return ExecuteSingleCommand(
+        MakePosition(cmd, command_override, query_override));
+  }
+
+  /**
+   * @brief Sends a position-mode command without waiting for a response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   */
+  void BeginPosition(const mm::PositionMode::Command& cmd,
+                     const mm::PositionMode::Format* command_override = nullptr,
+                     const mm::Query::Format* query_override = nullptr) {
+    BeginSingleCommand(
+        MakePosition(cmd, command_override, query_override));
+  }
+
+  /**
+   * @brief Sends position commands until `trajectory_complete` is observed.
+   *
+   * @param cmd Command payload.
+   * @param period_s Delay between retries in seconds.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return True once the controller reports trajectory completion.
+   * @note This method blocks until completion or until a response is observed
+   *       with `trajectory_complete` set.
+   */
+  bool SetPositionWaitComplete(const mm::PositionMode::Command& cmd,
+                               double period_s,
+                               const mm::PositionMode::Format* command_override = nullptr,
+                               const mm::Query::Format* query_override = nullptr) {
+    mm::Query::Format query_format =
+        query_override == nullptr ? options_.query_format : *query_override;
+    query_format.trajectory_complete = kInt8;
+
+    // The query returned from a mode change will always report the
+    // previous state.  Thus we need to have at least 2 responses
+    // before we have a valid trajectory complete flag.
+    int count = 2;
+    while (true) {
+      const bool got_result = SetPosition(cmd, command_override, &query_format);
+      if (got_result) {
+        count = count - 1;
+        if (count < 0) { count = 0; }
+      }
+      if (count == 0 &&
+          got_result &&
+          last_result_.values.trajectory_complete) {
+        return true;
+      }
+
+      moteus_delay_ms(static_cast<uint32_t>(period_s * 1000));
+    }
+  }
+
+
+  /////////////////////////////////////////
+  // VFOCMode
+
+  /**
+   * @brief Builds a voltage-FOC command frame.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return A CAN-FD frame containing a voltage-FOC command.
+   */
+  CanFdFrame MakeVFOC(const mm::VFOCMode::Command& cmd,
+                      const mm::VFOCMode::Format* command_override = nullptr,
+                      const mm::Query::Format* query_override = nullptr) {
+    return MakeFrame(mm::VFOCMode(),
+                     cmd,
+                     (command_override == nullptr ?
+                      mm::VFOCMode::Format() : *command_override),
+                     query_override);
+  }
+
+  /**
+   * @brief Sends a voltage-FOC command and waits for the response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return True if a response was received before timeout.
+   */
+  bool SetVFOC(const mm::VFOCMode::Command& cmd,
+               const mm::VFOCMode::Format* command_override = nullptr,
+               const mm::Query::Format* query_override = nullptr) {
+    return ExecuteSingleCommand(MakeVFOC(cmd, command_override, query_override));
+  }
+
+  /**
+   * @brief Sends a voltage-FOC command without waiting for a response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   */
+  void BeginVFOC(const mm::VFOCMode::Command& cmd,
+                 const mm::VFOCMode::Format* command_override = nullptr,
+                 const mm::Query::Format* query_override = nullptr) {
+    BeginSingleCommand(MakeVFOC(cmd, command_override, query_override));
+  }
+
+
+  /////////////////////////////////////////
+  // CurrentMode
+
+  /**
+   * @brief Builds a current-mode command frame.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return A CAN-FD frame containing a current-mode command.
+   */
+  CanFdFrame MakeCurrent(const mm::CurrentMode::Command& cmd,
+                         const mm::CurrentMode::Format* command_override = nullptr,
+                         const mm::Query::Format* query_override = nullptr) {
+    return MakeFrame(mm::CurrentMode(),
+                     cmd,
+                     (command_override == nullptr ?
+                      mm::CurrentMode::Format() : *command_override),
+                     query_override);
+  }
+
+  /**
+   * @brief Sends a current-mode command and waits for the response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return True if a response was received before timeout.
+   */
+  bool SetCurrent(const mm::CurrentMode::Command& cmd,
+                  const mm::CurrentMode::Format* command_override = nullptr,
+                  const mm::Query::Format* query_override = nullptr) {
+    return ExecuteSingleCommand(MakeCurrent(cmd, command_override, query_override));
+  }
+
+  /**
+   * @brief Sends a current-mode command without waiting for a response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   */
+  void BeginCurrent(const mm::CurrentMode::Command& cmd,
+                    const mm::CurrentMode::Format* command_override = nullptr,
+                    const mm::Query::Format* query_override = nullptr) {
+    BeginSingleCommand(MakeCurrent(cmd, command_override, query_override));
+  }
+
+
+  /////////////////////////////////////////
+  // StayWithinMode
+
+  /**
+   * @brief Builds a stay-within command frame.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return A CAN-FD frame containing a stay-within command.
+   */
+  CanFdFrame MakeStayWithin(const mm::StayWithinMode::Command& cmd,
+                            const mm::StayWithinMode::Format* command_override = nullptr,
+                            const mm::Query::Format* query_override = nullptr) {
+    return MakeFrame(mm::StayWithinMode(),
+                     cmd,
+                     (command_override == nullptr ?
+                      mm::StayWithinMode::Format() : *command_override),
+                     query_override);
+  }
+
+  /**
+   * @brief Sends a stay-within command and waits for the response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return True if a response was received before timeout.
+   */
+  bool SetStayWithin(const mm::StayWithinMode::Command& cmd,
+                     const mm::StayWithinMode::Format* command_override = nullptr,
+                     const mm::Query::Format* query_override = nullptr) {
+    return ExecuteSingleCommand(MakeStayWithin(cmd, command_override, query_override));
+  }
+
+  /**
+   * @brief Sends a stay-within command without waiting for a response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   */
+  void BeginStayWithin(const mm::StayWithinMode::Command& cmd,
+                       const mm::StayWithinMode::Format* command_override = nullptr,
+                       const mm::Query::Format* query_override = nullptr) {
+    BeginSingleCommand(MakeStayWithin(cmd, command_override, query_override));
+  }
+
+
+  /////////////////////////////////////////
+  // ZeroVelocityMode
+
+  /**
+   * @brief Builds a zero-velocity command frame.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return A CAN-FD frame containing a zero-velocity command.
+   */
+  CanFdFrame MakeZeroVelocity(const mm::ZeroVelocityMode::Command& cmd = {},
+                              const mm::ZeroVelocityMode::Format* command_override = nullptr,
+                              const mm::Query::Format* query_override = nullptr) {
+    return MakeFrame(mm::ZeroVelocityMode(),
+                     cmd,
+                     (command_override == nullptr ?
+                      mm::ZeroVelocityMode::Format() : *command_override),
+                     query_override);
+  }
+
+  /**
+   * @brief Sends a zero-velocity command and waits for the response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return True if a response was received before timeout.
+   */
+  bool SetZeroVelocity(const mm::ZeroVelocityMode::Command& cmd = {},
+                       const mm::ZeroVelocityMode::Format* command_override = nullptr,
+                       const mm::Query::Format* query_override = nullptr) {
+    return ExecuteSingleCommand(MakeZeroVelocity(cmd, command_override, query_override));
+  }
+
+  /**
+   * @brief Sends a zero-velocity command without waiting for a response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   */
+  void BeginZeroVelocity(const mm::ZeroVelocityMode::Command& cmd = {},
+                         const mm::ZeroVelocityMode::Format* command_override = nullptr,
+                         const mm::Query::Format* query_override = nullptr) {
+    BeginSingleCommand(MakeZeroVelocity(cmd, command_override, query_override));
+  }
+
+
+  /////////////////////////////////////////
+  // GpioRead
+
+  /**
+   * @brief Builds a GPIO read command frame.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return A CAN-FD frame containing a GPIO read command.
+   */
+  CanFdFrame MakeGpioRead(const mm::GpioRead::Command& cmd = {},
+                          const mm::GpioRead::Format* command_override = nullptr,
+                          const mm::Query::Format* query_override = nullptr) {
+    return MakeFrame(mm::GpioRead(),
+                     cmd,
+                     (command_override == nullptr ?
+                      mm::GpioRead::Format() : *command_override),
+                     query_override);
+  }
+
+  /**
+   * @brief Sends a GPIO read command and waits for the response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return True if a response was received before timeout.
+   */
+  bool SetGpioRead(const mm::GpioRead::Command& cmd = {},
+                   const mm::GpioRead::Format* command_override = nullptr,
+                   const mm::Query::Format* query_override = nullptr) {
+    return ExecuteSingleCommand(MakeGpioRead(cmd, command_override, query_override));
+  }
+
+  /**
+   * @brief Sends a GPIO read command without waiting for a response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   */
+  void BeginGpioRead(const mm::GpioRead::Command& cmd = {},
+                     const mm::GpioRead::Format* command_override = nullptr,
+                     const mm::Query::Format* query_override = nullptr) {
+    BeginSingleCommand(MakeGpioRead(cmd, command_override, query_override));
+  }
+
+
+  /////////////////////////////////////////
+  // AuxPwmWrite
+
+  /**
+   * @brief Builds an auxiliary PWM write command frame.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return A CAN-FD frame containing an auxiliary PWM write command.
+   */
+  CanFdFrame MakeAuxPwmWrite(const mm::AuxPwmWrite::Command& cmd,
+                             const mm::AuxPwmWrite::Format* command_override = nullptr,
+                             const mm::Query::Format* query_override = nullptr) {
+    return MakeFrame(mm::AuxPwmWrite(),
+                     cmd,
+                     (command_override == nullptr ?
+                      mm::AuxPwmWrite::Format() : *command_override),
+                     query_override);
+  }
+
+  /**
+   * @brief Sends an auxiliary PWM write command and waits for the response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return True if a response was received before timeout.
+   */
+  bool SetAuxPwmWrite(const mm::AuxPwmWrite::Command& cmd,
+                      const mm::AuxPwmWrite::Format* command_override = nullptr,
+                      const mm::Query::Format* query_override = nullptr) {
+    return ExecuteSingleCommand(MakeAuxPwmWrite(cmd, command_override, query_override));
+  }
+
+  /**
+   * @brief Sends an auxiliary PWM write command without waiting for a response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   */
+  void BeginAuxPwmWrite(const mm::AuxPwmWrite::Command& cmd,
+                        const mm::AuxPwmWrite::Format* command_override = nullptr,
+                        const mm::Query::Format* query_override = nullptr) {
+    BeginSingleCommand(MakeAuxPwmWrite(cmd, command_override, query_override));
+  }
+
+
+  /////////////////////////////////////////
+  // OutputNearest
+
+  /**
+   * @brief Builds an output-nearest command frame.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return A CAN-FD frame containing an output-nearest command.
+   */
+  CanFdFrame MakeOutputNearest(const mm::OutputNearest::Command& cmd,
+                               const mm::OutputNearest::Format* command_override = nullptr,
+                               const mm::Query::Format* query_override = nullptr) {
+    return MakeFrame(mm::OutputNearest(),
+                     cmd,
+                     (command_override == nullptr ?
+                      mm::OutputNearest::Format() : *command_override),
+                     query_override);
+  }
+
+  /**
+   * @brief Sends an output-nearest command and waits for the response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return True if a response was received before timeout.
+   */
+  bool SetOutputNearest(const mm::OutputNearest::Command& cmd,
+                        const mm::OutputNearest::Format* command_override = nullptr,
+                        const mm::Query::Format* query_override = nullptr) {
+    return ExecuteSingleCommand(MakeOutputNearest(cmd, command_override, query_override));
+  }
+
+  /**
+   * @brief Sends an output-nearest command without waiting for a response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   */
+  void BeginOutputNearest(const mm::OutputNearest::Command& cmd,
+                          const mm::OutputNearest::Format* command_override = nullptr,
+                          const mm::Query::Format* query_override = nullptr) {
+    BeginSingleCommand(MakeOutputNearest(cmd, command_override, query_override));
+  }
+
+
+  /////////////////////////////////////////
+  // OutputExact
+
+  /**
+   * @brief Builds an output-exact command frame.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return A CAN-FD frame containing an output-exact command.
+   */
+  CanFdFrame MakeOutputExact(const mm::OutputExact::Command& cmd,
+                               const mm::OutputExact::Format* command_override = nullptr,
+                               const mm::Query::Format* query_override = nullptr) {
+    return MakeFrame(mm::OutputExact(),
+                     cmd,
+                     (command_override == nullptr ?
+                      mm::OutputExact::Format() : *command_override),
+                     query_override);
+  }
+
+  /**
+   * @brief Sends an output-exact command and waits for the response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return True if a response was received before timeout.
+   */
+  bool SetOutputExact(const mm::OutputExact::Command& cmd,
+                      const mm::OutputExact::Format* command_override = nullptr,
+                      const mm::Query::Format* query_override = nullptr) {
+    return ExecuteSingleCommand(MakeOutputExact(cmd, command_override, query_override));
+  }
+
+  /**
+   * @brief Sends an output-exact command without waiting for a response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   */
+  void BeginOutputExact(const mm::OutputExact::Command& cmd,
+                        const mm::OutputExact::Format* command_override = nullptr,
+                        const mm::Query::Format* query_override = nullptr) {
+    BeginSingleCommand(MakeOutputExact(cmd, command_override, query_override));
+  }
+
+
+  /////////////////////////////////////////
+  // RequireReindex
+
+  /**
+   * @brief Builds a require-reindex command frame.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return A CAN-FD frame containing a require-reindex command.
+   */
+  CanFdFrame MakeRequireReindex(const mm::RequireReindex::Command& cmd,
+                                const mm::RequireReindex::Format* command_override = nullptr,
+                                const mm::Query::Format* query_override = nullptr) {
+    return MakeFrame(mm::RequireReindex(),
+                     cmd,
+                     (command_override == nullptr ?
+                      mm::RequireReindex::Format() : *command_override),
+                     query_override);
+  }
+
+  /**
+   * @brief Sends a require-reindex command and waits for the response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return True if a response was received before timeout.
+   */
+  bool SetRequireReindex(const mm::RequireReindex::Command& cmd,
+                         const mm::RequireReindex::Format* command_override = nullptr,
+                         const mm::Query::Format* query_override = nullptr) {
+    return ExecuteSingleCommand(MakeRequireReindex(cmd, command_override, query_override));
+  }
+
+  /**
+   * @brief Sends a require-reindex command without waiting for a response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   */
+  void BeginRequireReindex(const mm::RequireReindex::Command& cmd,
+                           const mm::RequireReindex::Format* command_override = nullptr,
+                           const mm::Query::Format* query_override = nullptr) {
+    BeginSingleCommand(MakeRequireReindex(cmd, command_override, query_override));
+  }
+
+
+  /////////////////////////////////////////
+  // RecapturePositionVelocity
+
+  /**
+   * @brief Builds a recapture-position-velocity command frame.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return A CAN-FD frame containing a recapture-position-velocity command.
+   */
+  CanFdFrame MakeRecapturePositionVelocity(
+      const mm::RecapturePositionVelocity::Command& cmd,
+      const mm::RecapturePositionVelocity::Format* command_override = nullptr,
+      const mm::Query::Format* query_override = nullptr) {
+    return MakeFrame(mm::RecapturePositionVelocity(),
+                     cmd,
+                     (command_override == nullptr ?
+                      mm::RecapturePositionVelocity::Format() : *command_override),
+                     query_override);
+  }
+
+  /**
+   * @brief Sends a recapture-position-velocity command and waits for the response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   * @return True if a response was received before timeout.
+   */
+  bool SetRecapturePositionVelocity(
+      const mm::RecapturePositionVelocity::Command& cmd,
+      const mm::RecapturePositionVelocity::Format* command_override = nullptr,
+      const mm::Query::Format* query_override = nullptr) {
+    return ExecuteSingleCommand(MakeRecapturePositionVelocity(cmd, command_override, query_override));
+  }
+
+  /**
+   * @brief Sends a recapture-position-velocity command without waiting for a response.
+   *
+   * @param cmd Command payload.
+   * @param command_override Optional command format override.
+   * @param query_override Optional query format override.
+   */
+  void BeginRecapturePositionVelocity(
+      const mm::RecapturePositionVelocity::Command& cmd,
+      const mm::RecapturePositionVelocity::Format* command_override = nullptr,
+      const mm::Query::Format* query_override = nullptr) {
+    BeginSingleCommand(MakeRecapturePositionVelocity(cmd, command_override, query_override));
+  }
+
+
+  /////////////////////////////////////////
+  // Diagnostic channel operations
+  //
+  // These methods use the Arduino String class and are only available
+  // when building with the Arduino framework.  On bare-metal platforms,
+  // the diagnostic protocol can be accessed directly via MakeFrame()
+  // with DiagnosticWrite/DiagnosticRead structs from moteus_protocol.h.
+#ifdef ARDUINO
+
+  enum DiagnosticReplyMode {
+    kExpectOK,
+    kExpectSingleLine,
+  };
+
+  /**
+   * @brief Sends a diagnostic command string and returns the response text.
+   *
+   * @param message_in Command text to send, without a trailing newline.
+   * @param reply_mode Controls whether the response should be treated as an
+   *        OK-style reply or a single-line reply.
+   * @return Diagnostic response text, or an empty string on timeout.
+   * @note Available only when building with Arduino.
+   * @warning This method blocks until a complete response is received or the
+   *          diagnostic timeout expires.
+   */
+  String DiagnosticCommand(const String& message_in,
+                           DiagnosticReplyMode reply_mode = kExpectOK) {
+    {
+      String message = message_in + "\n";
+      while (message.length() > 0) {
+        const auto to_write = message.length() < 48u ? message.length() : 48u;
+        mm::DiagnosticWrite::Command write;
+        write.data = message.c_str();
+        write.size = to_write;
+
+        auto frame = DefaultFrame(kNoReply);
+        mm::WriteCanData write_frame(frame.data, &frame.size);
+        mm::DiagnosticWrite::Make(&write_frame, write, {});
+
+        BeginSingleCommand(frame);
+        message.remove(0, to_write);
+      }
+    }
+
+    // Now we read until we get a complete response.
+    String response;
+    String current_line;
+
+    const auto start = moteus_micros();
+    auto end = start + kDiagnosticTimeoutUs;
+
+    while (true) {
+      {
+        const auto now = moteus_micros();
+        if (static_cast<long>(now - end) > 0) {
+          return {};
+        }
+      }
+      BeginSingleCommand(MakeDiagnosticReadFrame(1));
+
+      while (true) {
+        if (![&]() {
+          while (!Poll()) {
+            const auto now = moteus_micros();
+            if (static_cast<long>(now - end) > 0) {
+              return false;
+            }
+          }
+          return true;
+        }()) {
+          break;
+        }
+
+        {
+          const auto parsed = ParseDiagnosticResponse(
+              last_result_.frame.data, last_result_.frame.size, 1);
+          if (parsed.channel != 1) {
+            // This must not have been for us after all.
+            continue;
+          }
+
+          if (parsed.size) {
+            // We got some data, so bump our timeout forward.
+            end = start + kDiagnosticTimeoutUs;
+          }
+
+          // Sigh... older versions of Arduino have no ability to
+          // construct a string from a pointer and length.  Guess we'll
+          // emulate it.
+          {
+            String this_data;
+            this_data.reserve(parsed.size);
+            for (int8_t i = 0; i < parsed.size; i++) {
+              this_data.concat(static_cast<char>(parsed.data[i]));
+            }
+
+            current_line.concat(this_data);
+          }
+        }
+
+        auto find_newline = [&]() {
+          const int cr = current_line.indexOf('\r');
+          const int nl = current_line.indexOf('\n');
+          const int first_newline =
+              (cr < 0 ? nl :
+               nl < 0 ? cr :
+               nl < cr ? nl : cr);
+          return first_newline;
+        };
+        int first_newline = -1;
+        while ((first_newline = find_newline()) != -1) {
+          String this_line = current_line.substring(0, first_newline);
+          if (reply_mode == kExpectSingleLine) {
+            return this_line;
+          } else if (this_line == "OK") {
+            return response;
+          } else {
+            response.concat(current_line.substring(0, first_newline + 1));
+            current_line.remove(0, first_newline + 1);
+          }
+        }
+
+        // We got a frame, so break out of our inner loop.
+        break;
+      }
+    }
+  }
+
+  /**
+   * @brief Reads a diagnostic channel and returns the response payload.
+   *
+   * @param channel Diagnostic channel number.
+   * @return Diagnostic payload, or an empty string on timeout.
+   * @note Available only when building with Arduino.
+   */
+  String SetDiagnosticRead(int channel = 1) {
+    for (int attempt = 0;
+         attempt <= options_.diagnostic_retry_count;
+         attempt++) {
+      BeginSingleCommand(MakeDiagnosticReadFrame(channel));
+
+      const auto start = moteus_micros();
+      auto end = start + kDiagnosticTimeoutUs;
+
+      while (true) {
+        if (![&]() {
+          while (!Poll()) {
+            const auto now = moteus_micros();
+            if (static_cast<long>(now - end) > 0) {
+              return false;
+            }
+          }
+          return true;
+        }()) {
+          break;  // Timed out, retry if attempts remain.
+        }
+
+        const auto parsed = ParseDiagnosticResponse(
+            last_result_.frame.data, last_result_.frame.size, channel);
+        if (parsed.channel != channel) {
+          continue;
+        }
+
+        String result;
+        result.reserve(parsed.size);
+        for (int8_t i = 0; i < parsed.size; i++) {
+          result.concat(static_cast<char>(parsed.data[i]));
+        }
+        return result;
+      }
+    }
+    return "";
+  }
+
+  /**
+   * @brief Drains all queued diagnostic responses from a channel.
+   *
+   * @param channel Diagnostic channel number.
+   * @note Available only when building with Arduino.
+   */
+  void SetDiagnosticFlush(int channel = 1) {
+    while (true) {
+      const auto response = SetDiagnosticRead(channel);
+      if (response.length() == 0) { return; }
+    }
+  }
+
+#endif  // ARDUINO — diagnostic channel operations
+
+  /////////////////////////////////////////
+  // Non-command related methods
+
+  /**
+   * @brief Checks the transport for a response to a previously sent command.
+   *
+   * Any parsed data is stored in `last_result()`.
+   *
+   * @return True if a matching response was received.
+   */
+  bool Poll() {
+    const auto now = moteus_micros();
+
+    // Ensure any interrupts have been handled.
+    can_bus_.poll();
+
+    if (!can_bus_.available()) { return false; }
+
+    CANFDMessage rx_msg;
+    can_bus_.receive(rx_msg);
+
+    const int8_t source = (rx_msg.id >> 8) & 0x7f;
+    const int8_t destination = (rx_msg.id & 0x7f);
+    const uint16_t can_prefix = (rx_msg.id >> 16);
+
+    if (source != options_.id ||
+        destination != options_.source ||
+        can_prefix != options_.can_prefix) {
+      return false;
+    }
+
+    last_result_.timestamp = now;
+
+    auto& cf = last_result_.frame;
+    cf.arbitration_id = rx_msg.id;
+    cf.destination = destination;
+    cf.source = source;
+    cf.size = rx_msg.len;
+    ::memcpy(&cf.data[0], &rx_msg.data[0], rx_msg.len);
+    cf.can_prefix = can_prefix;
+
+    if (rx_msg.type == CANFDMessage::CANFD_WITH_BIT_RATE_SWITCH) {
+      cf.brs = mm::CanFdFrame::kForceOn;
+      cf.fdcan_frame = mm::CanFdFrame::kForceOn;
+    } else if (rx_msg.type == CANFDMessage::CANFD_NO_BIT_RATE_SWITCH) {
+      cf.brs = mm::CanFdFrame::kForceOff;
+      cf.fdcan_frame = mm::CanFdFrame::kForceOn;
+    } else {
+      cf.brs = mm::CanFdFrame::kForceOff;
+      cf.fdcan_frame = mm::CanFdFrame::kForceOff;
+    }
+
+    last_result_.values =
+        mm::Query::Parse(&cf.data[0], cf.size);
+
+    return true;
+  }
+
+  /**
+   * @brief Serializes and transmits a frame without waiting for a response.
+   *
+   * @param frame Frame to transmit.
+   * @return True if a reply is expected, otherwise false.
+   * @note The frame is sent immediately; this does not wait for completion.
+   */
+  bool BeginSingleCommand(const mm::CanFdFrame& frame) {
+    CANFDMessage can_message;
+    can_message.id = frame.arbitration_id;
+    can_message.ext = true;
+    const bool desired_brs =
+        (frame.brs == CanFdFrame::kDefault ? !options_.disable_brs :
+         frame.brs == CanFdFrame::kForceOn ? true : false);
+
+    if (frame.fdcan_frame == CanFdFrame::kDefault ||
+        frame.fdcan_frame == CanFdFrame::kForceOn) {
+      if (desired_brs) {
+        can_message.type = CANFDMessage::CANFD_WITH_BIT_RATE_SWITCH;
+      } else {
+        can_message.type = CANFDMessage::CANFD_NO_BIT_RATE_SWITCH;
+      }
+    } else {
+      can_message.type = CANFDMessage::CAN_DATA;
+    }
+    can_message.len = frame.size;
+    ::memcpy(&can_message.data[0], &frame.data[0], frame.size);
+    can_message.ext = true;
+
+    mm::PadCan(&can_message);
+
+    // To work even when the ACAN2517FD doesn't have functioning
+    // interrupts, we will just poll it before and after attempting to
+    // send our message.  This slows things down, but we're on an
+    // Arduino, so who cares?
+    can_bus_.poll();
+    can_bus_.tryToSend(can_message);
+    can_bus_.poll();
+
+    return frame.reply_required;
+  }
+
+  /**
+   * @brief Sends a frame and blocks until the expected response is observed.
+   *
+   * @param frame Frame to transmit.
+   * @return True if the command expected a reply and one was observed before timeout.
+   */
+  bool ExecuteSingleCommand(const mm::CanFdFrame& frame) {
+    const bool reply_required = BeginSingleCommand(frame);
+
+    if (!reply_required) { return false; }
+
+    auto start = moteus_micros();
+    auto end = start + options_.min_rcv_wait_us;
+    bool got_a_response = false;
+
+    while (true) {
+      const auto now = moteus_micros();
+      const auto delta = static_cast<long>(now - end);
+      if (delta > 0) {
+        // We timed out.
+        return false;
+      }
+
+      if (Poll()) {
+        got_a_response = true;
+      } else if (got_a_response) {
+        // We both received a response, and have no more queued up.
+        return true;
+      }
+    }
+  }
+
+ private:
+  enum ReplyMode {
+    kNoReply,
+    kReplyRequired,
+  };
+
+  /**
+   * @brief Builds a frame with the controller's default addressing.
+   *
+   * @param reply_mode Whether the frame should request a reply.
+   * @return A CAN-FD frame pre-populated with controller addressing.
+   */
+  CanFdFrame DefaultFrame(ReplyMode reply_mode = kReplyRequired) {
+    CanFdFrame result;
+    result.destination = options_.id;
+    result.reply_required = (reply_mode == kReplyRequired);
+
+    result.arbitration_id =
+        (result.destination) |
+        (result.source << 8) |
+        (result.reply_required ? 0x8000 : 0x0000) |
+        (static_cast<uint32_t>(options_.can_prefix) << 16);
+    result.bus = 0;
+
+    return result;
+  }
+
+  /**
+   * @brief Builds a command frame for the supplied command type.
+   *
+   * @param cmd Command payload.
+   * @param fmt Command format.
+   * @param query_override Optional query format override.
+   * @return A CAN-FD frame containing the encoded command.
+   */
+  template <typename CommandType>
+  CanFdFrame MakeFrame(const CommandType&,
+                       const typename CommandType::Command& cmd,
+                       const typename CommandType::Format& fmt,
+                       const mm::Query::Format* query_override = nullptr) {
+    auto result = DefaultFrame(
+        query_override != nullptr ? kReplyRequired :
+        options_.default_query ? kReplyRequired : kNoReply);
+
+    mm::WriteCanData write_frame(result.data, &result.size);
+    CommandType::Make(&write_frame, cmd, fmt);
+
+    if (query_override) {
+      mm::Query::Make(&write_frame, *query_override);
+    } else if (options_.default_query) {
+      ::memcpy(&result.data[result.size],
+               query_data_,
+               query_size_);
+      result.size += query_size_;
+    }
+
+    return result;
+  }
+
+  struct DiagnosticParsed {
+    int8_t channel = -1;
+    const uint8_t* data = nullptr;
+    int8_t size = 0;
+  };
+
+  /**
+   * @brief Builds a diagnostic read frame for a channel.
+   *
+   * @param channel Diagnostic channel number.
+   * @return A CAN-FD frame containing the diagnostic read request.
+   */
+  CanFdFrame MakeDiagnosticReadFrame(int channel) {
+    auto frame = DefaultFrame(kReplyRequired);
+    mm::WriteCanData write_frame(frame.data, &frame.size);
+
+    if (!flow_control_probed_ || use_flow_control_) {
+      mm::DiagnosticReadFlow::Command read;
+      read.channel = channel;
+      read.packet_number = last_ack_packet_[channel < 4 ? channel : 0];
+      mm::DiagnosticReadFlow::Make(&write_frame, read, {});
+    } else {
+      mm::DiagnosticRead::Command read;
+      read.channel = channel;
+      mm::DiagnosticRead::Make(&write_frame, read, {});
+    }
+
+    return frame;
+  }
+
+  /**
+   * @brief Parses a diagnostic response and tracks flow-control state.
+   *
+   * @param data Raw response bytes.
+   * @param size Number of bytes in `data`.
+   * @param channel Expected diagnostic channel.
+   * @return Parsed channel, payload pointer, and payload size.
+   * @note This also probes and caches whether diagnostic flow control is used.
+   */
+  DiagnosticParsed ParseDiagnosticResponse(
+      const uint8_t* data, uint8_t size, int channel) {
+    DiagnosticParsed result;
+
+    if (!flow_control_probed_) {
+      flow_control_probed_ = true;
+      // Try parsing as flow response first.
+      auto flow = mm::DiagnosticFlowResponse::Parse(data, size);
+      if (flow.channel >= 0) {
+        use_flow_control_ = true;
+        if (flow.channel < 4) {
+          last_ack_packet_[flow.channel] = flow.packet_number;
+        }
+        result.channel = flow.channel;
+        result.data = flow.data;
+        result.size = flow.size;
+        return result;
+      }
+      // Fall back to plain response.
+      auto plain = mm::DiagnosticResponse::Parse(data, size);
+      result.channel = plain.channel;
+      result.data = plain.data;
+      result.size = plain.size;
+      return result;
+    }
+
+    if (use_flow_control_) {
+      auto flow = mm::DiagnosticFlowResponse::Parse(data, size);
+      if (flow.channel >= 0 && flow.channel < 4) {
+        last_ack_packet_[flow.channel] = flow.packet_number;
+      }
+      result.channel = flow.channel;
+      result.data = flow.data;
+      result.size = flow.size;
+    } else {
+      auto plain = mm::DiagnosticResponse::Parse(data, size);
+      result.channel = plain.channel;
+      result.data = plain.data;
+      result.size = plain.size;
+    }
+    return result;
+  }
+
+  CanBus& can_bus_;
+  const Options options_;
+
+  Result last_result_;
+  char* query_data_ = nullptr;
+  size_t query_size_ = 0;
+
+  bool flow_control_probed_ = false;
+  bool use_flow_control_ = false;
+  uint8_t last_ack_packet_[4] = {};
+};
