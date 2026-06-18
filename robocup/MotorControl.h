@@ -31,6 +31,16 @@
 
 #define CANFD_BITRATE 1000ll * 1000ll  // 1 MBit bitrate for CANFD
 
+/**
+ * @brief convert a angle's units from degrees to radians
+ * @param angleInDegrees an angle in units of degrees
+ * @return the original angle in units of radians
+ */
+constexpr float degToRad(const float angleInDegrees) {
+   return angleInDegrees * PI / 180;
+}
+
+
 
 /**
  * @brief move the robot in a direction with a velocity power
