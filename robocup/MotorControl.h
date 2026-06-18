@@ -1,19 +1,23 @@
 #pragma once
 #include <MoteusAcan2517fd.h>
 
-#define KICKER_PIN 13 // change to true kicker pin
 
-#define DASH_SPEED 1
+// BEGIN COMMAND ARGS
+
 #define TURN_SPEED -90 // in degrees
 #define SHORTKICK_POWER 10
+#define DASH_POWER 1
+#define DASH_ANGLE 30 // in degrees
+
+// END COMMAND ARGS
 
 #define TEST_NUM_MOTORS 2
 #define NUM_MOTORS 5
 #define NUM_WHEELS 4
 #define TEST_DRIBBLER_INDEX 0 // dribbler index for testing
 #define DRIBBLER_INDEX 4 // true dribbler index
-#define DASH_POWER 1
-#define DASH_ANGLE 30 // in degrees
+
+// BEGIN PINS
 
 // MCP2517 pins for CAN FD Arduino Shield
 #define MCP2517_SCK 13  // SCK
@@ -21,6 +25,10 @@
 #define MCP2517_SDO 12  // SDO (MISO)
 #define MCP2517_CS 10    // CS or SS
 #define MCP2517_INT 2   // INT (A)
+
+#define KICKER_PIN 13 // change to true kicker pin later
+
+// END PINS
 
 #define CANFD_BITRATE 1000ll * 1000ll  // 1 MBit bitrate for CANFD
 
@@ -61,13 +69,6 @@ void stopDribbler(Moteus* motors[NUM_MOTORS]);
  * @param motors array of wheel motors
 */
 void stopLocomotion(Moteus* motors[NUM_WHEELS]);
-
-/**
- * @brief spin the dribbler backwards to spit the ball forward
- * @param motors array of motors
- * @param shortKickPower rotation speed of dribbler as a positive value
-*/
-void shortKick(Moteus* motors[NUM_MOTORS], float shortKickPower);
 
 /**
  * @brief turn kicker solenoid off

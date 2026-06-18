@@ -49,15 +49,6 @@ void stopLocomotion(Moteus* motors[NUM_WHEELS]) {
 }
 
 
-void shortKick(Moteus* motors[NUM_MOTORS], float shortKickPower) {
-  constexpr float invertDribblerRotation = -1; // change to 1 if dribbler spins the wrong way
-  Moteus::PositionMode::Command cmd;
-  cmd.position = NaN;  // Pure velocity mode.
-  cmd.velocity = invertDribblerRotation * shortKickPower;
-  motors[TEST_DRIBBLER_INDEX]->BeginPosition(cmd);
-}
-
-
 void stopKicker(const byte kickerPin) {
    digitalWrite(kickerPin, LOW);
 }
