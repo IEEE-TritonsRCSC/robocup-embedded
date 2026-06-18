@@ -1,0 +1,15 @@
+profiles:
+  uno-r4-wifi:
+    fqbn: arduino:avr:unowifi
+    platforms:
+      - platform: arduino:avr (1.8.8)
+    libraries:
+      - Moteus (1.1.1)
+      - ACAN2517FD (2.1.16)
+    programmer: ""
+    port: ""
+    port_config:
+      baudrate: "115200"
+      bits: "8"
+      parity: none
+      stop_bits: one
