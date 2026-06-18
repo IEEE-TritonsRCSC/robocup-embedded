@@ -5,7 +5,6 @@
 // BEGIN COMMAND ARGS
 
 #define TURN_SPEED -90 // in degrees
-#define SHORTKICK_POWER 10
 #define DASH_POWER 1
 #define DASH_ANGLE 30 // in degrees
 
