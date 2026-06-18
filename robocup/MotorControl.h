@@ -41,7 +41,7 @@
  * @param power velocity of motor in rev/s
  * @param direction direction of motion in degrees
  */
-void dash(Moteus* wheels[NUM_WHEELS], float wheelAngles[NUM_WHEELS], bool invertRotation[NUM_WHEELS], float dashPower, float direction);
+void dash(Moteus* wheels[NUM_WHEELS], const float wheelAngles[NUM_WHEELS], const bool invertRotation[NUM_WHEELS], const float dashPower, float direction);
 
 /**
  * @brief rotate the robot at some rotational velocity
@@ -49,7 +49,7 @@ void dash(Moteus* wheels[NUM_WHEELS], float wheelAngles[NUM_WHEELS], bool invert
  * @param turnSpeed rotational velocity in degrees/s
  * @warning the speed is not certain until tested on a robot 
  */
-void turn(Moteus* wheels[NUM_WHEELS], float turnSpeed);
+void turn(Moteus* wheels[NUM_WHEELS], const float turnSpeed);
 
 /**
  * @brief turn the dribbler motor on

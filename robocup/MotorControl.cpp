@@ -2,7 +2,7 @@
 
 #include "MotorControl.h"
 
-void dash(Moteus* wheels[NUM_WHEELS], float wheelAngles[NUM_WHEELS], bool invertRotation[NUM_WHEELS], float dashPower, float direction) {
+void dash(Moteus* wheels[NUM_WHEELS], const float wheelAngles[NUM_WHEELS], const bool invertRotation[NUM_WHEELS], const float dashPower, float direction) {
    direction *= PI / 180; // convert direction from degrees into radians
    Moteus::PositionMode::Command cmd;
    cmd.position = NaN;  // Pure velocity mode.
@@ -15,7 +15,7 @@ void dash(Moteus* wheels[NUM_WHEELS], float wheelAngles[NUM_WHEELS], bool invert
    }
 }
 
-void turn(Moteus* wheels[NUM_WHEELS], float turnSpeed) {
+void turn(Moteus* wheels[NUM_WHEELS], const float turnSpeed) {
    constexpr float arbitraryMultipler = 1; // this is for tuning during testing on a robot to match the specified rotational velocity
    Moteus::PositionMode::Command cmd;
    cmd.position = NaN;  // Pure velocity mode.
