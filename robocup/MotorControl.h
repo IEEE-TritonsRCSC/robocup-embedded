@@ -22,7 +22,7 @@
 #define MCP2517_SCK 13  // SCK
 #define MCP2517_SDI 11  // SDI (MOSI)
 #define MCP2517_SDO 12  // SDO (MISO)
-#define MCP2517_CS 10    // CS or SS
+#define MCP2517_CS 9   // CS or SS
 #define MCP2517_INT 2   // INT (A)
 
 #define KICKER_PIN 13 // change to true kicker pin later
