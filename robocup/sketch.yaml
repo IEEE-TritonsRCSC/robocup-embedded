@@ -6,6 +6,7 @@ profiles:
     libraries:
       - Moteus (1.1.1)
       - ACAN2517FD (2.1.16)
+      - WiFi (1.2.7)
     programmer: ""
     port: ""
     port_config:
