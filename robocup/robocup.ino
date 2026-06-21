@@ -14,9 +14,10 @@ void setup() {
 
   SPI.begin();
    
-  state =  new RobotState();
+  state = new RobotState();
 }
 
 void loop() {
-   state->stop();
+   state->receiveCommand();
+   state->executeState();
 }

@@ -16,13 +16,16 @@
 #define TEST_DRIBBLER_INDEX 0 // dribbler index for testing
 #define DRIBBLER_INDEX 4 // true dribbler index
 
+#define EXCESSIVE_DRIBBLE_TIME 10000 // 10 sec TODO: what is the max dribble time
+#define KICK_DELAY 100 // wait 100ms for kicker
+
 // BEGIN PINS
 
 // MCP2517 pins for CAN FD Arduino Shield
 #define MCP2517_SCK 13  // SCK
 #define MCP2517_SDI 11  // SDI (MOSI)
 #define MCP2517_SDO 12  // SDO (MISO)
-#define MCP2517_CS 9   // CS or SS
+#define MCP2517_CS 9   // CS (SS)
 #define MCP2517_INT 2   // INT (A)
 
 #define KICKER_PIN 13 // change to true kicker pin later
@@ -72,6 +75,13 @@ class RobotState {
 
    bool hasBall = false;
 
+   // units: rev/s
+   float dashPower;
+   // units: degrees
+   float dashDirection;
+   // units: deg/s
+   float turnSpeed;
+
 
    public:
    /**
@@ -80,17 +90,26 @@ class RobotState {
    RobotState();
 
    /**
-    * @brief drive the robot in a chosen direction at the requested power
-    * @param dashPower target drive power in revolutions per second
-    * @param dashDirection direction of travel in degrees
+    * @brief executes the commands for the current state of the robot and updates state
+    * // TODO: implement a watchdog timer to stop from continuously executing
     */
-   void dash(const float dashPower, const float dashDirection);
+   void executeState();
+
+   /**
+    * @brief receive a UDP command and update the state
+    */
+   void receiveCommand();
+
+   /**
+    * @brief drive the robot in a chosen direction at the requested power
+    * @note sets isTurning to false
+    */
+   void dash();
 
    /**
     * @brief rotate the robot in place at the requested speed
-    * @param turnSpeed rotational speed in degrees per second
     */
-   void turn(const float turnSpeed);
+   void turn();
 
    /**
     * @brief activate the kicker solenoid
@@ -122,63 +141,69 @@ class RobotState {
     */
    void stop();
 
+   void setDashPower(const float power);
+
+   void setDashDirection(const float direction);
+
+   void setTurnSpeed(const float speed);
+
    /**
     * @brief check whether the robot is currently in dash mode
     * @return true if the robot is dashing, otherwise false
     */
-   bool GetIsDashing() const { return isDashing; }
+   bool GetIsDashing() const;
 
    /**
     * @brief set whether the robot is currently in dash mode
     * @param dashing true to mark the robot as dashing, false otherwise
     */
-   void SetIsDashing(const bool dashing) { isDashing = dashing; }
+   void SetIsDashing(const bool dashing);
 
    /**
     * @brief check whether the robot is currently in turn mode
     * @return true if the robot is turning, otherwise false
     */
-   bool GetIsTurning() const { return isTurning; }
+   bool GetIsTurning() const;
 
    /**
     * @brief set whether the robot is currently in turn mode
     * @param turning true to mark the robot as turning, false otherwise
     */
-   void SetIsTurning(const bool turning) { isTurning = turning; }
+   void SetIsTurning(const bool turning);
 
    /**
     * @brief check whether the robot is currently trying to catch the ball
     * @return true if the robot is catching, otherwise false
     */
-   bool GetIsCatching() const { return isCatching; }
+   bool GetIsCatching() const;
 
    /**
     * @brief set whether the robot is currently trying to catch the ball
     * @param catching true to mark the robot as catching, false otherwise
     */
-   void SetIsCatching(const bool catching) { isCatching = catching; }
+   void SetIsCatching(const bool catching);
 
    /**
     * @brief check whether the robot is currently kicking
     * @return true if the robot is kicking, otherwise false
     */
-   bool GetIsKicking() const { return isKicking; }
+   bool GetIsKicking() const;
 
     /**
      * @brief set whether the robot is currently kicking
      * @param kicking true to mark the robot as kicking, false otherwise
      */
-    void SetIsKicking(const bool kicking) { isKicking = kicking; }
+    void SetIsKicking(const bool kicking);
 
    /**
     * @brief check whether the robot currently has possession of the ball
     * @return true if the robot has the ball, otherwise false
     */
-   bool GetHasBall() const { return hasBall; }
+   bool GetHasBall() const;
 
    /**
     * @brief set whether the robot currently has possession of the ball
     * @param ball true to mark the robot as holding the ball, false otherwise
     */
-   void SetHasBall(const bool ball) { hasBall = ball; }
+   void SetHasBall(const bool ball);
 };

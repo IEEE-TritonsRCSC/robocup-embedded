@@ -55,18 +55,42 @@ RobotState::RobotState()
     delay(1000);
   }
 
-  for (int i = 0; i < NUM_MOTORS; i++) {
-    motors[i] = new Moteus(can, [i]() {
+  for (int idx = 0; idx < NUM_MOTORS; idx++) {
+    motors[idx] = new Moteus(can, [idx]() {
         Moteus::Options options;
-        options.id = i+1;
+        options.id = idx+1;
         return options;
     }());
     // Clear any faults
-    motors[i]->BeginStop();
+    motors[idx]->BeginStop();
   }
 }
 
-void RobotState::dash(const float dashPower, const float dashDirection) {
+void RobotState::executeState() {
+  if (GetIsDashing()) {dash();}
+  if (GetIsTurning()) {turn();}
+
+  if (GetIsCatching()) {
+    dribblerCatch();
+    if (millis() - startDribble > EXCESSIVE_DRIBBLE_TIME) {
+      stopDribbler();
+    }
+  }
+
+  if (GetIsKicking()) {
+    kick();
+    if (millis() - startKick > KICK_DELAY) {
+      stopKick();
+    }
+  }
+}
+
+void RobotState::receiveCommand() {
+  // parse UDP packet
+  // update state
+}
+
+void RobotState::dash() {
   float direction = dashDirection * PI / 180.0f;
   MotorCommand cmd;
   cmd.position = NaN;
@@ -81,7 +105,7 @@ void RobotState::dash(const float dashPower, const float dashDirection) {
   isTurning = false;
 }
 
-void RobotState::turn(const float turnSpeed) {
+void RobotState::turn() {
   constexpr float arbitraryMultipler = 1;
   MotorCommand cmd;
   cmd.position = NaN;
@@ -94,6 +118,9 @@ void RobotState::turn(const float turnSpeed) {
 }
 
 void RobotState::kick() {
+  if (!GetIsKicking()) { // if started kicking
+    startKick = millis(); // start kicker timer
+  }
   digitalWrite(KICKER_PIN, HIGH);
   isKicking = true;
 }
@@ -104,6 +131,9 @@ void RobotState::stopKick() {
 }
 
 void RobotState::dribblerCatch() {
+  if (!GetIsCatching()) { // if started dribbling
+    startDribble = millis(); // start dribbler timer
+  }
   constexpr float invertDribblerRotation = 1;
   constexpr float dribblerSpeed = 10;
   MotorCommand cmd;
@@ -130,4 +160,56 @@ void RobotState::stop() {
   stopLocomotion();
   stopDribbler();
   stopKick();
+}
+
+void RobotState::setDashPower(const float power) {
+  dashPower = power;
+}
+
+void RobotState::setDashDirection(const float direction) {
+  dashDirection = direction;
+}
+
+void RobotState::setTurnSpeed(const float speed) {
+  turnSpeed = speed;
+}
+
+bool RobotState::GetIsDashing() const {
+  return isDashing;
+}
+
+void RobotState::SetIsDashing(const bool dashing) {
+  isDashing = dashing;
+}
+
+bool RobotState::GetIsTurning() const {
+  return isTurning;
+}
+
+void RobotState::SetIsTurning(const bool turning) {
+  isTurning = turning;
+}
+
+bool RobotState::GetIsCatching() const {
+  return isCatching;
+}
+
+void RobotState::SetIsCatching(const bool catching) {
+  isCatching = catching;
+}
+
+bool RobotState::GetIsKicking() const {
+  return isKicking;
+}
+
+void RobotState::SetIsKicking(const bool kicking) {
+  isKicking = kicking;
+}
+
+bool RobotState::GetHasBall() const {
+  return hasBall;
+}
+
+void RobotState::SetHasBall(const bool ball) {
+  hasBall = ball;
 }
