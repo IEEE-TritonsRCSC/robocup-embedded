@@ -1,12 +1,69 @@
 #pragma once
 
-#include "MotorControl.h"
+#include <MoteusAcan2517fd.h>
+
+// BEGIN COMMAND ARGS
+
+#define TURN_SPEED -90 // in degrees
+#define DASH_POWER 1
+#define DASH_ANGLE 30 // in degrees
+
+// END COMMAND ARGS
+
+#define TEST_NUM_MOTORS 2
+#define NUM_MOTORS 5
+#define NUM_WHEELS 4
+#define TEST_DRIBBLER_INDEX 0 // dribbler index for testing
+#define DRIBBLER_INDEX 4 // true dribbler index
+
+// BEGIN PINS
+
+// MCP2517 pins for CAN FD Arduino Shield
+#define MCP2517_SCK 13  // SCK
+#define MCP2517_SDI 11  // SDI (MOSI)
+#define MCP2517_SDO 12  // SDO (MISO)
+#define MCP2517_CS 9   // CS or SS
+#define MCP2517_INT 2   // INT (A)
+
+#define KICKER_PIN 13 // change to true kicker pin later
+
+// END PINS
+
+#define CANFD_BITRATE 1000ll * 1000ll  // 1 MBit bitrate for CANFD
+
+typedef Moteus::PositionMode::Command MotorCommand;
 
 class RobotState {
    private:
-   Moteus* motors[NUM_MOTORS];
+   static RobotState* instance;
+   static void handleCanInterrupt();
+
+   /**
+      @note motor indices 0-3 are wheel motors
+      @note motor index 4 is the dribbler motor
+   */
+   Moteus* motors[NUM_MOTORS] = {nullptr};
+   ACAN2517FD can;
+   ACAN2517FDSettings settings;
    const float* wheelAngles;
    const bool* wheelInvertedRotation;
+
+   /*
+   TODO: add this block to the execute state function or something
+      if (isKicking && millis() - startKick > KICK_DELAY) { // KICK_DELAY is 100-150ms
+         stopKick();
+      }
+   */
+   unsigned long startKick;
+
+   /*
+   TODO: add this block to the execute state function or something
+      if (isCatching && millis() - startDribble > EXCESSIVE_DRIBBLE_TIME) {
+         stopDribbler();
+      }
+   */
+   unsigned long startDribble;
+   
 
    bool isDashing = false;
    bool isTurning = false;
@@ -19,11 +76,8 @@ class RobotState {
    public:
    /**
     * @brief create a robot state wrapper around the configured motors
-    * @param motors array of motor pointers used by the robot
-    * @param wheelAngles wheel heading angles in radians
-    * @param wheelInvertedRotation wheel rotation inversion flags
     */
-   RobotState(Moteus* motors[NUM_MOTORS], const float wheelAngles[NUM_WHEELS], const bool wheelInvertedRotation[NUM_WHEELS]);
+   RobotState();
 
    /**
     * @brief drive the robot in a chosen direction at the requested power
