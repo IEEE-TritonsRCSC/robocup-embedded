@@ -162,6 +162,10 @@ void RobotState::stop() {
   stopKick();
 }
 
+void RobotState::checkBallDetector() {
+  hasBall = digitalRead(BALL_DETECTOR_PIN);
+}
+
 void RobotState::setDashPower(const float power) {
   dashPower = power;
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "WiFiControl.h"
 #include <MoteusAcan2517fd.h>
 
 // BEGIN COMMAND ARGS
@@ -28,7 +29,8 @@
 #define MCP2517_CS 9   // CS (SS)
 #define MCP2517_INT 2   // INT (A)
 
-#define KICKER_PIN 13 // change to true kicker pin later
+#define KICKER_PIN 13 // TODO: change to true kicker pin later
+#define BALL_DETECTOR_PIN 13 // TODO: change to true ball detector pin later
 
 // END PINS
 
@@ -140,6 +142,8 @@ class RobotState {
     * @brief stop locomotion, dribbler, and kicker output
     */
    void stop();
+
+   void checkBallDetector();
 
    void setDashPower(const float power);
 
