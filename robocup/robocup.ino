@@ -7,6 +7,7 @@ static RobotState* state;
 void setup() {
   pinMode(KICKER_PIN, OUTPUT);
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(BALL_DETECTOR_PIN, INPUT);
 
   Serial.begin(115200);
   while (!Serial) {}
@@ -18,6 +19,8 @@ void setup() {
 }
 
 void loop() {
+   state->checkBallDetector();
    state->receiveCommand();
    state->executeState();
+   state->sendBallPossessionStatus();
 }

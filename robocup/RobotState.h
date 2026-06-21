@@ -17,9 +17,9 @@
 
 
 // command format: "<robot-id> <command-char> [arg1 float] [arg2 float]"
-#define ROBOT_ID 1
-#define ROBOT_ID_INDEX 0 
-#define CMD_CHAR_INDEX 2
+#define ROBOT_ID 1 // range is 1-6
+#define ROBOT_ID_INDEX 0 // always 0
+#define CMD_CHAR_INDEX 2 // always 2
 
 
 // BEGIN COMMAND ARGS
@@ -48,13 +48,17 @@
 #define MCP2517_CS 9   // CS (SS)
 #define MCP2517_INT 2   // INT (A)
 
-#define KICKER_PIN 13 // TODO: change to true kicker pin later
-#define BALL_DETECTOR_PIN 13 // TODO: change to true ball detector pin later
+#define KICKER_PIN 8 // TODO: change to true kicker pin later
+#define BALL_DETECTOR_PIN 7 // TODO: change to true ball detector pin later
 
 // END PINS
 
 #define CANFD_BITRATE 1000ll * 1000ll  // 1 MBit bitrate for CANFD
 #define PORT 10000
+#define MULTICAST_ADDRESS_0 239
+#define MULTICAST_ADDRESS_1 255
+#define MULTICAST_ADDRESS_2 0
+#define MULTICAST_ADDRESS_3 1
 #define BUFFER_SIZE 256
 #define READABLE_BUFFER_SIZE BUFFER_SIZE - 1
 #define NULL_TERMINATOR '\0'
@@ -71,7 +75,6 @@ class RobotState {
    int packetLength(const int readableBufferSize);
    void nullTerminatePacketBuffer(const int packetLength);
    void printPacket();
-   bool doesPacketMatchRobot();
    bool isValidCommandChar();
    bool isValidCommand();
 
@@ -135,6 +138,12 @@ class RobotState {
     * @brief receive a UDP command and update the state
     */
    void receiveCommand();
+
+   /**
+    * @brief multicast ball possession status
+    * @note UDP packet is "<robot id> BP <1 or 0>"
+    */
+   void sendBallPossessionStatus(); // TODO: implement this
 
    /**
     * @brief drive the robot in a chosen direction at the requested power

@@ -73,6 +73,8 @@ RobotState::RobotState()
     // Clear any faults
     motors[idx]->BeginStop();
   }
+  startKick = 0;
+  startDribble = 0;
 }
 
 void RobotState::executeState() {
@@ -129,12 +131,47 @@ void RobotState::receiveCommand() {
       stop();
       break;
     case 'k':
+      if (!GetIsKicking()) { // if started kicking
+        startKick = millis(); // start kicker timer
+      }
       SetIsKicking(true);
+      
       break;
     case 'c':
+      if (!GetIsCatching()) { // if started dribbling
+        startDribble = millis(); // start dribbler timer
+      }
       SetIsCatching(true);
       break;
   }
+}
+
+void RobotState::sendBallPossessionStatus() {
+  static const IPAddress multicastAddress(
+    MULTICAST_ADDRESS_0,
+    MULTICAST_ADDRESS_1,
+    MULTICAST_ADDRESS_2,
+    MULTICAST_ADDRESS_3
+  );
+  char statusPacket[24];
+  const int payloadLen = snprintf(
+    statusPacket,
+    sizeof(statusPacket),
+    "%d BP %d",
+    ROBOT_ID,
+    GetHasBall() ? 1 : 0
+  );
+
+  if (payloadLen <= 0 || payloadLen >= static_cast<int>(sizeof(statusPacket))) {
+    return;
+  }
+
+  if (!udp.beginPacket(multicastAddress, PORT)) {
+    return;
+  }
+
+  udp.write(reinterpret_cast<const uint8_t*>(statusPacket), payloadLen);
+  udp.endPacket();
 }
 
 void RobotState::dash() {
@@ -165,9 +202,6 @@ void RobotState::turn() {
 }
 
 void RobotState::kick() {
-  if (!GetIsKicking()) { // if started kicking
-    startKick = millis(); // start kicker timer
-  }
   digitalWrite(KICKER_PIN, HIGH);
   isKicking = true;
 }
@@ -178,9 +212,6 @@ void RobotState::stopKick() {
 }
 
 void RobotState::dribblerCatch() {
-  if (!GetIsCatching()) { // if started dribbling
-    startDribble = millis(); // start dribbler timer
-  }
   constexpr float invertDribblerRotation = 1;
   constexpr float dribblerSpeed = 10;
   MotorCommand cmd;
@@ -229,11 +260,6 @@ void RobotState::nullTerminatePacketBuffer(const int packetLen) {
 void RobotState::printPacket() {
   Serial.print("Received: ");
   Serial.println(packetBuffer);
-}
-
-bool RobotState::doesPacketMatchRobot() {
-  int robotId = 0;
-  return sscanf(packetBuffer, "%d", &robotId) == 1 && robotId == ROBOT_ID;
 }
 
 bool RobotState::isValidCommandChar() {
