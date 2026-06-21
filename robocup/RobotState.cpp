@@ -1,5 +1,13 @@
 #include "RobotState.h"
 
+constexpr char validCmdChars[] = {
+  'q', // stop
+  'd', // dash
+  't', // turn
+  'k', // kick 
+  'c' // catch
+};
+
 /**
    @brief angle of wheel relative to the front to back axis in radians
    @note order: FrontLeft, FrontRight, BackRight, BackLeft
@@ -42,6 +50,7 @@ RobotState::RobotState()
     wheelAngles(angles),
     wheelInvertedRotation(invert) {
   instance = this;
+  udp.begin(PORT);
 
   // Keep the driver buffers small to fit on memory-constrained boards.
   settings.mArbitrationSJW = 2;
@@ -86,8 +95,46 @@ void RobotState::executeState() {
 }
 
 void RobotState::receiveCommand() {
-  // parse UDP packet
-  // update state
+  if (!hasPacket()) {
+    return;
+  }
+
+  readPacketIntoBuffer();
+  if (!isValidCommand()) {
+    return;
+  }
+
+  int robotId = 0;
+  char commandChar = '\0';
+  float arg1 = 0.0f;
+  float arg2 = 0.0f;
+
+  switch (packetBuffer[CMD_CHAR_INDEX]) {
+    case 'd':
+      if (sscanf(packetBuffer, "%d %c %f %f", &robotId, &commandChar, &arg1, &arg2) == 4) {
+        setDashPower(arg1);
+        setDashDirection(arg2);
+        SetIsDashing(true);
+        SetIsTurning(false);
+      }
+      break;
+    case 't':
+      if (sscanf(packetBuffer, "%d %c %f", &robotId, &commandChar, &arg1) == 3) {
+        setTurnSpeed(arg1);
+        SetIsTurning(true);
+        SetIsDashing(false);
+      }
+      break;
+    case 'q':
+      stop();
+      break;
+    case 'k':
+      SetIsKicking(true);
+      break;
+    case 'c':
+      SetIsCatching(true);
+      break;
+  }
 }
 
 void RobotState::dash() {
@@ -162,7 +209,81 @@ void RobotState::stop() {
   stopKick();
 }
 
+void RobotState::readPacketIntoBuffer() {
+  const int len = packetLength(READABLE_BUFFER_SIZE);
+  nullTerminatePacketBuffer(len);
+}
+
+int RobotState::hasPacket() {
+  return udp.parsePacket();
+}
+
+int RobotState::packetLength(const int readableBufferSize) {
+  return udp.read(packetBuffer, readableBufferSize);
+}
+
+void RobotState::nullTerminatePacketBuffer(const int packetLen) {
+  packetBuffer[packetLen] = NULL_TERMINATOR;
+}
+
+void RobotState::printPacket() {
+  Serial.print("Received: ");
+  Serial.println(packetBuffer);
+}
+
+bool RobotState::doesPacketMatchRobot() {
+  int robotId = 0;
+  return sscanf(packetBuffer, "%d", &robotId) == 1 && robotId == ROBOT_ID;
+}
+
+bool RobotState::isValidCommandChar() {
+  for (char cmd : validCmdChars) {
+    if (packetBuffer[CMD_CHAR_INDEX] == cmd) {return true;}
+  }
+  return false;
+}
+
+/**
+ * @brief checks if the packet buffer matches the Robot and follows the expected command format
+ */
+bool RobotState::isValidCommand() {
+  int robotId = 0;
+  char commandChar = '\0';
+  int charsConsumed = 0;
+
+  if (sscanf(packetBuffer, "%d %c %n", &robotId, &commandChar, &charsConsumed) != 2) {
+    return false;
+  }
+
+  if (robotId != ROBOT_ID || !isValidCommandChar()) {
+    return false;
+  }
+
+  switch (commandChar) {
+    case 'q':
+    case 'k':
+    case 'c':
+      return packetBuffer[charsConsumed] == NULL_TERMINATOR;
+    case 't': {
+      float turnValue = 0.0f;
+      int consumedAfterArg = 0;
+      const int matched = sscanf(packetBuffer, "%d %c %f %n", &robotId, &commandChar, &turnValue, &consumedAfterArg);
+      return matched == 3 && packetBuffer[consumedAfterArg] == NULL_TERMINATOR;
+    }
+    case 'd': {
+      float dashPower = 0.0f;
+      float dashDirection = 0.0f;
+      int consumedAfterArgs = 0;
+      const int matched = sscanf(packetBuffer, "%d %c %f %f %n", &robotId, &commandChar, &dashPower, &dashDirection, &consumedAfterArgs);
+      return matched == 4 && packetBuffer[consumedAfterArgs] == NULL_TERMINATOR;
+    }
+    default:
+      return false;
+  }
+}
+
 void RobotState::checkBallDetector() {
+  // TODO: add some denoising logic so you only detect, say, if it detects for 1 second
   hasBall = digitalRead(BALL_DETECTOR_PIN);
 }
 

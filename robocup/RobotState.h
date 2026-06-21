@@ -1,7 +1,26 @@
+/**
+ * @file RobotState.h
+ * @brief RobotState is a class to hold all information about the current state of the robot and the functions to change its state
+ * 
+ * The robot state is read in a loop, where it executes the current state of the robot.
+ * The UDP commands update the states and never activate anything directly (except stop).
+ * The robot state updates after each command.
+ * Next, the robot executes the functions from its state.
+ * This allows for sending CANFD frames continuously to keep the motors moving 
+ * 
+ */
 #pragma once
 
-#include "WiFiControl.h"
 #include <MoteusAcan2517fd.h>
+#include <WiFiUdp.h>
+#include <stdio.h>
+
+
+// command format: "<robot-id> <command-char> [arg1 float] [arg2 float]"
+#define ROBOT_ID 1
+#define ROBOT_ID_INDEX 0 
+#define CMD_CHAR_INDEX 2
+
 
 // BEGIN COMMAND ARGS
 
@@ -35,6 +54,10 @@
 // END PINS
 
 #define CANFD_BITRATE 1000ll * 1000ll  // 1 MBit bitrate for CANFD
+#define PORT 10000
+#define BUFFER_SIZE 256
+#define READABLE_BUFFER_SIZE BUFFER_SIZE - 1
+#define NULL_TERMINATOR '\0'
 
 typedef Moteus::PositionMode::Command MotorCommand;
 
@@ -43,11 +66,22 @@ class RobotState {
    static RobotState* instance;
    static void handleCanInterrupt();
 
+   void readPacketIntoBuffer();
+   int hasPacket();
+   int packetLength(const int readableBufferSize);
+   void nullTerminatePacketBuffer(const int packetLength);
+   void printPacket();
+   bool doesPacketMatchRobot();
+   bool isValidCommandChar();
+   bool isValidCommand();
+
    /**
       @note motor indices 0-3 are wheel motors
       @note motor index 4 is the dribbler motor
    */
    Moteus* motors[NUM_MOTORS] = {nullptr};
+   WiFiUDP udp;
+   char packetBuffer[BUFFER_SIZE] = {0};
    ACAN2517FD can;
    ACAN2517FDSettings settings;
    const float* wheelAngles;
