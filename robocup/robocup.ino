@@ -17,6 +17,8 @@ typedef Moteus::PositionMode::Command PositionCommand;
 
 #define ROBOT_ID 1  // possible values are 1-6
 
+#define WATCHDOG_TIMEOUT 4000 // in milliseconds
+
 #define ROBOT_DIAMETER 0.2 // in meters
 #define WHEEL_DIAMETER 0.06 // in meters
 #define ROBOT_CIRCUMFERENCE ROBOT_DIAMETER * PI // in meters
@@ -128,6 +130,8 @@ float angles[NUM_WHEELS] = {
 
 static Moteus* Motors[NUM_MOTORS]{ nullptr };
 static Moteus* Wheels[NUM_WHEELS]{ nullptr };
+static unsigned long lastUdpCommandMs = 0;
+static bool watchdogStopped = false;
 
 // Moteus CANFD Position Commands for each motor
 static PositionCommand FrontLeftWheelCmd;
@@ -306,6 +310,8 @@ bool executeUdpCommand(
       return false;
   }
 
+  lastUdpCommandMs = millis();
+  watchdogStopped = false;
   // printMotorVelocities();
   return true;
 }
@@ -414,5 +420,13 @@ void setup() {
 void loop() {
   // sendPositionCommands();
   handleUdpPackets();
+
+  const unsigned long now = millis();
+  if (!watchdogStopped && lastUdpCommandMs != 0 && (now - lastUdpCommandMs >= WATCHDOG_TIMEOUT)) {
+    Serial.println(F("WATCHDOG timeout: stopping robot"));
+    stop();
+    watchdogStopped = true;
+  }
+
   printMotorVelocitiesInline();  // use PuTTY. Arduino Cannot use Carriage return printing correctly
 }
