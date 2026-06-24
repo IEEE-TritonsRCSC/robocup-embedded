@@ -17,6 +17,12 @@ typedef Moteus::PositionMode::Command PositionCommand;
 
 #define ROBOT_ID 1  // possible values are 1-6
 
+#define ROBOT_DIAMETER 0.2 // in meters
+#define WHEEL_DIAMETER 0.06 // in meters
+#define ROBOT_CIRCUMFERENCE ROBOT_DIAMETER * PI // in meters
+#define WHEEL_CIRCUMFERENCE WHEEL_DIAMETER * PI // in meters
+#define ROBOT_TO_WHEEL_CIRCUMFERENCE_RATIO ROBOT_CIRCUMFERENCE / WHEEL_CIRCUMFERENCE // in meters per meter
+
 #define DASH_CMD_CHAR 'd'
 #define TURN_CMD_CHAR 't'
 #define CATCH_CMD_CHAR 'c'
@@ -69,6 +75,11 @@ typedef Moteus::PositionMode::Command PositionCommand;
 // convert units from degrees to radians
 constexpr float degToRad(const float angle) {
   return angle * PI / 180;
+}
+
+// convert units from deg/s to rev/s for turn function
+constexpr float degPerSecondToRPS(const float degPerSecond) {
+  return (degPerSecond * ROBOT_TO_WHEEL_CIRCUMFERENCE_RATIO) / 360;
 }
 
 /**
@@ -181,12 +192,9 @@ void dash(float power, float direction) {
  * @warning the speed is not certain until tested on a robot 
  */
 void turn(const float turnSpeed) {
-  constexpr float arbitraryMultipler = 1;  // this is for tuning during testing on a robot to match the specified rotational velocity
+  constexpr float arbitraryMultipler = 1; // TODO: test this on a robot
   for (int i = 0; i < NUM_WHEELS; i++) {
-    // convert from deg/s to wheel rev/s
-    // deg/s / 360deg * robot circumference / robot circumference * 3 wheel revs per robot circumference = wheel rev/s
-    WheelCommands[i]->velocity = -turnSpeed * arbitraryMultipler / 120;  // convert rotational speed of robot to rotational speed of motors
-    // TODO: check the unit conversions. I think it should be changed rad/s when writing to the motor
+    WheelCommands[i]->velocity = -degPerSecondToRPS(turnSpeed) * arbitraryMultipler;
   }
 }
 
