@@ -41,6 +41,9 @@ typedef Moteus::PositionMode::Command PositionCommand;
 #define NUM_WHEELS 4
 #define DRIBBLER_INDEX 4  // true dribbler index
 
+#define MIN_DASH_POWER 0
+#define MAX_DASH_POWER 100
+
 // MOTOR CONFIG
 #define STOP_MOTOR 0
 #define START_VELOCITY STOP_MOTOR  // setup motors to start with 0 velocity
@@ -165,7 +168,7 @@ void initPositionCommands(PositionCommand* MotorCommands[NUM_MOTORS]) {
  */
 void dash(float power, float direction) {
   direction = degToRad(direction);
-  // TODO: map power value to the range between 0 to MAX_VELOCITY
+  power = map(power,MIN_DASH_POWER,MAX_DASH_POWER,STOP_MOTOR,MAX_VELOCITY);
   for (int i = 0; i < NUM_WHEELS; i++) {
     WheelCommands[i]->velocity = power * cos(angles[i] - direction);
   }
