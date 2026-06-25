@@ -1,10 +1,7 @@
 #pragma once
-#include "WiFi.h"
-#include "WiFiUdp.h"
+
 #include "commands.h"
 #include "credentials.h"
-
-#define ROBOT_ID 1  // possible values are 1-6
 
 #define BAUD_RATE 115200
 
@@ -37,133 +34,6 @@ static PositionCommand* WheelCommands[NUM_WHEELS] = {
   &BackRightWheelCmd,
   &BackLeftWheelCmd,
 };
-
-// Sends the MotorCommands to Motors
-void sendPositionCommands() {
-  for (int i = 0; i < NUM_MOTORS; i++) {
-    if (Motors[i] == nullptr) {
-      Serial.println(F("Skipping sendPositionCommands(): Motors not initialized"));
-      return;
-    }
-    Motors[i]->BeginPosition(*MotorCommands[i]);
-  }
-}
-
-void printMotorVelocities() {
-  Serial.print(F("FL: "));
-  Serial.print(FrontLeftWheelCmd.velocity);
-  Serial.print(F(" FR: "));
-  Serial.print(FrontRightWheelCmd.velocity);
-  Serial.print(F(" BR: "));
-  Serial.print(BackRightWheelCmd.velocity);
-  Serial.print(F(" BL: "));
-  Serial.print(BackLeftWheelCmd.velocity);
-  Serial.print(F(" Dribbler: "));
-  Serial.println(DribblerCmd.velocity);
-}
-
-void printMotorVelocitiesInline() {
-  static size_t previousLength = 0;
-
-  char line[96];
-  const int written = snprintf(
-    line,
-    sizeof(line),
-    "FL: %.3f FR: %.3f BR: %.3f BL: %.3f Dribbler: %.3f",
-    FrontLeftWheelCmd.velocity,
-    FrontRightWheelCmd.velocity,
-    BackRightWheelCmd.velocity,
-    BackLeftWheelCmd.velocity,
-    DribblerCmd.velocity);
-
-  if (written < 0) {
-    return;
-  }
-
-  const size_t currentLength = static_cast<size_t>(written);
-  Serial.print('\r');
-  Serial.print(line);
-
-  if (previousLength > currentLength) {
-    for (size_t i = currentLength; i < previousLength; i++) {
-      Serial.print(' ');
-    }
-  }
-
-  previousLength = currentLength;
-}
-
-bool executeUdpCommand(
-  const int robotId,
-  const char commandChar,
-  const float arg1,
-  const float arg2) {
-  if (robotId != ROBOT_ID) {
-    return false;
-  }
-
-  switch (commandChar) {
-    case DASH_CMD_CHAR:
-      dash(arg1, arg2, WheelCommands);
-      break;
-    case TURN_CMD_CHAR:
-      turn(arg1, WheelCommands);
-      break;
-    case KICK_CMD_CHAR:
-      kick(KICKER_PIN);
-      break;
-    case CATCH_CMD_CHAR:
-      dribblerCatch(MotorCommands);
-      break;
-    case DROP_CMD_CHAR:
-      dribblerDrop(MotorCommands);
-      break;
-    case STOP_CMD_CHAR:
-      stop(MotorCommands);
-      break;
-    default:
-      return false;
-  }
-
-  lastUdpCommandMs = millis();
-  watchdogStopped = false;
-  // printMotorVelocities();
-  return true;
-}
-
-void handleUdpPackets() {
-  const int packetSize = udp.parsePacket();
-  if (packetSize <= 0) {
-    return;
-  }
-
-  char packetBuffer[64];
-  const int len = udp.read(packetBuffer, sizeof(packetBuffer) - 1);
-  if (len <= 0) {
-    return;
-  }
-  packetBuffer[len] = '\0';
-
-  int robotId = -1;
-  char commandChar = '\0';
-  float arg1 = 0.0f;
-  float arg2 = 0.0f;
-
-  const int parsed = sscanf(packetBuffer, "%d %c %f %f", &robotId, &commandChar, &arg1, &arg2);
-  if (parsed < 2) {
-    Serial.print(F("Bad UDP command: "));
-    Serial.println(packetBuffer);
-    return;
-  }
-
-  if ((commandChar == DASH_CMD_CHAR && parsed < 4) || (commandChar == TURN_CMD_CHAR && parsed < 3) || (commandChar == KICK_CMD_CHAR && parsed < 2) || (commandChar == CATCH_CMD_CHAR && parsed < 2) || (commandChar == DROP_CMD_CHAR && parsed < 2) || (commandChar == STOP_CMD_CHAR && parsed < 2)) {
-    Serial.print(F("Incomplete UDP command: "));
-    Serial.println(packetBuffer);
-    return;
-  }
-
-  executeUdpCommand(robotId, commandChar, arg1, arg2);
-}
 
 void setup() {
   Serial.begin(BAUD_RATE);
@@ -234,7 +104,7 @@ void setup() {
 
 void loop() {
   // sendPositionCommands();
-  handleUdpPackets();
+  handleUdpPackets(udp, WheelCommands, MotorCommands, lastUdpCommandMs, watchdogStopped);
 
   const unsigned long now = millis();
   if (!watchdogStopped && lastUdpCommandMs != 0 && (now - lastUdpCommandMs >= WATCHDOG_TIMEOUT)) {
@@ -243,5 +113,5 @@ void loop() {
     watchdogStopped = true;
   }
 
-  printMotorVelocitiesInline();  // use PuTTY. Arduino Cannot use Carriage return printing correctly
+  printMotorVelocitiesInline(MotorCommands);  // use PuTTY. Arduino Cannot use Carriage return printing correctly
 }
