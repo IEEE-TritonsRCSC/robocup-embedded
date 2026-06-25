@@ -1,3 +1,10 @@
+/**
+ * @file commands.h
+ * @brief Command parsing and motion-control helpers for the robot firmware.
+ *
+ * Declares the shared constants and helper functions used to translate UDP
+ * commands into wheel, dribbler, and kicker actuator targets.
+ */
 #pragma once
 #include <MoteusAcan2517fd.h>
 #include "helpers.h"
@@ -6,10 +13,19 @@
 
 typedef Moteus::PositionMode::Command PositionCommand;
 
+//////// BEGIN CONFIGURATION CONSTS
 #define ROBOT_ID 1  // possible values are 1-6
-
 #define WATCHDOG_TIMEOUT 4000 // in milliseconds
 
+#define MAX_VELOCITY 6             // TODO: test the max velocity value for the wheels
+#define MAX_TORQUE 0.29            // units: Nm // TODO: check this value later
+#define DRIBBLER_SPEED 10          // TODO: test what speed is optimal
+
+#define KICKER_PIN 13  // change to true kicker pin later
+
+//////// END CONFIGURATION CONSTS
+
+//////// BEGIN IMMUTABLE CONSTS
 #define NUM_MOTORS 5
 #define NUM_WHEELS 4
 
@@ -24,14 +40,10 @@ typedef Moteus::PositionMode::Command PositionCommand;
 #define BR_WHEEL_ANGLE 1.0472 // in radians
 #define BL_WHEEL_ANGLE -1.0472 // in radians
 
-// MOTOR CONFIG
 #define STOP_MOTOR 0
 #define START_VELOCITY STOP_MOTOR  // setup motors to start with 0 velocity
-#define MAX_VELOCITY 6             // TODO: test the max velocity value on a robot
 #define PURE_VELOCITY_MODE NaN     // set PositionCommand.position to this for pure velocity mode
-#define MAX_TORQUE 0.29            // units: Nm // TODO: check this value later
 #define IGNORE_POSITION_BOUNDS 1   // ignore position_max and position_min
-#define DRIBBLER_SPEED 10          // TODO: test what speed is optimal
 #define DRIBBLER_STOP STOP_MOTOR
 
 #define MIN_DASH_POWER 0
@@ -51,8 +63,6 @@ typedef Moteus::PositionMode::Command PositionCommand;
 #define KICK_NUM_ARGS 0
 #define STOP_NUM_ARGS 0
 
-#define KICKER_PIN 13  // change to true kicker pin later
-
 // MCP2517 pins for CAN FD Arduino Shield
 #define MCP2517_SCK 13  // SCK
 #define MCP2517_SDI 11  // SDI (MOSI)
@@ -62,46 +72,72 @@ typedef Moteus::PositionMode::Command PositionCommand;
 
 // CANFD CONFIG
 #define CANFD_BITRATE 1000ll * 1000ll  // 1 MBit bitrate for CANFD
-
+//////// END IMMUTABLE CONSTS
 
 /**
- * @brief initializes position commands for each motor in the setup
- * @param MotorCommands the CANFD Moteus Position Commands for each motor
+ * @brief Initialize each motor command with safe default values.
+ *
+ * The commands are configured for pure velocity control, zero starting speed,
+ * and the configured torque and velocity limits.
+ *
+ * @param MotorCommands CAN-FD position commands for each motor.
  */
 void initPositionCommands(PositionCommand* MotorCommands[NUM_MOTORS]);
 
 /**
- * @brief set the driver buffer sizes for minimal memory usage
+ * @brief Tune CAN-FD driver buffers for a memory-constrained board.
+ *
+ * @param settings CAN-FD settings object to modify in place.
  */
 void configCANFDSettings(ACAN2517FDSettings& settings);
 
 /**
- * @brief invert the left wheels' motor rotation
- * @param WheelCommands position commmands for each wheel motor
+ * @brief Invert the left-side wheel velocities to match drivetrain layout.
+ *
+ * @param WheelCommands Position commands for each wheel motor.
  */
 void invertLeftWheelsRotation(PositionCommand* WheelCommands[NUM_WHEELS]);
 
 /** 
- * @brief Sends the MotorCommands to Motors
- * @param Motors The motor objects
- * @param MotorCommands position commands for each wheel motor
+ * @brief Send the current motor commands to all initialized motors.
+ *
+ * If a motor object has not been created yet, the function logs a message and
+ * returns early.
+ *
+ * @param Motors Motor objects corresponding to each motor index.
+ * @param MotorCommands Position commands to send.
 */
 void sendPositionCommands(Moteus* Motors[NUM_MOTORS], PositionCommand* MotorCommands[NUM_MOTORS]);
 
 /**
- * @brief print the motor velocities
- * @param MotorCommands position commands for each wheel motor
+ * @brief Print the current motor velocities as a single serial line.
+ *
+ * @param MotorCommands Position commands for each motor.
  */
 void printMotorVelocities(PositionCommand* MotorCommands[NUM_MOTORS]);
 
 /**
- * @brief print the motor velocities and overwrite the current line in the monitor
- * @param MotorCommands position commands for each wheel motor
+ * @brief Print motor velocities in place on a single serial console line.
+ *
+ * This is useful for live debugging in terminal programs that support carriage
+ * return updates.
+ *
+ * @param MotorCommands Position commands for each motor.
  */
 void printMotorVelocitiesInline(PositionCommand* MotorCommands[NUM_MOTORS]);
 
 /**
- * @brief look at the parsed arguments from a UDP packet and execute the command
+ * @brief Execute a parsed UDP command for the target robot.
+ *
+ * @param robotId Robot identifier from the command packet.
+ * @param commandChar Command selector character.
+ * @param arg1 First parsed argument.
+ * @param arg2 Second parsed argument.
+ * @param WheelCommands Wheel position commands to modify.
+ * @param MotorCommands Full motor command array to modify.
+ * @param lastUdpCommandMs Timestamp of the last valid UDP command.
+ * @param watchdogStopped Watchdog state flag, cleared when a valid command arrives.
+ * @return True if the command was recognized and applied; otherwise false.
  */
 bool executeUdpCommand(
    const int robotId,
@@ -115,7 +151,16 @@ bool executeUdpCommand(
 );
 
 /**
- * @brief parse an incoming UDP packet and execute the matching command
+ * @brief Parse an incoming UDP packet and dispatch the matching command.
+ *
+ * Expected packets use the format: `<robotId> <command> <arg1> <arg2>`.
+ * Commands with fewer arguments are rejected before execution.
+ *
+ * @param udp UDP socket to read from.
+ * @param WheelCommands Wheel position commands to modify.
+ * @param MotorCommands Full motor command array to modify.
+ * @param lastUdpCommandMs Timestamp of the last valid UDP command.
+ * @param watchdogStopped Watchdog state flag, cleared when a valid command arrives.
  */
 void handleUdpPackets(
    WiFiUDP &udp,
@@ -126,54 +171,62 @@ void handleUdpPackets(
 );
 
 /**
- * @brief set the velocity for each wheel to dash in a specified direction with a specified power
- * @param power 0-100 value for the speed, where 100 is 1 m/s
- * @param direction some angle in degrees
- * @param WheelCommands position commmands for each wheel motor
- * @note direction can be a negative angle
+ * @brief Set wheel velocities for a translational dash command.
+ *
+ * @param power Dash power in the range 0-100.
+ * @param direction Travel direction in degrees.
+ * @param WheelCommands Wheel position commands to modify.
+ * @note `direction` may be negative.
  */
 void dash(float power, float direction, PositionCommand* WheelCommands[NUM_WHEELS]);
 
 /**
- * @brief set the velocity for each wheel to turn with a specified angular velocity
- * @param turnSpeed rotational velocity in degrees/s
- * @param WheelCommands position commmands for each wheel motor
- * @warning the speed is not certain until tested on a robot 
+ * @brief Set wheel velocities for an in-place turn command.
+ *
+ * @param turnSpeed Angular velocity in degrees per second.
+ * @param WheelCommands Wheel position commands to modify.
+ * @warning The scaling factor is still experimental and should be verified on hardware.
  */
 void turn(const float turnSpeed, PositionCommand* WheelCommands[NUM_WHEELS]);
 
 /**
- * @brief spin the dribbler at DRIBBLER_SPEED
- * @param MotorCommands position commands for each motor
+ * @brief Spin the dribbler forward at the configured catch speed.
+ *
+ * @param MotorCommands Full motor command array to modify.
  */
 void dribblerCatch(PositionCommand* MotorCommands[NUM_MOTORS]);
 
 /**
- * @brief stop the dribbler motor
- * @param MotorCommands position commands for each motor
+ * @brief Stop the dribbler motor.
+ *
+ * @param MotorCommands Full motor command array to modify.
  */
 void dribblerDrop(PositionCommand* MotorCommands[NUM_MOTORS]);
 
 /**
- * @brief stop the wheel motors
- * @param WheelCommands position commands for each wheel motor
+ * @brief Stop the wheel motors.
+ *
+ * @param WheelCommands Wheel position commands to modify.
  */
 void stopLocomotion(PositionCommand* WheelCommands[NUM_WHEELS]);
 
 /**
- * @brief stop all motors
- * @param MotorCommands position commands for each motor
+ * @brief Stop all motors, including the dribbler.
+ *
+ * @param MotorCommands Full motor command array to modify.
  */
 void stop(PositionCommand* MotorCommands[NUM_MOTORS]);
 
 /**
- * @brief turn kicker solenoid off
- * @param kickerPin GPIO pin for activating kicker solenoid
+ * @brief Deactivate the kicker solenoid output.
+ *
+ * @param kickerPin GPIO pin used for the kicker driver.
  */
 void stopKicker(const byte kickerPin);
 
 /**
- * @brief activate kicker solenoid for 100ms to kick ball
- * @param kickerPin GPIO pin for activating kicker solenoid
+ * @brief Pulse the kicker solenoid to perform a kick.
+ *
+ * @param kickerPin GPIO pin used for the kicker driver.
  */
 void kick(const byte kickerPin);

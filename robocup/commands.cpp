@@ -1,3 +1,10 @@
+/**
+ * @file commands.cpp
+ * @brief Implementations for UDP command handling and actuator helpers.
+ *
+ * This file translates parsed command packets into wheel, dribbler, and kicker
+ * outputs used by the main firmware loop.
+ */
 #include "commands.h"
 
 void invertLeftWheelsRotation(PositionCommand* WheelCommands[NUM_WHEELS]) {
@@ -7,6 +14,7 @@ void invertLeftWheelsRotation(PositionCommand* WheelCommands[NUM_WHEELS]) {
 
 void initPositionCommands(PositionCommand* MotorCommands[NUM_MOTORS]) {
   for (int i = 0; i < NUM_MOTORS; i++) {
+    // Start each motor in velocity mode with conservative limits.
     MotorCommands[i]->position = PURE_VELOCITY_MODE;
     MotorCommands[i]->velocity = START_VELOCITY;
     MotorCommands[i]->maximum_torque = MAX_TORQUE;  // might be unnecessary
@@ -28,6 +36,7 @@ void sendPositionCommands(Moteus* Motors[NUM_MOTORS], PositionCommand* MotorComm
       Serial.println(F("Skipping sendPositionCommands(): Motors not initialized"));
       return;
     }
+    // Send the latest command to each motor one by one.
     Motors[i]->BeginPosition(*MotorCommands[i]);
   }
 }
@@ -126,6 +135,7 @@ void handleUdpPackets(
   unsigned long &lastUdpCommandMs,
   bool &watchdogStopped
 ) {
+  // Ignore idle loops when no UDP packet is waiting.
   const int packetSize = udp.parsePacket();
   if (packetSize <= 0) {
     return;

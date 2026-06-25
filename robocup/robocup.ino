@@ -1,3 +1,10 @@
+/**
+ * @file robocup.ino
+ * @brief Main firmware entry point for the RoboCup robot controller.
+ *
+ * Sets up serial, GPIO, Wi-Fi, UDP, and CAN-related state, then processes
+ * incoming UDP commands in the main loop.
+ */
 #pragma once
 
 #include "commands.h"
@@ -103,7 +110,7 @@ void setup() {
 }
 
 void loop() {
-  // sendPositionCommands();
+  // Poll for incoming motion and actuator commands over UDP.
   handleUdpPackets(udp, WheelCommands, MotorCommands, lastUdpCommandMs, watchdogStopped);
 
   const unsigned long now = millis();
@@ -113,5 +120,6 @@ void loop() {
     watchdogStopped = true;
   }
 
-  printMotorVelocitiesInline(MotorCommands);  // use PuTTY. Arduino Cannot use Carriage return printing correctly
+  // Keep a live velocity readout in the serial monitor for debugging.
+  printMotorVelocitiesInline(MotorCommands);
 }
