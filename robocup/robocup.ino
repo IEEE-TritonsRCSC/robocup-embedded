@@ -16,6 +16,14 @@
 static WiFiUDP udp;
 static ACAN2517FD can(MCP2517_CS, SPI, MCP2517_INT);
 static Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+static unsigned short displayY = 0;
+static char* WiFiThrobberText[4] = {
+  "WiFi Connecting |",
+  "WiFi Connecting /",
+  "WiFi Connecting -",
+  "WiFi Connecting \\"
+};
+static unsigned short throbberIndex = 0;
 
 static Moteus* Motors[NUM_MOTORS]{ nullptr };
 static Moteus* Wheels[NUM_WHEELS]{ nullptr };
@@ -48,19 +56,11 @@ void setup() {
   Serial.begin(BAUD_RATE);
   Serial.println("Serial Started!");
 
-  Serial.println("Start Pins Init!");
-  pinMode(KICKER_PIN, OUTPUT);
-  //   pinMode(LED_BUILTIN, OUTPUT);
-  Serial.println("Pins Initialized!");
-
-
-  Serial.println("Start SPI!");
-  SPI.begin();
-  Serial.println("SPI Started!");
-
   Wire.begin();
 
   i2cScanner(Wire);
+
+  Serial.println("Setup display running...");
 
   // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
   if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C) /*&&
@@ -72,36 +72,68 @@ void setup() {
   display.clearDisplay();
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0, 10);
-  display.print("Hello, World!");
+  display.setCursor(0, 0);
+  display.println("Display Started!");
   display.display();
 
-  Serial.println("Start Settings!");
+  delay(1000);
+
+  pinMode(KICKER_PIN, OUTPUT);
+  display.println("Kicker Pin Set!");
+  display.display();
+
+  delay(1000);
+
+  SPI.begin();
+  display.println("SPI Begun!");
+  display.display();
+
+  delay(1000);
+
   // Run CAN-FD at 1 Mbit/s for both arbitration and data.
   ACAN2517FDSettings settings(
-    ACAN2517FDSettings::OSC_20MHz, CANFD_BITRATE, DataBitRateFactor::x1);
-  Serial.println("Settings Started!");
+    ACAN2517FDSettings::OSC_20MHz, 
+    CANFD_BITRATE, 
+    DataBitRateFactor::x1
+  );
 
-  Serial.println("Config Settings!");
   configCANFDSettings(settings);
-  Serial.println("Settings Configured!");
+  display.println("CANFD Config'ed!");
+  display.display();
 
-  Serial.println("Start Init Positon Commands!");
+  delay(1000);
+
   initPositionCommands(MotorCommands);
-  Serial.println("Position Commands Initialized!");
+  display.println("Position Cmds Init!");
+  display.display();
+
+  delay(1000);
 
   WiFi.config(LOCAL_IP_ADDRESS, GATEWAY_IP_ADDRESS, SUBNET_MASK);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(250);
-    Serial.println("Connecting to WiFi...");
+    display.setCursor(0,0);
+    display.clearDisplay();
+    if (throbberIndex >= 3) {throbberIndex = 0;}
+    display.print(WiFiThrobberText[throbberIndex++]);
+    display.display();
   }
-  Serial.print(F("WiFi connected, IP: "));
-  Serial.println(WiFi.localIP());
+
+  display.clearDisplay();
+
+  display.setCursor(0,0);
+  display.println("WiFi Connected: ");
+  display.println(WiFi.localIP());
+  display.display();
+
+  delay(1000);
 
   udp.begin(UDP_PORT);
-  Serial.print(F("UDP listening on port "));
-  Serial.println(UDP_PORT);
+  display.println(F("UDP Port: "));
+  display.println(UDP_PORT);
+  display.display();
+
+  delay(1000);
 
   // start CAN communication and print error while disconnected
   /* const uint32_t errorCode = can.begin(settings, [] {
@@ -125,8 +157,10 @@ void setup() {
       Motors[i]->BeginStop();
    } */
 
-  Serial.println("Setup Done!");
-  Serial.println("Current Velocities: ");
+  display.clearDisplay();
+  display.setCursor(0,0);
+  display.println("Setup Done!");
+  display.display();
 }
 
 void loop() {
