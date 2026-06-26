@@ -29,6 +29,8 @@ static Moteus* Motors[NUM_MOTORS]{ nullptr };
 static Moteus* Wheels[NUM_WHEELS]{ nullptr };
 static unsigned long lastUdpCommandMs = 0;
 static bool watchdogStopped = false;
+static unsigned long displayPageTimer = 0;
+static unsigned short displayPageCounter = 0;
 
 // Moteus CANFD Position Commands for each motor
 static PositionCommand FrontLeftWheelCmd;
@@ -184,5 +186,22 @@ void loop() {
 
   // Keep a live velocity readout in the serial monitor for debugging.
   printMotorVelocitiesInline(MotorCommands);
-  robotInfoPage(display,WiFi);
+  
+  if (now - displayPageTimer >= 5000) {
+    displayPageTimer = now;
+    displayPageCounter++;
+    if (displayPageCounter >= 2) {
+      displayPageCounter = 0;
+    }
+    switch(displayPageCounter) {
+      case 0:
+        robotInfoPage(display,WiFi);
+        break;
+      case 1:
+        positionCommandsPage(display, MotorCommands);
+        break;
+      default:
+        break;
+    }
+  }
 }

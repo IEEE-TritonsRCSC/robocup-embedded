@@ -29,3 +29,19 @@ void robotInfoPage(Adafruit_SSD1306 &display, WiFiClass &WiFi) {
   display.println(WiFi.gatewayIP());
   display.display();
 }
+
+void positionCommandsPage(Adafruit_SSD1306 &display, PositionCommand* MotorCommands[NUM_MOTORS]) {
+  display.clearDisplay();
+  display.setCursor(0,0);
+  display.print("FL: ");
+  display.println(MotorCommands[FL_WHEEL_INDEX]->velocity);
+  display.print("FR: ");
+  display.println(MotorCommands[FR_WHEEL_INDEX]->velocity);
+  display.print("BR: ");
+  display.println(MotorCommands[BR_WHEEL_INDEX]->velocity);
+  display.print("BL: ");
+  display.println(MotorCommands[BL_WHEEL_INDEX]->velocity);
+  display.print("D: ");
+  display.println(MotorCommands[DRIBBLER_INDEX]->velocity);
+  display.display();
+}

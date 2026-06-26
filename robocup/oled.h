@@ -103,3 +103,5 @@ void i2cScanner(TwoWire& Wire);
  */
 void robotInfoPage(Adafruit_SSD1306 &display, WiFiClass &WiFi);
 
+// TODO: write function comment
+void positionCommandsPage(Adafruit_SSD1306 &display, PositionCommand* MotorCommands[NUM_MOTORS]);
