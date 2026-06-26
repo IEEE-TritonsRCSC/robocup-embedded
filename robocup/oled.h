@@ -20,4 +20,8 @@
 #define OLED_RESET     -1 // Reset pin # (or -1 if sharing Arduino reset pin)
 #define SCREEN_ADDRESS 0x3D ///< See datasheet for Address; 0x3D for 128x64, 0x3C for 128x32
 
-void testdrawline(Adafruit_SSD1306& display);
+/**
+ * @brief Scan for available i2c devices and print their address
+ * @param Wire I2C device object
+ */
+void i2cScanner(TwoWire& Wire);
