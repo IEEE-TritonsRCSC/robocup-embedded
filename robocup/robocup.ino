@@ -184,4 +184,5 @@ void loop() {
 
   // Keep a live velocity readout in the serial monitor for debugging.
   printMotorVelocitiesInline(MotorCommands);
+  robotInfoPage(display,WiFi);
 }

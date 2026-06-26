@@ -8,6 +8,8 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include "commands.h"
+#include "credentials.h"
 
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
@@ -87,8 +89,17 @@ static constexpr unsigned char Tritonbots_Logo [] PROGMEM = {
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
 	0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
 };
+
 /**
  * @brief Scan for available i2c devices and print their address
  * @param Wire I2C device object
  */
 void i2cScanner(TwoWire& Wire);
+
+/**
+ * @brief Robot ID, UDP PORT, WiFi IP
+ * @param display 128x64 OLED display to print text
+ * @param WiFi WiFi object for IP information
+ */
+void robotInfoPage(Adafruit_SSD1306 &display, WiFiClass &WiFi);
+

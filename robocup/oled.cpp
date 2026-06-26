@@ -15,3 +15,17 @@ void i2cScanner(TwoWire& Wire) {
     }
   }
 }
+
+void robotInfoPage(Adafruit_SSD1306 &display, WiFiClass &WiFi) {
+  display.clearDisplay();
+  display.setCursor(0,0);
+  display.print("Robot ID: ");
+  display.println(ROBOT_ID);
+  display.print("UDP Port: ");
+  display.println(UDP_PORT);
+  display.println("Local IP: ");
+  display.println(WiFi.localIP());
+  display.println("Gateway IP: ");
+  display.println(WiFi.gatewayIP());
+  display.display();
+}
