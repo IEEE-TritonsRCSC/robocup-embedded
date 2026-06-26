@@ -162,6 +162,9 @@ void setup() {
   display.setCursor(0,0);
   display.println("Setup Done!");
   display.display();
+  delay(1000);
+  display.clearDisplay();
+  display.display();
 }
 
 void loop() {
@@ -170,7 +173,7 @@ void loop() {
 
   const unsigned long now = millis();
   if (!watchdogStopped && lastUdpCommandMs != 0 && (now - lastUdpCommandMs >= WATCHDOG_TIMEOUT)) {
-    Serial.println(F("WATCHDOG timeout: stopping robot"));
+    Serial.println(F("\rWATCHDOG timeout: stopping robot"));
     stop(MotorCommands);
     watchdogStopped = true;
   }
