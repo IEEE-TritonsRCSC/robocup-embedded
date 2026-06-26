@@ -73,10 +73,11 @@ void setup() {
   display.setTextSize(1);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(0, 0);
-  display.println("Display Started!");
+  display.drawBitmap(0, 0, Tritonbots_Logo, 128, 64, WHITE);
   display.display();
 
   delay(1000);
+  display.clearDisplay();
 
   pinMode(KICKER_PIN, OUTPUT);
   display.println("Kicker Pin Set!");
