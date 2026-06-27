@@ -202,13 +202,18 @@ void loop() {
 
   // Keep a live velocity readout in the serial monitor for debugging.
   // printMotorVelocitiesInline(MotorCommands);
-  Serial.printf("FL: %1.3f\nFR: %1.3f\nBR: %1.3f\nBL: %1.3f\nDribbler: %1.3f\n",
-    MotorCommands[FL_WHEEL_INDEX]->velocity,
-    MotorCommands[FR_WHEEL_INDEX]->velocity,
-    MotorCommands[BR_WHEEL_INDEX]->velocity,
-    MotorCommands[BL_WHEEL_INDEX]->velocity,
+  char buf[128];
+
+  snprintf(buf, sizeof(buf),
+    "FL: %.3f\nFR: %.3f\nBR: %.3f\nBL: %.3f\nDribbler: %.3f\n",
+    MotorCommands[FL_WHEEL_INDEX]->velocity, 
+    MotorCommands[FR_WHEEL_INDEX]->velocity, 
+    MotorCommands[BR_WHEEL_INDEX]->velocity, 
+    MotorCommands[BL_WHEEL_INDEX]->velocity, 
     MotorCommands[DRIBBLER_INDEX]->velocity
   );
+
+  Serial.print(buf);
   // if (now - displayPageTimer >= 5000) {
   //   displayPageTimer = now;
   //   displayPageCounter++;
