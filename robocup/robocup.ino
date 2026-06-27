@@ -14,22 +14,22 @@
 
 static WiFiUDP udp;
 static ACAN2517FD can(MCP2517_CS, SPI, MCP2517_INT);
-static Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
-static unsigned short displayY = 0;
-static char* WiFiThrobberText[4] = {
-  "WiFi Connecting |",
-  "WiFi Connecting /",
-  "WiFi Connecting -",
-  "WiFi Connecting \\"
-};
-static unsigned short throbberIndex = 0;
+// static Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+// static unsigned short displayY = 0;
+// static char* WiFiThrobberText[4] = {
+//   "WiFi Connecting |",
+//   "WiFi Connecting /",
+//   "WiFi Connecting -",
+//   "WiFi Connecting \\"
+// };
+// static unsigned short throbberIndex = 0;
 
 static Moteus* Motors[NUM_MOTORS]{ nullptr };
 static Moteus* Wheels[NUM_WHEELS]{ nullptr };
 static unsigned long lastUdpCommandMs = 0;
 static bool watchdogStopped = false;
-static unsigned long displayPageTimer = 0;
-static unsigned short displayPageCounter = 0;
+// static unsigned long displayPageTimer = 0;
+// static unsigned short displayPageCounter = 0;
 
 // Moteus CANFD Position Commands for each motor
 static PositionCommand FrontLeftWheelCmd;
