@@ -5,7 +5,6 @@
  * Sets up serial, GPIO, Wi-Fi, UDP, and CAN-related state, then processes
  * incoming UDP commands in the main loop.
  */
-#pragma once
 
 #include "commands.h"
 #include "credentials.h"
