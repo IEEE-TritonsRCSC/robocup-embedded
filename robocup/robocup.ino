@@ -40,24 +40,24 @@ static PositionCommand DribblerCmd;
 
 static PositionCommand* MotorCommands[NUM_MOTORS] = {
   &FrontLeftWheelCmd,
-  // &FrontRightWheelCmd,
-  // &BackRightWheelCmd,
-  // &BackLeftWheelCmd,
-  // &DribblerCmd
+  &FrontRightWheelCmd,
+  &BackRightWheelCmd,
+  &BackLeftWheelCmd,
+  &DribblerCmd
 };
 
 static PositionCommand* WheelCommands[NUM_WHEELS] = {
   &FrontLeftWheelCmd,
-  // &FrontRightWheelCmd,
-  // &BackRightWheelCmd,
-  // &BackLeftWheelCmd,
+  &FrontRightWheelCmd,
+  &BackRightWheelCmd,
+  &BackLeftWheelCmd,
 };
 
 static void connectWiFi() {
   WiFi.config(LOCAL_IP_ADDRESS, GATEWAY_IP_ADDRESS, SUBNET_MASK);
   Serial.println(F("WiFi config'ed!"));
-  Serial.print(F("WiFi firmware: "));
-  Serial.println(WiFi.firmwareVersion());
+  // Serial.print(F("WiFi firmware: "));
+  // Serial.println(WiFi.firmwareVersion());
   Serial.print(F("Connecting to SSID: "));
   Serial.println(WIFI_SSID);
 
@@ -154,27 +154,27 @@ void setup() {
 
   delay(1000);
 
-  // start CAN communication and print error while disconnected
-  const uint32_t errorCode = can.begin(settings, [] {
-    can.isr();
-  });
-  while (errorCode != 0) {
-    Serial.print(F("CAN error 0x"));
-    Serial.println(errorCode, HEX);
-    delay(1000);
-  }
+  // // start CAN communication and print error while disconnected
+  // const uint32_t errorCode = can.begin(settings, [] {
+  //   can.isr();
+  // });
+  // while (errorCode != 0) {
+  //   Serial.print(F("CAN error 0x"));
+  //   Serial.println(errorCode, HEX);
+  //   delay(1000);
+  // }
 
-  // create motor objects
+  // // create motor objects
   
-   for (int i=0;i<NUM_MOTORS;i++) {
-      Motors[i] = new Moteus(can, [i]() {
-         Moteus::Options options;
-         options.id = i+1;
-         return options;
-      }());
-      // Clear any faults
-      Motors[i]->BeginStop();
-   }
+  //  for (int i=0;i<NUM_MOTORS;i++) {
+  //     Motors[i] = new Moteus(can, [i]() {
+  //        Moteus::Options options;
+  //        options.id = i+1;
+  //        return options;
+  //     }());
+  //     // Clear any faults
+  //     Motors[i]->BeginStop();
+  //  }
 
   // display.clearDisplay();
   // display.setCursor(0,0);
@@ -201,8 +201,14 @@ void loop() {
   }
 
   // Keep a live velocity readout in the serial monitor for debugging.
-  printMotorVelocitiesInline(MotorCommands);
-  
+  // printMotorVelocitiesInline(MotorCommands);
+  Serial.printf("FL: %1.3f\nFR: %1.3f\nBR: %1.3f\nBL: %1.3f\nDribbler: %1.3f\n",
+    MotorCommands[FL_WHEEL_INDEX]->velocity,
+    MotorCommands[FR_WHEEL_INDEX]->velocity,
+    MotorCommands[BR_WHEEL_INDEX]->velocity,
+    MotorCommands[BL_WHEEL_INDEX]->velocity,
+    MotorCommands[DRIBBLER_INDEX]->velocity
+  );
   // if (now - displayPageTimer >= 5000) {
   //   displayPageTimer = now;
   //   displayPageCounter++;

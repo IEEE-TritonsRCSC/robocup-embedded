@@ -8,7 +8,7 @@
 #pragma once
 #include <MoteusAcan2517fd.h>
 #include "helpers.h"
-#include "WiFiS3.h"
+#include "WiFi.h"
 #include "WiFiUdp.h"
 
 typedef Moteus::PositionMode::Command PositionCommand;
@@ -26,8 +26,8 @@ typedef Moteus::PositionMode::Command PositionCommand;
 //////// END CONFIGURATION CONSTS
 
 //////// BEGIN IMMUTABLE CONSTS
-#define NUM_MOTORS 1 // TODO: set to 1 for testing
-#define NUM_WHEELS 1 // TODO: set to 1 for testing
+#define NUM_MOTORS 5 // TODO: set to 1 for testing
+#define NUM_WHEELS 4 // TODO: set to 1 for testing
 
 #define FL_WHEEL_INDEX 0
 #define FR_WHEEL_INDEX 1
