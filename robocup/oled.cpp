@@ -16,7 +16,7 @@ void i2cScanner(TwoWire& Wire) {
   }
 }
 
-void robotInfoPage(Adafruit_SSD1306 &display, WiFiClass &WiFi) {
+void robotInfoPage(Adafruit_SSD1306 &display, CWifi &WiFi) {
   display.clearDisplay();
   display.setCursor(0,0);
   display.print("Robot ID: ");

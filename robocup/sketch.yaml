@@ -1,12 +1,12 @@
 profiles:
   uno-r4-wifi:
-    fqbn: arduino:avr:unowifi
+    fqbn: arduino:renesas_uno:unor4wifi
     platforms:
-      - platform: arduino:avr (1.8.8)
+      - platform: arduino:renesas_uno (1.6.0)
     libraries:
       - Moteus (1.1.1)
       - ACAN2517FD (2.1.16)
-      - WiFi (1.2.7)
+      - WiFiS3
       - Adafruit SSD1306 (2.5.17)
       - Adafruit GFX Library (1.12.6)
       - Adafruit BusIO (1.17.4)

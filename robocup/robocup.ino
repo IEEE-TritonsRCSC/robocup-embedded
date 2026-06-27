@@ -40,17 +40,17 @@ static PositionCommand DribblerCmd;
 
 static PositionCommand* MotorCommands[NUM_MOTORS] = {
   &FrontLeftWheelCmd,
-  &FrontRightWheelCmd,
-  &BackRightWheelCmd,
-  &BackLeftWheelCmd,
-  &DribblerCmd
+  // &FrontRightWheelCmd,
+  // &BackRightWheelCmd,
+  // &BackLeftWheelCmd,
+  // &DribblerCmd
 };
 
 static PositionCommand* WheelCommands[NUM_WHEELS] = {
   &FrontLeftWheelCmd,
-  &FrontRightWheelCmd,
-  &BackRightWheelCmd,
-  &BackLeftWheelCmd,
+  // &FrontRightWheelCmd,
+  // &BackRightWheelCmd,
+  // &BackLeftWheelCmd,
 };
 
 void setup() {
@@ -63,32 +63,32 @@ void setup() {
 
   Serial.println("Setup display running...");
 
-  // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
-  if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C) /*&&
-      !display.begin(SSD1306_SWITCHCAPVCC, 0x3D)*/) {
-    Serial.println(F("SSD1306 allocation failed"));
-    for(;;); // Don't proceed, loop forever
-  }
+  // // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
+  // if (!display.begin(SSD1306_SWITCHCAPVCC, 0x3C) /*&&
+  //     !display.begin(SSD1306_SWITCHCAPVCC, 0x3D)*/) {
+  //   Serial.println(F("SSD1306 allocation failed"));
+  //   for(;;); // Don't proceed, loop forever
+  // }
 
-  display.clearDisplay();
-  display.setTextSize(1);
-  display.setTextColor(SSD1306_WHITE);
-  display.setCursor(0, 0);
-  display.drawBitmap(0, 0, Tritonbots_Logo, 128, 64, WHITE);
-  display.display();
+  // display.clearDisplay();
+  // display.setTextSize(1);
+  // display.setTextColor(SSD1306_WHITE);
+  // display.setCursor(0, 0);
+  // display.drawBitmap(0, 0, Tritonbots_Logo, 128, 64, WHITE);
+  // display.display();
 
   delay(1000);
-  display.clearDisplay();
+  // display.clearDisplay();
 
   pinMode(KICKER_PIN, OUTPUT);
-  display.println("Kicker Pin Set!");
-  display.display();
+  Serial.println("Kicker Pin Set!");
+  // display.display();
 
   delay(1000);
 
   SPI.begin();
-  display.println("SPI Begun!");
-  display.display();
+  Serial.println("SPI Begun!");
+  // display.display();
 
   delay(1000);
 
@@ -100,55 +100,58 @@ void setup() {
   );
 
   configCANFDSettings(settings);
-  display.println("CANFD Config'ed!");
-  display.display();
+  Serial.println("CANFD Config'ed!");
+  // display.display();
 
   delay(1000);
 
   initPositionCommands(MotorCommands);
-  display.println("Position Cmds Init!");
-  display.display();
+  Serial.println("Position Cmds Init!");
+  // display.display();
 
   delay(1000);
 
   WiFi.config(LOCAL_IP_ADDRESS, GATEWAY_IP_ADDRESS, SUBNET_MASK);
+  Serial.println("WiFi config'ed!");
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  Serial.println("WiFi Connecting");
   while (WiFi.status() != WL_CONNECTED) {
-    display.setCursor(0,0);
-    display.clearDisplay();
-    if (throbberIndex >= 3) {throbberIndex = 0;}
-    display.print(WiFiThrobberText[throbberIndex++]);
-    display.display();
+    Serial.print(".");
+    // display.setCursor(0,0);
+    // display.clearDisplay();
+    // if (throbberIndex >= 3) {throbberIndex = 0;}
+    // display.print(WiFiThrobberText[throbberIndex++]);
+    // display.display();
   }
+  Serial.println();
+  // display.clearDisplay();
 
-  display.clearDisplay();
-
-  display.setCursor(0,0);
-  display.println("WiFi Connected: ");
-  display.println(WiFi.localIP());
-  display.display();
+  // display.setCursor(0,0);
+  Serial.print("WiFi Connected: ");
+  Serial.println(WiFi.localIP());
+  // display.display();
 
   delay(1000);
 
   udp.begin(UDP_PORT);
-  display.println(F("UDP Port: "));
-  display.println(UDP_PORT);
-  display.display();
+  Serial.print(F("UDP Port: "));
+  Serial.println(UDP_PORT);
+  // display.display();
 
   delay(1000);
 
   // start CAN communication and print error while disconnected
-  /* const uint32_t errorCode = can.begin(settings, [] {
+  const uint32_t errorCode = can.begin(settings, [] {
     can.isr();
   });
   while (errorCode != 0) {
     Serial.print(F("CAN error 0x"));
     Serial.println(errorCode, HEX);
     delay(1000);
-  } */
+  }
 
   // create motor objects
-  /*
+  
    for (int i=0;i<NUM_MOTORS;i++) {
       Motors[i] = new Moteus(can, [i]() {
          Moteus::Options options;
@@ -157,18 +160,18 @@ void setup() {
       }());
       // Clear any faults
       Motors[i]->BeginStop();
-   } */
+   }
 
-  display.clearDisplay();
-  display.setCursor(0,0);
-  display.println("Setup Done!");
-  display.display();
-  delay(1000);
-  display.clearDisplay();
-  display.display();
-  delay(1000);
-  display.clearDisplay();
-  display.display();
+  // display.clearDisplay();
+  // display.setCursor(0,0);
+  Serial.println("Setup Done!");
+  // display.display();
+  // delay(1000);
+  // display.clearDisplay();
+  // display.display();
+  // delay(1000);
+  // display.clearDisplay();
+  // display.display();
 }
 
 void loop() {
@@ -177,7 +180,7 @@ void loop() {
 
   const unsigned long now = millis();
   if (!watchdogStopped && lastUdpCommandMs != 0 && (now - lastUdpCommandMs >= WATCHDOG_TIMEOUT)) {
-    Serial.print("\r\33[2K\r"); // clears the line and does a carriage return
+    // Serial.print("\r\33[2K\r"); // clears the line and does a carriage return
     Serial.println(F("WATCHDOG timeout: stopping robot"));
     stop(MotorCommands);
     watchdogStopped = true;
@@ -186,21 +189,21 @@ void loop() {
   // Keep a live velocity readout in the serial monitor for debugging.
   printMotorVelocitiesInline(MotorCommands);
   
-  if (now - displayPageTimer >= 5000) {
-    displayPageTimer = now;
-    displayPageCounter++;
-    if (displayPageCounter >= 2) {
-      displayPageCounter = 0;
-    }
-    switch(displayPageCounter) {
-      case 0:
-        robotInfoPage(display,WiFi);
-        break;
-      case 1:
-        positionCommandsPage(display, MotorCommands);
-        break;
-      default:
-        break;
-    }
-  }
+  // if (now - displayPageTimer >= 5000) {
+  //   displayPageTimer = now;
+  //   displayPageCounter++;
+  //   if (displayPageCounter >= 2) {
+  //     displayPageCounter = 0;
+  //   }
+  //   switch(displayPageCounter) {
+  //     case 0:
+  //       robotInfoPage(display,WiFi);
+  //       break;
+  //     case 1:
+  //       positionCommandsPage(display, MotorCommands);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }
 }

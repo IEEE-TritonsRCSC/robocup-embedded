@@ -4,7 +4,7 @@ This sketch receives simple UDP commands over Wi-Fi and converts them into Moteu
 
 ## Network Setup
 
-The Arduino sketch uses a static IP configuration:
+The Arduino sketch uses a static IP configuration and is set up for the Arduino UNO R4 WiFi with `WiFiS3`:
 
 - Arduino IP: `192.168.68.50`
 - Gateway: `192.168.68.1`

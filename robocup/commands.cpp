@@ -62,11 +62,11 @@ void printMotorVelocitiesInline(PositionCommand* MotorCommands[NUM_MOTORS]) {
     line,
     sizeof(line),
     "FL: %.3f FR: %.3f BR: %.3f BL: %.3f Dribbler: %.3f",
-    MotorCommands[FL_WHEEL_INDEX]->velocity,
-    MotorCommands[FR_WHEEL_INDEX]->velocity,
-    MotorCommands[BR_WHEEL_INDEX]->velocity,
-    MotorCommands[BL_WHEEL_INDEX]->velocity,
-    MotorCommands[DRIBBLER_INDEX]->velocity);
+    MotorCommands[FL_WHEEL_INDEX]->velocity);
+    // MotorCommands[FR_WHEEL_INDEX]->velocity,
+    // MotorCommands[BR_WHEEL_INDEX]->velocity,
+    // MotorCommands[BL_WHEEL_INDEX]->velocity,
+    // MotorCommands[DRIBBLER_INDEX]->velocity);
 
   if (written < 0) {
     return;

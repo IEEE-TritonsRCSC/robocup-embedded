@@ -8,6 +8,7 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
+#include <WiFiS3.h>
 #include "commands.h"
 #include "credentials.h"
 
@@ -101,7 +102,7 @@ void i2cScanner(TwoWire& Wire);
  * @param display 128x64 OLED display to print text
  * @param WiFi WiFi object for IP information
  */
-void robotInfoPage(Adafruit_SSD1306 &display, WiFiClass &WiFi);
+void robotInfoPage(Adafruit_SSD1306 &display, CWifi &WiFi);
 
 // TODO: write function comment
 void positionCommandsPage(Adafruit_SSD1306 &display, PositionCommand* MotorCommands[NUM_MOTORS]);
