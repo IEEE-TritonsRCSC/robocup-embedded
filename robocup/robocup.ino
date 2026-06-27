@@ -8,7 +8,6 @@
 
 #include "commands.h"
 #include "credentials.h"
-#include "oled.h"
 
 #define BAUD_RATE 115200
 
