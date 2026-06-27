@@ -30,7 +30,7 @@ static unsigned long lastUdpCommandMs = 0;
 static bool watchdogStopped = false;
 // static unsigned long displayPageTimer = 0;
 // static unsigned short displayPageCounter = 0;
-static constexpr unsigned long WIFI_CONNECT_TIMEOUT_MS = 30000;
+static constexpr unsigned long WIFI_CONNECT_TIMEOUT_MS = 60000;
 
 // Moteus CANFD Position Commands for each motor
 static PositionCommand FrontLeftWheelCmd;
@@ -62,12 +62,11 @@ static void connectWiFi() {
   Serial.print(F("Connecting to SSID: "));
   Serial.println(WIFI_SSID);
 
-  const int beginResult = WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  Serial.print(F("WiFi.begin() returned: "));
-  Serial.println(beginResult);
-
   const unsigned long startMs = millis();
   while (WiFi.status() != WL_CONNECTED) {
+    const int beginResult = WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+    Serial.print(F("WiFi.begin() returned: "));
+    Serial.println(beginResult);
     const unsigned long elapsed = millis() - startMs;
     Serial.print('.');
     if (elapsed >= WIFI_CONNECT_TIMEOUT_MS) {
@@ -91,9 +90,9 @@ void setup() {
   Serial.begin(BAUD_RATE);
   Serial.println("Serial Started!");
 
-  Wire.begin();
+  // Wire.begin();
 
-  i2cScanner(Wire);
+  // i2cScanner(Wire);
 
   Serial.println("Setup display running...");
 
