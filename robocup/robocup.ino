@@ -30,6 +30,7 @@ static unsigned long lastUdpCommandMs = 0;
 static bool watchdogStopped = false;
 // static unsigned long displayPageTimer = 0;
 // static unsigned short displayPageCounter = 0;
+static constexpr unsigned long WIFI_CONNECT_TIMEOUT_MS = 30000;
 
 // Moteus CANFD Position Commands for each motor
 static PositionCommand FrontLeftWheelCmd;
@@ -52,6 +53,39 @@ static PositionCommand* WheelCommands[NUM_WHEELS] = {
   // &BackRightWheelCmd,
   // &BackLeftWheelCmd,
 };
+
+static void connectWiFi() {
+  WiFi.config(LOCAL_IP_ADDRESS, GATEWAY_IP_ADDRESS, SUBNET_MASK);
+  Serial.println(F("WiFi config'ed!"));
+  Serial.print(F("WiFi firmware: "));
+  Serial.println(WiFi.firmwareVersion());
+  Serial.print(F("Connecting to SSID: "));
+  Serial.println(WIFI_SSID);
+
+  const int beginResult = WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  Serial.print(F("WiFi.begin() returned: "));
+  Serial.println(beginResult);
+
+  const unsigned long startMs = millis();
+  while (WiFi.status() != WL_CONNECTED) {
+    const unsigned long elapsed = millis() - startMs;
+    Serial.print('.');
+    if (elapsed >= WIFI_CONNECT_TIMEOUT_MS) {
+      Serial.println();
+      Serial.print(F("WiFi connect timeout after "));
+      Serial.print(elapsed);
+      Serial.println(F(" ms"));
+      Serial.print(F("WiFi status code: "));
+      Serial.println(WiFi.status());
+      return;
+    }
+    delay(250);
+  }
+
+  Serial.println();
+  Serial.print(F("WiFi Connected: "));
+  Serial.println(WiFi.localIP());
+}
 
 void setup() {
   Serial.begin(BAUD_RATE);
@@ -111,25 +145,7 @@ void setup() {
 
   delay(1000);
 
-  WiFi.config(LOCAL_IP_ADDRESS, GATEWAY_IP_ADDRESS, SUBNET_MASK);
-  Serial.println("WiFi config'ed!");
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-  Serial.println("WiFi Connecting");
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
-    // display.setCursor(0,0);
-    // display.clearDisplay();
-    // if (throbberIndex >= 3) {throbberIndex = 0;}
-    // display.print(WiFiThrobberText[throbberIndex++]);
-    // display.display();
-  }
-  Serial.println();
-  // display.clearDisplay();
-
-  // display.setCursor(0,0);
-  Serial.print("WiFi Connected: ");
-  Serial.println(WiFi.localIP());
-  // display.display();
+  connectWiFi();
 
   delay(1000);
 
