@@ -42,42 +42,89 @@ void sendPositionCommands(Moteus* Motors[NUM_MOTORS], PositionCommand* MotorComm
 }
 
 void printMotorVelocities(PositionCommand* MotorCommands[NUM_MOTORS]) {
-  Serial.print(F("FL: "));
-  Serial.print(MotorCommands[FL_WHEEL_INDEX]->velocity);
-  Serial.print(F(" FR: "));
-  Serial.print(MotorCommands[FR_WHEEL_INDEX]->velocity);
-  Serial.print(F(" BR: "));
-  Serial.print(MotorCommands[BR_WHEEL_INDEX]->velocity);
-  Serial.print(F(" BL: "));
-  Serial.print(MotorCommands[BL_WHEEL_INDEX]->velocity);
-  Serial.print(F(" Dribbler: "));
-  Serial.println(MotorCommands[DRIBBLER_INDEX]->velocity);
+  #if NUM_MOTORS >= 1
+    Serial.print(F("FL: "));
+    Serial.print(MotorCommands[FL_WHEEL_INDEX]->velocity);
+  #endif
+  #if NUM_MOTORS >= 2
+    Serial.print(F(" FR: "));
+    Serial.print(MotorCommands[FR_WHEEL_INDEX]->velocity);
+  #endif
+  #if NUM_MOTORS >= 3
+    Serial.print(F(" BR: "));
+    Serial.print(MotorCommands[BR_WHEEL_INDEX]->velocity);
+  #endif
+  #if NUM_MOTORS >= 4
+    Serial.print(F(" BL: "));
+    Serial.print(MotorCommands[BL_WHEEL_INDEX]->velocity);
+  #endif
+  #if NUM_MOTORS == 5
+    Serial.print(F(" Dribbler: "));
+    Serial.println(MotorCommands[DRIBBLER_INDEX]->velocity);
+  #endif
 }
 
 void printWheelVelocities(PositionCommand* WheelCommands[NUM_WHEELS]) {
+  #if NUM_WHEELS >= 1 
   Serial.print(F("Wheel snapshot -> FL: "));
   Serial.print(WheelCommands[FL_WHEEL_INDEX]->velocity);
+  #endif
+  #if NUM_WHEELS >= 2
   Serial.print(F(" FR: "));
   Serial.print(WheelCommands[FR_WHEEL_INDEX]->velocity);
+  #endif
+  #if NUM_WHEELS >= 3
   Serial.print(F(" BR: "));
   Serial.print(WheelCommands[BR_WHEEL_INDEX]->velocity);
+  #endif
+  #if NUM_WHEELS >= 4
   Serial.print(F(" BL: "));
   Serial.println(WheelCommands[BL_WHEEL_INDEX]->velocity);
+  #endif
 }
 
 void printMotorVelocitiesInline(PositionCommand* MotorCommands[NUM_MOTORS]) {
   static size_t previousLength = 0;
 
+
+
+  #if NUM_MOTORS == 1
+    const char* format = "FL: %.3f";
+  #endif
+  #if NUM_MOTORS == 2
+    const char* format = "FL: %.3f FR: %.3f";
+  #endif
+  #if NUM_MOTORS == 3
+    const char* format = "FL: %.3f FR: %.3f BR: %.3f";
+  #endif
+  #if NUM_MOTORS == 4
+    const char* format = "FL: %.3f FR: %.3f BR: %.3f BL: %.3f";
+  #endif
+  #if NUM_MOTORS == 5
+    const char* format = "FL: %.3f FR: %.3f BR: %.3f BL: %.3f Dribbler: %.3f";
+  #endif
+
   char line[96];
   const int written = snprintf(
     line,
     sizeof(line),
-    "FL: %.3f FR: %.3f BR: %.3f BL: %.3f Dribbler: %.3f",
-    MotorCommands[FL_WHEEL_INDEX]->velocity);
-    // MotorCommands[FR_WHEEL_INDEX]->velocity,
-    // MotorCommands[BR_WHEEL_INDEX]->velocity,
-    // MotorCommands[BL_WHEEL_INDEX]->velocity,
-    // MotorCommands[DRIBBLER_INDEX]->velocity);
+    format,
+    #if NUM_MOTORS >= 1
+    MotorCommands[FL_WHEEL_INDEX]->velocity,
+    #endif
+    #if NUM_MOTORS >= 2
+    MotorCommands[FR_WHEEL_INDEX]->velocity,
+    #endif
+    #if NUM_MOTORS >= 3
+    MotorCommands[BR_WHEEL_INDEX]->velocity,
+    #endif
+    #if NUM_MOTORS >= 4
+    MotorCommands[BL_WHEEL_INDEX]->velocity,
+    #endif
+    #if NUM_MOTORS == 5
+    MotorCommands[DRIBBLER_INDEX]->velocity
+    #endif
+  );
 
   if (written < 0) {
     return;
@@ -139,13 +186,38 @@ bool executeUdpCommand(
       kick(KICKER_PIN);
       break;
     case CATCH_CMD_CHAR:
+      #if ENABLE_MOTORS == 1
+      #if HAS_DRIBBLER
       dribblerCatch(MotorCommands);
+      #else
+      Serial.println(F("Ignoring dribbler catch: dribbler not configured"));
+      return false;
+      #endif
+      #else
+      Serial.println(F("Ignoring dribbler catch: motors are disabled"));
+      return false;
+      #endif
       break;
     case DROP_CMD_CHAR:
+      #if ENABLE_MOTORS == 1
+      #if HAS_DRIBBLER
       dribblerDrop(MotorCommands);
+      #else
+      Serial.println(F("Ignoring dribbler drop: dribbler not configured"));
+      return false;
+      #endif
+      #else
+      Serial.println(F("Ignoring dribbler drop: motors are disabled"));
+      return false;
+      #endif
       break;
     case STOP_CMD_CHAR:
+      #if ENABLE_MOTORS == 1
       stop(MotorCommands);
+      #else
+      Serial.println(F("Ignoring stop command: motors are disabled"));
+      return false;
+      #endif
       break;
     default:
       return false;
@@ -272,11 +344,15 @@ void turn(const float turnSpeed, PositionCommand* WheelCommands[NUM_WHEELS]) {
 }
 
 void dribblerCatch(PositionCommand* MotorCommands[NUM_MOTORS]) {
+  #if HAS_DRIBBLER
   MotorCommands[DRIBBLER_INDEX]->velocity = DRIBBLER_SPEED;
+  #endif
 }
 
 void dribblerDrop(PositionCommand* MotorCommands[NUM_MOTORS]) {
+  #if HAS_DRIBBLER
   MotorCommands[DRIBBLER_INDEX]->velocity = DRIBBLER_STOP;
+  #endif
 }
 
 void stopLocomotion(PositionCommand* WheelCommands[NUM_WHEELS]) {

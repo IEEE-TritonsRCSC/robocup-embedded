@@ -6,6 +6,12 @@
  * incoming UDP commands in the main loop.
  */
 
+#define ENABLE_MOTORS 1 // set to 1 to enable motor code
+#define ENABLE_TEST_MOTORS 1 // set if you want the number of motors to change
+#if ENABLE_TEST_MOTORS == 1
+  #define NUM_TEST_MOTORS 1
+#endif
+
 #include "commands.h"
 #include "credentials.h"
 
@@ -40,20 +46,55 @@ static PositionCommand BackRightWheelCmd;
 static PositionCommand BackLeftWheelCmd;
 static PositionCommand DribblerCmd;
 
-static PositionCommand* MotorCommands[NUM_MOTORS] = {
-  &FrontLeftWheelCmd,
-  &FrontRightWheelCmd,
-  &BackRightWheelCmd,
-  &BackLeftWheelCmd,
-  &DribblerCmd
-};
+#if ENABLE_TEST_MOTORS == 0
+  static PositionCommand* MotorCommands[NUM_MOTORS] = {
+    &FrontLeftWheelCmd,
+    &FrontRightWheelCmd,
+    &BackRightWheelCmd,
+    &BackLeftWheelCmd,
+    &DribblerCmd
+  };
 
-static PositionCommand* WheelCommands[NUM_WHEELS] = {
-  &FrontLeftWheelCmd,
-  &FrontRightWheelCmd,
-  &BackRightWheelCmd,
-  &BackLeftWheelCmd,
-};
+  static PositionCommand* WheelCommands[NUM_WHEELS] = {
+    &FrontLeftWheelCmd,
+    &FrontRightWheelCmd,
+    &BackRightWheelCmd,
+    &BackLeftWheelCmd,
+  };
+#else
+  static PositionCommand* MotorCommands[NUM_MOTORS] = {
+    #if NUM_TEST_MOTORS >= 1
+    &FrontLeftWheelCmd,
+    #endif
+    #if NUM_TEST_MOTORS >= 2
+    &FrontRightWheelCmd,
+    #endif
+    #if NUM_TEST_MOTORS >= 3
+    &BackRightWheelCmd,
+    #endif
+    #if NUM_TEST_MOTORS >= 4
+    &BackLeftWheelCmd,
+    #endif
+    #if NUM_TEST_MOTORS == 5
+    &DribblerCmd
+    #endif
+  };
+
+  static PositionCommand* WheelCommands[NUM_WHEELS] = {
+    #if NUM_TEST_MOTORS >= 1
+    &FrontLeftWheelCmd,
+    #endif
+    #if NUM_TEST_MOTORS >= 2
+    &FrontRightWheelCmd,
+    #endif
+    #if NUM_TEST_MOTORS >= 3
+    &BackRightWheelCmd,
+    #endif
+    #if NUM_TEST_MOTORS >= 4
+    &BackLeftWheelCmd,
+    #endif
+  };
+#endif
 
 static void connectWiFi() {
   WiFi.config(LOCAL_IP_ADDRESS, GATEWAY_IP_ADDRESS, SUBNET_MASK);
@@ -186,27 +227,28 @@ void setup() {
 
   delay(1000);
 
-  // // start CAN communication and print error while disconnected
-  // const uint32_t errorCode = can.begin(settings, [] {
-  //   can.isr();
-  // });
-  // while (errorCode != 0) {
-  //   Serial.print(F("CAN error 0x"));
-  //   Serial.println(errorCode, HEX);
-  //   delay(1000);
-  // }
+  #if ENABLE_MOTORS == 1
+    // start CAN communication and print error while disconnected
+    const uint32_t errorCode = can.begin(settings, [] {
+      can.isr();
+    });
+    while (errorCode != 0) {
+      Serial.print(F("CAN error 0x"));
+      Serial.println(errorCode, HEX);
+      delay(1000);
+    }
 
-  // // create motor objects
-  
-  //  for (int i=0;i<NUM_MOTORS;i++) {
-  //     Motors[i] = new Moteus(can, [i]() {
-  //        Moteus::Options options;
-  //        options.id = i+1;
-  //        return options;
-  //     }());
-  //     // Clear any faults
-  //     Motors[i]->BeginStop();
-  //  }
+    // create motor objects
+    for (int i = 0; i < NUM_MOTORS; i++) {
+      Motors[i] = new Moteus(can, [i]() {
+        Moteus::Options options;
+        options.id = i + 1;
+        return options;
+      }());
+      // Clear any faults
+      Motors[i]->BeginStop();
+    }
+  #endif
 
   // display.clearDisplay();
   // display.setCursor(0,0);
@@ -229,9 +271,15 @@ void loop() {
   if (!watchdogStopped && lastUdpCommandMs != 0 && (now - lastUdpCommandMs >= WATCHDOG_TIMEOUT)) {
     // Serial.print("\r\33[2K\r"); // clears the line and does a carriage return
     Serial.println(F("WATCHDOG timeout: stopping robot"));
-    stop(MotorCommands);
+    #if ENABLE_MOTORS == 1
+      stop(MotorCommands);
+    #endif
     watchdogStopped = true;
   }
+
+  #if ENABLE_MOTORS == 1
+    sendPositionCommands(Motors, MotorCommands);
+  #endif
 
   if (now - lastVelocityPrintMs >= 1000) {
     lastVelocityPrintMs = now;

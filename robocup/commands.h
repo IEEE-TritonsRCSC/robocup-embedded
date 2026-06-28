@@ -26,14 +26,20 @@ typedef Moteus::PositionMode::Command PositionCommand;
 //////// END CONFIGURATION CONSTS
 
 //////// BEGIN IMMUTABLE CONSTS
-#define NUM_MOTORS 5 // TODO: set to 1 for testing
-#define NUM_WHEELS 4 // TODO: set to 1 for testing
+#if ENABLE_TEST_MOTORS == 1
+   #define NUM_MOTORS NUM_TEST_MOTORS // make sure the max is 5
+   #define NUM_WHEELS NUM_TEST_MOTORS
+#else
+   #define NUM_MOTORS 5 // TODO: set to 1 for testing
+   #define NUM_WHEELS 4 // TODO: set to 1 for testing
+#endif
 
 #define FL_WHEEL_INDEX 0
 #define FR_WHEEL_INDEX 1
 #define BR_WHEEL_INDEX 2
 #define BL_WHEEL_INDEX 3
 #define DRIBBLER_INDEX 4  // true dribbler index
+#define HAS_DRIBBLER (NUM_MOTORS > DRIBBLER_INDEX)
 
 #define FL_WHEEL_ANGLE 0.349066 // in radians
 #define FR_WHEEL_ANGLE -0.349066 // in radians
