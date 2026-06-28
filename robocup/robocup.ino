@@ -229,6 +229,9 @@ void setup() {
     while (errorCode != 0) {
       Serial.print(F("CAN error 0x"));
       Serial.println(errorCode, HEX);
+      if (errorCode == 0x01) {
+        Serial.println("No Motor Connected!");
+      }
       delay(1000);
     }
 
