@@ -1,62 +1,81 @@
 # RoboCup Embedded UDP Control
 
-This sketch receives simple UDP commands over Wi-Fi and converts them into Moteus position commands for the robot.
+This firmware receives plain-text UDP packets over Wi-Fi and translates them into Moteus position commands for the robot.
 
-## Motor Build Flags
+## Overview
 
-Two compile-time flags in [`robocup.ino`](robocup.ino) control how much motor code is active:
+- Target board: Arduino UNO R4 WiFi
+- Transport: UDP
+- Default robot ID: `1`
+- Default UDP port: `10000`
+- Default robot IP: `192.168.68.50`
+
+The sketch lives in [`robocup.ino`](robocup.ino), and the UDP command parsing / actuator helpers live in [`commands.cpp`](commands.cpp) and [`commands.h`](commands.h).
+
+## Build Flags
+
+[`commands.h`](commands.h) controls the main compile-time switches:
 
 - `ENABLE_MOTORS`
-  - `1` enables CAN init and motor send operations
-  - `0` keeps the sketch from talking to motor hardware
+  - `1` enables CAN initialization and motor output
+  - `0` keeps the sketch from sending commands to motor hardware
 - `ENABLE_TEST_MOTORS`
-  - `1` switches the sketch into test mode and uses `NUM_TEST_MOTORS`
-  - `0` uses the normal full robot layout
+  - `1` compiles the test-motor layout
+  - `0` compiles the full robot layout
+- `NUM_TEST_MOTORS`
+  - Used only when `ENABLE_TEST_MOTORS == 1`
+  - Defaults to `1` if it is not defined elsewhere
 
-In test mode, `NUM_TEST_MOTORS` controls how many `PositionCommand` slots are compiled in.
-This is useful when you want to shrink the command arrays for memory savings during testing.
+When test mode is enabled:
 
-Important:
+- `NUM_MOTORS` and `NUM_WHEELS` both follow `NUM_TEST_MOTORS`
+- The dribbler is only available if the build includes motor index `4`
 
-- `PositionCommand` arrays are just cached command objects and can be sized down safely
-- `Moteus*` arrays represent real motor connections and should only be used when the matching hardware is present
-- Dribbler commands are ignored unless the build includes a dribbler slot
+When full mode is enabled:
+
+- `NUM_MOTORS = 5`
+- `NUM_WHEELS = 4`
 
 ## Network Setup
 
-The Arduino sketch uses a static IP configuration and is set up for the Arduino UNO R4 WiFi with `WiFiS3`:
+The sketch uses a static IP configuration via `WiFiS3`:
 
 - Arduino IP: `192.168.68.50`
 - Gateway: `192.168.68.1`
 - Subnet mask: `255.255.255.0`
 - UDP port: `10000`
 
-The sender script in [`send.py`](send.py) is configured to send commands to `192.168.68.50:10000`.
+The sender script in [`send.py`](send.py) is configured for the same IP and port.
 
-If your network changes, update both:
+If your network changes, update:
 
-- `LOCAL_IP_ADDRESS` and `GATEWAY_IP_ADDRESS` in [`robocup.ino`](robocup.ino)
+- `LOCAL_IP_ADDRESS` and `GATEWAY_IP_ADDRESS` in [`credentials.h`](credentials.h) or the file where they are defined
 - `ROBOT_IP` in [`send.py`](send.py)
 
-## Command Format
+## Packet Format
 
-Commands are sent as plain text UDP packets using this format:
+UDP packets are whitespace-separated plain text in this format:
 
 ```text
-<Robot ID> <Command Character> <arg1> <arg2>
+<robot_id> <command> [arg1] [arg2]
 ```
 
-- Robot ID: `1` to `6`
-- The sketch only executes commands when the ID matches `ROBOT_ID` in [`robocup.ino`](robocup.ino)
+Rules:
+
+- `robot_id` must match `ROBOT_ID` in [`commands.h`](commands.h)
+- Extra whitespace is ignored
+- Incomplete packets are rejected before execution
 
 ## Commands
 
-- `d` = Dash, 2 args
-- `t` = Turn, 1 arg
-- `k` = Kick, 0 args
-- `c` = Catch, 0 args
-- `o` = Drop, 0 args
-- `q` = Stop, 0 args
+Supported command characters:
+
+- `d` = Dash, requires 2 args
+- `t` = Turn, requires 1 arg
+- `k` = Kick, requires 0 args
+- `c` = Catch dribbler, requires 0 args
+- `o` = Drop dribbler, requires 0 args
+- `q` = Stop all motors, requires 0 args
 
 Examples:
 
@@ -71,7 +90,11 @@ Examples:
 
 Use [`send.py`](send.py) to send commands from your computer.
 
-It prints your local IP address before sending the packet, which is useful for confirming the interface being used.
+It prints:
+
+- your local IP address, labeled by the script as `Gateway IP: ...`
+- the destination as `Sending to: 192.168.68.50:10000`
+- the final UDP payload before transmission
 
 Examples:
 
@@ -82,21 +105,27 @@ python send.py 1 d 1.0 30
 python send.py 1 t -90
 ```
 
-## Robot Behavior
+## Runtime Behavior
 
-When a valid UDP packet is received:
+When a valid packet is received:
 
 - `d` calls `dash(power, angle)`
 - `t` calls `turn(turnSpeed)`
-- `k` triggers the kicker pin
-- `c` starts the dribbler if a dribbler slot exists, otherwise it is ignored
-- `o` stops the dribbler if a dribbler slot exists, otherwise it is ignored
+- `k` triggers the kicker GPIO pulse
+- `c` starts the dribbler if the build includes one
+- `o` stops the dribbler if the build includes one
 - `q` stops all motor commands
 
-If `ENABLE_MOTORS` is `0`, the sketch still accepts and parses commands, but it will not initialize CAN or send commands to motor hardware.
+The firmware also runs a watchdog:
+
+- If no valid UDP command arrives within `WATCHDOG_TIMEOUT` milliseconds, the robot is stopped
+- The default timeout is `4000` ms
+
+If `ENABLE_MOTORS` is `0`, the sketch still parses UDP packets and logs them, but it does not initialize CAN or send motor commands.
 
 ## Notes
 
-- The sketch currently updates cached `PositionCommand` values and then prints the live velocities over Serial.
-- If the Moteus objects are not initialized yet, `sendPositionCommands()` safely returns without sending.
-- The current Wi-Fi credentials live in [`robocup.ino`](robocup.ino).
+- `dash()` scales the requested power into the configured velocity range and maps it onto the wheel angles defined in [`commands.h`](commands.h).
+- `turn()` currently uses an experimental scaling factor in [`commands.cpp`](commands.cpp).
+- The firmware prints wheel and motor velocity snapshots over Serial when commands are accepted.
+- Wi-Fi credentials live in [`credentials.h`](credentials.h).
