@@ -6,12 +6,9 @@ profiles:
     libraries:
       - Moteus (1.1.1)
       - ACAN2517FD (2.1.16)
-      - WiFiS3
-      - Adafruit SSD1306 (2.5.17)
-      - Adafruit GFX Library (1.12.6)
-      - Adafruit BusIO (1.17.4)
+      - WiFiS3 (0.0.0)
     programmer: ""
-    port: ""
+    port: "COM13"
     port_config:
       baudrate: "115200"
       bits: "8"
