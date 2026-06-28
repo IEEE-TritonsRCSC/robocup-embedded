@@ -203,7 +203,7 @@ void handleUdpPackets(
   Serial.print(F(" arg2="));
   Serial.println(arg2);
 
-  if ((commandChar == DASH_CMD_CHAR && parsed < 4) || (commandChar == TURN_CMD_CHAR && parsed < 3) || (commandChar == KICK_CMD_CHAR && parsed < 2) || (commandChar == CATCH_CMD_CHAR && parsed < 2) || (commandChar == DROP_CMD_CHAR && parsed < 2) || (commandChar == STOP_CMD_CHAR && parsed < 2)) {
+  if ((commandChar == DASH_CMD_CHAR && parsed < 4 - 1) || (commandChar == TURN_CMD_CHAR && parsed < 3 - 1) || (commandChar == KICK_CMD_CHAR && parsed < 2 - 1) || (commandChar == CATCH_CMD_CHAR && parsed < 2 - 1) || (commandChar == DROP_CMD_CHAR && parsed < 2 - 1) || (commandChar == STOP_CMD_CHAR && parsed < 2 - 1)) {
     Serial.print(F("Incomplete UDP command: "));
     Serial.println(trimmedPacket);
     return;
