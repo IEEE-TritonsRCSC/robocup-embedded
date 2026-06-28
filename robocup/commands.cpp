@@ -85,6 +85,24 @@ void printMotorVelocitiesInline(PositionCommand* MotorCommands[NUM_MOTORS]) {
   previousLength = currentLength;
 }
 
+static char* trimWhitespace(char* text) {
+  while (*text != '\0' && isspace(static_cast<unsigned char>(*text))) {
+    text++;
+  }
+
+  if (*text == '\0') {
+    return text;
+  }
+
+  char* end = text + strlen(text) - 1;
+  while (end > text && isspace(static_cast<unsigned char>(*end))) {
+    *end = '\0';
+    end--;
+  }
+
+  return text;
+}
+
 bool executeUdpCommand(
   const int robotId,
   const char commandChar,
@@ -147,21 +165,22 @@ void handleUdpPackets(
     return;
   }
   packetBuffer[len] = '\0';
+  char* trimmedPacket = trimWhitespace(packetBuffer);
 
   int robotId = -1;
   char commandChar = '\0';
   float arg1 = 0.0f;
   float arg2 = 0.0f;
 
-  const int parsed = sscanf(packetBuffer, "%d %c %f %f", &robotId, &commandChar, &arg1, &arg2);
+  const int parsed = sscanf(trimmedPacket, "%d %c %f %f", &robotId, &commandChar, &arg1, &arg2);
   if (parsed < 2) {
     Serial.print(F("Bad UDP command: "));
-    Serial.println(packetBuffer);
+    Serial.println(trimmedPacket);
     return;
   }
 
   Serial.print(F("UDP packet: '"));
-  Serial.print(packetBuffer);
+  Serial.print(trimmedPacket);
   Serial.print(F("' parsed="));
   Serial.print(parsed);
   Serial.print(F(" robotId="));
@@ -175,7 +194,7 @@ void handleUdpPackets(
 
   if ((commandChar == DASH_CMD_CHAR && parsed < 4) || (commandChar == TURN_CMD_CHAR && parsed < 3) || (commandChar == KICK_CMD_CHAR && parsed < 2) || (commandChar == CATCH_CMD_CHAR && parsed < 2) || (commandChar == DROP_CMD_CHAR && parsed < 2) || (commandChar == STOP_CMD_CHAR && parsed < 2)) {
     Serial.print(F("Incomplete UDP command: "));
-    Serial.println(packetBuffer);
+    Serial.println(trimmedPacket);
     return;
   }
 
@@ -191,11 +210,16 @@ void handleUdpPackets(
 
   Serial.print(F("UDP command executed: "));
   Serial.println(executed ? F("yes") : F("no"));
+  if (executed) {
+    printWheelVelocities(WheelCommands);
+    printMotorVelocities(MotorCommands);
+  }
 }
 
 void dash(float power, float direction, PositionCommand* WheelCommands[NUM_WHEELS]) {
   direction = degToRad(direction);
-  power = map(power,MIN_DASH_POWER,MAX_DASH_POWER,STOP_MOTOR,MAX_VELOCITY);
+  power = ((power - MIN_DASH_POWER) * (MAX_VELOCITY - STOP_MOTOR)) /
+          (MAX_DASH_POWER - MIN_DASH_POWER) + STOP_MOTOR;
   for (int i = 0; i < NUM_WHEELS; i++) {
    switch (i) {
       case FL_WHEEL_INDEX:
