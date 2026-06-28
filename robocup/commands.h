@@ -8,7 +8,7 @@
 #pragma once
 #include <MoteusAcan2517fd.h>
 #include "helpers.h"
-#include "WiFi.h"
+#include <WiFiS3.h>
 #include "WiFiUdp.h"
 
 typedef Moteus::PositionMode::Command PositionCommand;

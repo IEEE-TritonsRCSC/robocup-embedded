@@ -30,6 +30,7 @@ static bool watchdogStopped = false;
 // static unsigned long displayPageTimer = 0;
 // static unsigned short displayPageCounter = 0;
 static constexpr unsigned long WIFI_CONNECT_TIMEOUT_MS = 60000;
+static int status = WL_IDLE_STATUS;
 
 // Moteus CANFD Position Commands for each motor
 static PositionCommand FrontLeftWheelCmd;
@@ -143,8 +144,38 @@ void setup() {
 
   delay(1000);
 
-  connectWiFi();
+  if (WiFi.status() == WL_NO_MODULE) {
+    Serial.println("Communication with WiFi module failed!");
+    // don't continue
+    while (true);
+  }
+  
+  Serial.println("WiFi Module Communication succeeded!");
+  
+  delay(1000);
 
+  String fv = WiFi.firmwareVersion();
+  if (fv < WIFI_FIRMWARE_LATEST_VERSION) {
+    Serial.println("Please upgrade the firmware");
+  }
+
+  Serial.println("WiFi firmware is up to date!");
+
+  delay(1000);
+
+  // attempt to connect to WiFi network:
+  while (status != WL_CONNECTED) {
+    Serial.print("Attempting to connect to SSID: ");
+    Serial.println(WIFI_SSID);
+    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
+    status = WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+    // wait 1 second for connection:
+    delay(1000);
+  }
+
+  Serial.println("WiFi Connected!");
+  
   delay(1000);
 
   udp.begin(UDP_PORT);
