@@ -160,13 +160,26 @@ void handleUdpPackets(
     return;
   }
 
+  Serial.print(F("UDP packet: '"));
+  Serial.print(packetBuffer);
+  Serial.print(F("' parsed="));
+  Serial.print(parsed);
+  Serial.print(F(" robotId="));
+  Serial.print(robotId);
+  Serial.print(F(" command="));
+  Serial.print(commandChar);
+  Serial.print(F(" arg1="));
+  Serial.print(arg1);
+  Serial.print(F(" arg2="));
+  Serial.println(arg2);
+
   if ((commandChar == DASH_CMD_CHAR && parsed < 4) || (commandChar == TURN_CMD_CHAR && parsed < 3) || (commandChar == KICK_CMD_CHAR && parsed < 2) || (commandChar == CATCH_CMD_CHAR && parsed < 2) || (commandChar == DROP_CMD_CHAR && parsed < 2) || (commandChar == STOP_CMD_CHAR && parsed < 2)) {
     Serial.print(F("Incomplete UDP command: "));
     Serial.println(packetBuffer);
     return;
   }
 
-  executeUdpCommand(robotId, 
+  const bool executed = executeUdpCommand(robotId, 
     commandChar, 
     arg1, 
     arg2, 
@@ -175,6 +188,9 @@ void handleUdpPackets(
     lastUdpCommandMs, 
     watchdogStopped
   );
+
+  Serial.print(F("UDP command executed: "));
+  Serial.println(executed ? F("yes") : F("no"));
 }
 
 void dash(float power, float direction, PositionCommand* WheelCommands[NUM_WHEELS]) {

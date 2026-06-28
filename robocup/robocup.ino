@@ -31,6 +31,7 @@ static bool watchdogStopped = false;
 // static unsigned short displayPageCounter = 0;
 static constexpr unsigned long WIFI_CONNECT_TIMEOUT_MS = 60000;
 static int status = WL_IDLE_STATUS;
+static unsigned long lastVelocityPrintMs = 0;
 
 // Moteus CANFD Position Commands for each motor
 static PositionCommand FrontLeftWheelCmd;
@@ -220,10 +221,11 @@ void setup() {
 }
 
 void loop() {
+  const unsigned long now = millis();
+
   // Poll for incoming motion and actuator commands over UDP.
   handleUdpPackets(udp, WheelCommands, MotorCommands, lastUdpCommandMs, watchdogStopped);
 
-  const unsigned long now = millis();
   if (!watchdogStopped && lastUdpCommandMs != 0 && (now - lastUdpCommandMs >= WATCHDOG_TIMEOUT)) {
     // Serial.print("\r\33[2K\r"); // clears the line and does a carriage return
     Serial.println(F("WATCHDOG timeout: stopping robot"));
@@ -231,20 +233,13 @@ void loop() {
     watchdogStopped = true;
   }
 
-  // Keep a live velocity readout in the serial monitor for debugging.
-  // printMotorVelocitiesInline(MotorCommands);
-  char buf[128];
-
-  snprintf(buf, sizeof(buf),
-    "FL: %.3f\nFR: %.3f\nBR: %.3f\nBL: %.3f\nDribbler: %.3f\n",
-    MotorCommands[FL_WHEEL_INDEX]->velocity, 
-    MotorCommands[FR_WHEEL_INDEX]->velocity, 
-    MotorCommands[BR_WHEEL_INDEX]->velocity, 
-    MotorCommands[BL_WHEEL_INDEX]->velocity, 
-    MotorCommands[DRIBBLER_INDEX]->velocity
-  );
-
-  Serial.print(buf);
+  if (now - lastVelocityPrintMs >= 1000) {
+    lastVelocityPrintMs = now;
+    Serial.print(F("Velocities @ "));
+    Serial.print(now);
+    Serial.print(F(" ms -> "));
+    printMotorVelocities(MotorCommands);
+  }
   // if (now - displayPageTimer >= 5000) {
   //   displayPageTimer = now;
   //   displayPageCounter++;
