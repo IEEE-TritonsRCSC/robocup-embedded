@@ -20,7 +20,7 @@ def send_command(message: str) -> None:
 
 
 def main() -> int:
-    print(f"Local IP: {get_local_ip()}")
+    print(f"Gateway IP: {get_local_ip()}")
     print(f"Sending to: {ROBOT_IP}:{UDP_PORT}")
 
     if len(sys.argv) < 3:
