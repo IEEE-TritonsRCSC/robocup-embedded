@@ -117,6 +117,13 @@ void sendPositionCommands(Moteus* Motors[NUM_MOTORS], PositionCommand* MotorComm
 void printMotorVelocities(PositionCommand* MotorCommands[NUM_MOTORS]);
 
 /**
+ * @brief Print wheel velocities as a debug snapshot.
+ *
+ * @param WheelCommands Position commands for each wheel motor.
+ */
+void printWheelVelocities(PositionCommand* WheelCommands[NUM_WHEELS]);
+
+/**
  * @brief Print motor velocities in place on a single serial console line.
  *
  * This is useful for live debugging in terminal programs that support carriage

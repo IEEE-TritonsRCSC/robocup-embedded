@@ -177,23 +177,34 @@ void handleUdpPackets(
   }
   packetBuffer[len] = '\0';
   char* trimmedPacket = trimWhitespace(packetBuffer);
+  char originalPacket[64];
+  strncpy(originalPacket, trimmedPacket, sizeof(originalPacket) - 1);
+  originalPacket[sizeof(originalPacket) - 1] = '\0';
 
-  int robotId = -1;
-  char commandChar = '\0';
-  float arg1 = 0.0f;
-  float arg2 = 0.0f;
+  char* tokens[4] = { nullptr, nullptr, nullptr, nullptr };
+  int tokenCount = 0;
+  char* savePtr = nullptr;
+  for (char* token = strtok_r(trimmedPacket, " \t", &savePtr);
+       token != nullptr && tokenCount < 4;
+       token = strtok_r(nullptr, " \t", &savePtr)) {
+    tokens[tokenCount++] = token;
+  }
 
-  const int parsed = sscanf(trimmedPacket, "%d %c %f %f", &robotId, &commandChar, &arg1, &arg2);
-  if (parsed < 2) {
+  if (tokenCount < 2) {
     Serial.print(F("Bad UDP command: "));
-    Serial.println(trimmedPacket);
+    Serial.println(originalPacket);
     return;
   }
 
+  const int robotId = atoi(tokens[0]);
+  const char commandChar = tokens[1][0];
+  const float arg1 = (tokenCount >= 3) ? atof(tokens[2]) : 0.0f;
+  const float arg2 = (tokenCount >= 4) ? atof(tokens[3]) : 0.0f;
+
   Serial.print(F("UDP packet: '"));
-  Serial.print(trimmedPacket);
+  Serial.print(originalPacket);
   Serial.print(F("' parsed="));
-  Serial.print(parsed);
+  Serial.print(tokenCount);
   Serial.print(F(" robotId="));
   Serial.print(robotId);
   Serial.print(F(" command="));
@@ -203,9 +214,9 @@ void handleUdpPackets(
   Serial.print(F(" arg2="));
   Serial.println(arg2);
 
-  if ((commandChar == DASH_CMD_CHAR && parsed < 4 - 1) || (commandChar == TURN_CMD_CHAR && parsed < 3 - 1) || (commandChar == KICK_CMD_CHAR && parsed < 2 - 1) || (commandChar == CATCH_CMD_CHAR && parsed < 2 - 1) || (commandChar == DROP_CMD_CHAR && parsed < 2 - 1) || (commandChar == STOP_CMD_CHAR && parsed < 2 - 1)) {
+  if ((commandChar == DASH_CMD_CHAR && tokenCount < 4) || (commandChar == TURN_CMD_CHAR && tokenCount < 3) || (commandChar == KICK_CMD_CHAR && tokenCount < 2) || (commandChar == CATCH_CMD_CHAR && tokenCount < 2) || (commandChar == DROP_CMD_CHAR && tokenCount < 2) || (commandChar == STOP_CMD_CHAR && tokenCount < 2)) {
     Serial.print(F("Incomplete UDP command: "));
-    Serial.println(trimmedPacket);
+    Serial.println(originalPacket);
     return;
   }
 
