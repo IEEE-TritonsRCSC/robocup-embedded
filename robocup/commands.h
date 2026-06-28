@@ -14,6 +14,18 @@
 typedef Moteus::PositionMode::Command PositionCommand;
 
 //////// BEGIN CONFIGURATION CONSTS
+#ifndef ENABLE_MOTORS
+#define ENABLE_MOTORS 1 // set to 1 to enable motor code
+#endif
+
+#ifndef ENABLE_TEST_MOTORS
+#define ENABLE_TEST_MOTORS 1 // set if you want the number of motors to change
+#endif
+
+#if ENABLE_TEST_MOTORS == 1 && !defined(NUM_TEST_MOTORS)
+#define NUM_TEST_MOTORS 1
+#endif
+
 #define ROBOT_ID 1  // possible values are 1-6
 #define WATCHDOG_TIMEOUT 4000 // in milliseconds
 

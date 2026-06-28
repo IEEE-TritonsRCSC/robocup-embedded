@@ -6,12 +6,6 @@
  * incoming UDP commands in the main loop.
  */
 
-#define ENABLE_MOTORS 1 // set to 1 to enable motor code
-#define ENABLE_TEST_MOTORS 1 // set if you want the number of motors to change
-#if ENABLE_TEST_MOTORS == 1
-  #define NUM_TEST_MOTORS 1
-#endif
-
 #include "commands.h"
 #include "credentials.h"
 
