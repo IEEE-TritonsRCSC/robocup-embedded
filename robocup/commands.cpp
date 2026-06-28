@@ -54,6 +54,17 @@ void printMotorVelocities(PositionCommand* MotorCommands[NUM_MOTORS]) {
   Serial.println(MotorCommands[DRIBBLER_INDEX]->velocity);
 }
 
+void printWheelVelocities(PositionCommand* WheelCommands[NUM_WHEELS]) {
+  Serial.print(F("Wheel snapshot -> FL: "));
+  Serial.print(WheelCommands[FL_WHEEL_INDEX]->velocity);
+  Serial.print(F(" FR: "));
+  Serial.print(WheelCommands[FR_WHEEL_INDEX]->velocity);
+  Serial.print(F(" BR: "));
+  Serial.print(WheelCommands[BR_WHEEL_INDEX]->velocity);
+  Serial.print(F(" BL: "));
+  Serial.println(WheelCommands[BL_WHEEL_INDEX]->velocity);
+}
+
 void printMotorVelocitiesInline(PositionCommand* MotorCommands[NUM_MOTORS]) {
   static size_t previousLength = 0;
 
