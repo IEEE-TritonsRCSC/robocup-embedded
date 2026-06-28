@@ -2,6 +2,26 @@
 
 This sketch receives simple UDP commands over Wi-Fi and converts them into Moteus position commands for the robot.
 
+## Motor Build Flags
+
+Two compile-time flags in [`robocup.ino`](robocup.ino) control how much motor code is active:
+
+- `ENABLE_MOTORS`
+  - `1` enables CAN init and motor send operations
+  - `0` keeps the sketch from talking to motor hardware
+- `ENABLE_TEST_MOTORS`
+  - `1` switches the sketch into test mode and uses `NUM_TEST_MOTORS`
+  - `0` uses the normal full robot layout
+
+In test mode, `NUM_TEST_MOTORS` controls how many `PositionCommand` slots are compiled in.
+This is useful when you want to shrink the command arrays for memory savings during testing.
+
+Important:
+
+- `PositionCommand` arrays are just cached command objects and can be sized down safely
+- `Moteus*` arrays represent real motor connections and should only be used when the matching hardware is present
+- Dribbler commands are ignored unless the build includes a dribbler slot
+
 ## Network Setup
 
 The Arduino sketch uses a static IP configuration and is set up for the Arduino UNO R4 WiFi with `WiFiS3`:
@@ -69,9 +89,11 @@ When a valid UDP packet is received:
 - `d` calls `dash(power, angle)`
 - `t` calls `turn(turnSpeed)`
 - `k` triggers the kicker pin
-- `c` starts the dribbler
-- `o` stops the dribbler
+- `c` starts the dribbler if a dribbler slot exists, otherwise it is ignored
+- `o` stops the dribbler if a dribbler slot exists, otherwise it is ignored
 - `q` stops all motor commands
+
+If `ENABLE_MOTORS` is `0`, the sketch still accepts and parses commands, but it will not initialize CAN or send commands to motor hardware.
 
 ## Notes
 
