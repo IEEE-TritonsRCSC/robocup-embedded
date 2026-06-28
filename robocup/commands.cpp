@@ -90,17 +90,13 @@ void printMotorVelocitiesInline(PositionCommand* MotorCommands[NUM_MOTORS]) {
 
   #if NUM_MOTORS == 1
     const char* format = "FL: %.3f";
-  #endif
-  #if NUM_MOTORS == 2
+  #elif NUM_MOTORS == 2
     const char* format = "FL: %.3f FR: %.3f";
-  #endif
-  #if NUM_MOTORS == 3
+  #elif NUM_MOTORS == 3
     const char* format = "FL: %.3f FR: %.3f BR: %.3f";
-  #endif
-  #if NUM_MOTORS == 4
+  #elif NUM_MOTORS == 4
     const char* format = "FL: %.3f FR: %.3f BR: %.3f BL: %.3f";
-  #endif
-  #if NUM_MOTORS == 5
+  #elif NUM_MOTORS == 5
     const char* format = "FL: %.3f FR: %.3f BR: %.3f BL: %.3f Dribbler: %.3f";
   #endif
 
@@ -109,21 +105,19 @@ void printMotorVelocitiesInline(PositionCommand* MotorCommands[NUM_MOTORS]) {
     line,
     sizeof(line),
     format,
-    #if NUM_MOTORS >= 1
-    MotorCommands[FL_WHEEL_INDEX]->velocity,
-    #endif
-    #if NUM_MOTORS >= 2
-    MotorCommands[FR_WHEEL_INDEX]->velocity,
-    #endif
-    #if NUM_MOTORS >= 3
-    MotorCommands[BR_WHEEL_INDEX]->velocity,
-    #endif
-    #if NUM_MOTORS >= 4
-    MotorCommands[BL_WHEEL_INDEX]->velocity,
-    #endif
-    #if NUM_MOTORS == 5
-    MotorCommands[DRIBBLER_INDEX]->velocity
-    #endif
+    MotorCommands[FL_WHEEL_INDEX]->velocity
+  #if NUM_MOTORS >= 2
+    , MotorCommands[FR_WHEEL_INDEX]->velocity
+  #endif
+  #if NUM_MOTORS >= 3
+    , MotorCommands[BR_WHEEL_INDEX]->velocity
+  #endif
+  #if NUM_MOTORS >= 4
+    , MotorCommands[BL_WHEEL_INDEX]->velocity
+  #endif
+  #if NUM_MOTORS >= 5
+    , MotorCommands[DRIBBLER_INDEX]->velocity
+  #endif
   );
 
   if (written < 0) {
