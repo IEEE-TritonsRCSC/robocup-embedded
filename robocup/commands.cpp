@@ -42,23 +42,39 @@ void sendPositionCommands(Moteus* Motors[NUM_MOTORS], PositionCommand* MotorComm
 }
 
 void printMotorVelocities(PositionCommand* MotorCommands[NUM_MOTORS]) {
-  #if NUM_MOTORS >= 1
+  #if NUM_MOTORS == 1
     Serial.print(F("FL: "));
-    Serial.print(MotorCommands[FL_WHEEL_INDEX]->velocity);
-  #endif
-  #if NUM_MOTORS >= 2
+    Serial.println(MotorCommands[FL_WHEEL_INDEX]->velocity);
+  #elif NUM_MOTORS == 2
+    Serial.print(F("FL: "));
+    Serial.println(MotorCommands[FL_WHEEL_INDEX]->velocity);
     Serial.print(F(" FR: "));
-    Serial.print(MotorCommands[FR_WHEEL_INDEX]->velocity);
-  #endif
-  #if NUM_MOTORS >= 3
+    Serial.println(MotorCommands[FR_WHEEL_INDEX]->velocity);
+  #elif NUM_MOTORS == 3
+    Serial.print(F("FL: "));
+    Serial.println(MotorCommands[FL_WHEEL_INDEX]->velocity);
+    Serial.print(F(" FR: "));
+    Serial.println(MotorCommands[FR_WHEEL_INDEX]->velocity);
     Serial.print(F(" BR: "));
-    Serial.print(MotorCommands[BR_WHEEL_INDEX]->velocity);
-  #endif
-  #if NUM_MOTORS >= 4
+    Serial.println(MotorCommands[BR_WHEEL_INDEX]->velocity);
+  #elif NUM_MOTORS == 4
+    Serial.print(F("FL: "));
+    Serial.println(MotorCommands[FL_WHEEL_INDEX]->velocity);
+    Serial.print(F(" FR: "));
+    Serial.println(MotorCommands[FR_WHEEL_INDEX]->velocity);
+    Serial.print(F(" BR: "));
+    Serial.println(MotorCommands[BR_WHEEL_INDEX]->velocity);
     Serial.print(F(" BL: "));
-    Serial.print(MotorCommands[BL_WHEEL_INDEX]->velocity);
-  #endif
-  #if NUM_MOTORS == 5
+    Serial.println(MotorCommands[BL_WHEEL_INDEX]->velocity);
+  #elif NUM_MOTORS == 5
+    Serial.print(F("FL: "));
+    Serial.println(MotorCommands[FL_WHEEL_INDEX]->velocity);
+    Serial.print(F(" FR: "));
+    Serial.println(MotorCommands[FR_WHEEL_INDEX]->velocity);
+    Serial.print(F(" BR: "));
+    Serial.println(MotorCommands[BR_WHEEL_INDEX]->velocity);
+    Serial.print(F(" BL: "));
+    Serial.println(MotorCommands[BL_WHEEL_INDEX]->velocity);
     Serial.print(F(" Dribbler: "));
     Serial.println(MotorCommands[DRIBBLER_INDEX]->velocity);
   #endif
