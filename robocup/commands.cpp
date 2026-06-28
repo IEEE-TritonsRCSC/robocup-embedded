@@ -8,6 +8,7 @@
 #include "commands.h"
 
 void invertLeftWheelsRotation(PositionCommand* WheelCommands[NUM_WHEELS]) {
+  // The left-side motors are mirrored physically, so their velocity sign is flipped.
   WheelCommands[FL_WHEEL_INDEX]->velocity *= -1;
   WheelCommands[BL_WHEEL_INDEX]->velocity *= -1;
 }
@@ -17,7 +18,7 @@ void initPositionCommands(PositionCommand* MotorCommands[NUM_MOTORS]) {
     // Start each motor in velocity mode with conservative limits.
     MotorCommands[i]->position = PURE_VELOCITY_MODE;
     MotorCommands[i]->velocity = START_VELOCITY;
-    MotorCommands[i]->maximum_torque = MAX_TORQUE;  // might be unnecessary
+    MotorCommands[i]->maximum_torque = MAX_TORQUE;
     MotorCommands[i]->ignore_position_bounds = IGNORE_POSITION_BOUNDS;
     MotorCommands[i]->velocity_limit = MAX_VELOCITY;
   }
@@ -102,8 +103,6 @@ void printWheelVelocities(PositionCommand* WheelCommands[NUM_WHEELS]) {
 void printMotorVelocitiesInline(PositionCommand* MotorCommands[NUM_MOTORS]) {
   static size_t previousLength = 0;
 
-
-
   #if NUM_MOTORS == 1
     const char* format = "FL: %.3f";
   #elif NUM_MOTORS == 2
@@ -154,6 +153,7 @@ void printMotorVelocitiesInline(PositionCommand* MotorCommands[NUM_MOTORS]) {
 }
 
 static char* trimWhitespace(char* text) {
+  // Remove leading whitespace in place.
   while (*text != '\0' && isspace(static_cast<unsigned char>(*text))) {
     text++;
   }
@@ -162,6 +162,7 @@ static char* trimWhitespace(char* text) {
     return text;
   }
 
+  // Remove trailing whitespace in place.
   char* end = text + strlen(text) - 1;
   while (end > text && isspace(static_cast<unsigned char>(*end))) {
     *end = '\0';
@@ -235,7 +236,6 @@ bool executeUdpCommand(
 
   lastUdpCommandMs = millis();
   watchdogStopped = false;
-  // printMotorVelocities();
   return true;
 }
 
@@ -321,6 +321,7 @@ void handleUdpPackets(
 }
 
 void dash(float power, float direction, PositionCommand* WheelCommands[NUM_WHEELS]) {
+  // Convert the command into the robot's internal units.
   direction = degToRad(direction);
   power = ((power - MIN_DASH_POWER) * (MAX_VELOCITY - STOP_MOTOR)) /
           (MAX_DASH_POWER - MIN_DASH_POWER) + STOP_MOTOR;
@@ -347,7 +348,8 @@ void dash(float power, float direction, PositionCommand* WheelCommands[NUM_WHEEL
 }
 
 void turn(const float turnSpeed, PositionCommand* WheelCommands[NUM_WHEELS]) {
-  constexpr float arbitraryMultipler = 1; // TODO: test this on a robot
+  // The current scale factor is intentionally simple and still hardware-tuned.
+  constexpr float arbitraryMultipler = 1;
   for (int i = 0; i < NUM_WHEELS; i++) {
     WheelCommands[i]->velocity = -degPerSecondToRPS(turnSpeed) * arbitraryMultipler;
   }

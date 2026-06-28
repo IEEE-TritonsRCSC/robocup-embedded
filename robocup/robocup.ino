@@ -23,8 +23,8 @@ static ACAN2517FD can(MCP2517_CS, SPI, MCP2517_INT);
 // };
 // static unsigned short throbberIndex = 0;
 
+// Motor objects are created only when CAN output is enabled.
 static Moteus* Motors[NUM_MOTORS]{ nullptr };
-static Moteus* Wheels[NUM_WHEELS]{ nullptr };
 static unsigned long lastUdpCommandMs = 0;
 static bool watchdogStopped = false;
 // static unsigned long displayPageTimer = 0;
@@ -33,7 +33,7 @@ static constexpr unsigned long WIFI_CONNECT_TIMEOUT_MS = 60000;
 static int status = WL_IDLE_STATUS;
 static unsigned long lastVelocityPrintMs = 0;
 
-// Moteus CANFD Position Commands for each motor
+// One cached command object per motor slot.
 static PositionCommand FrontLeftWheelCmd;
 static PositionCommand FrontRightWheelCmd;
 static PositionCommand BackRightWheelCmd;
@@ -41,6 +41,7 @@ static PositionCommand BackLeftWheelCmd;
 static PositionCommand DribblerCmd;
 
 #if ENABLE_TEST_MOTORS == 0
+  // Full robot layout: four wheels plus one dribbler.
   static PositionCommand* MotorCommands[NUM_MOTORS] = {
     &FrontLeftWheelCmd,
     &FrontRightWheelCmd,
@@ -49,6 +50,7 @@ static PositionCommand DribblerCmd;
     &DribblerCmd
   };
 
+  // Locomotion-only view used by dash/turn commands.
   static PositionCommand* WheelCommands[NUM_WHEELS] = {
     &FrontLeftWheelCmd,
     &FrontRightWheelCmd,
@@ -56,6 +58,7 @@ static PositionCommand DribblerCmd;
     &BackLeftWheelCmd,
   };
 #else
+  // Test layout: compile only the first N slots to save memory.
   static PositionCommand* MotorCommands[NUM_MOTORS] = {
     #if NUM_TEST_MOTORS >= 1
     &FrontLeftWheelCmd,
@@ -91,6 +94,7 @@ static PositionCommand DribblerCmd;
 #endif
 
 static void connectWiFi() {
+  // Apply the fixed IP configuration before joining the network.
   WiFi.config(LOCAL_IP_ADDRESS, GATEWAY_IP_ADDRESS, SUBNET_MASK);
   Serial.println(F("WiFi config'ed!"));
   // Serial.print(F("WiFi firmware: "));
@@ -161,7 +165,7 @@ void setup() {
 
   delay(1000);
 
-  // Run CAN-FD at 1 Mbit/s for both arbitration and data.
+  // Configure the CAN-FD driver for the drivetrain bus.
   ACAN2517FDSettings settings(
     ACAN2517FDSettings::OSC_20MHz, 
     CANFD_BITRATE, 
@@ -182,7 +186,6 @@ void setup() {
 
   if (WiFi.status() == WL_NO_MODULE) {
     Serial.println("Communication with WiFi module failed!");
-    // don't continue
     while (true);
   }
   
@@ -199,14 +202,12 @@ void setup() {
 
   delay(1000);
 
-  // attempt to connect to WiFi network:
+  // Connect to Wi-Fi before opening the UDP socket.
   while (status != WL_CONNECTED) {
     Serial.print("Attempting to connect to SSID: ");
     Serial.println(WIFI_SSID);
-    // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     status = WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
-    // wait 1 second for connection:
     delay(1000);
   }
 
@@ -222,7 +223,7 @@ void setup() {
   delay(1000);
 
   #if ENABLE_MOTORS == 1
-    // start CAN communication and print error while disconnected
+    // Start CAN communication and keep retrying until the bus responds.
     const uint32_t errorCode = can.begin(settings, [] {
       can.isr();
     });
@@ -235,7 +236,7 @@ void setup() {
       delay(1000);
     }
 
-    // create motor objects
+    // Create one motor object per configured slot.
     for (int i = 0; i < NUM_MOTORS; i++) {
       Motors[i] = new Moteus(can, [i]() {
         Moteus::Options options;
@@ -265,8 +266,8 @@ void loop() {
   // Poll for incoming motion and actuator commands over UDP.
   handleUdpPackets(udp, WheelCommands, MotorCommands, lastUdpCommandMs, watchdogStopped);
 
+  // If commands stop arriving, force the robot back to a safe stopped state.
   if (!watchdogStopped && lastUdpCommandMs != 0 && (now - lastUdpCommandMs >= WATCHDOG_TIMEOUT)) {
-    // Serial.print("\r\33[2K\r"); // clears the line and does a carriage return
     Serial.println(F("WATCHDOG timeout: stopping robot"));
     #if ENABLE_MOTORS == 1
       stop(MotorCommands);
@@ -278,6 +279,7 @@ void loop() {
     sendPositionCommands(Motors, MotorCommands);
   #endif
 
+  // Emit a periodic snapshot to help confirm the latest command state over Serial.
   if (now - lastVelocityPrintMs >= 1000) {
     lastVelocityPrintMs = now;
     Serial.print(F("Velocities @ "));
@@ -285,21 +287,4 @@ void loop() {
     Serial.print(F(" ms -> "));
     printMotorVelocities(MotorCommands);
   }
-  // if (now - displayPageTimer >= 5000) {
-  //   displayPageTimer = now;
-  //   displayPageCounter++;
-  //   if (displayPageCounter >= 2) {
-  //     displayPageCounter = 0;
-  //   }
-  //   switch(displayPageCounter) {
-  //     case 0:
-  //       robotInfoPage(display,WiFi);
-  //       break;
-  //     case 1:
-  //       positionCommandsPage(display, MotorCommands);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // }
 }
