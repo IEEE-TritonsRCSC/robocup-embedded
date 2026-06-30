@@ -15,7 +15,7 @@ from send import get_local_ip, send_command
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
-ROBOT_IP_DEFAULT = "192.168.68.50"
+ROBOT_IP_DEFAULT = "192.168.8.50" 
 UDP_PORT_DEFAULT = "10000"
 MACRO_DELAY_S = 1.0  # seconds between macro steps
 

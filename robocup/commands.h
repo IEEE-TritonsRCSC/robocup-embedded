@@ -34,7 +34,12 @@ typedef Moteus::PositionMode::Command PositionCommand;
 #define MAX_TORQUE 0.29     // Maximum torque limit in N·m.
 #define DRIBBLER_SPEED 10   // Commanded dribbler velocity when catching.
 
-#define KICKER_PIN 13  // GPIO pin used to pulse the kicker driver.
+/*
+KICK-DIS D2
+DONE D1
+CHARGE D0
+*/
+#define KICKER_PIN 2
 
 //////// END CONFIGURATION CONSTS
 
@@ -94,6 +99,12 @@ typedef Moteus::PositionMode::Command PositionCommand;
 // CAN-FD bitrate used by the drivetrain bus.
 #define CANFD_BITRATE 1000ll * 1000ll
 //////// END IMMUTABLE CONSTS
+
+//////// BEGIN DEBUG CONSTS
+#ifndef ENABLE_UDP_DEBUG
+#define ENABLE_UDP_DEBUG 1
+#endif
+//////// END DEBUG CONSTS
 
 /**
  * @brief Initialize each motor command with safe default values.
@@ -206,6 +217,22 @@ void handleUdpPackets(
    unsigned long &lastUdpCommandMs,
    bool &watchdogStopped
 );
+
+/**
+ * @brief Print a compact UDP debug line with packet metadata.
+ *
+ * @param tag Short label describing the debug stage.
+ * @param packetSize Size reported by parsePacket().
+ */
+void printUdpDebugHeader(const char* tag, int packetSize);
+
+/**
+ * @brief Print a received UDP payload as text and hex bytes.
+ *
+ * @param payload Raw packet buffer.
+ * @param length Number of valid bytes in the payload.
+ */
+void printUdpDebugPayload(const char* payload, int length);
 
 /**
  * @brief Set wheel velocities for a translational dash command.

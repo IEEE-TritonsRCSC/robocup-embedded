@@ -1,7 +1,7 @@
 import socket
 import sys
 
-ROBOT_IP = "192.168.68.50"
+ROBOT_IP = "192.168.8.50"
 UDP_PORT = 10000
 
 

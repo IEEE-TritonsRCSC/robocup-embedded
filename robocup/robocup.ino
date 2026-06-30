@@ -95,8 +95,8 @@ static PositionCommand DribblerCmd;
 
 static void connectWiFi() {
   // Apply the fixed IP configuration before joining the network.
-  WiFi.config(LOCAL_IP_ADDRESS, GATEWAY_IP_ADDRESS, SUBNET_MASK);
-  Serial.println(F("WiFi config'ed!"));
+  WiFi.config(LOCAL_IP_ADDRESS, GATEWAY_IP_ADDRESS, GATEWAY_IP_ADDRESS, SUBNET_MASK);
+  Serial.println(F("WiFi.config() applied"));
   // Serial.print(F("WiFi firmware: "));
   // Serial.println(WiFi.firmwareVersion());
   Serial.print(F("Connecting to SSID: "));
@@ -124,6 +124,12 @@ static void connectWiFi() {
   Serial.println();
   Serial.print(F("WiFi Connected: "));
   Serial.println(WiFi.localIP());
+  Serial.print(F("Gateway: "));
+  Serial.println(WiFi.gatewayIP());
+  Serial.print(F("Subnet: "));
+  Serial.println(WiFi.subnetMask());
+  Serial.print(F("SSID: "));
+  Serial.println(WiFi.SSID());
 }
 
 void setup() {
@@ -203,15 +209,14 @@ void setup() {
   delay(1000);
 
   // Connect to Wi-Fi before opening the UDP socket.
-  while (status != WL_CONNECTED) {
-    Serial.print("Attempting to connect to SSID: ");
-    Serial.println(WIFI_SSID);
-    status = WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-
-    delay(1000);
+  connectWiFi();
+  status = WiFi.status();
+  if (status != WL_CONNECTED) {
+    Serial.println(F("WiFi failed to connect; UDP will not receive packets."));
+    while (true) {
+      delay(1000);
+    }
   }
-
-  Serial.println("WiFi Connected!");
   
   delay(1000);
 
@@ -261,10 +266,13 @@ void setup() {
 }
 
 void loop() {
-  const unsigned long now = millis();
+  unsigned long now = millis();
 
   // Poll for incoming motion and actuator commands over UDP.
   handleUdpPackets(udp, WheelCommands, MotorCommands, lastUdpCommandMs, watchdogStopped);
+
+  // Refresh the clock after packet handling so the watchdog uses the latest time.
+  now = millis();
 
   // If commands stop arriving, force the robot back to a safe stopped state.
   if (!watchdogStopped && lastUdpCommandMs != 0 && (now - lastUdpCommandMs >= WATCHDOG_TIMEOUT)) {

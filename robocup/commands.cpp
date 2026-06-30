@@ -7,10 +7,62 @@
  */
 #include "commands.h"
 
+void printUdpDebugHeader(const char* tag, int packetSize) {
+#if ENABLE_UDP_DEBUG == 1
+  Serial.print(F("[UDP] "));
+  Serial.print(tag);
+  Serial.print(F(" packetSize="));
+  Serial.println(packetSize);
+#else
+  (void)tag;
+  (void)packetSize;
+#endif
+}
+
+void printUdpDebugPayload(const char* payload, int length) {
+#if ENABLE_UDP_DEBUG == 1
+  Serial.print(F("[UDP] raw=\""));
+  for (int i = 0; i < length; i++) {
+    const char c = payload[i];
+    if (c == '\r') {
+      Serial.print(F("\\r"));
+    } else if (c == '\n') {
+      Serial.print(F("\\n"));
+    } else if (c == '\t') {
+      Serial.print(F("\\t"));
+    } else {
+      Serial.print(c);
+    }
+  }
+  Serial.println(F("\""));
+
+  Serial.print(F("[UDP] hex="));
+  for (int i = 0; i < length; i++) {
+    if (i > 0) {
+      Serial.print(' ');
+    }
+    const uint8_t b = static_cast<uint8_t>(payload[i]);
+    if (b < 0x10) {
+      Serial.print('0');
+    }
+    Serial.print(b, HEX);
+  }
+  Serial.println();
+#else
+  (void)payload;
+  (void)length;
+#endif
+}
+
 void invertLeftWheelsRotation(PositionCommand* WheelCommands[NUM_WHEELS]) {
   // The left-side motors are mirrored physically, so their velocity sign is flipped.
-  WheelCommands[FL_WHEEL_INDEX]->velocity *= -1;
-  WheelCommands[BL_WHEEL_INDEX]->velocity *= -1;
+  // Only flip wheels that actually exist in the current build configuration.
+  if (NUM_WHEELS > FL_WHEEL_INDEX && WheelCommands[FL_WHEEL_INDEX] != nullptr) {
+    WheelCommands[FL_WHEEL_INDEX]->velocity *= -1;
+  }
+  if (NUM_WHEELS > BL_WHEEL_INDEX && WheelCommands[BL_WHEEL_INDEX] != nullptr) {
+    WheelCommands[BL_WHEEL_INDEX]->velocity *= -1;
+  }
 }
 
 void initPositionCommands(PositionCommand* MotorCommands[NUM_MOTORS]) {
@@ -252,12 +304,23 @@ void handleUdpPackets(
     return;
   }
 
+  printUdpDebugHeader("parsePacket()", packetSize);
+
+#if ENABLE_UDP_DEBUG == 1
+  Serial.print(F("[UDP] from "));
+  Serial.print(udp.remoteIP());
+  Serial.print(F(":"));
+  Serial.println(udp.remotePort());
+#endif
+
   char packetBuffer[64];
   const int len = udp.read(packetBuffer, sizeof(packetBuffer) - 1);
+  printUdpDebugHeader("read()", len);
   if (len <= 0) {
     return;
   }
   packetBuffer[len] = '\0';
+  printUdpDebugPayload(packetBuffer, len);
   char* trimmedPacket = trimWhitespace(packetBuffer);
   char originalPacket[64];
   strncpy(originalPacket, trimmedPacket, sizeof(originalPacket) - 1);
@@ -271,6 +334,18 @@ void handleUdpPackets(
        token = strtok_r(nullptr, " \t", &savePtr)) {
     tokens[tokenCount++] = token;
   }
+
+#if ENABLE_UDP_DEBUG == 1
+  Serial.print(F("[UDP] tokens="));
+  Serial.println(tokenCount);
+  for (int i = 0; i < tokenCount; i++) {
+    Serial.print(F("[UDP] token["));
+    Serial.print(i);
+    Serial.print(F("]=\""));
+    Serial.print(tokens[i]);
+    Serial.println(F("\""));
+  }
+#endif
 
   if (tokenCount < 2) {
     Serial.print(F("Bad UDP command: "));
@@ -314,6 +389,14 @@ void handleUdpPackets(
 
   Serial.print(F("UDP command executed: "));
   Serial.println(executed ? F("yes") : F("no"));
+  if (!executed) {
+    Serial.print(F("[UDP] command rejected. targetROBOT_ID="));
+    Serial.print(ROBOT_ID);
+    Serial.print(F(" receivedRobotId="));
+    Serial.print(robotId);
+    Serial.print(F(" commandChar="));
+    Serial.println(commandChar);
+  }
   if (executed) {
     printWheelVelocities(WheelCommands);
     printMotorVelocities(MotorCommands);
@@ -344,7 +427,11 @@ void dash(float power, float direction, PositionCommand* WheelCommands[NUM_WHEEL
          return;
    }
   }
-  invertLeftWheelsRotation(WheelCommands);
+
+  // Only apply left-wheel inversion when those wheels are compiled in.
+  if (NUM_WHEELS >= 4) {
+    invertLeftWheelsRotation(WheelCommands);
+  }
 }
 
 void turn(const float turnSpeed, PositionCommand* WheelCommands[NUM_WHEELS]) {
