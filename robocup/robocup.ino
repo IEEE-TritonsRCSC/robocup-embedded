@@ -269,7 +269,10 @@ void loop() {
   unsigned long now = millis();
 
   // Poll for incoming motion and actuator commands over UDP.
-  handleUdpPackets(udp, WheelCommands, MotorCommands, lastUdpCommandMs, watchdogStopped);
+  handleUdpPackets(udp, WheelCommands, MotorCommands, Motors, lastUdpCommandMs, watchdogStopped);
+
+  // Turn the kicker pin back off once its pulse duration has elapsed.
+  serviceKicker(KICKER_PIN);
 
   // Refresh the clock after packet handling so the watchdog uses the latest time.
   now = millis();
@@ -279,6 +282,9 @@ void loop() {
     Serial.println(F("WATCHDOG timeout: stopping robot"));
     #if ENABLE_MOTORS == 1
       stop(MotorCommands);
+      #if HAS_DRIBBLER
+      dribblerDrop(Motors[DRIBBLER_INDEX], MotorCommands);
+      #endif
     #endif
     watchdogStopped = true;
   }

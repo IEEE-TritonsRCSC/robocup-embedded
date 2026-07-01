@@ -20,11 +20,11 @@ typedef Moteus::PositionMode::Command PositionCommand;
 #endif
 
 #ifndef ENABLE_TEST_MOTORS
-#define ENABLE_TEST_MOTORS 1  // Enable the reduced test-motor layout by default.
+#define ENABLE_TEST_MOTORS 0  // Enable the reduced test-motor layout by default.
 #endif
 
 #if ENABLE_TEST_MOTORS == 1 && !defined(NUM_TEST_MOTORS)
-#define NUM_TEST_MOTORS 1
+#define NUM_TEST_MOTORS 5
 #endif
 
 #define ROBOT_ID 1            // Valid values are 1-6.
@@ -32,7 +32,7 @@ typedef Moteus::PositionMode::Command PositionCommand;
 
 #define MAX_VELOCITY 6      // Maximum command velocity sent to each motor.
 #define MAX_TORQUE 0.29     // Maximum torque limit in N·m.
-#define DRIBBLER_SPEED 10   // Commanded dribbler velocity when catching.
+#define DRIBBLER_SPEED -10   // Commanded dribbler velocity when catching.
 
 /*
 KICK-DIS D2
@@ -40,6 +40,7 @@ DONE D1
 CHARGE D0
 */
 #define KICKER_PIN 2
+#define KICK_PULSE_MS 8  // Solenoid ON duration per kick; tune on hardware.
 
 //////// END CONFIGURATION CONSTS
 
@@ -148,6 +149,17 @@ void invertLeftWheelsRotation(PositionCommand* WheelCommands[NUM_WHEELS]);
 void sendPositionCommands(Moteus* Motors[NUM_MOTORS], PositionCommand* MotorCommands[NUM_MOTORS]);
 
 /**
+ * @brief Send one command to a single motor if it exists.
+ *
+ * This is used for one-shot dribbler commands so the motor is not streamed
+ * continuously in the main loop.
+ *
+ * @param motor Single motor object.
+ * @param command Command to send.
+ */
+void sendSinglePositionCommand(Moteus* motor, PositionCommand* command);
+
+/**
  * @brief Print the current motor velocities as a multi-line Serial snapshot.
  *
  * @param MotorCommands Position commands for each motor.
@@ -194,6 +206,7 @@ bool executeUdpCommand(
    const float arg2,
    PositionCommand* WheelCommands[NUM_WHEELS],
    PositionCommand* MotorCommands[NUM_MOTORS],
+   Moteus* Motors[NUM_MOTORS],
    unsigned long &lastUdpCommandMs,
    bool &watchdogStopped
 );
@@ -214,6 +227,7 @@ void handleUdpPackets(
    WiFiUDP &udp,
    PositionCommand* WheelCommands[NUM_WHEELS],
    PositionCommand* MotorCommands[NUM_MOTORS],
+   Moteus* Motors[NUM_MOTORS],
    unsigned long &lastUdpCommandMs,
    bool &watchdogStopped
 );
@@ -256,16 +270,22 @@ void turn(const float turnSpeed, PositionCommand* WheelCommands[NUM_WHEELS]);
 /**
  * @brief Spin the dribbler forward at the configured catch speed.
  *
+ * Sends a one-shot command immediately to the dribbler motor.
+ *
+ * @param motor Dribbler motor object.
  * @param MotorCommands Full motor command array to modify.
  */
-void dribblerCatch(PositionCommand* MotorCommands[NUM_MOTORS]);
+void dribblerCatch(Moteus* motor, PositionCommand* MotorCommands[NUM_MOTORS]);
 
 /**
  * @brief Stop the dribbler motor.
  *
+ * Sends a one-shot stop command immediately to the dribbler motor.
+ *
+ * @param motor Dribbler motor object.
  * @param MotorCommands Full motor command array to modify.
  */
-void dribblerDrop(PositionCommand* MotorCommands[NUM_MOTORS]);
+void dribblerDrop(Moteus* motor, PositionCommand* MotorCommands[NUM_MOTORS]);
 
 /**
  * @brief Stop the wheel motors.
@@ -289,8 +309,20 @@ void stop(PositionCommand* MotorCommands[NUM_MOTORS]);
 void stopKicker(const byte kickerPin);
 
 /**
- * @brief Pulse the kicker solenoid to perform a kick.
+ * @brief Start a non-blocking kick pulse on the kicker solenoid.
+ *
+ * Sets the pin HIGH and records the start time; call serviceKicker() every
+ * loop iteration to turn the pin back off after KICK_PULSE_MS.
  *
  * @param kickerPin GPIO pin used for the kicker driver.
  */
 void kick(const byte kickerPin);
+
+/**
+ * @brief Turn off the kicker pin once KICK_PULSE_MS has elapsed since kick().
+ *
+ * Must be called every loop() iteration; a no-op if no kick is in progress.
+ *
+ * @param kickerPin GPIO pin used for the kicker driver.
+ */
+void serviceKicker(const byte kickerPin);

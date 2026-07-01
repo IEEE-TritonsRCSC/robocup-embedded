@@ -73,25 +73,39 @@ void initPositionCommands(PositionCommand* MotorCommands[NUM_MOTORS]) {
     MotorCommands[i]->maximum_torque = MAX_TORQUE;
     MotorCommands[i]->ignore_position_bounds = IGNORE_POSITION_BOUNDS;
     MotorCommands[i]->velocity_limit = MAX_VELOCITY;
+    MotorCommands[i]->
   }
 }
 
 void configCANFDSettings(ACAN2517FDSettings& settings) {
-  // Keep the driver buffers small to fit on memory-constrained boards.
+  // Sized for NUM_MOTORS frames sent back-to-back each loop (up to 4 wheels
+  // continuously + 1 one-shot dribbler); a FIFO of 1 was fine for single-motor
+  // testing but risks TX overflow once all wheels are streaming every loop.
   settings.mArbitrationSJW = 2;
-  settings.mDriverTransmitFIFOSize = 1;
+  settings.mDriverTransmitFIFOSize = 4;
   settings.mDriverReceiveFIFOSize = 2;
 }
 
 void sendPositionCommands(Moteus* Motors[NUM_MOTORS], PositionCommand* MotorCommands[NUM_MOTORS]) {
+  // Every motor, including the dribbler, must receive a fresh command each
+  // loop: Moteus controllers self-stop if they stop receiving frames, so a
+  // one-shot send only moves the dribbler briefly before it faults out.
   for (int i = 0; i < NUM_MOTORS; i++) {
     if (Motors[i] == nullptr) {
       Serial.println(F("Skipping sendPositionCommands(): Motors not initialized"));
       return;
     }
     // Send the latest command to each motor one by one.
-    Motors[i]->BeginPosition(*MotorCommands[i]);
+    Motors[i]->SetPosition(*MotorCommands[i]);
   }
+}
+
+void sendSinglePositionCommand(Moteus* motor, PositionCommand* command) {
+  if (motor == nullptr || command == nullptr) {
+    Serial.println(F("Skipping sendSinglePositionCommand(): motor not initialized"));
+    return;
+  }
+  motor->SetPosition(*command);
 }
 
 void printMotorVelocities(PositionCommand* MotorCommands[NUM_MOTORS]) {
@@ -231,6 +245,7 @@ bool executeUdpCommand(
   const float arg2,
   PositionCommand* WheelCommands[NUM_WHEELS],
   PositionCommand* MotorCommands[NUM_MOTORS],
+  Moteus* Motors[NUM_MOTORS],
   unsigned long &lastUdpCommandMs,
   bool &watchdogStopped
 ) {
@@ -251,7 +266,7 @@ bool executeUdpCommand(
     case CATCH_CMD_CHAR:
       #if ENABLE_MOTORS == 1
       #if HAS_DRIBBLER
-      dribblerCatch(MotorCommands);
+      dribblerCatch(Motors[DRIBBLER_INDEX], MotorCommands);
       #else
       Serial.println(F("Ignoring dribbler catch: dribbler not configured"));
       return false;
@@ -264,7 +279,7 @@ bool executeUdpCommand(
     case DROP_CMD_CHAR:
       #if ENABLE_MOTORS == 1
       #if HAS_DRIBBLER
-      dribblerDrop(MotorCommands);
+      dribblerDrop(Motors[DRIBBLER_INDEX], MotorCommands);
       #else
       Serial.println(F("Ignoring dribbler drop: dribbler not configured"));
       return false;
@@ -277,6 +292,9 @@ bool executeUdpCommand(
     case STOP_CMD_CHAR:
       #if ENABLE_MOTORS == 1
       stop(MotorCommands);
+      #if HAS_DRIBBLER
+      dribblerDrop(Motors[DRIBBLER_INDEX], MotorCommands);
+      #endif
       #else
       Serial.println(F("Ignoring stop command: motors are disabled"));
       return false;
@@ -295,6 +313,7 @@ void handleUdpPackets(
   WiFiUDP &udp,
   PositionCommand* WheelCommands[NUM_WHEELS],
   PositionCommand* MotorCommands[NUM_MOTORS],
+  Moteus* Motors[NUM_MOTORS],
   unsigned long &lastUdpCommandMs,
   bool &watchdogStopped
 ) {
@@ -383,6 +402,7 @@ void handleUdpPackets(
     arg2, 
     WheelCommands, 
     MotorCommands, 
+    Motors,
     lastUdpCommandMs, 
     watchdogStopped
   );
@@ -436,21 +456,23 @@ void dash(float power, float direction, PositionCommand* WheelCommands[NUM_WHEEL
 
 void turn(const float turnSpeed, PositionCommand* WheelCommands[NUM_WHEELS]) {
   // The current scale factor is intentionally simple and still hardware-tuned.
-  constexpr float arbitraryMultipler = 1;
+  constexpr float arbitraryMultipler = 0.1;
   for (int i = 0; i < NUM_WHEELS; i++) {
     WheelCommands[i]->velocity = -degPerSecondToRPS(turnSpeed) * arbitraryMultipler;
   }
 }
 
-void dribblerCatch(PositionCommand* MotorCommands[NUM_MOTORS]) {
+void dribblerCatch(Moteus* motor, PositionCommand* MotorCommands[NUM_MOTORS]) {
   #if HAS_DRIBBLER
   MotorCommands[DRIBBLER_INDEX]->velocity = DRIBBLER_SPEED;
+  sendSinglePositionCommand(motor, MotorCommands[DRIBBLER_INDEX]);
   #endif
 }
 
-void dribblerDrop(PositionCommand* MotorCommands[NUM_MOTORS]) {
+void dribblerDrop(Moteus* motor, PositionCommand* MotorCommands[NUM_MOTORS]) {
   #if HAS_DRIBBLER
   MotorCommands[DRIBBLER_INDEX]->velocity = DRIBBLER_STOP;
+  sendSinglePositionCommand(motor, MotorCommands[DRIBBLER_INDEX]);
   #endif
 }
 
@@ -470,8 +492,21 @@ void stopKicker(const byte kickerPin) {
   digitalWrite(kickerPin, LOW);
 }
 
+static unsigned long kickPulseStartMs = 0;
+static bool kickPulseActive = false;
+
 void kick(const byte kickerPin) {
   digitalWrite(kickerPin, HIGH);
-  // TODO: delay 100ms without blocking
-  digitalWrite(kickerPin, LOW);
+  kickPulseStartMs = millis();
+  kickPulseActive = true;
+}
+
+void serviceKicker(const byte kickerPin) {
+  if (!kickPulseActive) {
+    return;
+  }
+  if (millis() - kickPulseStartMs >= KICK_PULSE_MS) {
+    digitalWrite(kickerPin, LOW);
+    kickPulseActive = false;
+  }
 }
