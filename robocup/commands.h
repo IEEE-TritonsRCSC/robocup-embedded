@@ -28,7 +28,7 @@ typedef Moteus::PositionMode::Command PositionCommand;
 #endif
 
 #define ROBOT_ID 1            // Valid values are 1-6.
-#define WATCHDOG_TIMEOUT 4000 // Milliseconds before the robot auto-stops.
+#define WATCHDOG_TIMEOUT 1000 // Milliseconds before the robot auto-stops.
 
 #define MAX_VELOCITY 6      // Maximum command velocity sent to each motor.
 #define MAX_TORQUE 0.29     // Maximum torque limit in N·m.
